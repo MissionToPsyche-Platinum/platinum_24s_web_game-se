@@ -13,21 +13,48 @@
             <h1>PYSCHE</h1>
             <h2>JOURNEY TO A METAL WORLD</h2>
             <button id="start">Start Game</button>
-            <button id="instructions">How to Play</button>
+
+            <!-- Code pertaining to the "How to Play" button and pop-up window. -->
+            <button id = "instructions"> How to Play </button>
+            <div id = "instructionsPopUp" style ="
+                display: none;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: white;
+                padding: 20px;
+                border: 2px solid black;
+                z-index: 1000;
+                width: 400px;
+                text-align: center;
+            ">
+                    Welcome to Mission to Pysche! 
+                    <br><br>
+                    Objective: Navigate Psyche to its asteroid destination by solving challenging puzzles!<br><br>
+                    Each level will present you with a different puzzle. Solve each one to move Psyche closer to its destination.<br><br>
+                    After completing each puzzle, you will be presented with a fact about the real Psyche mission!<br><br>
+                    Each run will be timed, so try to complete the game as quickly as possible to earn the top score for the leaderboard!<br><br>
+                    Good luck astronaut! How much can you learn about the Psyche mission? <br><br>
+                    <button id = "closeInstructions" > Close </button>
+            </div>
+
             <script>
-                const howToPlayButton = document.getElementById('instructions');
-                howToPlayButton.addEventListener('click', () => {
-                    alert
-                    (
-                        "Welcome to Mission to Pysche! \n\n" +
-                        "Objective: Navigate Psyche to its asteroid destination by solving challenging puzzles!\n\n" +
-                        "Each level will present you with a different puzzle. Solve each one to move Psyche closer to its destination.\n\n" +
-                        "After completing each puzzle, you will be presented with a fact about the real Psyche mission!\n\n" +
-                        "Each run will be timed, so try to complete the game as quickly as possible to earn the top score for the leaderboard!\n\n" +
-                        "Good luck astronaut! How much can you learn about the Psyche mission?"
-                    );
+                document.addEventListener("DOMContentLoaded", function() {
+                    const instructionsButton = document.getElementById("instructions");
+                    const instructionsPopUp = document.getElementById("instructionsPopUp");
+                    const closeInstructionsButton = document.getElementById("closeInstructions");
+
+                    instructionsButton.addEventListener("click", function() {
+                        instructionsPopUp.style.display = "block";
+                    });
+
+                    closeInstructionsButton.addEventListener("click", function() {
+                        instructionsPopUp.style.display = "none";
+                    });
                 });
             </script>
+
             <button id="settings">Settings</button>
             <button id="leaderboard">Leaderboard</button>
             <button id="exit">Exit Game</button>
