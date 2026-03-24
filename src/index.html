@@ -60,6 +60,31 @@
             <button id="exit">Exit Game</button>
         </section>
         
+        <!-- Exit confirm: outside main-menu so it stays visible while the menu is hidden -->
+        <div id="exitPopUp" style="
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 24px;
+            border: 2px solid black;
+            z-index: 1001;
+            width: 400px;
+            max-width: 90vw;
+            text-align: center;
+        ">
+            <p style="margin-bottom: 16px; line-height: 1.45;">
+                Exit Mission to Pysche?<br><br>
+                Any run in progress will end. You can open this page again to play later.
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+                <button type="button" id="cancelExit">Cancel</button>
+                <button type="button" id="confirmExit">Exit</button>
+            </div>
+        </div>
+        
         <!-- This section contains the puzzle screen with an option to return to the main menu -->
         <section id="puzzle-screen" class="screen" style="display: none;">
             <h1>Puzzle Screen</h1>
