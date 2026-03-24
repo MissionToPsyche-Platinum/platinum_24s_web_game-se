@@ -14,6 +14,20 @@
             <h2>JOURNEY TO A METAL WORLD</h2>
             <button id="start">Start Game</button>
             <button id="instructions">How to Play</button>
+            <script>
+                const howToPlayButton = document.getElementById('instructions');
+                howToPlayButton.addEventListener('click', () => {
+                    alert
+                    (
+                        "Welcome to Mission to Pysche! \n\n" +
+                        "Objective: Navigate Psyche to its asteroid destination by solving challenging puzzles!\n\n" +
+                        "Each level will present you with a different puzzle. Solve each one to move Psyche closer to its destination.\n\n" +
+                        "After completing each puzzle, you will be presented with a fact about the real Psyche mission!\n\n" +
+                        "Each run will be timed, so try to complete the game as quickly as possible to earn the top score for the leaderboard!\n\n" +
+                        "Good luck astronaut! How much can you learn about the Psyche mission?"
+                    );
+                });
+            </script>
             <button id="settings">Settings</button>
             <button id="leaderboard">Leaderboard</button>
             <button id="exit">Exit Game</button>
