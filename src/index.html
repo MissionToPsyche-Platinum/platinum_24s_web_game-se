@@ -59,6 +59,15 @@
             <button id="leaderboard">Leaderboard</button>
             <button id="exit">Exit Game</button>
         </section>
+
+        <!-- This section contains the leaderboard screen with an option to return to the main menu -->
+        <section id = "leaderBoardPopUp" class = "screen" style = "display: none;">
+            <header id = "leaderBoardHeader">
+                <h1>Leaderboard Screen</h1>
+            </header>
+            <header id = "leaderBoardRankings">Rankings will be here once computed</header>
+                <button class = "back-to-menu">Back to Main Menu</button>
+        </section>
         
         <!-- This section contains the puzzle screen with an option to return to the main menu -->
         <section id="puzzle-screen" class="screen" style="display: none;">
@@ -66,7 +75,7 @@
                 <h1>Puzzle Screen</h1>
             </header>
             <header id="win-message">Congratulations, you win!</header>
-                <button id="back-to-menu">Back to Main Menu</button>
+                <button class="back-to-menu">Back to Main Menu</button>
                 <button id="solve-puzzle">Solve Puzzle</button>
                 <button id="new-game">New Game</button>
         </section>
