@@ -14,24 +14,49 @@
             <h2>JOURNEY TO A METAL WORLD</h2>
             <button id="start">Start Game</button>
 
-            <!-- Code pertaining to the "How to Play" button and pop-up window. -->
-            <button id = "instructions"> How to Play </button>
+            <!-- Main menu actions -->
+            <button id="instructions">How to Play</button>
             <button id="settings">Settings</button>
             <button id="leaderboard">Leaderboard</button>
             <button id="exit">Exit Game</button>
         </section>
 
-        <!-- This section contains the leaderboard screen with an option to return to the main menu -->
-        <section id = "leaderBoardPopUp" class = "screen" style = "display: none;">
-            <header id = "leaderBoardHeader">
+        <!-- Exit confirm popup -->
+        <div id="exitPopUp" style="
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 24px;
+            border: 2px solid black;
+            z-index: 1001;
+            width: 400px;
+            max-width: 90vw;
+            text-align: center;
+        ">
+            <p style="margin-bottom: 16px; line-height: 1.45;">
+                Exit Mission to Pysche?<br><br>
+                Any run in progress will end. You can open this page again to play later.
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+                <button type="button" id="cancelExit">Cancel</button>
+                <button type="button" id="confirmExit">Exit</button>
+            </div>
+        </div>
+
+        <!-- Leaderboard screen -->
+        <section id="leaderBoardPopUp" class="screen" style="display: none;">
+            <header id="leaderBoardHeader">
                 <h1>Leaderboard Screen</h1>
             </header>
-            <header id = "leaderBoardRankings">Rankings will be here once computed</header>
-                <button class = "back-to-menu">Back to Main Menu</button>
+            <header id="leaderBoardRankings">Rankings will be here once computed</header>
+            <button class="back-to-menu">Back to Main Menu</button>
         </section>
 
-        <!-- This section contains the how to play screen with an option to return to the main menu -->
-        <section id = "instructionsPopUp" class = "screen" style = "display: none;">
+        <!-- How to play screen -->
+        <section id="instructionsPopUp" class="screen" style="display: none;">
             Welcome to Mission to Pysche! 
             <br><br>
             Objective: Navigate Psyche to its asteroid destination by solving challenging puzzles!<br><br>
@@ -39,10 +64,10 @@
             After completing each puzzle, you will be presented with a fact about the real Psyche mission!<br><br>
             Each run will be timed, so try to complete the game as quickly as possible to earn the top score for the leaderboard!<br><br>
             Good luck astronaut! How much can you learn about the Psyche mission? <br><br>
-            <button class = "back-to-menu" > Back to Main Menu </button>
+            <button class="back-to-menu">Back to Main Menu</button>
         </section>
         
-        <!-- This section contains the puzzle screen with an option to return to the main menu -->
+        <!-- Puzzle screen -->
         <section id="puzzle-screen" class="screen" style="display: none;">
             <header id="game-header">
                 <h1>Puzzle Screen</h1>
@@ -51,10 +76,10 @@
             <header id="solve-puzzle-message">Please solve puzzle to advance</header>
             <header id="puzzle-solved-message">Puzzle successfully solved!</header>
             <header id="display-fact-message">Displaying Mission Fact</header>
-                <button class="back-to-menu">Back to Main Menu</button>
-                <button id="solve-puzzle">Solve Puzzle</button>
-                <button id="new-game">New Game</button>
-                <button id="next-puzzle">Next Puzzle</button>
+            <button class="back-to-menu">Back to Main Menu</button>
+            <button id="solve-puzzle">Solve Puzzle</button>
+            <button id="new-game">New Game</button>
+            <button id="next-puzzle">Next Puzzle</button>
         </section>
 
     </div>
@@ -64,6 +89,3 @@
 
 </body>
 </html>
-
-
-
