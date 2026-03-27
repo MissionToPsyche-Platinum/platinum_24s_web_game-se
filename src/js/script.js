@@ -2,6 +2,7 @@ const mainMenu = document.getElementById("main-menu");
 const gameScreen = document.getElementById("puzzle-screen");
 const startButton = document.getElementById("start");
 const backToMenuButton = document.getElementById("back-to-menu");
+
 const exitButton = document.getElementById("exit");
 const exitPopUp = document.getElementById("exitPopUp");
 const cancelExitButton = document.getElementById("cancelExit");
@@ -9,16 +10,15 @@ const confirmExitButton = document.getElementById("confirmExit");
 
 startButton.addEventListener("click", startPuzzle);
 backToMenuButton.addEventListener("click", backToMenu);
+
 exitButton.addEventListener("click", openExitConfirm);
 cancelExitButton.addEventListener("click", closeExitConfirm);
 confirmExitButton.addEventListener("click", confirmExitGame);
-
 
 function startPuzzle() {
   closeExitConfirm();
   mainMenu.style.display = "none";
   gameScreen.style.display = "block";
-    
 }
 
 function backToMenu() {
@@ -36,9 +36,6 @@ function closeExitConfirm() {
 
 function confirmExitGame() {
   closeExitConfirm();
-
-  stopRunTimer();
-  closeSettings();
 
   const instructionsPopUp = document.getElementById("instructionsPopUp");
   if (instructionsPopUp) {
