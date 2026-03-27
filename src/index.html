@@ -14,52 +14,14 @@
             <h2>JOURNEY TO A METAL WORLD</h2>
             <button id="start">Start Game</button>
 
-            <!-- Code pertaining to the "How to Play" button and pop-up window. -->
-            <button id = "instructions"> How to Play </button>
-            <div id = "instructionsPopUp" style ="
-                display: none;
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background-color: white;
-                padding: 20px;
-                border: 2px solid black;
-                z-index: 1000;
-                width: 400px;
-                text-align: center;
-            ">
-                    Welcome to Mission to Pysche! 
-                    <br><br>
-                    Objective: Navigate Psyche to its asteroid destination by solving challenging puzzles!<br><br>
-                    Each level will present you with a different puzzle. Solve each one to move Psyche closer to its destination.<br><br>
-                    After completing each puzzle, you will be presented with a fact about the real Psyche mission!<br><br>
-                    Each run will be timed, so try to complete the game as quickly as possible to earn the top score for the leaderboard!<br><br>
-                    Good luck astronaut! How much can you learn about the Psyche mission? <br><br>
-                    <button id = "closeInstructions" > Close </button>
-            </div>
-
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    const instructionsButton = document.getElementById("instructions");
-                    const instructionsPopUp = document.getElementById("instructionsPopUp");
-                    const closeInstructionsButton = document.getElementById("closeInstructions");
-
-                    instructionsButton.addEventListener("click", function() {
-                        instructionsPopUp.style.display = "block";
-                    });
-
-                    closeInstructionsButton.addEventListener("click", function() {
-                        instructionsPopUp.style.display = "none";
-                    });
-                });
-            </script>
-
+            <!-- Main menu actions -->
+            <button id="instructions">How to Play</button>
+            <button id="settings">Settings</button>
             <button id="leaderboard">Leaderboard</button>
             <button id="exit">Exit Game</button>
         </section>
 
-        <!-- Exit confirm: outside #main-menu so it can stay visible when the menu is hidden -->
+        <!-- Exit confirm popup -->
         <div id="exitPopUp" style="
             display: none;
             position: fixed;
@@ -83,20 +45,47 @@
                 <button type="button" id="confirmExit">Exit</button>
             </div>
         </div>
+
+        <!-- Leaderboard screen -->
+        <section id="leaderBoardPopUp" class="screen" style="display: none;">
+            <header id="leaderBoardHeader">
+                <h1>Leaderboard Screen</h1>
+            </header>
+            <header id="leaderBoardRankings">Rankings will be here once computed</header>
+            <button class="back-to-menu">Back to Main Menu</button>
+        </section>
+
+        <!-- How to play screen -->
+        <section id="instructionsPopUp" class="screen" style="display: none;">
+            Welcome to Mission to Pysche! 
+            <br><br>
+            Objective: Navigate Psyche to its asteroid destination by solving challenging puzzles!<br><br>
+            Each level will present you with a different puzzle. Solve each one to move Psyche closer to its destination.<br><br>
+            After completing each puzzle, you will be presented with a fact about the real Psyche mission!<br><br>
+            Each run will be timed, so try to complete the game as quickly as possible to earn the top score for the leaderboard!<br><br>
+            Good luck astronaut! How much can you learn about the Psyche mission? <br><br>
+            <button class="back-to-menu">Back to Main Menu</button>
+        </section>
         
-        <!-- This section contains the puzzle screen with an option to return to the main menu -->
+        <!-- Puzzle screen -->
         <section id="puzzle-screen" class="screen" style="display: none;">
-            <h1>Puzzle Screen</h1>
-            <button id="back-to-menu">Back to Main Menu</button>
+            <header id="game-header">
+                <h1>Puzzle Screen</h1>
+            </header>
+            <header id="win-message">Congratulations, you win!</header>
+            <header id="solve-puzzle-message">Please solve puzzle to advance</header>
+            <header id="puzzle-solved-message">Puzzle successfully solved!</header>
+            <header id="display-fact-message">Displaying Mission Fact</header>
+            <button class="back-to-menu">Back to Main Menu</button>
+            <button id="solve-puzzle">Solve Puzzle</button>
+            <button id="new-game">New Game</button>
+            <button id="next-puzzle">Next Puzzle</button>
         </section>
 
     </div>
 
     <script src="js/script.js"></script>
+    <script src="js/gameController.js"></script>
 
 </body>
 </html>
-
-
-
-
