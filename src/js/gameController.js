@@ -4,6 +4,7 @@ function gameIsOver() {}
 function SolvePuzzle() {}
 function detectWin() {}
 function updateHeader() {}
+function displayNextPuzzle() {}
 
 const solvePuzzleButton = document.getElementById("solve-puzzle");
 const gameScreenHeader = document.getElementById("second-header");
@@ -13,8 +14,7 @@ const solvePuzzleMessage = document.getElementById("solve-puzzle-message");
 const puzzleSolvedMessage = document.getElementById("puzzle-solved-message");
 const nextPuzzleButton = document.getElementById("next-puzzle");
 const displayFactMessage = document.getElementById("display-fact-message");
-// newGameButton.classList.add("hidden");
-// winMessage.classList.add("hidden");
+
 
 let solvedPuzzles = 0;
 const PUZZLES_TO_WIN = 5;
