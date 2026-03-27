@@ -63,12 +63,30 @@
         <!-- This section contains the puzzle screen with an option to return to the main menu -->
         <section id="puzzle-screen" class="screen" style="display: none;">
             <header id="game-header">
-                <h1>Puzzle Screen</h1>
+                <div class="game-title">Puzzle Screen</div>
+                <div class="timer">Timer</div>
             </header>
             <header id="win-message">Congratulations, you win!</header>
-                <button id="back-to-menu">Back to Main Menu</button>
-                <button id="solve-puzzle">Solve Puzzle</button>
-                <button id="new-game">New Game</button>
+
+            <div class="puzzle-content">
+                <aside class="left-panel">
+                    <button id="back-to-menu">Back to Main Menu</button>
+                    <button id="solve-puzzle">Solve Puzzle</button>
+                    <button id="new-game">New Game</button>
+                </aside>
+
+                <main id="puzzle-container">
+                    <section id="puzzle-window">
+                        <p>Puzzle Goes Here</p>
+                    </section>
+
+                    <section class ="bottom-panel">
+                        <div class="game-status">
+                            <p>Puzzles Commpleted goes here</p>
+                        </div>
+                    </section>
+                </main>
+            </div>
         </section>
 
     </div>

@@ -23,3 +23,64 @@ body {
     text-align: center;
     gap: 10px;
 }
+
+#puzzle-screen {
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.puzzle-content {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex: 1 1 auto;
+    align-items: stretch;
+}
+
+
+.left-panel {
+    width: 25%;
+    min-width: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+
+#puzzle-container {
+    width: 75%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    flex: 1 1 auto;
+}
+
+#puzzle-window {
+    border: 2px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: gray;
+    height: 800px;
+    width: 100%;
+    flex: 1 1 auto;
+}
+
+.bottom-panel {
+    border: 2px solid black;
+    background: lightgray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    height: 80px;
+}
