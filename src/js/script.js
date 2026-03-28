@@ -6,6 +6,11 @@ const backToMenuButtons = document.querySelectorAll(".back-to-menu");
 const leaderBoardButton = document.getElementById("leaderboard");
 const instructionsButton = document.getElementById("instructions");
 const instructionsPopUp = document.getElementById("instructionsPopUp");
+const settingsButton = document.getElementById("settings");
+const settingsPopUp = document.getElementById("settingsPopUp");
+const closeSettingsButton = document.getElementById("closeSettings");
+const soundEffectsToggle = document.getElementById("soundEffectsToggle");
+const backgroundMusicToggle = document.getElementById("backgroundMusicToggle");
 
 const exitButton = document.getElementById("exit");
 const exitPopUp = document.getElementById("exitPopUp");
@@ -19,6 +24,19 @@ backToMenuButtons.forEach((btn) => {
 });
 leaderBoardButton.addEventListener("click", startLeaderBoard);
 instructionsButton.addEventListener("click", startInstructions);
+if (settingsButton && settingsPopUp && closeSettingsButton) {
+  settingsButton.addEventListener("click", openSettings);
+  closeSettingsButton.addEventListener("click", closeSettings);
+}
+
+if (soundEffectsToggle) {
+  soundEffectsToggle.addEventListener("change", updateAudioSettings);
+}
+
+if (backgroundMusicToggle) {
+  backgroundMusicToggle.addEventListener("change", updateAudioSettings);
+}
+updateAudioSettings();
 
 if (exitButton && exitPopUp && cancelExitButton && confirmExitButton) {
   exitButton.addEventListener("click", openExitConfirm);
@@ -28,28 +46,58 @@ if (exitButton && exitPopUp && cancelExitButton && confirmExitButton) {
 
 function startPuzzle() {
   closeExitConfirm();
+  closeSettings();
   mainMenu.style.display = "none";
   gameScreen.style.display = "block";
 }
 
 function startLeaderBoard() {
   closeExitConfirm();
+  closeSettings();
   mainMenu.style.display = "none";
   leaderBoardPopUp.style.display = "block";
 }
 
 function startInstructions() {
   closeExitConfirm();
+  closeSettings();
   mainMenu.style.display = "none";
   instructionsPopUp.style.display = "block";
 }
 
 function backToMenu() {
   closeExitConfirm();
+  closeSettings();
   gameScreen.style.display = "none";
   leaderBoardPopUp.style.display = "none";
   instructionsPopUp.style.display = "none";
   mainMenu.style.display = "";
+}
+
+function openSettings() {
+  if (!settingsPopUp) return;
+  closeExitConfirm();
+  settingsPopUp.style.display = "block";
+}
+
+function closeSettings() {
+  if (!settingsPopUp) return;
+  settingsPopUp.style.display = "none";
+}
+
+function updateAudioSettings() {
+  const soundEffectsEnabled = soundEffectsToggle
+    ? soundEffectsToggle.checked
+    : false;
+  const backgroundMusicEnabled = backgroundMusicToggle
+    ? backgroundMusicToggle.checked
+    : false;
+
+  // Hook for real audio integration.
+  window.gameAudioSettings = {
+    soundEffectsEnabled,
+    backgroundMusicEnabled,
+  };
 }
 
 function openExitConfirm() {
@@ -64,6 +112,7 @@ function closeExitConfirm() {
 
 function confirmExitGame() {
   closeExitConfirm();
+  closeSettings();
 
   // Hide all app screens/popups before attempting to close
   mainMenu.style.display = "none";
