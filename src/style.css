@@ -88,3 +88,11 @@ body {
 #closeSettings {
     margin-top: 8px;
 }
+
+.pysche-reduced-motion *,
+.pysche-reduced-motion *::before,
+.pysche-reduced-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+}
