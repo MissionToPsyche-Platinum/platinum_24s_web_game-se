@@ -16,6 +16,7 @@ const instructionsPopUp = document.getElementById("instructionsPopUp");
 const settingsButton = document.getElementById("settings");
 const settingsPopUp = document.getElementById("settingsPopUp");
 const closeSettingsButton = document.getElementById("closeSettings");
+const resetSettingsButton = document.getElementById("resetSettings");
 const settingSound = document.getElementById("settingSound");
 const settingMusic = document.getElementById("settingMusic");
 const settingShowTimer = document.getElementById("settingShowTimer");
@@ -54,6 +55,15 @@ function loadGameplaySettings() {
       d === "challenge" || d === "normal" ? d : "normal";
   }
   applyReducedMotion();
+}
+
+function resetSettingsToDefaults() {
+  if (!confirm("Reset all settings to defaults?")) return;
+  Object.values(LS).forEach((k) => localStorage.removeItem(k));
+  if (settingSound) settingSound.checked = true;
+  if (settingMusic) settingMusic.checked = true;
+  loadGameplaySettings();
+  updateAudioSettings();
 }
 
 function formatRunTime(ms) {
@@ -96,6 +106,9 @@ instructionsButton.addEventListener("click", startInstructions);
 if (settingsButton && settingsPopUp && closeSettingsButton) {
   settingsButton.addEventListener("click", openSettings);
   closeSettingsButton.addEventListener("click", closeSettings);
+  if (resetSettingsButton) {
+    resetSettingsButton.addEventListener("click", resetSettingsToDefaults);
+  }
   settingsPopUp.addEventListener("change", (e) => {
     const t = e.target;
     if (t === settingSound || t === settingMusic) updateAudioSettings();

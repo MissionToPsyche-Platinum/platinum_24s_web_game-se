@@ -85,7 +85,8 @@ body {
     margin-bottom: 12px;
 }
 
-#closeSettings {
+#closeSettings,
+#resetSettings {
     margin-top: 8px;
 }
 
