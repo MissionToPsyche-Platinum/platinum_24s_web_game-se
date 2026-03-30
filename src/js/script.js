@@ -1,4 +1,5 @@
 const LS = {
+  displayName: "pysche_settings_display_name",
   timer: "pysche_settings_show_timer",
   hints: "pysche_settings_hints",
   motion: "pysche_settings_reduced_motion",
@@ -19,6 +20,7 @@ const closeSettingsButton = document.getElementById("closeSettings");
 const resetSettingsButton = document.getElementById("resetSettings");
 const settingSound = document.getElementById("settingSound");
 const settingMusic = document.getElementById("settingMusic");
+const settingDisplayName = document.getElementById("settingDisplayName");
 const settingShowTimer = document.getElementById("settingShowTimer");
 const settingHints = document.getElementById("settingHints");
 const settingReducedMotion = document.getElementById("settingReducedMotion");
@@ -43,6 +45,10 @@ function applyReducedMotion() {
 }
 
 function loadGameplaySettings() {
+  if (settingDisplayName) {
+    const name = localStorage.getItem(LS.displayName);
+    settingDisplayName.value = name === null ? "" : name;
+  }
   if (settingShowTimer)
     settingShowTimer.checked = localStorage.getItem(LS.timer) !== "false";
   if (settingHints)
@@ -58,7 +64,12 @@ function loadGameplaySettings() {
 }
 
 function resetSettingsToDefaults() {
-  if (!confirm("Reset all settings to defaults?")) return;
+  if (
+    !confirm(
+      "Reset all settings to defaults? Your display name will be cleared."
+    )
+  )
+    return;
   Object.values(LS).forEach((k) => localStorage.removeItem(k));
   if (settingSound) settingSound.checked = true;
   if (settingMusic) settingMusic.checked = true;
@@ -108,6 +119,14 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
   closeSettingsButton.addEventListener("click", closeSettings);
   if (resetSettingsButton) {
     resetSettingsButton.addEventListener("click", resetSettingsToDefaults);
+  }
+  if (settingDisplayName) {
+    settingDisplayName.addEventListener("blur", () => {
+      localStorage.setItem(LS.displayName, settingDisplayName.value.trim());
+    });
+    settingDisplayName.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") settingDisplayName.blur();
+    });
   }
   settingsPopUp.addEventListener("change", (e) => {
     const t = e.target;
@@ -216,6 +235,7 @@ function confirmExitGame() {
 
 function getPyscheSettings() {
   return {
+    displayName: settingDisplayName?.value.trim() ?? "",
     soundEnabled: !!settingSound?.checked,
     musicEnabled: !!settingMusic?.checked,
     showTimer: settingShowTimer?.checked ?? true,
