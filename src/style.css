@@ -118,6 +118,24 @@ body {
     padding: 20px;
 }
 
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 80px;
+    padding: 0 20px;
+}
+
+
+
+.timer {
+    border: 2px solid black;
+    padding: 5px 10px;
+    height: 80%;
+    width: 100px;
+    text-align: center;
+}
 
 #puzzle-container {
     width: 75%;
@@ -149,3 +167,17 @@ body {
     gap: 20px;
     height: 80px;
 }
+
+#mission-fact {
+    border: 2px solid black;
+    background: lightgray;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    height: 80%;
+    width: 100%;
+}
+
+
