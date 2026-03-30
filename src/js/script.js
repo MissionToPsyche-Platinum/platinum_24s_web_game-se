@@ -1,8 +1,18 @@
+import { firstNames } from "./leaderboardNames.js";
+import { lastNames } from "./leaderboardNames.js";
+
 const mainMenu = document.getElementById("main-menu");
 const leaderBoardPopUp = document.getElementById("leaderBoardPopUp");
 const gameScreen = document.getElementById("puzzle-screen");
 const startButton = document.getElementById("start");
 const backToMenuButtons = document.querySelectorAll(".back-to-menu");
+const nameCreationScreen = document.getElementById("nameCreationScreen");
+let playerName = "";
+const firstNameMenu = document.getElementById("firstNameDropdown");
+const firstNameButton = document.getElementById("firstNameDropdownButton");
+const lastNameMenu = document.getElementById("lastNameDropdown");
+const lastNameButton = document.getElementById("lastNameDropdownButton");
+const beginGameButton = document.getElementById("beginGame");
 const leaderBoardButton = document.getElementById("leaderboard");
 const instructionsButton = document.getElementById("instructions");
 const instructionsPopUp = document.getElementById("instructionsPopUp");
@@ -11,17 +21,23 @@ const settingsPopUp = document.getElementById("settingsPopUp");
 const closeSettingsButton = document.getElementById("closeSettings");
 const soundEffectsToggle = document.getElementById("soundEffectsToggle");
 const backgroundMusicToggle = document.getElementById("backgroundMusicToggle");
-
 const exitButton = document.getElementById("exit");
 const exitPopUp = document.getElementById("exitPopUp");
 const cancelExitButton = document.getElementById("cancelExit");
 const confirmExitButton = document.getElementById("confirmExit");
 
 // Event listeners for buttons
-startButton.addEventListener("click", startPuzzle);
+startButton.addEventListener("click", startNameCreation);
+firstNameButton.addEventListener("click", function() {
+  firstNameMenu.classList.toggle("show");
+});
+lastNameButton.addEventListener("click", function() {
+  lastNameMenu.classList.toggle("show");
+});
 backToMenuButtons.forEach((btn) => {
   btn.addEventListener("click", backToMenu);
 });
+beginGameButton.addEventListener("click", startPuzzle);
 leaderBoardButton.addEventListener("click", startLeaderBoard);
 instructionsButton.addEventListener("click", startInstructions);
 if (settingsButton && settingsPopUp && closeSettingsButton) {
@@ -44,11 +60,14 @@ if (exitButton && exitPopUp && cancelExitButton && confirmExitButton) {
   confirmExitButton.addEventListener("click", confirmExitGame);
 }
 
+
 function startPuzzle() {
   closeExitConfirm();
   closeSettings();
+  document.getElementById("playerNameDisplay").textContent = playerName;
   mainMenu.style.display = "none";
   gameScreen.style.display = "block";
+  nameCreationScreen.style.display = "none";
 }
 
 function startLeaderBoard() {
@@ -65,12 +84,44 @@ function startInstructions() {
   instructionsPopUp.style.display = "block";
 }
 
+//Opens the name creation screen for the user and populates the dropdown menus
+function startNameCreation() {
+  firstNames.forEach(name => {
+    const menuItem = document.createElement("a");
+    menuItem.textContent = name;
+    menuItem.href = "#";
+    menuItem.addEventListener("click", function() {
+      document.getElementById(firstNameDisplay.textContent = name);
+      playerName = name + " " + playerName;
+      firstNameMenu.classList.toggle("fold");
+    });
+    firstNameMenu.appendChild(menuItem);
+  });
+  lastNames.forEach(name => {
+    const menuItem = document.createElement("a");
+    menuItem.textContent = name;
+    menuItem.href = "#";
+    menuItem.addEventListener("click", function() {
+      document.getElementById(lastNameDisplay.textContent = name);
+      playerName = playerName + " " + name;
+      lastNameMenu.classList.toggle("fold");
+    });
+    lastNameMenu.appendChild(menuItem);
+  });
+  sessionStorage.setItem("playerName", playerName);
+  closeExitConfirm();
+  closeSettings();
+  mainMenu.style.display = "none";
+  nameCreationScreen.style.display = "block";
+}
+
 function backToMenu() {
   closeExitConfirm();
   closeSettings();
   gameScreen.style.display = "none";
   leaderBoardPopUp.style.display = "none";
   instructionsPopUp.style.display = "none";
+  nameCreationScreen.style.display = "none";
   mainMenu.style.display = "";
 }
 
