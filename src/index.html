@@ -98,17 +98,39 @@
         
         <!-- Puzzle screen -->
         <section id="puzzle-screen" class="screen" style="display: none;">
-            <header id="game-header">
-                <h1>Puzzle Screen</h1>
-            </header>
+            <div class= "game-header">
+                <h1 id ="game-title">Puzzle Screen</h1>
+                <div class="timer">Timer</div>
+            </div>
             <header id="win-message">Congratulations, you win!</header>
-            <header id="solve-puzzle-message">Please solve puzzle to advance</header>
-            <header id="puzzle-solved-message">Puzzle successfully solved!</header>
-            <header id="display-fact-message">Displaying Mission Fact</header>
-            <button class="back-to-menu">Back to Main Menu</button>
-            <button id="solve-puzzle">Solve Puzzle</button>
-            <button id="new-game">New Game</button>
-            <button id="next-puzzle">Next Puzzle</button>
+
+            <div class="puzzle-content">
+                <aside class="left-panel">
+                    <header id="solve-puzzle-message">Please solve puzzle to advance</header>
+                    <header id="puzzle-solved-message">Puzzle successfully solved!</header>
+                    
+                    <button class="back-to-menu">Back to Main Menu</button>
+                    <button id="solve-puzzle">Solve Puzzle</button>
+                    <button id="new-game">New Game</button>
+                    <button id="next-puzzle">Next Puzzle</button>
+
+                    <section id = "mission-fact">
+                        <h1>Mission Facts</h1>
+                        <header id="display-fact-message">Displaying Mission Fact</header>
+                    <section>
+                </aside>
+
+                <main id="puzzle-container">
+                    <section id="puzzle-window">
+                        <p>Puzzle Goes Here</p>
+                    </section>
+                    <section class ="bottom-panel">
+                        <div class="game-status">
+                            <p>Puzzles Commpleted goes here</p>
+                        </div>
+                    </section>
+                </main>
+            </div>
         </section>
 
     </div>
