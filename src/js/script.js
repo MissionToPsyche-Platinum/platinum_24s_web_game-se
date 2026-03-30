@@ -60,7 +60,6 @@ if (exitButton && exitPopUp && cancelExitButton && confirmExitButton) {
   confirmExitButton.addEventListener("click", confirmExitGame);
 }
 
-
 function startPuzzle() {
   closeExitConfirm();
   closeSettings();

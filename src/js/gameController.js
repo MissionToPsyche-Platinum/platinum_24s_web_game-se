@@ -20,9 +20,7 @@ let solvedPuzzles = 0;
 const PUZZLES_TO_WIN = 5;
 let isGameOver;
 
-
 const gamePageContent = gameScreen.innerHTML;
-
 
 
 function startGame() {
