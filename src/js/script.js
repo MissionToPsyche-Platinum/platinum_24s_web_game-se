@@ -27,6 +27,7 @@ const cancelExitButton = document.getElementById("cancelExit");
 const confirmExitButton = document.getElementById("confirmExit");
 
 // Event listeners for buttons
+document.addEventListener("DOMContentLoaded", () => {
 startButton.addEventListener("click", startNameCreation);
 firstNameButton.addEventListener("click", function() {
   firstNameMenu.classList.toggle("show");
@@ -59,6 +60,7 @@ if (exitButton && exitPopUp && cancelExitButton && confirmExitButton) {
   cancelExitButton.addEventListener("click", closeExitConfirm);
   confirmExitButton.addEventListener("click", confirmExitGame);
 }
+});
 
 function startPuzzle() {
   closeExitConfirm();
