@@ -35,6 +35,11 @@
                 text-align: left;
             ">
                 <h3 style="text-align: center; margin-bottom: 16px;">Settings</h3>
+                <p style="font-size: 0.85rem; color: #333; margin-bottom: 12px;"><strong>Profile</strong></p>
+                <label style="display: block; margin-bottom: 20px;">
+                    <span style="display: block; margin-bottom: 4px;">Display name (for leaderboard)</span>
+                    <input type="text" id="settingDisplayName" maxlength="24" placeholder="Astronaut" style="width: 100%; padding: 6px 8px; box-sizing: border-box; border: 1px solid #333;">
+                </label>
                 <p style="font-size: 0.85rem; color: #333; margin-bottom: 12px;"><strong>Audio</strong></p>
                 <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; cursor: pointer;">
                     <input type="checkbox" id="settingSound">
@@ -44,7 +49,28 @@
                     <input type="checkbox" id="settingMusic">
                     <span>Background music</span>
                 </label>
-                <div style="text-align: center;">
+                <p style="font-size: 0.85rem; color: #333; margin: 0 0 12px;"><strong>Gameplay</strong></p>
+                <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; cursor: pointer;">
+                    <input type="checkbox" id="settingShowTimer">
+                    <span>Show run timer during play</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; cursor: pointer;">
+                    <input type="checkbox" id="settingHints">
+                    <span>Allow puzzle hints when available</span>
+                </label>
+                <label style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; cursor: pointer;">
+                    <input type="checkbox" id="settingReducedMotion" style="margin-top: 3px;">
+                    <span>Reduce motion (less animation)</span>
+                </label>
+                <p style="font-size: 0.75rem; color: #555; margin-bottom: 16px;">Difficulty for timed runs:</p>
+                <label style="display: block; margin-bottom: 20px;">
+                    <select id="settingDifficulty" style="width: 100%; padding: 6px 8px; border: 1px solid #333;">
+                        <option value="normal">Normal</option>
+                        <option value="challenge">Challenge (stricter timing later)</option>
+                    </select>
+                </label>
+                <div style="text-align: center; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
+                    <button type="button" id="resetSettings">Reset to defaults</button>
                     <button type="button" id="closeSettings">Close</button>
                 </div>
             </div>
@@ -105,9 +131,13 @@
         
         <!-- Puzzle screen -->
         <section id="puzzle-screen" class="screen" style="display: none;">
-            <div class= "game-header">
-                <h1 id ="game-title">Puzzle Screen</h1>
-                <div class="timer">Timer</div>
+            <div class="game-header">
+                <h1 id="game-title">Puzzle Screen</h1>
+                <div class="timer">
+                    <p id="run-timer-display" style="margin: 0; font-size: 1.1rem; display: none;">
+                        Run time: <span id="run-timer">0:00</span>
+                    </p>
+                </div>
             </div>
             <header id="win-message">Congratulations, you win!</header>
 
