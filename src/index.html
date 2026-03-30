@@ -105,8 +105,15 @@
         <section id="leaderBoardPopUp" class="screen" style="display: none;">
             <header id="leaderBoardHeader">
                 <h1>Leaderboard Screen</h1>
+                <header id = "leaderBoardRankings">
+                <br>
+                <div id = "firstPlace">1. Placeholder<br><br></div>
+                <div id = "secondPlace">2. Placeholder<br><br></div>
+                <div id = "thirdPlace">3. Placeholder<br><br></div>
+                <div id = "fourthPlace">4. Placeholder<br><br></div>
+                <div id = "fifthPlace">5. Placeholder<br><br></div>
+                <header>
             </header>
-            <header id="leaderBoardRankings">Rankings will be here once computed</header>
             <button class="back-to-menu">Back to Main Menu</button>
         </section>
 
@@ -124,18 +131,43 @@
         
         <!-- Puzzle screen -->
         <section id="puzzle-screen" class="screen" style="display: none;">
-            <header id="game-header">
-                <h1>Puzzle Screen</h1>
-            </header>
-            <p id="run-timer-display" style="margin: 12px 0; font-size: 1.1rem; display: none;">Run time: <span id="run-timer">0:00</span></p>
+            <div class="game-header">
+                <h1 id="game-title">Puzzle Screen</h1>
+                <div class="timer">
+                    <p id="run-timer-display" style="margin: 0; font-size: 1.1rem; display: none;">
+                        Run time: <span id="run-timer">0:00</span>
+                    </p>
+                </div>
+            </div>
             <header id="win-message">Congratulations, you win!</header>
-            <header id="solve-puzzle-message">Please solve puzzle to advance</header>
-            <header id="puzzle-solved-message">Puzzle successfully solved!</header>
-            <header id="display-fact-message">Displaying Mission Fact</header>
-            <button class="back-to-menu">Back to Main Menu</button>
-            <button id="solve-puzzle">Solve Puzzle</button>
-            <button id="new-game">New Game</button>
-            <button id="next-puzzle">Next Puzzle</button>
+
+            <div class="puzzle-content">
+                <aside class="left-panel">
+                    <header id="solve-puzzle-message">Please solve puzzle to advance</header>
+                    <header id="puzzle-solved-message">Puzzle successfully solved!</header>
+                    
+                    <button class="back-to-menu">Back to Main Menu</button>
+                    <button id="solve-puzzle">Solve Puzzle</button>
+                    <button id="new-game">New Game</button>
+                    <button id="next-puzzle">Next Puzzle</button>
+
+                    <section id = "mission-fact">
+                        <h1>Mission Facts</h1>
+                        <header id="display-fact-message">Displaying Mission Fact</header>
+                    <section>
+                </aside>
+
+                <main id="puzzle-container">
+                    <section id="puzzle-window">
+                        <p>Puzzle Goes Here</p>
+                    </section>
+                    <section class ="bottom-panel">
+                        <div class="game-status">
+                            <p>Puzzles Commpleted goes here</p>
+                        </div>
+                    </section>
+                </main>
+            </div>
         </section>
 
     </div>
