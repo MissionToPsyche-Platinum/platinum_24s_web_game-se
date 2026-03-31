@@ -1,10 +1,3 @@
-function startGame() {}
-function playGame() {}
-function gameIsOver() {}
-function SolvePuzzle() {}
-function detectWin() {}
-function updateHeader() {}
-function displayNextPuzzle() {}
 
 const solvePuzzleButton = document.getElementById("solve-puzzle");
 const gameScreenHeader = document.getElementById("second-header");
@@ -20,9 +13,8 @@ let solvedPuzzles = 0;
 const PUZZLES_TO_WIN = 5;
 let isGameOver;
 
-
+const gameScreen = document.getElementById("puzzle-screen");
 const gamePageContent = gameScreen.innerHTML;
-
 
 
 function startGame() {
