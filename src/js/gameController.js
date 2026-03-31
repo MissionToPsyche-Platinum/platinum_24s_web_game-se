@@ -22,8 +22,8 @@ const matchingHeader = document.getElementById("matching-header");
 const PUZZLES_TO_WIN = 3;
 let isGameOver;
 
-
-//const gamePageContent = gameScreen.innerHTML;
+const gameScreen = document.getElementById("puzzle-screen");
+const gamePageContent = gameScreen.innerHTML;
 
 import { puzzles } from "./puzzles/puzzleList.js";
 
