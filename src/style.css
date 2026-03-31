@@ -186,3 +186,18 @@ body {
     height: 80%;
     width: 100%;
 }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    width: 400px;
+    height: 400px;
+}
+
+.grid-item {
+    border: 1px solid black;
+    padding: 20px;
+    text-align: center;
+    aspect-ratio: 1/1;
+}
