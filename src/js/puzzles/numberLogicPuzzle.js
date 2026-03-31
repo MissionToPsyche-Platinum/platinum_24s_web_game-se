@@ -1,5 +1,6 @@
 export function startNumberLogicPuzzle({ containerID }) {
-    containerID.innerHTML = `
-        <h3>Number Logic Puzzle</h3>
-    `;
+    // containerID.textContent = "Logic Puzzle"
+    // containerID.innerHTML = `
+    //     <h3>Number Logic Puzzle</h3>
+    // `;
 }
