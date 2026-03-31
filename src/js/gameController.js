@@ -1,10 +1,11 @@
-function startGame() {}
-function playGame() {}
-function gameIsOver() {}
-function SolvePuzzle() {}
-function detectWin() {}
-function updateHeader() {}
-function displayNextPuzzle() {}
+//function startGame() {}
+//function playGame() {}
+//function gameIsOver() {}
+//function SolvePuzzle() {}
+//function detectWin() {}
+//function updateHeader() {}
+//function displayNextPuzzle() {}
+
 
 const solvePuzzleButton = document.getElementById("solve-puzzle");
 const gameScreenHeader = document.getElementById("second-header");
@@ -16,17 +17,31 @@ const nextPuzzleButton = document.getElementById("next-puzzle");
 const displayFactMessage = document.getElementById("display-fact-message");
 
 
-let solvedPuzzles = 0;
-const PUZZLES_TO_WIN = 5;
+
+const PUZZLES_TO_WIN = 3;
 let isGameOver;
 
 
-const gamePageContent = gameScreen.innerHTML;
+//const gamePageContent = gameScreen.innerHTML;
 
+import { puzzles } from "./puzzles/puzzleList.js";
 
+const gameState = {
+    puzzleOrder: [],
+    solvedPuzzles: 0
+};
+
+function shufflePuzzles(puzzles) {
+    const arr = [...puzzles];
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
 
 function startGame() {
-    solvedPuzzles = 0;
+    gameState.solvedPuzzles = 0;
     nextPuzzleButton.style.display = 'inline';
     solvePuzzleButton.disabled = false;
     nextPuzzleButton.disabled = true;
@@ -35,6 +50,8 @@ function startGame() {
     puzzleSolvedMessage.style.display = 'none';
     displayFactMessage.style.display = 'none';
     solvePuzzleMessage.style.display = 'none';
+    gameState.puzzleOrder = shufflePuzzles(puzzles);
+    
     gameIsOver(false);
     displayNextPuzzle();
 }
@@ -48,7 +65,7 @@ function gameIsOver(x) {
 }
 
 function solvePuzzle() {
-    solvedPuzzles += 1;
+    gameState.solvedPuzzles += 1;
     
     puzzleSolvedMessage.style.display = 'block';
     displayFactMessage.style.display = 'none';
@@ -62,7 +79,7 @@ function solvePuzzle() {
 }
 
 function detectWin() {
-    if (solvedPuzzles >= PUZZLES_TO_WIN) {
+    if (gameState.solvedPuzzles >= PUZZLES_TO_WIN) {
         return true;
     }
     return false;
@@ -86,6 +103,15 @@ function displayNextPuzzle() {
     displayFactMessage.style.display = 'none';
     nextPuzzleButton.disabled = true;
     solvePuzzleButton.disabled = false;
+    loadPuzzle(gameState.puzzleOrder[gameState.solvedPuzzles]);
+}
+
+
+
+function loadPuzzle(puzzle) {
+    const container = document.getElementById("puzzle-window");
+    container.innerHTML = "";
+    puzzle.start({ containerID: container });
 }
 
 solvePuzzleButton.addEventListener("click", solvePuzzle);
