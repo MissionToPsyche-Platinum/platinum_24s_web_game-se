@@ -141,10 +141,21 @@ body {
     margin-bottom: 12px;
 }
 
-#closeSettings {
+#closeSettings,
+#resetSettings {
     margin-top: 8px;
 }
 
+/* Your reduced-motion preference */
+.pysche-reduced-motion *,
+.pysche-reduced-motion *::before,
+.pysche-reduced-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+}
+
+/* Teammate's puzzle layout + timer box styles */
 #puzzle-screen {
     height: 100%;
 
@@ -153,7 +164,6 @@ body {
     gap: 10px;
 }
 
-
 .puzzle-content {
     display: flex;
     flex-direction: row;
@@ -161,7 +171,6 @@ body {
     flex: 1 1 auto;
     align-items: stretch;
 }
-
 
 .left-panel {
     width: 25%;
@@ -182,8 +191,6 @@ body {
     height: 80px;
     padding: 0 20px;
 }
-
-
 
 .timer {
     border: 2px solid black;
@@ -235,5 +242,3 @@ body {
     height: 80%;
     width: 100%;
 }
-
-

@@ -134,6 +134,7 @@ beginGameButton.addEventListener("click", startPuzzle);
 leaderBoardButton.addEventListener("click", startLeaderBoard);
 instructionsButton.addEventListener("click", startInstructions);
 
+
 if (settingsButton && settingsPopUp && closeSettingsButton) {
   settingsButton.addEventListener("click", openSettings);
   closeSettingsButton.addEventListener("click", closeSettings);
@@ -162,6 +163,31 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
       localStorage.setItem(LS.diff, t.value);
   });
 }
+
+  if (resetSettingsButton) {
+    resetSettingsButton.addEventListener("click", resetSettingsToDefaults);
+  }
+  if (settingDisplayName) {
+    settingDisplayName.addEventListener("blur", () => {
+      localStorage.setItem(LS.displayName, settingDisplayName.value.trim());
+    });
+    settingDisplayName.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") settingDisplayName.blur();
+    });
+  }
+  settingsPopUp.addEventListener("change", (e) => {
+    const t = e.target;
+    if (t === settingSound || t === settingMusic) updateAudioSettings();
+    else if (t === settingShowTimer)
+      localStorage.setItem(LS.timer, String(t.checked));
+    else if (t === settingHints)
+      localStorage.setItem(LS.hints, String(t.checked));
+    else if (t === settingReducedMotion) {
+      localStorage.setItem(LS.motion, String(t.checked));
+      applyReducedMotion();
+    } else if (t === settingDifficulty)
+      localStorage.setItem(LS.diff, t.value);
+  });
 
 updateAudioSettings();
 
@@ -245,6 +271,7 @@ function openSettings() {
   if (!settingsPopUp) return;
   closeExitConfirm();
   loadGameplaySettings();
+  loadGameplaySettings();
   settingsPopUp.style.display = "block";
 }
 
@@ -255,6 +282,8 @@ function closeSettings() {
 
 function updateAudioSettings() {
   window.gameAudioSettings = {
+    soundEffectsEnabled: !!settingSound?.checked,
+    backgroundMusicEnabled: !!settingMusic?.checked,
     soundEffectsEnabled: !!settingSound?.checked,
     backgroundMusicEnabled: !!settingMusic?.checked,
   };
@@ -271,6 +300,7 @@ function closeExitConfirm() {
 }
 
 function confirmExitGame() {
+  stopRunTimer();
   stopRunTimer();
   closeExitConfirm();
   closeSettings();
