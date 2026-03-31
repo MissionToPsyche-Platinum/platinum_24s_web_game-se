@@ -1,40 +1,59 @@
 export function startMatchingPuzzle({ containerID }) {
     // containerID.textContent = "Matching Puzzle";
     containerID.innerHTML = `
-        <header>
-            <h3 id="matching-puzzle-header">Matching Puzzle</h3>
-        </header>
-        <div class="grid-container" id="gridContainer">
-            <div id="matching-tile-0" class="grid-item">Tile 0</div>
-            <div id="matching-tile-1" class="grid-item">Tile 1</div>
-            <div id="matching-tile-2" class="grid-item">Tile 2</div>
-            <div id="matching-tile-3" class="grid-item">Tile 3</div>
-            <div id="matching-tile-4" class="grid-item">Tile 4</div>
-            <div id="matching-tile-5" class="grid-item">Tile 5</div>
-            <div id="matching-tile-6" class="grid-item">Tile 6</div>
-            <div id="matching-tile-7" class="grid-item">Tile 7</div>
-            <div id="matching-tile-8" class="grid-item">Tile 8</div>
-            <div id="matching-tile-9" class="grid-item">Tile 9</div>
-            <div id="matching-tile-10" class="grid-item">Tile 10</div>
-            <div id="matching-tile-11" class="grid-item">Tile 11</div>
-            <div id="matching-tile-12" class="grid-item">Tile 12</div>
-            <div id="matching-tile-13" class="grid-item">Tile 13</div>
-            <div id="matching-tile-14" class="grid-item">Tile 14</div>
-            <div id="matching-tile-15" class="grid-item">Tile 15</div>
+        <div id="puzzle-layout">
+            <header>
+                <h3 id="puzzle-header">Matching Puzzle</h3>
+            </header>
+            <div class="grid-container" id="gridContainer">
+                <div id="matching-tile-0" class="grid-item">Tile 0</div>
+                <div id="matching-tile-1" class="grid-item">Tile 1</div>
+                <div id="matching-tile-2" class="grid-item">Tile 2</div>
+                <div id="matching-tile-3" class="grid-item">Tile 3</div>
+                <div id="matching-tile-4" class="grid-item">Tile 4</div>
+                <div id="matching-tile-5" class="grid-item">Tile 5</div>
+                <div id="matching-tile-6" class="grid-item">Tile 6</div>
+                <div id="matching-tile-7" class="grid-item">Tile 7</div>
+                <div id="matching-tile-8" class="grid-item">Tile 8</div>
+                <div id="matching-tile-9" class="grid-item">Tile 9</div>
+                <div id="matching-tile-10" class="grid-item">Tile 10</div>
+                <div id="matching-tile-11" class="grid-item">Tile 11</div>
+                <div id="matching-tile-12" class="grid-item">Tile 12</div>
+                <div id="matching-tile-13" class="grid-item">Tile 13</div>
+                <div id="matching-tile-14" class="grid-item">Tile 14</div>
+                <div id="matching-tile-15" class="grid-item">Tile 15</div>
+            </div>
         </div>
     `;
+
     const gridItems = document.querySelectorAll(".grid-item");
     populateMatchingPuzzle();
+
+    // const tilesClicked = 0;
+    // gridItems.forEach((item, index) => {
+    //     item.addEventListener('click', clickTile(item, tilesClicked));
+    // });
+
     gridItems.forEach((item, index) => {
         item.addEventListener('click', function() {
             item.style.backgroundColor = "blue";
         });
     });
+    // const matchFound = false;
+    // while (!gameOver) {
+    //     while (!matchFound) {
+    //         const firstGuess = "";
+            
+    //     }
+    // }
+
+
     // gridContainer.style.display = 'block';
 }
 
 
 const NUM_TILES = 16;
+const gameOver = false;
 const puzzleWindow = document.getElementById("puzzle-window");
 const gridContainer = document.getElementById("gridContainer");
 const gridItems = document.querySelectorAll(".grid-item");
@@ -55,26 +74,6 @@ const matchingTile13 = document.getElementById("matching-tile-13");
 const matchingTile14 = document.getElementById("matching-tile-14");
 const matchingTile15 = document.getElementById("matching-tile-15");
 
-
-// matchingTile0.addEventListener("click", function(event) {
-//     if (event.target.matches('.grid-item')) {
-//         event.target.classList.toggle('clicked');
-//     }
-// });
-
-
-// gridItems.forEach(item => {
-//     item.addEventListener('click', () => {
-//         // item.classList.toggle('.clicked');
-//         item.
-//     });
-// });
-
-// populateMatchingPuzzle();
-
-function setupMatchingPuzzle () {
-    
-}
 
 function populateMatchingPuzzle () {
     let numberArray = [];
@@ -103,14 +102,17 @@ function shuffleArray(array) {
     return arr;
 }
 
+function clickTile(item, tilesClicked) {
+    // const element = item;
+    // if (tilesClicked === 0) {
+        item.style.backgroundColor = "blue";
+    // }
+    // else {
+    //     item.style.backgroundColor = "red";
+    // }
+
+}
+
 function checkForMatch() {
 
 }
-
-function clickTile() {
-    matchingTile0.textContent = "clicked";
-}
-
-// populateMatchingPuzzle();
-// matchingTile0.addEventListener("click", clickTile);
-// gridContainer.addEventListener("click", clickTile);
