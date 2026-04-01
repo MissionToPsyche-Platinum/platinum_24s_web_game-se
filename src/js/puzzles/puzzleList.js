@@ -1,6 +1,9 @@
 import { startTangramPuzzle } from "./tangramPuzzle.js";
 import { startMatchingPuzzle } from "./matchingPuzzle.js";
 import { startNumberLogicPuzzle } from "./numberLogicPuzzle.js";
+import { startMazePuzzle } from "./mazePuzzle.js";
+import { startSlidingPuzzle } from "./slidingPuzzle.js";
+import { startTubePuzzle } from "./tubePuzzle.js";
 
 export const puzzles = [
     {

@@ -1,3 +1,4 @@
+import { puzzles } from "./puzzles/puzzleList.js";
 
 const solvePuzzleButton = document.getElementById("solve-puzzle");
 const gameScreenHeader = document.getElementById("second-header");
@@ -14,11 +15,11 @@ const PUZZLES_TO_WIN = 5;
 let isGameOver;
 
 
-//const gamePageContent = gameScreen.innerHTML;
 
-import { puzzles } from "./puzzles/puzzleList.js";
-const gameScreen = document.getElementById("puzzle-screen");
-const gamePageContent = gameScreen.innerHTML;
+
+
+
+
 
 const gameState = {
     puzzleOrder: [],
