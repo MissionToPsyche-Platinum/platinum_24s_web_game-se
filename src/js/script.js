@@ -1,3 +1,5 @@
+import { firstNames } from "./leaderboardNames.js";
+import { lastNames } from "./leaderboardNames.js";
 const LS = {
   displayName: "pysche_settings_display_name",
   timer: "pysche_settings_show_timer",
@@ -11,12 +13,23 @@ const leaderBoardPopUp = document.getElementById("leaderBoardPopUp");
 const gameScreen = document.getElementById("puzzle-screen");
 const startButton = document.getElementById("start");
 const backToMenuButtons = document.querySelectorAll(".back-to-menu");
+const nameCreationScreen = document.getElementById("nameCreationScreen");
+let playerName = "";
+const firstNameDisplay = document.getElementById("firstNameDisplay");
+const firstNameMenu = document.getElementById("firstNameDropdown");
+const firstNameButton = document.getElementById("firstNameDropdownButton");
+const lastNameDisplay = document.getElementById("lastNameDisplay");
+const lastNameMenu = document.getElementById("lastNameDropdown");
+const lastNameButton = document.getElementById("lastNameDropdownButton");
+const beginGameButton = document.getElementById("beginGame");
 const leaderBoardButton = document.getElementById("leaderboard");
 const instructionsButton = document.getElementById("instructions");
 const instructionsPopUp = document.getElementById("instructionsPopUp");
 const settingsButton = document.getElementById("settings");
 const settingsPopUp = document.getElementById("settingsPopUp");
 const closeSettingsButton = document.getElementById("closeSettings");
+const soundEffectsToggle = document.getElementById("soundEffectsToggle");
+const backgroundMusicToggle = document.getElementById("backgroundMusicToggle");
 const resetSettingsButton = document.getElementById("resetSettings");
 const settingSound = document.getElementById("settingSound");
 const settingMusic = document.getElementById("settingMusic");
@@ -33,6 +46,15 @@ const exitPopUp = document.getElementById("exitPopUp");
 const cancelExitButton = document.getElementById("cancelExit");
 const confirmExitButton = document.getElementById("confirmExit");
 
+// Event listeners for buttons
+document.addEventListener("DOMContentLoaded", () => {
+startButton.addEventListener("click", startNameCreation);
+firstNameButton.addEventListener("click", function() {
+  firstNameMenu.classList.toggle("show");
+});
+lastNameButton.addEventListener("click", function() {
+  lastNameMenu.classList.toggle("show");
+});
 let runTimerInterval = null;
 
 function applyReducedMotion() {
@@ -107,12 +129,13 @@ function startRunTimer() {
   }, 250);
 }
 
-startButton.addEventListener("click", startPuzzle);
 backToMenuButtons.forEach((btn) => {
   btn.addEventListener("click", backToMenu);
 });
+beginGameButton.addEventListener("click", startPuzzle);
 leaderBoardButton.addEventListener("click", startLeaderBoard);
 instructionsButton.addEventListener("click", startInstructions);
+
 
 if (settingsButton && settingsPopUp && closeSettingsButton) {
   settingsButton.addEventListener("click", openSettings);
@@ -143,6 +166,31 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
   });
 }
 
+  if (resetSettingsButton) {
+    resetSettingsButton.addEventListener("click", resetSettingsToDefaults);
+  }
+  if (settingDisplayName) {
+    settingDisplayName.addEventListener("blur", () => {
+      localStorage.setItem(LS.displayName, settingDisplayName.value.trim());
+    });
+    settingDisplayName.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") settingDisplayName.blur();
+    });
+  }
+  settingsPopUp.addEventListener("change", (e) => {
+    const t = e.target;
+    if (t === settingSound || t === settingMusic) updateAudioSettings();
+    else if (t === settingShowTimer)
+      localStorage.setItem(LS.timer, String(t.checked));
+    else if (t === settingHints)
+      localStorage.setItem(LS.hints, String(t.checked));
+    else if (t === settingReducedMotion) {
+      localStorage.setItem(LS.motion, String(t.checked));
+      applyReducedMotion();
+    } else if (t === settingDifficulty)
+      localStorage.setItem(LS.diff, t.value);
+  });
+
 updateAudioSettings();
 
 if (exitButton && exitPopUp && cancelExitButton && confirmExitButton) {
@@ -150,15 +198,29 @@ if (exitButton && exitPopUp && cancelExitButton && confirmExitButton) {
   cancelExitButton.addEventListener("click", closeExitConfirm);
   confirmExitButton.addEventListener("click", confirmExitGame);
 }
-
 loadGameplaySettings();
+
+function backToMenu() {
+  stopRunTimer();
+  closeExitConfirm();
+  closeSettings();
+  gameScreen.style.display = "none";
+  leaderBoardPopUp.style.display = "none";
+  instructionsPopUp.style.display = "none";
+  nameCreationScreen.style.display = "none";
+  mainMenu.style.display = "";
+}
+
+
 
 function startPuzzle() {
   closeExitConfirm();
   closeSettings();
-  loadGameplaySettings();
+  document.getElementById("playerNameDisplay").textContent = playerName;
   mainMenu.style.display = "none";
   gameScreen.style.display = "block";
+  nameCreationScreen.style.display = "none";
+  loadGameplaySettings();
   startRunTimer();
 }
 
@@ -176,19 +238,41 @@ function startInstructions() {
   instructionsPopUp.style.display = "block";
 }
 
-function backToMenu() {
-  stopRunTimer();
+//Opens the name creation screen for the user and populates the dropdown menus
+function startNameCreation() {
+  firstNames.forEach(name => {
+    const menuItem = document.createElement("a");
+    menuItem.textContent = name;
+    menuItem.href = "#";
+    menuItem.addEventListener("click", function() {
+      document.getElementById(firstNameDisplay.textContent = name);
+      playerName = name + " " + playerName;
+      firstNameMenu.classList.toggle("fold");
+    });
+    firstNameMenu.appendChild(menuItem);
+  });
+  lastNames.forEach(name => {
+    const menuItem = document.createElement("a");
+    menuItem.textContent = name;
+    menuItem.href = "#";
+    menuItem.addEventListener("click", function() {
+      document.getElementById(lastNameDisplay.textContent = name);
+      playerName = playerName + " " + name;
+      lastNameMenu.classList.toggle("fold");
+    });
+    lastNameMenu.appendChild(menuItem);
+  });
+  sessionStorage.setItem("playerName", playerName);
   closeExitConfirm();
   closeSettings();
-  gameScreen.style.display = "none";
-  leaderBoardPopUp.style.display = "none";
-  instructionsPopUp.style.display = "none";
-  mainMenu.style.display = "";
+  mainMenu.style.display = "none";
+  nameCreationScreen.style.display = "block";
 }
 
 function openSettings() {
   if (!settingsPopUp) return;
   closeExitConfirm();
+  loadGameplaySettings();
   loadGameplaySettings();
   settingsPopUp.style.display = "block";
 }
@@ -200,6 +284,8 @@ function closeSettings() {
 
 function updateAudioSettings() {
   window.gameAudioSettings = {
+    soundEffectsEnabled: !!settingSound?.checked,
+    backgroundMusicEnabled: !!settingMusic?.checked,
     soundEffectsEnabled: !!settingSound?.checked,
     backgroundMusicEnabled: !!settingMusic?.checked,
   };
@@ -216,6 +302,7 @@ function closeExitConfirm() {
 }
 
 function confirmExitGame() {
+  stopRunTimer();
   stopRunTimer();
   closeExitConfirm();
   closeSettings();
@@ -246,3 +333,4 @@ function getPyscheSettings() {
 }
 
 window.getPyscheSettings = getPyscheSettings;
+});
