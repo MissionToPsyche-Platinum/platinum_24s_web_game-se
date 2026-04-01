@@ -14,5 +14,17 @@ export const puzzles = [
     {
         name: "Number Logic Puzzle",
         start: startNumberLogicPuzzle,
+    },
+    {
+        name: "Maze Puzzle",
+        start: startMazePuzzle,
+    },
+    {
+        name: "Sliding Puzzle",
+        start: startSlidingPuzzle,
+    },
+    {
+        name: "Tube Puzzle",
+        start: startTubePuzzle,
     }
 ];
