@@ -18,7 +18,7 @@ const displayFactMessage = document.getElementById("display-fact-message");
 
 
 
-const PUZZLES_TO_WIN = 3;
+const PUZZLES_TO_WIN = 5;
 let isGameOver;
 
 
