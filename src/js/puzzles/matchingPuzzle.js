@@ -1,5 +1,4 @@
 export function startMatchingPuzzle({ containerID }) {
-    // containerID.textContent = "Matching Puzzle";
     containerID.innerHTML = `
         <div id="puzzle-layout">
             <header>
