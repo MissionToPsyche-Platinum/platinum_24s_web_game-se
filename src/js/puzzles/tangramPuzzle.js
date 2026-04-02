@@ -3,3 +3,5 @@ export function startTangramPuzzle({ containerID }) {
         <h3>Tangram Puzzle</h3>
     `;
 }
+
+const puzzleHeader = document.getElementById("puzzle-header");

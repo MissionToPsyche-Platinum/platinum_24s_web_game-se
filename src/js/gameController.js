@@ -8,19 +8,15 @@ const solvePuzzleMessage = document.getElementById("solve-puzzle-message");
 const puzzleSolvedMessage = document.getElementById("puzzle-solved-message");
 const nextPuzzleButton = document.getElementById("next-puzzle");
 const displayFactMessage = document.getElementById("display-fact-message");
+const gridContainer = document.getElementById("grid-container");
+const matchingHeader = document.getElementById("matching-header");
 const progressElement = document.getElementById("puzzles-completed");
-
-
 
 const PUZZLES_TO_WIN = 5;
 let isGameOver;
 
-
-
-
-
-
-
+const gameScreen = document.getElementById("puzzle-screen");
+const gamePageContent = gameScreen.innerHTML;
 
 const gameState = {
     puzzleOrder: [],
@@ -39,6 +35,8 @@ function shufflePuzzles(puzzles) {
 function startGame() {
     gameState.solvedPuzzles = 0;
     nextPuzzleButton.style.display = 'inline';
+    // gridContainer.style.display = 'none';
+    // matchingHeader.style.display = 'none';
     solvePuzzleButton.disabled = false;
     nextPuzzleButton.disabled = true;
     newGameButton.style.display = 'none';
@@ -107,7 +105,7 @@ function displayNextPuzzle() {
 
 function loadPuzzle(puzzle) {
     const container = document.getElementById("puzzle-window");
-    container.innerHTML = "";
+    // container.textContent = "";
     puzzle.start({ containerID: container });
 }
 
