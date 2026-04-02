@@ -29,26 +29,12 @@ export function startMatchingPuzzle({ containerID }) {
     const gridItems = document.querySelectorAll(".grid-item");
     populateMatchingPuzzle();
 
-    // const tilesClicked = 0;
-    // gridItems.forEach((item, index) => {
-    //     item.addEventListener('click', clickTile(item, tilesClicked));
-    // });
 
     gridItems.forEach((item, index) => {
         item.addEventListener('click', function() {
             item.style.backgroundColor = "blue";
         });
     });
-    // const matchFound = false;
-    // while (!gameOver) {
-    //     while (!matchFound) {
-    //         const firstGuess = "";
-            
-    //     }
-    // }
-
-
-    // gridContainer.style.display = 'block';
 }
 
 
@@ -102,17 +88,3 @@ function shuffleArray(array) {
     return arr;
 }
 
-function clickTile(item, tilesClicked) {
-    // const element = item;
-    // if (tilesClicked === 0) {
-        item.style.backgroundColor = "blue";
-    // }
-    // else {
-    //     item.style.backgroundColor = "red";
-    // }
-
-}
-
-function checkForMatch() {
-
-}
