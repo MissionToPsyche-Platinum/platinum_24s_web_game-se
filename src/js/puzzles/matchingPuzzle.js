@@ -65,7 +65,6 @@ function populateMatchingPuzzle () {
     let numberArray = [];
     for (let i = 0; i < NUM_TILES; i++) {
         numberArray[i] = i % (NUM_TILES/2);
-        console.log(numberArray[i]);
     }
 
     numberArray = shuffleArray(numberArray);
@@ -75,7 +74,6 @@ function populateMatchingPuzzle () {
 
     gridItems.forEach((item, index) => {
         item.textContent = numberArray[index];
-        console.log(numberArray[index]);
     });
 }
 
