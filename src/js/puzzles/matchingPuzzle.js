@@ -30,17 +30,6 @@ export function startMatchingPuzzle({ containerID }) {
     const gridItems = document.querySelectorAll(".grid-item");
     populateMatchingPuzzle();
 
-
-    // gridItems.forEach((item, index) => {
-    //     item.addEventListener('click', function() {
-    //         item.style.backgroundColor = "blue";
-    //     });
-    // });
-
-    // gridItems.forEach(item => {
-    //     item.addEventListener('click', () => clickTile(item));
-    // });
-
     gridItems.forEach(item => {
         item.addEventListener('click', clickTile);
     });
@@ -99,31 +88,6 @@ function shuffleArray(array) {
     return arr;
 }
 
-// function clickTile(item) {
-//     if (clickedElement1 == null) {
-//         clickedElement1 = item;
-//         clickedElement1.style.backgroundColor = "red";
-//     }
-//     else if (clickedElement2 == null) {
-//         clickedElement2 = item;
-//         if (clickedElement1.textContent === clickedElement2.textContent) {
-//             clickedElement1.style.backgroundColor = "blue";
-//             clickedElement2.style.backgroundColor = "blue";
-//             // clickedElement1.removeEventListener('click', () => clickTile(item));
-//             clickedElement1 = null;
-//             clickedElement2 = null;
-//             pairsFound++;
-//         }
-//         else {
-//             clickedElement1.style.backgroundColor = "grey";
-//         }
-//         clickedElement1 = null;
-//         clickedElement2 = null;
-//         if (pairsFound === NUM_TILES/2) {
-//             solvePuzzle();
-//         }
-//     }
-// }
 
 function clickTile() {
     if (clickedElement1 == null) {
