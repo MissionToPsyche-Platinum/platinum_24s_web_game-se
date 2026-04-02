@@ -1,3 +1,4 @@
+import { solvePuzzle } from '../gameController.js';
 export function startMatchingPuzzle({ containerID }) {
     // containerID.textContent = "Matching Puzzle";
     containerID.innerHTML = `
@@ -30,14 +31,24 @@ export function startMatchingPuzzle({ containerID }) {
     populateMatchingPuzzle();
 
 
-    gridItems.forEach((item, index) => {
-        item.addEventListener('click', function() {
-            item.style.backgroundColor = "blue";
-        });
+    // gridItems.forEach((item, index) => {
+    //     item.addEventListener('click', function() {
+    //         item.style.backgroundColor = "blue";
+    //     });
+    // });
+
+    // gridItems.forEach(item => {
+    //     item.addEventListener('click', () => clickTile(item));
+    // });
+
+    gridItems.forEach(item => {
+        item.addEventListener('click', clickTile);
     });
 }
 
-
+let clickedElement1;
+let clickedElement2;
+let pairsFound = 0;
 const NUM_TILES = 16;
 const gameOver = false;
 const puzzleWindow = document.getElementById("puzzle-window");
@@ -88,3 +99,55 @@ function shuffleArray(array) {
     return arr;
 }
 
+// function clickTile(item) {
+//     if (clickedElement1 == null) {
+//         clickedElement1 = item;
+//         clickedElement1.style.backgroundColor = "red";
+//     }
+//     else if (clickedElement2 == null) {
+//         clickedElement2 = item;
+//         if (clickedElement1.textContent === clickedElement2.textContent) {
+//             clickedElement1.style.backgroundColor = "blue";
+//             clickedElement2.style.backgroundColor = "blue";
+//             // clickedElement1.removeEventListener('click', () => clickTile(item));
+//             clickedElement1 = null;
+//             clickedElement2 = null;
+//             pairsFound++;
+//         }
+//         else {
+//             clickedElement1.style.backgroundColor = "grey";
+//         }
+//         clickedElement1 = null;
+//         clickedElement2 = null;
+//         if (pairsFound === NUM_TILES/2) {
+//             solvePuzzle();
+//         }
+//     }
+// }
+
+function clickTile() {
+    if (clickedElement1 == null) {
+        clickedElement1 = this;
+        clickedElement1.style.backgroundColor = "red";
+    }
+    else if (clickedElement2 == null) {
+        clickedElement2 = this;
+        if (clickedElement1.textContent === clickedElement2.textContent) {
+            clickedElement1.style.backgroundColor = "blue";
+            clickedElement2.style.backgroundColor = "blue";
+            clickedElement1.removeEventListener('click', clickTile);
+            clickedElement2.removeEventListener('click', clickTile);
+            clickedElement1 = null;
+            clickedElement2 = null;
+            pairsFound++;
+        }
+        else {
+            clickedElement1.style.backgroundColor = "grey";
+        }
+        clickedElement1 = null;
+        clickedElement2 = null;
+        if (pairsFound === NUM_TILES/2) {
+            solvePuzzle();
+        }
+    }
+}

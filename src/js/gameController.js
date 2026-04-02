@@ -68,7 +68,7 @@ function gameIsOver(x) {
     isGameOver = x;
 }
 
-function solvePuzzle() {
+export function solvePuzzle() {
     gameState.solvedPuzzles += 1;
     
     puzzleSolvedMessage.style.display = 'block';
