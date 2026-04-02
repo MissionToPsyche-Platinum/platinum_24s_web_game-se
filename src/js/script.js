@@ -40,6 +40,8 @@ const settingReducedMotion = document.getElementById("settingReducedMotion");
 const settingDifficulty = document.getElementById("settingDifficulty");
 const runTimerDisplay = document.getElementById("run-timer-display");
 const runTimerEl = document.getElementById("run-timer");
+const creditsButton = document.getElementById("credits");
+const creditsPopUp = document.getElementById("creditsPopUp");
 
 const exitButton = document.getElementById("exit");
 const exitPopUp = document.getElementById("exitPopUp");
@@ -135,6 +137,7 @@ backToMenuButtons.forEach((btn) => {
 beginGameButton.addEventListener("click", startPuzzle);
 leaderBoardButton.addEventListener("click", startLeaderBoard);
 instructionsButton.addEventListener("click", startInstructions);
+creditsButton.addEventListener("click", startCredits);
 
 
 if (settingsButton && settingsPopUp && closeSettingsButton) {
@@ -208,6 +211,7 @@ function backToMenu() {
   leaderBoardPopUp.style.display = "none";
   instructionsPopUp.style.display = "none";
   nameCreationScreen.style.display = "none";
+  creditsPopUp.style.display = "none";
   mainMenu.style.display = "";
 }
 
@@ -222,6 +226,13 @@ function startPuzzle() {
   nameCreationScreen.style.display = "none";
   loadGameplaySettings();
   startRunTimer();
+}
+
+function startCredits() {
+  closeExitConfirm();
+  closeSettings();
+  mainMenu.style.display = "none";
+  creditsPopUp.style.display = "block";
 }
 
 function startLeaderBoard() {
