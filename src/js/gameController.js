@@ -1,11 +1,4 @@
-//function startGame() {}
-//function playGame() {}
-//function gameIsOver() {}
-//function SolvePuzzle() {}
-//function detectWin() {}
-//function updateHeader() {}
-//function displayNextPuzzle() {}
-
+import { puzzles } from "./puzzles/puzzleList.js";
 
 const solvePuzzleButton = document.getElementById("solve-puzzle");
 const gameScreenHeader = document.getElementById("second-header");
@@ -17,15 +10,16 @@ const nextPuzzleButton = document.getElementById("next-puzzle");
 const displayFactMessage = document.getElementById("display-fact-message");
 const gridContainer = document.getElementById("grid-container");
 const matchingHeader = document.getElementById("matching-header");
+const progressElement = document.getElementById("puzzles-completed");
 
 
-const PUZZLES_TO_WIN = 3;
+
+const PUZZLES_TO_WIN = 5;
 let isGameOver;
 
 const gameScreen = document.getElementById("puzzle-screen");
 const gamePageContent = gameScreen.innerHTML;
 
-import { puzzles } from "./puzzles/puzzleList.js";
 
 const gameState = {
     puzzleOrder: [],
@@ -54,8 +48,7 @@ function startGame() {
     displayFactMessage.style.display = 'none';
     solvePuzzleMessage.style.display = 'none';
     gameState.puzzleOrder = shufflePuzzles(puzzles);
-
-    
+    updateProgress();
     gameIsOver(false);
     displayNextPuzzle();
 }
@@ -77,6 +70,7 @@ export function solvePuzzle() {
     displayFactMessage.style.display = 'block';
     nextPuzzleButton.disabled = false;
     solvePuzzleButton.disabled = true;
+    updateProgress();
     if (detectWin()) {
         updateHeader();
     }
@@ -116,6 +110,10 @@ function loadPuzzle(puzzle) {
     const container = document.getElementById("puzzle-window");
     // container.textContent = "";
     puzzle.start({ containerID: container });
+}
+
+function updateProgress() {
+    progressElement.textContent = `Puzzles Completed: ${gameState.solvedPuzzles}`;
 }
 
 solvePuzzleButton.addEventListener("click", solvePuzzle);
