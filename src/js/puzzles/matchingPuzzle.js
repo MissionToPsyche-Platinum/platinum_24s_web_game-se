@@ -1,3 +1,4 @@
+import { solvePuzzle } from '../gameController.js';
 export function startMatchingPuzzle({ containerID }) {
     containerID.innerHTML = `
         <div id="puzzle-layout">
@@ -28,15 +29,14 @@ export function startMatchingPuzzle({ containerID }) {
     const gridItems = document.querySelectorAll(".grid-item");
     populateMatchingPuzzle();
 
-
-    gridItems.forEach((item, index) => {
-        item.addEventListener('click', function() {
-            item.style.backgroundColor = "blue";
-        });
+    gridItems.forEach(item => {
+        item.addEventListener('click', clickTile);
     });
 }
 
-
+let clickedElement1;
+let clickedElement2;
+let pairsFound = 0;
 const NUM_TILES = 16;
 const gameOver = false;
 const puzzleWindow = document.getElementById("puzzle-window");
@@ -64,7 +64,6 @@ function populateMatchingPuzzle () {
     let numberArray = [];
     for (let i = 0; i < NUM_TILES; i++) {
         numberArray[i] = i % (NUM_TILES/2);
-        console.log(numberArray[i]);
     }
 
     numberArray = shuffleArray(numberArray);
@@ -74,7 +73,6 @@ function populateMatchingPuzzle () {
 
     gridItems.forEach((item, index) => {
         item.textContent = numberArray[index];
-        console.log(numberArray[index]);
     });
 }
 
@@ -87,3 +85,30 @@ function shuffleArray(array) {
     return arr;
 }
 
+
+function clickTile() {
+    if (clickedElement1 == null) {
+        clickedElement1 = this;
+        clickedElement1.style.backgroundColor = "red";
+    }
+    else if (clickedElement2 == null) {
+        clickedElement2 = this;
+        if (clickedElement1.textContent === clickedElement2.textContent) {
+            clickedElement1.style.backgroundColor = "blue";
+            clickedElement2.style.backgroundColor = "blue";
+            clickedElement1.removeEventListener('click', clickTile);
+            clickedElement2.removeEventListener('click', clickTile);
+            clickedElement1 = null;
+            clickedElement2 = null;
+            pairsFound++;
+        }
+        else {
+            clickedElement1.style.backgroundColor = "grey";
+        }
+        clickedElement1 = null;
+        clickedElement2 = null;
+        if (pairsFound === NUM_TILES/2) {
+            solvePuzzle();
+        }
+    }
+}
