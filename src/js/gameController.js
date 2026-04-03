@@ -12,8 +12,6 @@ const gridContainer = document.getElementById("grid-container");
 const matchingHeader = document.getElementById("matching-header");
 const progressElement = document.getElementById("puzzles-completed");
 
-
-
 const PUZZLES_TO_WIN = 5;
 let isGameOver;
 
