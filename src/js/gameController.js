@@ -1,4 +1,6 @@
 import { puzzles } from "./puzzles/puzzleList.js";
+import { missionFacts } from "./factList.js";
+
 
 const solvePuzzleButton = document.getElementById("solve-puzzle");
 const gameScreenHeader = document.getElementById("second-header");
@@ -11,6 +13,21 @@ const displayFactMessage = document.getElementById("display-fact-message");
 const gridContainer = document.getElementById("grid-container");
 const matchingHeader = document.getElementById("matching-header");
 const progressElement = document.getElementById("puzzles-completed");
+
+function clearMissionFact() {
+    if (!displayFactMessage) return;
+    displayFactMessage.textContent = "";
+    displayFactMessage.hidden = true;
+    displayFactMessage.style.display = "none";
+}
+
+function showMissionFactForSolveCount(solvedCount) {
+    if (!displayFactMessage) return;
+    const idx = Math.min(Math.max(solvedCount - 1, 0), missionFacts.length - 1);
+    displayFactMessage.textContent = missionFacts[idx] ?? "";
+    displayFactMessage.hidden = false;
+    displayFactMessage.style.display = "block";
+}
 
 const PUZZLES_TO_WIN = 5;
 let isGameOver;
@@ -43,7 +60,7 @@ function startGame() {
     newGameButton.style.display = 'none';
     winMessage.style.display= 'none';
     puzzleSolvedMessage.style.display = 'none';
-    displayFactMessage.style.display = 'none';
+    clearMissionFact();
     solvePuzzleMessage.style.display = 'none';
     gameState.puzzleOrder = shufflePuzzles(puzzles);
     updateProgress();
@@ -63,9 +80,8 @@ export function solvePuzzle() {
     gameState.solvedPuzzles += 1;
     
     puzzleSolvedMessage.style.display = 'block';
-    displayFactMessage.style.display = 'none';
     solvePuzzleMessage.style.display = 'none';
-    displayFactMessage.style.display = 'block';
+    showMissionFactForSolveCount(gameState.solvedPuzzles);
     nextPuzzleButton.disabled = false;
     solvePuzzleButton.disabled = true;
     updateProgress();
@@ -86,7 +102,6 @@ function updateHeader() {
     newGameButton.style.display = 'inline';
     winMessage.style.display = 'block';
     solvePuzzleButton.disabled = true;
-    displayFactMessage.style.display = 'none';
     puzzleSolvedMessage.style.display = 'none';
     nextPuzzleButton.style.display = 'none';
     gameIsOver(true);
@@ -96,7 +111,7 @@ function updateHeader() {
 function displayNextPuzzle() {
     solvePuzzleMessage.style.display = 'block';
     puzzleSolvedMessage.style.display = 'none';
-    displayFactMessage.style.display = 'none';
+    clearMissionFact();
     nextPuzzleButton.disabled = true;
     solvePuzzleButton.disabled = false;
     loadPuzzle(gameState.puzzleOrder[gameState.solvedPuzzles]);

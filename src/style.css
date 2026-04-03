@@ -260,6 +260,7 @@ body {
     width: 100%;
 }
 
+
 .grid-container {
     display: grid;
     place-items: center;
