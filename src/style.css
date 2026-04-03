@@ -258,6 +258,23 @@ body {
     gap: 20px;
     height: 80%;
     width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+}
+
+#mission-fact h1 {
+    margin: 0;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.mission-fact-body {
+    margin: 0;
+    flex: 1 1 auto;
+    overflow-y: auto;
+    text-align: left;
+    line-height: 1.45;
+    font-size: 0.95rem;
 }
 
 
