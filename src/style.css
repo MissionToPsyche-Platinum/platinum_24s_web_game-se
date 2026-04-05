@@ -11,17 +11,81 @@ body {
 
 .container {
     height: 100%;
+    position: relative;
+}
+
+.button {
+    background-color: #302144;
+    border-color: #302144;
+    color: #f9a000;
+    font-weight: bold;
+    padding: 10px 10px;
+    border-radius: 5px;
+    font-family: Helvetica;
+}
+
+#start {
+    margin-top: 120px;
+    position: relative;
+    z-index: 2;
+}
+
+#button-row {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    position: relative;
+    z-index: 2;
+}
+
+.main-title1 {
+    padding: 10px;
+    font-size: 70px;
+    font-family: Knockout;
+    color: #f9a000;
+    position: relative;
+    z-index: 2;
+    top: 50px;
+}
+
+.psyche-asteroid {
+    position: absolute;
+    top: 20px;
+    width: 80%;
+    height: 95%;
+    z-index: 1;
+}
+
+.main-title2 {
+    font-size: 50px;
+    padding: 5px;
+    font-family: Knockout;
+    position: relative;
+    z-index: 2;
+    color: #f9a000;
+    top: 50px;
 }
 
 #main-menu {
     height: 100%;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
+    position: relative;
+    z-index: 2;
     align-items: center;
     text-align: center;
     gap: 10px;
+    background: linear-gradient(45deg, #f47c33, #302144);
+}
+
+.psyche-logo {
+    height: 120px;
+    width: 120px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
 }
 
 #nameCreationScreen {
