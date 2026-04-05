@@ -13,6 +13,7 @@ const displayFactMessage = document.getElementById("display-fact-message");
 const gridContainer = document.getElementById("grid-container");
 const matchingHeader = document.getElementById("matching-header");
 const progressElement = document.getElementById("puzzles-completed");
+const puzzleHelpButton = document.getElementById("puzzle-help");
 
 function clearMissionFact() {
     if (!displayFactMessage) return;
@@ -84,6 +85,7 @@ export function solvePuzzle() {
     showMissionFactForSolveCount(gameState.solvedPuzzles);
     nextPuzzleButton.disabled = false;
     solvePuzzleButton.disabled = true;
+    puzzleHelpButton.disabled = true;
     updateProgress();
     if (detectWin()) {
         updateHeader();
@@ -114,6 +116,7 @@ function displayNextPuzzle() {
     clearMissionFact();
     nextPuzzleButton.disabled = true;
     solvePuzzleButton.disabled = false;
+    puzzleHelpButton.disabled = false;
     loadPuzzle(gameState.puzzleOrder[gameState.solvedPuzzles]);
 }
 
@@ -129,8 +132,13 @@ function updateProgress() {
     progressElement.textContent = `Puzzles Completed: ${gameState.solvedPuzzles}`;
 }
 
+function showPuzzleHelp() {
+    alert(`${gameState.puzzleOrder[gameState.solvedPuzzles].helpText}`);
+}
+
 solvePuzzleButton.addEventListener("click", solvePuzzle);
 newGameButton.addEventListener("click", startGame);
 nextPuzzleButton.addEventListener("click", displayNextPuzzle);
+puzzleHelpButton.addEventListener("click", showPuzzleHelp);
 
 startGame();
