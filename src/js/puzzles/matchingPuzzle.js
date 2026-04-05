@@ -52,7 +52,7 @@ function populateMatchingPuzzle () {
 
     gridItems.forEach((item, index) => {
         item.textContent = numberArray[index];
-        // item.style.color = "grey";
+        item.style.color = "grey";
     });
 }
 
@@ -83,15 +83,20 @@ function clickTile() {
             pairsFound++;
         }
         else {
-            
-            clickedElement1.style.backgroundColor = "grey";
-            
+            clickedElement2.style.backgroundColor = "red";
+            setTimeout(rehideNumber, 1000);
 
         }
-        clickedElement1 = null;
-        clickedElement2 = null;
+        
         if (pairsFound === NUM_TILES/2) {
             solvePuzzle();
         }
+    }
+
+    function rehideNumber () {
+        clickedElement1.style.backgroundColor = "grey";
+        clickedElement2.style.backgroundColor = "grey";
+        clickedElement1 = null;
+        clickedElement2 = null;
     }
 }
