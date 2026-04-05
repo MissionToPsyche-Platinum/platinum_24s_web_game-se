@@ -38,26 +38,6 @@ let clickedElement1;
 let clickedElement2;
 let pairsFound = 0;
 const NUM_TILES = 16;
-const gameOver = false;
-const puzzleWindow = document.getElementById("puzzle-window");
-const gridContainer = document.getElementById("gridContainer");
-const gridItems = document.querySelectorAll(".grid-item");
-const matchingTile0 = document.getElementById("matching-tile-0");
-const matchingTile1 = document.getElementById("matching-tile-1");
-const matchingTile2 = document.getElementById("matching-tile-2");
-const matchingTile3 = document.getElementById("matching-tile-3");
-const matchingTile4 = document.getElementById("matching-tile-4");
-const matchingTile5 = document.getElementById("matching-tile-5");
-const matchingTile6 = document.getElementById("matching-tile-6");
-const matchingTile7 = document.getElementById("matching-tile-7");
-const matchingTile8 = document.getElementById("matching-tile-8");
-const matchingTile9 = document.getElementById("matching-tile-9");
-const matchingTile10 = document.getElementById("matching-tile-10");
-const matchingTile11 = document.getElementById("matching-tile-11");
-const matchingTile12 = document.getElementById("matching-tile-12");
-const matchingTile13 = document.getElementById("matching-tile-13");
-const matchingTile14 = document.getElementById("matching-tile-14");
-const matchingTile15 = document.getElementById("matching-tile-15");
 
 
 function populateMatchingPuzzle () {
@@ -67,12 +47,12 @@ function populateMatchingPuzzle () {
     }
 
     numberArray = shuffleArray(numberArray);
-    console.log(numberArray);
 
     const gridItems = document.querySelectorAll(".grid-item");
 
     gridItems.forEach((item, index) => {
         item.textContent = numberArray[index];
+        item.style.color = "grey";
     });
 }
 
@@ -93,7 +73,7 @@ function clickTile() {
     }
     else if (clickedElement2 == null) {
         clickedElement2 = this;
-        if (clickedElement1.textContent === clickedElement2.textContent) {
+        if (clickedElement1.textContent === clickedElement2.textContent && clickedElement1 !== clickedElement2) {
             clickedElement1.style.backgroundColor = "blue";
             clickedElement2.style.backgroundColor = "blue";
             clickedElement1.removeEventListener('click', clickTile);
@@ -103,12 +83,20 @@ function clickTile() {
             pairsFound++;
         }
         else {
-            clickedElement1.style.backgroundColor = "grey";
+            clickedElement2.style.backgroundColor = "red";
+            setTimeout(rehideNumber, 1000);
+
         }
-        clickedElement1 = null;
-        clickedElement2 = null;
+        
         if (pairsFound === NUM_TILES/2) {
             solvePuzzle();
         }
+    }
+
+    function rehideNumber () {
+        clickedElement1.style.backgroundColor = "grey";
+        clickedElement2.style.backgroundColor = "grey";
+        clickedElement1 = null;
+        clickedElement2 = null;
     }
 }
