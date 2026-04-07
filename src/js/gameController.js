@@ -1,5 +1,6 @@
 import { puzzles } from "./puzzles/puzzleList.js";
 import { missionFacts } from "./factList.js";
+import { startTangramPuzzle } from "./puzzles/tangramPuzzle.js";
 
 
 const solvePuzzleButton = document.getElementById("solve-puzzle");
@@ -124,8 +125,9 @@ function displayNextPuzzle() {
 
 function loadPuzzle(puzzle) {
     const container = document.getElementById("puzzle-window");
-    // container.textContent = "";
-    puzzle.start({ containerID: container });
+    // REVERT CODE AFTER TESTING
+    //.start({ containerID: container });
+    startTangramPuzzle({ containerID: container });
 }
 
 function updateProgress() {
