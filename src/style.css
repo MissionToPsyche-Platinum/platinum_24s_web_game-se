@@ -102,6 +102,20 @@ body {
     text-align: center;
 }
 
+#emptyNameScreen {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 2px solid black;
+    z-index: 1000;
+    width: 400px;
+    text-align: center;
+}
+
 .dropdown-content {
     display: none;
     position: absolute;
@@ -110,9 +124,16 @@ body {
     min-width: 160px;
 }
 
-.dropdown-content a {
+.dropdown-content button {
+    color: black;
+    width: 100%;
+    text-align: left;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.dropdown.show {
     display: block;
-    padding: 8px 12px;
 }
 
 .name-selection {
