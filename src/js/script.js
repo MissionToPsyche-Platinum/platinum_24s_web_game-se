@@ -14,6 +14,7 @@ const gameScreen = document.getElementById("puzzle-screen");
 const startButton = document.getElementById("start");
 const backToMenuButtons = document.querySelectorAll(".back-to-menu");
 const nameCreationScreen = document.getElementById("nameCreationScreen");
+const overlays = document.querySelectorAll(".overlay");
 let playerName = "";
 const firstNameDisplay = document.getElementById("firstNameDisplay");
 const firstNameMenu = document.getElementById("firstNameDropdown");
@@ -50,7 +51,10 @@ const confirmExitButton = document.getElementById("confirmExit");
 
 // Event listeners for buttons
 document.addEventListener("DOMContentLoaded", () => {
-startButton.addEventListener("click", startNameCreation);
+startButton.addEventListener("click", function() {
+  startNameCreation();
+  showOverlay();
+});
 firstNameButton.addEventListener("click", function() {
   firstNameMenu.classList.toggle("show");
 });
@@ -207,6 +211,7 @@ function backToMenu() {
   stopRunTimer();
   closeExitConfirm();
   closeSettings();
+  hideOverlay();
   gameScreen.style.display = "none";
   leaderBoardPopUp.style.display = "none";
   instructionsPopUp.style.display = "none";
@@ -226,6 +231,7 @@ function startPuzzle() {
   nameCreationScreen.style.display = "none";
   loadGameplaySettings();
   startRunTimer();
+  hideOverlay();
 }
 
 function startCredits() {
@@ -278,6 +284,20 @@ function startNameCreation() {
   closeSettings();
   mainMenu.style.display = "none";
   nameCreationScreen.style.display = "block";
+}
+
+//Displays the overlay screens
+function showOverlay() {
+  overlays.forEach(overlay => {
+    overlay.style.display = "block";
+  });
+}
+
+//Hides the overlay screens
+function hideOverlay() {
+  overlays.forEach(overlay => {
+    overlay.style.display = "none";
+  });
 }
 
 function openSettings() {
