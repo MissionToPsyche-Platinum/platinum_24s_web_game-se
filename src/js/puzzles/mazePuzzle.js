@@ -3,3 +3,10 @@ export function startMazePuzzle({ containerID }) {
         <h3>Maze Puzzle</h3>
     `;
 }
+
+const mazeTile = {
+    top,
+    bottom,
+    left,
+    right
+};
