@@ -125,9 +125,8 @@ function displayNextPuzzle() {
 
 function loadPuzzle(puzzle) {
     const container = document.getElementById("puzzle-window");
-    // REVERT CODE AFTER TESTING
-    //.start({ containerID: container });
-    startTangramPuzzle({ containerID: container });
+    puzzle.start({ containerID: container });
+    
 }
 
 function updateProgress() {
