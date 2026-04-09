@@ -1,5 +1,8 @@
+//Import files for name creation
 import { firstNames } from "./leaderboardNames.js";
 import { lastNames } from "./leaderboardNames.js";
+
+//Constant values
 const LS = {
   displayName: "pysche_settings_display_name",
   timer: "pysche_settings_show_timer",
@@ -15,13 +18,16 @@ const startButton = document.getElementById("start");
 const backToMenuButtons = document.querySelectorAll(".back-to-menu");
 const nameCreationScreen = document.getElementById("nameCreationScreen");
 const overlays = document.querySelectorAll(".overlay");
-let playerName = "";
+let firstName = "";
+let lastName = "";
 const firstNameDisplay = document.getElementById("firstNameDisplay");
 const firstNameMenu = document.getElementById("firstNameDropdown");
 const firstNameButton = document.getElementById("firstNameDropdownButton");
 const lastNameDisplay = document.getElementById("lastNameDisplay");
 const lastNameMenu = document.getElementById("lastNameDropdown");
 const lastNameButton = document.getElementById("lastNameDropdownButton");
+const okayButton = document.getElementById("okayButton");
+const emptyNameScreen = document.getElementById("emptyNameScreen");
 const beginGameButton = document.getElementById("beginGame");
 const leaderBoardButton = document.getElementById("leaderboard");
 const instructionsButton = document.getElementById("instructions");
@@ -55,13 +61,32 @@ startButton.addEventListener("click", function() {
   startNameCreation();
   showOverlay();
 });
-firstNameButton.addEventListener("click", function() {
-  firstNameMenu.classList.toggle("show");
+firstNameButton.addEventListener("click", function(event) {
+  event.stopPropagation();
+  firstNameMenu.classList.remove("fold");
+  firstNameMenu.classList.add("show");
 });
 lastNameButton.addEventListener("click", function() {
-  lastNameMenu.classList.toggle("show");
+  lastNameMenu.classList.remove("fold");
+  lastNameMenu.classList.add("show");
 });
+okayButton.addEventListener("click", startNameCreation);
+backToMenuButtons.forEach((btn) => {
+  btn.addEventListener("click", backToMenu);
+});
+beginGameButton.addEventListener("click", function() {
+  if(firstName === "" || lastName === "") {
+    displayEmptyNameSelection();
+  } else {
+    startPuzzle();
+  }
+});
+leaderBoardButton.addEventListener("click", startLeaderBoard);
+instructionsButton.addEventListener("click", startInstructions);
+creditsButton.addEventListener("click", startCredits);
+
 let runTimerInterval = null;
+
 
 function applyReducedMotion() {
   if (settingReducedMotion) {
@@ -135,14 +160,6 @@ function startRunTimer() {
   }, 250);
 }
 
-backToMenuButtons.forEach((btn) => {
-  btn.addEventListener("click", backToMenu);
-});
-beginGameButton.addEventListener("click", startPuzzle);
-leaderBoardButton.addEventListener("click", startLeaderBoard);
-instructionsButton.addEventListener("click", startInstructions);
-creditsButton.addEventListener("click", startCredits);
-
 
 if (settingsButton && settingsPopUp && closeSettingsButton) {
   settingsButton.addEventListener("click", openSettings);
@@ -207,6 +224,7 @@ if (exitButton && exitPopUp && cancelExitButton && confirmExitButton) {
 }
 loadGameplaySettings();
 
+//Resets the screen back to the main menu
 function backToMenu() {
   stopRunTimer();
   closeExitConfirm();
@@ -221,11 +239,11 @@ function backToMenu() {
 }
 
 
-
+//Loads the puzzle screen
 function startPuzzle() {
   closeExitConfirm();
   closeSettings();
-  document.getElementById("playerNameDisplay").textContent = playerName;
+  document.getElementById("playerNameDisplay").textContent = firstName + " " + lastName;
   mainMenu.style.display = "none";
   gameScreen.style.display = "block";
   nameCreationScreen.style.display = "none";
@@ -234,6 +252,7 @@ function startPuzzle() {
   hideOverlay();
 }
 
+//Loads the credits screen
 function startCredits() {
   closeExitConfirm();
   closeSettings();
@@ -241,6 +260,7 @@ function startCredits() {
   creditsPopUp.style.display = "block";
 }
 
+//Loads the leaderboard screen
 function startLeaderBoard() {
   closeExitConfirm();
   closeSettings();
@@ -248,6 +268,7 @@ function startLeaderBoard() {
   leaderBoardPopUp.style.display = "block";
 }
 
+//Loads the instructions screen
 function startInstructions() {
   closeExitConfirm();
   closeSettings();
@@ -257,29 +278,33 @@ function startInstructions() {
 
 //Opens the name creation screen for the user and populates the dropdown menus
 function startNameCreation() {
+  emptyNameScreen.style.display = "none";
   firstNames.forEach(name => {
-    const menuItem = document.createElement("a");
+    const menuItem = document.createElement("button");
     menuItem.textContent = name;
     menuItem.href = "#";
     menuItem.addEventListener("click", function() {
       document.getElementById(firstNameDisplay.textContent = name);
-      playerName = name + " " + playerName;
-      firstNameMenu.classList.toggle("fold");
+      firstName = name;
+      firstNameMenu.classList.remove("show");
+      firstNameMenu.classList.add("fold");
     });
     firstNameMenu.appendChild(menuItem);
   });
   lastNames.forEach(name => {
-    const menuItem = document.createElement("a");
+    const menuItem = document.createElement("button");
     menuItem.textContent = name;
     menuItem.href = "#";
     menuItem.addEventListener("click", function() {
       document.getElementById(lastNameDisplay.textContent = name);
-      playerName = playerName + " " + name;
-      lastNameMenu.classList.toggle("fold");
+      lastName = name;
+      lastNameMenu.classList.remove("show");
+      lastNameMenu.classList.add("fold");
     });
     lastNameMenu.appendChild(menuItem);
   });
-  sessionStorage.setItem("playerName", playerName);
+  sessionStorage.setItem("firstName", firstName);
+  sessionStorage.setItem("lastName", lastName);
   closeExitConfirm();
   closeSettings();
   mainMenu.style.display = "none";
@@ -300,6 +325,28 @@ function hideOverlay() {
   });
 }
 
+//Displays the overlay screens
+function showOverlay() {
+  overlays.forEach(overlay => {
+    overlay.style.display = "block";
+  });
+}
+
+//Hides the overlay screens
+function hideOverlay() {
+  overlays.forEach(overlay => {
+    overlay.style.display = "none";
+  });
+}
+
+//Displays a popup if the user did not enter a name
+function displayEmptyNameSelection() {
+  nameCreationScreen.style.display = "none";
+  emptyNameScreen.style.display = "block";
+}
+
+
+//Loads the settings screen
 function openSettings() {
   if (!settingsPopUp) return;
   closeExitConfirm();
@@ -308,6 +355,7 @@ function openSettings() {
   settingsPopUp.style.display = "block";
 }
 
+//Closes the settings screen
 function closeSettings() {
   if (!settingsPopUp) return;
   settingsPopUp.style.display = "none";

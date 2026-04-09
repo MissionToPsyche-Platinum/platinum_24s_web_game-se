@@ -177,6 +177,99 @@ body {
     z-index: 999;
 }
 
+#emptyNameScreen {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(to right,#a53f5b, #302144);
+    padding: 20px;
+    z-index: 1000;
+    width: 400px;
+    text-align: center;
+    font-family: Helvetica;
+    z-index: 1000;
+    font-weight: bold;
+    height: 250px;
+    width: 500px;
+    color: white;
+}
+
+#firstNameDisplay {
+    display: inline-block;
+    width: 200px;
+    height: 30px;
+    background-color: white;
+    color: #302144;
+}
+
+#firstNameDropdownButton {
+    background-color: #302144;
+    border-color: #302144;
+    color: #ef5966;
+    font-weight: bold;
+    padding: 10px 10px;
+    border-radius: 5px;
+    font-family: Helvetica;
+}
+
+#lastNameDropdownButton {
+    background-color: #302144;
+    border-color: #302144;
+    color: #ef5966;
+    font-weight: bold;
+    padding: 10px 10px;
+    border-radius: 5px;
+    font-family: Helvetica;
+}
+
+#beginGame {
+    background-color: #302144;
+    border-color: #302144;
+    color: #ef5966;
+    font-weight: bold;
+    padding: 10px 10px;
+    border-radius: 5px;
+    font-family: Helvetica;
+}
+
+#lastNameDisplay {
+    display: inline-block;
+    width: 200px;
+    height: 30px;
+    background-color: white;
+    color: #302144;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("images/Psyche_Image_Stars.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 999;
+}
+
+#emptyNameScreen {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 2px solid black;
+    z-index: 1000;
+    width: 400px;
+    text-align: center;
+}
+
 .dropdown-content {
     display: none;
     position: absolute;
@@ -186,15 +279,15 @@ body {
     font-family: Helvetica;
 }
 
-.dropdown-content option {
-    color: white;
+.dropdown-content button {
+    color: black;
+    width: 100%;
+    text-align: left;
+    padding: 8px;
+    cursor: pointer;
 }
 
-.dropdown-content a:hover {
-    border-color: #ef5966;
-}
-
-.dropdown-content a {
+.dropdown.show {
     display: block;
     padding: 8px 12px;
     color: #ef5966;
