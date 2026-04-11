@@ -272,7 +272,6 @@ function startLeaderBoard() {
 function startInstructions() {
   closeExitConfirm();
   closeSettings();
-  mainMenu.style.display = "none";
   instructionsPopUp.style.display = "block";
 }
 
