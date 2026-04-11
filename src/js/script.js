@@ -264,7 +264,6 @@ function startCredits() {
 function startLeaderBoard() {
   closeExitConfirm();
   closeSettings();
-  mainMenu.style.display = "none";
   leaderBoardPopUp.style.display = "block";
 }
 
