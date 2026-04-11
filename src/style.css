@@ -649,6 +649,21 @@ body {
     box-sizing: border-box;
 }
 
+button.tube-cell {
+    font: inherit;
+    cursor: pointer;
+}
+
+button.tube-cell:focus-visible {
+    outline: 3px solid #f9a000;
+    outline-offset: 2px;
+    z-index: 1;
+}
+
+button.tube-cell::-moz-focus-inner {
+    border: 0;
+}
+
 .tube-cell-svg {
     width: 85%;
     height: 85%;
