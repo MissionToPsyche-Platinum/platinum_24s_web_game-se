@@ -9,7 +9,7 @@ export const puzzles = [
     {
         name: "Tangram Puzzle",
         start: startTangramPuzzle,
-        helpText: "Arrange pieces to match the target shape",
+        helpText: "Arrange pieces to match the target shape. Double click pieces to rotate.",
     },
     {
         name: "Matching Puzzle",
