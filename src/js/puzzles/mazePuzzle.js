@@ -29,17 +29,19 @@ const NUM_TILES = 8;
 let location = [];
 let index = 0;
 class mazeTile {
-    constructor(top, bottom, left, right) {
+    constructor(top, bottom, left, right, text) {
         this.top = top;
         this.bottom = bottom;
         this.left = left;
         this.right = right;
+        this.text = text;
     }
 }
 
 function populateMazePuzzle () {
     for (let i = 0; i < NUM_TILES; i++) {
-        location[i] = 0;
+        // location[i] = 0;
+        location[i] = new mazeTile(true, true, true, true, 0);
     }
 
     location[0] = 1; //represents current location
@@ -47,7 +49,7 @@ function populateMazePuzzle () {
     const mazeItems = document.querySelectorAll(".maze-item");
 
     mazeItems.forEach((item, index) => {
-        item.textContent = location[index];
+        item.textContent = location[index].text;
         //item.style.color = "grey";
     });
 }
