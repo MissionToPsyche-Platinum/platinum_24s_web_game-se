@@ -16,8 +16,18 @@ export function startMazePuzzle({ containerID }) {
             </div>
         </div>
     `;
+
+    const mazeItems = document.querySelectorAll(".maze-item");
+    populateMazePuzzle();
+
+    mazeItems.forEach(item => {
+        item.addEventListener('click', move);
+    });
 }
 
+const NUM_TILES = 8;
+let location = [];
+let index = 0;
 class mazeTile {
     constructor(top, bottom, left, right) {
         this.top = top;
@@ -28,5 +38,27 @@ class mazeTile {
 }
 
 function populateMazePuzzle () {
-    
+    for (let i = 0; i < NUM_TILES; i++) {
+        location[i] = 0;
+    }
+
+    location[0] = 1; //represents current location
+
+    const mazeItems = document.querySelectorAll(".maze-item");
+
+    mazeItems.forEach((item, index) => {
+        item.textContent = location[index];
+        //item.style.color = "grey";
+    });
+}
+
+function move() {
+    location[index] = 0;
+    index++;
+    location[index] = 1;
+    const mazeItems = document.querySelectorAll(".maze-item");
+    mazeItems.forEach((item, index) => {
+        item.textContent = location[index];
+        //item.style.color = "grey";
+    });
 }
