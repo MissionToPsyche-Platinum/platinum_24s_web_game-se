@@ -20,6 +20,16 @@ function cellSvg(kind, rotation) {
     return `<svg class="tube-cell-svg" viewBox="0 0 100 100" aria-hidden="true"><g transform="rotate(${deg} 50 50)">${inner}</g></svg>`;
 }
 
+function cloneLevel(level) {
+    return {
+        id: level.id,
+        name: level.name,
+        rows: level.rows,
+        cols: level.cols,
+        cells: level.cells.map((row) => row.map((cell) => ({ ...cell }))),
+    };
+}
+
 function renderGrid(level) {
     const { rows, cols, cells } = level;
     let html = `<div class="tube-puzzle" role="application" aria-label="Tube puzzle board">
@@ -30,14 +40,34 @@ function renderGrid(level) {
         for (let c = 0; c < cols; c++) {
             const cell = cells[r][c];
             const label = `${cell.kind}, rotation ${cell.rotation}`;
-            html += `<div class="tube-cell tube-cell--${cell.kind}" data-r="${r}" data-c="${c}" title="${label}" role="img" aria-label="${label}">`;
-            html += cellSvg(cell.kind, cell.rotation);
-            html += `</div>`;
+            const svg = cellSvg(cell.kind, cell.rotation);
+            if (cell.kind === "empty") {
+                html += `<div class="tube-cell tube-cell--empty" data-r="${r}" data-c="${c}" aria-hidden="true">${svg}</div>`;
+            } else {
+                html += `<button type="button" class="tube-cell tube-cell--${cell.kind}" data-r="${r}" data-c="${c}" title="${label}" aria-label="${label}">${svg}</button>`;
+            }
         }
     }
 
-    html += `</div><div class="tube-puzzle-flow-strip" aria-hidden="true"></div><p class="tube-puzzle-hint">Rotate pieces to connect source to goal (interaction coming next).</p></div>`;
+    html += `</div><div class="tube-puzzle-flow-strip" aria-hidden="true"></div><p class="tube-puzzle-hint">Click a pipe to rotate it clockwise. Connect source to goal to win.</p></div>`;
     return html;
+}
+
+function wireRotation(gridEl, level) {
+    gridEl.addEventListener("click", (e) => {
+        const btn = e.target.closest("button.tube-cell");
+        if (!btn || !gridEl.contains(btn)) {
+            return;
+        }
+        const r = Number(btn.dataset.r);
+        const c = Number(btn.dataset.c);
+        const cell = level.cells[r][c];
+        cell.rotation = (cell.rotation + 1) % 4;
+        const label = `${cell.kind}, rotation ${cell.rotation}`;
+        btn.innerHTML = cellSvg(cell.kind, cell.rotation);
+        btn.setAttribute("aria-label", label);
+        btn.title = label;
+    });
 }
 
 export function startTubePuzzle({ containerID }) {
@@ -50,9 +80,16 @@ export function startTubePuzzle({ containerID }) {
         ph.textContent = "Tube Puzzle";
     }
 
+    const level = cloneLevel(DEFAULT_LEVEL);
+
     containerID.innerHTML = `
         <div id="puzzle-layout" class="tube-puzzle-layout">
-            ${renderGrid(DEFAULT_LEVEL)}
+            ${renderGrid(level)}
         </div>
     `;
+
+    const grid = containerID.querySelector(".tube-puzzle-grid");
+    if (grid) {
+        wireRotation(grid, level);
+    }
 }
