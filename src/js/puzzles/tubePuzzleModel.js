@@ -46,3 +46,60 @@ export function validateLevel(level) {
     }
     return level.cells.every((row) => row && row.length === level.cols);
 }
+
+const opp = (d) => (d + 2) % 4;
+
+/** BFS along open pipe edges; true if source cell links to goal cell. */
+export function isSourceConnectedToGoal(level) {
+   const { rows, cols, cells } = level;
+   let sr = -1;
+   let sc = -1;
+   let gr = -1;
+   let gc = -1;
+   for (let r = 0; r < rows; r++) {
+       for (let c = 0; c < cols; c++) {
+           const k = cells[r][c].kind;
+           if (k === "source") {
+               sr = r;
+               sc = c;
+           }
+           if (k === "goal") {
+               gr = r;
+               gc = c;
+           }
+       }
+   }
+   if (sr < 0 || gr < 0) {
+       return false;
+   }
+   const key = (r, c) => `${r},${c}`;
+   const seen = new Set();
+   const q = [[sr, sc]];
+   seen.add(key(sr, sc));
+   while (q.length > 0) {
+       const [r, c] = q.shift();
+       if (r === gr && c === gc) {
+           return true;
+       }
+       const cell = cells[r][c];
+       for (const d of getOpenDirections(cell.kind, cell.rotation)) {
+           const nr = r + DELTA[d][0];
+           const nc = c + DELTA[d][1];
+           if (nr < 0 || nr >= rows || nc < 0 || nc >= cols) {
+               continue;
+           }
+           const need = opp(d);
+           const ncell = cells[nr][nc];
+           if (!getOpenDirections(ncell.kind, ncell.rotation).includes(need)) {
+               continue;
+           }
+           const k = key(nr, nc);
+           if (seen.has(k)) {
+               continue;
+           }
+           seen.add(k);
+           q.push([nr, nc]);
+       }
+   }
+   return false;
+}
