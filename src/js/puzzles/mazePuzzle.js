@@ -40,28 +40,26 @@ class mazeTile {
 }
 
 function populateMazePuzzle () {
-    for (let i = 0; i < NUM_TILES; i++) {
-        // location[i] = 0;
+
+    location[0] = new mazeTile(true, true, true, true, 1, 0);
+    for (let i = 1; i < NUM_TILES; i++) {
         location[i] = new mazeTile(true, true, true, true, 0, i);
     }
 
-    location[0] = 1; //represents current location
 
     const mazeItems = document.querySelectorAll(".maze-item");
 
     mazeItems.forEach((item, index) => {
         item.textContent = location[index].text;
-        //item.style.color = "grey";
     });
 }
 
 function move() {
-    location[index] = 0;
+    location[index].text = 0;
     index++;
-    location[index] = 1;
+    location[index].text = 1;
     const mazeItems = document.querySelectorAll(".maze-item");
     mazeItems.forEach((item, index) => {
-        item.textContent = location[index];
-        //item.style.color = "grey";
+        item.textContent = location[index].text;
     });
 }
