@@ -1,3 +1,5 @@
+import { solvePuzzle } from "../gameController.js";
+
 export function startTangramPuzzle({ containerID }) {
     containerID.innerHTML = `
         <div class="tangram-container">
@@ -47,6 +49,12 @@ function checkPosition(piece) {
         const { cx, cy } = calculateCetner(piece.points);
         target.setAttribute("transform", `translate(${piece.solvedX}, ${piece.solvedY}) rotate(${piece.rotation}, ${cx}, ${cy})`);
         target.style.cursor = "default";
+    }
+}
+
+function checkWin(pieces) {
+    if(pieces.every(p => p.inPlace)) {
+        solvePuzzle();
     }
 }
 
@@ -107,6 +115,7 @@ function enableDragAndDrop(svg, pieces) {
         if (!selectedPiece) return;
         const target = document.getElementById(selectedPiece.id);
         checkPosition(selectedPiece);
+        checkWin(pieces);
         target.style.cursor = "grab";
         selectedPiece = null;
     });
