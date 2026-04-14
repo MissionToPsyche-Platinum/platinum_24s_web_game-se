@@ -256,7 +256,6 @@ function startPuzzle() {
 function startCredits() {
   closeExitConfirm();
   closeSettings();
-  mainMenu.style.display = "none";
   creditsPopUp.style.display = "block";
 }
 
