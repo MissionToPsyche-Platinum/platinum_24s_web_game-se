@@ -125,7 +125,6 @@ function displayNextPuzzle() {
 
 function loadPuzzle(puzzle) {
     const container = document.getElementById("puzzle-window");
-    
     puzzle.start({ containerID: container });
     
 }
