@@ -1,3 +1,4 @@
+import { solvePuzzle } from '../gameController.js';
 export function startMazePuzzle({ containerID }) {
     containerID.innerHTML = `
         <div id="maze-puzzle-layout">
@@ -21,8 +22,25 @@ export function startMazePuzzle({ containerID }) {
     populateMazePuzzle();
 
     mazeItems.forEach(item => {
-        item.addEventListener('click', move);
+        //item.addEventListener('click', move);
+        item.addEventListener("keydown", (event) => {
+            switch (event.key) {
+                case "ArrowUp":
+                    moveUp();
+                    break;
+                case "ArrowDown":
+                    moveDown();
+                    break;
+                case "ArrowLeft":
+                    moveLeft();
+                    break;
+                case "ArrowRight":
+                    moveRight();
+                    break;
+            }
+        });
     });
+
 }
 
 const NUM_TILES = 8;
@@ -49,17 +67,27 @@ function populateMazePuzzle () {
 
     const mazeItems = document.querySelectorAll(".maze-item");
 
-    mazeItems.forEach((item, index) => {
-        item.textContent = location[index].text;
+    mazeItems.forEach((item, i) => {
+        item.textContent = location[i].position;
     });
 }
 
-function move() {
+function moveUp() {
+    // if () {
+
+    // }
+}
+
+function moveRight() {
     location[index].text = 0;
     index++;
     location[index].text = 1;
     const mazeItems = document.querySelectorAll(".maze-item");
-    mazeItems.forEach((item, index) => {
-        item.textContent = location[index].text;
+    mazeItems.forEach((item, i) => {
+        // item.text = location[i].text;
+        item.textContent = location[i].text;
+        // if (item.position === NUM_TILES - 1 && item.text === 1) {
+        //     solvePuzzle();
+        // }
     });
 }
