@@ -29,19 +29,20 @@ const NUM_TILES = 8;
 let location = [];
 let index = 0;
 class mazeTile {
-    constructor(top, bottom, left, right, text) {
+    constructor(top, bottom, left, right, text, position) {
         this.top = top;
         this.bottom = bottom;
         this.left = left;
         this.right = right;
         this.text = text;
+        this.position = position;
     }
 }
 
 function populateMazePuzzle () {
     for (let i = 0; i < NUM_TILES; i++) {
         // location[i] = 0;
-        location[i] = new mazeTile(true, true, true, true, 0);
+        location[i] = new mazeTile(true, true, true, true, 0, i);
     }
 
     location[0] = 1; //represents current location
