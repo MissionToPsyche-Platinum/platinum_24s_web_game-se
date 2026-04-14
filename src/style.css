@@ -383,12 +383,25 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: white;
+    background-color: #302144;
+    color: #f9a000;
+    font-family: Helvetica;
     padding: 20px;
     border: 2px solid black;
     z-index: 1000;
     width: 400px;
     text-align: center;
+    border-radius: 10px;
+}
+
+#creditsBackButton {
+    background-color: #f9a000;
+    border-color: #f9a000;
+    color: #302144;
+    font-weight: bold;
+    padding: 10px 10px;
+    border-radius: 5px;
+    font-family: Helvetica;
 }
 
 #settingsPopUp {
