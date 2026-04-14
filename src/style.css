@@ -432,6 +432,13 @@ body {
 #closeSettings,
 #resetSettings {
     margin-top: 8px;
+    background-color: #f9a000;
+    border-color: #f9a000;
+    color: #302144;
+    font-weight: bold;
+    padding: 10px 10px;
+    border-radius: 5px;
+    font-family: Helvetica;
 }
 
 /* Your reduced-motion preference */
