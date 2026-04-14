@@ -256,7 +256,6 @@ function startPuzzle() {
 function startCredits() {
   closeExitConfirm();
   closeSettings();
-  mainMenu.style.display = "none";
   creditsPopUp.style.display = "block";
 }
 
@@ -323,20 +322,6 @@ function hideOverlay() {
   });
 }
 
-//Displays the overlay screens
-function showOverlay() {
-  overlays.forEach(overlay => {
-    overlay.style.display = "block";
-  });
-}
-
-//Hides the overlay screens
-function hideOverlay() {
-  overlays.forEach(overlay => {
-    overlay.style.display = "none";
-  });
-}
-
 //Displays a popup if the user did not enter a name
 function displayEmptyNameSelection() {
   nameCreationScreen.style.display = "none";
@@ -350,6 +335,9 @@ function openSettings() {
   closeExitConfirm();
   loadGameplaySettings();
   loadGameplaySettings();
+  if(!(firstName == null || lastName == null)) {
+    document.getElementById("settingDisplayName").textContent = firstName + " " + lastName;
+  }
   settingsPopUp.style.display = "block";
 }
 
