@@ -4,22 +4,42 @@ export function startTangramPuzzle({ containerID }) {
     containerID.innerHTML = `
         <div class="tangram-container">
             <h3>Tangram Puzzle</h3>
-            <h4>Hint: Green Up Top!</h4>
-            <svg id="tangram-svg" width="900" height="400""></svg>
+            
+            <svg id="tangram-svg" width="900" height="650""></svg>
         </div>
     `;
 
     const svg = document.getElementById("tangram-svg");
 
-    const pieces = [
-        { id: "piece1", points: "50,0 250,0 150,200", color: "#ff0000", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 550, solvedY: 200 },
-        { id: "piece2", points: "250,200 450,200 350,0", color: "#00ff2f", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 350, solvedY: 0 },
-        { id: "piece3", points: "0,400 100,200 200,400", color: "#ff7300", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 500, solvedY: 0 },
-        { id: "piece4", points: "200,400 300,200 400,400", color: "#ffff00", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 500, solvedY: 0 },
+    const puzzleCombos = [
+
+        {
+            name: "triagnle",
+            outline: "700,0 500,400 900,400",
+            pieces: [
+            { id: "piece1", points: "50,0 250,0 150,200", color: "#ff0000", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 550, solvedY: 200 },
+            { id: "piece2", points: "250,200 450,200 350,0", color: "#00ff2f", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 350, solvedY: 0 },
+            { id: "piece3", points: "0,400 100,200 200,400", color: "#ff7300", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 500, solvedY: 0 },
+            { id: "piece4", points: "200,400 300,200 400,400", color: "#ffff00", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 500, solvedY: 0 }
+            ]
+        },
+        {
+            name: "square",
+            outline: "500,0 500,400 900,400 900,0",
+            pieces: [
+            { id: "piece1", points: "50,0 250,0 150,200", color: "#ff0000", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 450, solvedY: 0 },
+            { id: "piece2", points: "250,200 450,200 350,0", color: "#00ff2f", inPlace: false, x: -20, y: 250, rotation: 0, solvedX: 350, solvedY: 0 },
+            { id: "piece3", points: "0,400 0,0 200,400", color: "#ff7300", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 500, solvedY: 0 },
+            { id: "piece4", points: "200,400 300,200 400,400", color: "#ffff00", inPlace: false, x: 0, y: 250, rotation: 0, solvedX: 500, solvedY: 0 },
+            { id: "piece5", points: "600,450 700,650 800,450", color: "#00ffff", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 0, solvedY: -250 },
+            { id: "piece6", points: "700,0 900,400 900,0", color: "#ff00ff", inPlace: false, x: -450, y: 0, rotation: 0, solvedX: 0, solvedY: 0 }
+            ]
+        }
+
     ];
 
-    renderTangram(svg, pieces);
-    enableDragAndDrop(svg, pieces);
+    renderTangram(svg, puzzleCombos[1]);
+    enableDragAndDrop(svg, puzzleCombos[1].pieces);
 }
 
 function calculateCetner(points) {
@@ -60,13 +80,13 @@ function checkWin(pieces) {
 
 
 
-function renderTangram(svg, pieces) {
+function renderTangram(svg, puzzle) {
 
     svg.innerHTML = `
-        <polygon id="outline" points="700,0 500,400 900,400" fill="#120899" stroke="#000000" stroke-width="2"/>
+        <polygon id="outline" points="${puzzle.outline}" fill="#120899" stroke="#000000" stroke-width="2"/>
     `;
 
-    pieces.forEach(piece => {
+    puzzle.pieces.forEach(piece => {
         const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
 
         const { cx, cy } = calculateCetner(piece.points);
