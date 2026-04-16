@@ -435,6 +435,101 @@ body {
     font-family: Knockout;
 }
 
+/* Exit confirmation popup */
+#exitPopUp {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(to right, #a53f5b, #302144);
+    color: #f9a000;
+    padding: 24px 28px;
+    border: 2px solid black;
+    z-index: 1001;
+    width: 420px;
+    max-width: 90vw;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55);
+}
+
+.exit-icon-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.exit-logo {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.75);
+}
+
+.exit-title {
+    font-family: Knockout, Arial, Helvetica, sans-serif;
+    font-size: 32px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.exit-subtitle {
+    margin: 0 0 8px;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.exit-highlight {
+    font-weight: bold;
+}
+
+.exit-warning {
+    margin: 0 0 18px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    opacity: 0.95;
+}
+
+.exit-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+#cancelExit,
+#confirmExit {
+    min-width: 130px;
+    padding: 10px 14px;
+    font-weight: bold;
+    border-radius: 6px;
+    font-family: Helvetica, Arial, sans-serif;
+    cursor: pointer;
+    border-width: 2px;
+}
+
+#cancelExit {
+    background-color: transparent;
+    border-color: #f9a000;
+    color: #f9a000;
+}
+
+#confirmExit {
+    background-color: #f9a000;
+    border-color: #f9a000;
+    color: #302144;
+}
+
+#cancelExit:hover {
+    background-color: rgba(249, 160, 0, 0.12);
+}
+
+#confirmExit:hover {
+    filter: brightness(1.05);
+}
+
 .settings-option {
     display: flex;
     justify-content: space-between;
