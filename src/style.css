@@ -613,6 +613,35 @@ body {
     "main";
 }
 
+.number-logic-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 80vh;
+}
+
+#logicGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+
+    width: min(80vh, 90%);
+    aspect-ratio: 1 / 1;
+}
+
+#logicGrid input {
+    width: 100%;
+    height: 100%;
+    font-size: 2rem;
+    text-align: center;
+}
+
+#number-logic-header {
+    margin-bottom: 20px;
+}
+
 .puzzle-header {
     grid-area: header;
     
