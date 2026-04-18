@@ -636,7 +636,7 @@ body {
 .maze-container {
     display: grid;
     place-items: center;
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
     grid-template-columns: repeat(4, 1fr);
     border: 2px solid black;
     /* min-height: 100vh; */
