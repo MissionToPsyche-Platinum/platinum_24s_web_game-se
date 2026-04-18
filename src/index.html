@@ -69,27 +69,25 @@
         </section>
 
         <!-- Exit confirm popup -->
-        <div id="exitPopUp" style="
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 24px;
-            border: 2px solid black;
-            z-index: 1001;
-            width: 400px;
-            max-width: 90vw;
-            text-align: center;
-        ">
-            <p style="margin-bottom: 16px; line-height: 1.45;">
-                Exit Mission to Pysche?<br><br>
-                Any run in progress will end. You can open this page again to play later.
+        <div id="exitPopUp">
+            <div class="exit-icon-row">
+                <img
+                    src="images/Psyche_LogoAssets/Badge_Solid/Color/Psyche_BadgeSolid_Color-JPG.jpg"
+                    alt="Psyche mission badge"
+                    class="exit-logo"
+                >
+            </div>
+            <h2 class="exit-title">Exit Mission?</h2>
+            <p class="exit-subtitle">
+                You are about to leave <span class="exit-highlight">Mission to Psyche</span>.
             </p>
-            <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-                <button type="button" id="cancelExit">Cancel</button>
-                <button type="button" id="confirmExit">Exit</button>
+            <p class="exit-warning">
+                Any run in progress will end, but you can return to this page later
+                to start a new journey.
+            </p>
+            <div class="exit-actions">
+                <button type="button" id="cancelExit">Return to Mission</button>
+                <button type="button" id="confirmExit">Exit Game</button>
             </div>
         </div>
 
