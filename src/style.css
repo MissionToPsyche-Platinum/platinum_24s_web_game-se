@@ -435,6 +435,88 @@ body {
     font-family: Knockout;
 }
 
+#exit-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: radial-gradient(circle at 20% 20%, #4f2f7d 0%, #221533 45%, #130d1f 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.exit-stars {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.35;
+    background-image:
+        radial-gradient(circle at 10% 15%, #fff 0 1px, transparent 1px),
+        radial-gradient(circle at 25% 70%, #fff 0 1px, transparent 1px),
+        radial-gradient(circle at 50% 40%, #fff 0 1.5px, transparent 1.5px),
+        radial-gradient(circle at 70% 20%, #fff 0 1px, transparent 1px),
+        radial-gradient(circle at 85% 75%, #fff 0 1.5px, transparent 1.5px);
+}
+
+.exit-card {
+    width: min(620px, 92vw);
+    border-radius: 14px;
+    border: 2px solid rgba(249, 160, 0, 0.9);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(245, 245, 250, 0.93) 100%);
+    box-shadow:
+        0 14px 30px rgba(0, 0, 0, 0.35),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    padding: 28px 24px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.exit-kicker {
+    display: inline-block;
+    margin: 0 0 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #302144;
+    color: #f9a000;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.exit-card h1 {
+    margin: 0 0 14px;
+    color: #1f1f2a;
+    font-size: clamp(1.5rem, 2.8vw, 2rem);
+}
+
+.exit-lead {
+    margin: 0 0 8px;
+    font-size: 1.05rem;
+    color: #2b2b3a;
+}
+
+.exit-copy {
+    margin: 0;
+    line-height: 1.55;
+    color: #3a3a46;
+}
+
+.exit-actions {
+    margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.exit-actions .button {
+    min-width: 190px;
+    border: 2px solid #302144;
+}
+
 /* Exit confirmation popup */
 #exitPopUp {
     display: none;
@@ -624,6 +706,8 @@ body {
     height: 800px;
     width: 100%;
     flex: 1 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     /* min-height: 100vh; */
 }
 
