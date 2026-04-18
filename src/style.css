@@ -627,7 +627,8 @@ body {
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
 
-    width: min(80vh, 90%);
+    width: 100%;
+    max-width: 500px;
     aspect-ratio: 1 / 1;
 }
 
