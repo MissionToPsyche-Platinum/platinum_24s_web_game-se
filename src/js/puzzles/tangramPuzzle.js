@@ -5,7 +5,7 @@ export function startTangramPuzzle({ containerID }) {
         <div class="tangram-container">
             <h3>Tangram Puzzle</h3>
             
-            <svg id="tangram-svg" width="900" height="650""></svg>
+            <svg id="tangram-svg" width="950" height="650""></svg>
         </div>
     `;
 
@@ -34,12 +34,25 @@ export function startTangramPuzzle({ containerID }) {
             { id: "piece5", points: "600,450 700,650 800,450", color: "#00ffff", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 0, solvedY: -250 },
             { id: "piece6", points: "700,0 900,400 900,0", color: "#ff00ff", inPlace: false, x: -450, y: 0, rotation: 0, solvedX: 0, solvedY: 0 }
             ]
+        },
+        {
+            name: "rectangle",
+            outline: "250,0 250,400 500,400 500,0",
+            pieces: [
+            { id: "piece1", points: "250,0 500,0 500,200", color: "#ff0000", inPlace: false, x: -260, y: 225, rotation: 0, solvedX: 0, solvedY: 0 },
+            { id: "piece2", points: "250,0 250,400 400,200 400,120", color: "#00ff2f", inPlace: false, x: 350, y: 0, rotation: 0, solvedX: 0, solvedY: 0 },
+            { id: "piece3", points: "250,400 400,200 400,400", color: "#ff7300", inPlace: false, x: -250, y: -200, rotation: 0, solvedX: 0, solvedY: 0 },
+            { id: "piece4", points: "400,120 400,300 500,300 500,200", color: "#ffff00", inPlace: false, x: -325, y: 300, rotation: 0, solvedX: 0, solvedY: 0 },
+            { id: "piece5", points: "400,300 400,400 500,400 500,300", color: "#00ffff", inPlace: false, x: 75, y: 150, rotation: 0, solvedX: 0, solvedY: 0 },
+            ]
         }
 
     ];
 
-    renderTangram(svg, puzzleCombos[1]);
-    enableDragAndDrop(svg, puzzleCombos[1].pieces);
+    const randomConfig = puzzleCombos[Math.floor(Math.random() * puzzleCombos.length)];
+
+    renderTangram(svg, randomConfig);
+    enableDragAndDrop(svg, randomConfig.pieces);
 }
 
 function calculateCetner(points) {
