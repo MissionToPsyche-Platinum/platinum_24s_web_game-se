@@ -34,23 +34,18 @@ export function startMazePuzzle({ containerID }) {
             switch (event.key) {
                 case "ArrowUp":
                     event.preventDefault();
-                    // const id = item.getAttribute('data-id');
-                    // console.log(id)
                     moveUp();
                     break;
                 case "ArrowDown":
                     event.preventDefault();
-                    // const id = item.getAttribute('data-id');
                     moveDown();
                     break;
                 case "ArrowLeft":
                     event.preventDefault();
-                    // const id = item.getAttribute('data-id');
                     moveLeft();
                     break;
                 case "ArrowRight":
                     event.preventDefault();
-                    // const id = item.getAttribute('data-id');
                     moveRight();
                     break;
             }
@@ -77,32 +72,27 @@ class mazeTile {
 
 function populateMazePuzzle () {
 
-    // location[0] = new mazeTile(true, true, true, true, 1, 0);
-    // for (let i = 1; i < NUM_TILES; i++) {
-    //     location[i] = new mazeTile(true, true, true, true, 0, i);
-    // }
-
     location[0] = new mazeTile(false, true, false, false, 1, 0);
-    location[1] = new mazeTile(false, true, false, true, 0, 1);
-    location[2] = new mazeTile(false, false, true, true, 0, 2);
-    location[3] = new mazeTile(false, true, true, false, 0, 3);
+    location[1] = new mazeTile(false, true, false, true, "", 1);
+    location[2] = new mazeTile(false, false, true, true, "", 2);
+    location[3] = new mazeTile(false, true, true, false, "", 3);
 
-    location[4] = new mazeTile(true, false, false, true, 0, 4);
-    location[5] = new mazeTile(true, false, true, false, 0, 5);
-    location[6] = new mazeTile(false, false, false, false, 0, 6);
-    location[7] = new mazeTile(true, true, false, false, 0, 7);
+    location[4] = new mazeTile(true, false, false, true, "", 4);
+    location[5] = new mazeTile(true, false, true, false, "", 5);
+    location[6] = new mazeTile(false, false, false, false, "", 6);
+    location[7] = new mazeTile(true, true, false, false, "", 7);
 
-    location[8] = new mazeTile(false, true, false, true, 0, 8);
-    location[9] = new mazeTile(false, false, true, true, 0, 9);
-    location[10] = new mazeTile(false, false, true, true, 0, 10);
-    location[11] = new mazeTile(true, false, true, false, 0, 11);
+    location[8] = new mazeTile(false, true, false, true, "", 8);
+    location[9] = new mazeTile(false, false, true, true, "", 9);
+    location[10] = new mazeTile(false, false, true, true, "", 10);
+    location[11] = new mazeTile(true, false, true, false, "", 11);
 
-    location[12] = new mazeTile(true, false, false, true, 0, 12);
-    location[13] = new mazeTile(false, false, true, true, 0, 13);
-    location[14] = new mazeTile(false, false, true, true, 0, 14);
-    location[15] = new mazeTile(false, false, true, false, 0, 15);
+    location[12] = new mazeTile(true, false, false, true, "", 12);
+    location[13] = new mazeTile(false, false, true, true, "", 13);
+    location[14] = new mazeTile(false, false, true, true, "", 14);
+    location[15] = new mazeTile(false, false, true, false, "End", 15);
     
-
+    setBorderStyle();
 
     const mazeItems = document.querySelectorAll(".maze-item");
 
@@ -112,9 +102,8 @@ function populateMazePuzzle () {
 }
 
 function moveUp () {
-    //const canMove = targetElement.getAttribute("top");
     if (location[index].top) {
-        location[index].text = 0;
+        location[index].text = "";
         index  = index - NUM_COLS;
         location[index].text = 1;
         const mazeItems = document.querySelectorAll(".maze-item");
@@ -126,9 +115,8 @@ function moveUp () {
 }
 
 function moveDown () {
-    // const canMove = event.target.getAttribute('bottom');
     if (location[index].bottom) {
-        location[index].text = 0;
+        location[index].text = "";
         index  = index + NUM_COLS;
         location[index].text = 1;
         const mazeItems = document.querySelectorAll(".maze-item");
@@ -140,9 +128,8 @@ function moveDown () {
 }
 
 function moveRight () {
-    // const canMove = event.target.getAttribute('right');
     if (location[index].right) {
-        location[index].text = 0;
+        location[index].text = "";
         index++;
         location[index].text = 1;
         const mazeItems = document.querySelectorAll(".maze-item");
@@ -154,9 +141,8 @@ function moveRight () {
 }
 
 function moveLeft () {
-    // const canMove = event.target.getAttribute('left');
     if (location[index].left) {
-        location[index].text = 0;
+        location[index].text = "";
         index--;
         location[index].text = 1;
     
@@ -173,4 +159,23 @@ function detectWin () {
         solvePuzzle();
         index = 0;
     }
+}
+
+function setBorderStyle () {
+    const mazeItems = document.querySelectorAll(".maze-item");
+
+    mazeItems.forEach((item, i) => {
+        if (location[i].top) {
+            item.style.borderTop = 'none'; 
+        }
+        if (location[i].bottom) {
+            item.style.borderBottom = 'none';
+        }
+        if (location[i].left) {
+            item.style.borderLeft = 'none';
+        }
+        if (location[i].right) {
+            item.style.borderRight = 'none';
+        }
+    });
 }
