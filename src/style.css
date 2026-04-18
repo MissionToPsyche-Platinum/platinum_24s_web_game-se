@@ -883,14 +883,14 @@ body {
 }
 
 .grid-item {
-    border: 2px solid black;
+    border: 2px solid #302144;
     padding-top: 65px;
     height: 180px;
     width: 180px;
     text-align: center;
     align-items: center;
-    background-color: #ffffff;
-    color: #f5f5f5;
+    background-color: grey;
+    color: grey;
     font-weight: 700;
     font-size: 28;;
     
