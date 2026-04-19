@@ -30,26 +30,7 @@ export function startMazePuzzle({ containerID }) {
     populateMazePuzzle();
 
     mazeItems.forEach(item => {
-        item.addEventListener('keydown', (event) => {
-            switch (event.key) {
-                case "ArrowUp":
-                    event.preventDefault();
-                    moveUp();
-                    break;
-                case "ArrowDown":
-                    event.preventDefault();
-                    moveDown();
-                    break;
-                case "ArrowLeft":
-                    event.preventDefault();
-                    moveLeft();
-                    break;
-                case "ArrowRight":
-                    event.preventDefault();
-                    moveRight();
-                    break;
-            }
-        });
+        item.addEventListener('keydown', handleKeyDown);
     });
 
 }
@@ -158,6 +139,11 @@ function detectWin () {
     if (index === NUM_TILES - 1) {
         solvePuzzle();
         index = 0;
+        const mazeItems = document.querySelectorAll(".maze-item");
+        mazeItems.forEach(item => {
+            item.removeEventListener('keydown', handleKeyDown);
+        });
+
     }
 }
 
@@ -178,4 +164,25 @@ function setBorderStyle () {
             item.style.borderRight = 'none';
         }
     });
+}
+
+function handleKeyDown (event) {
+    switch (event.key) {
+        case "ArrowUp":
+            event.preventDefault();
+            moveUp();
+            break;
+        case "ArrowDown":
+            event.preventDefault();
+            moveDown();
+            break;
+        case "ArrowLeft":
+            event.preventDefault();
+            moveLeft();
+            break;
+        case "ArrowRight":
+            event.preventDefault();
+            moveRight();
+            break;
+    }
 }
