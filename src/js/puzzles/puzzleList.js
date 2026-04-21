@@ -4,6 +4,7 @@ import { startNumberLogicPuzzle } from "./numberLogicPuzzle.js";
 import { startMazePuzzle } from "./mazePuzzle.js";
 import { startSlidingPuzzle } from "./slidingPuzzle.js";
 import { startTubePuzzle } from "./tubePuzzle.js";
+import { startPatternPuzzle } from "./patternPuzzle.js";
 
 export const puzzles = [
     {
@@ -35,5 +36,10 @@ export const puzzles = [
         name: "Tube Puzzle",
         start: startTubePuzzle,
         helpText: "Turn the tubes to make the water flow!",
-    }
+    },
+    {
+       name: "Pattern Puzzle",
+       start: startPatternPuzzle,
+       helpText: "Watch the color sequence and repeat it from memory.",
+   }
 ];
