@@ -6,22 +6,22 @@ export function startMatchingPuzzle({ containerID }) {
                 <h3 id="puzzle-header">Matching Puzzle</h3>
             </header>
             <div class="grid-container" id="gridContainer">
-                <div id="matching-tile-0" class="grid-item">Tile 0</div>
-                <div id="matching-tile-1" class="grid-item">Tile 1</div>
-                <div id="matching-tile-2" class="grid-item">Tile 2</div>
-                <div id="matching-tile-3" class="grid-item">Tile 3</div>
-                <div id="matching-tile-4" class="grid-item">Tile 4</div>
-                <div id="matching-tile-5" class="grid-item">Tile 5</div>
-                <div id="matching-tile-6" class="grid-item">Tile 6</div>
-                <div id="matching-tile-7" class="grid-item">Tile 7</div>
-                <div id="matching-tile-8" class="grid-item">Tile 8</div>
-                <div id="matching-tile-9" class="grid-item">Tile 9</div>
-                <div id="matching-tile-10" class="grid-item">Tile 10</div>
-                <div id="matching-tile-11" class="grid-item">Tile 11</div>
-                <div id="matching-tile-12" class="grid-item">Tile 12</div>
-                <div id="matching-tile-13" class="grid-item">Tile 13</div>
-                <div id="matching-tile-14" class="grid-item">Tile 14</div>
-                <div id="matching-tile-15" class="grid-item">Tile 15</div>
+                <div data-id="0" class="grid-item">Tile 0</div>
+                <div data-id="1" class="grid-item">Tile 1</div>
+                <div data-id="2" class="grid-item">Tile 2</div>
+                <div data-id="3" class="grid-item">Tile 3</div>
+                <div data-id="4" class="grid-item">Tile 4</div>
+                <div data-id="5" class="grid-item">Tile 5</div>
+                <div data-id="6" class="grid-item">Tile 6</div>
+                <div data-id="7" class="grid-item">Tile 7</div>
+                <div data-id="8" class="grid-item">Tile 8</div>
+                <div data-id="9" class="grid-item">Tile 9</div>
+                <div data-id="10" class="grid-item">Tile 10</div>
+                <div data-id="11" class="grid-item">Tile 11</div>
+                <div data-id="12" class="grid-item">Tile 12</div>
+                <div data-id="13" class="grid-item">Tile 13</div>
+                <div data-id="14" class="grid-item">Tile 14</div>
+                <div data-id="15" class="grid-item">Tile 15</div>
             </div>
         </div>
     `;
@@ -37,11 +37,11 @@ export function startMatchingPuzzle({ containerID }) {
 let clickedElement1;
 let clickedElement2;
 let pairsFound = 0;
+let numberArray = [];
 const NUM_TILES = 16;
 
 
 function populateMatchingPuzzle () {
-    let numberArray = [];
     for (let i = 0; i < NUM_TILES; i++) {
         numberArray[i] = i % (NUM_TILES/2);
     }
@@ -51,8 +51,8 @@ function populateMatchingPuzzle () {
     const gridItems = document.querySelectorAll(".grid-item");
 
     gridItems.forEach((item, index) => {
-        item.textContent = numberArray[index];
-        item.style.color = "grey";
+        item.textContent = "";
+        item.style.color = "white";
     });
 }
 
@@ -69,10 +69,15 @@ function shuffleArray(array) {
 function clickTile() {
     if (clickedElement1 == null) {
         clickedElement1 = this;
+        let element1Index = +clickedElement1.dataset.id;
+        console.log(element1Index);
+        clickedElement1.textContent = numberArray[element1Index];
         clickedElement1.style.backgroundColor = "red";
     }
     else if (clickedElement2 == null) {
         clickedElement2 = this;
+        let element2Index = +clickedElement2.dataset.id;
+        clickedElement2.textContent = numberArray[element2Index];
         if (clickedElement1.textContent === clickedElement2.textContent && clickedElement1 !== clickedElement2) {
             clickedElement1.style.backgroundColor = "blue";
             clickedElement2.style.backgroundColor = "blue";
@@ -96,6 +101,8 @@ function clickTile() {
     function rehideNumber () {
         clickedElement1.style.backgroundColor = "grey";
         clickedElement2.style.backgroundColor = "grey";
+        clickedElement1.textContent = "";
+        clickedElement2.textContent = "";
         clickedElement1 = null;
         clickedElement2 = null;
     }
