@@ -1,17 +1,37 @@
 import { solvePuzzle } from "../gameController.js";
 
 const COLORS = ["red", "blue", "green", "yellow"];
-const MAX_PATTERN_LENGTH = 6;
-const START_PATTERN_LENGTH = 3;
-const FLASH_MS = 500;
-const GAP_MS = 250;
+const DIFFICULTY_CONFIG = {
+   normal: {
+       startLength: 3,
+       maxLength: 6,
+       flashMs: 500,
+       gapMs: 250,
+   },
+   challenge: {
+       startLength: 4,
+       maxLength: 8,
+       flashMs: 350,
+       gapMs: 170,
+   },
+};
+
+function getDifficultyConfig() {
+   const settings = window.getPyscheSettings?.();
+   const difficulty = settings?.difficulty === "challenge" ? "challenge" : "normal";
+   return DIFFICULTY_CONFIG[difficulty];
+}
 
 export function startPatternPuzzle({ containerID }) {
+   const config = getDifficultyConfig();
+   const difficultyLabel = config === DIFFICULTY_CONFIG.challenge ? "Challenge" : "Normal";
+
    containerID.innerHTML = `
        <div id="pattern-puzzle-layout">
            <header>
                <h3 id="puzzle-header">Pattern Puzzle</h3>
                <p id="pattern-status">Watch the color pattern, then repeat it.</p>
+               <p id="pattern-mode">Mode: ${difficultyLabel}. Change this in Settings -> Difficulty for timed runs.</p>
            </header>
            <div id="pattern-pad" style="display:grid;grid-template-columns:repeat(2,80px);gap:10px;justify-content:center;margin:15px 0;">
                ${COLORS.map((color, index) => `
@@ -32,7 +52,7 @@ export function startPatternPuzzle({ containerID }) {
    const replayButton = containerID.querySelector("#pattern-replay");
    const tiles = containerID.querySelectorAll(".pattern-tile");
 
-   let currentLength = START_PATTERN_LENGTH;
+   let currentLength = config.startLength;
    let pattern = createPattern(currentLength);
    let userInput = [];
    let acceptingInput = false;
@@ -67,8 +87,8 @@ export function startPatternPuzzle({ containerID }) {
            tile.style.opacity = "1";
            setTimeout(() => {
                tile.style.opacity = "0.65";
-               setTimeout(resolve, GAP_MS);
-           }, FLASH_MS);
+               setTimeout(resolve, config.gapMs);
+           }, config.flashMs);
        });
    }
 
@@ -90,7 +110,7 @@ export function startPatternPuzzle({ containerID }) {
        }
 
        if (userInput.length === pattern.length) {
-           if (currentLength >= MAX_PATTERN_LENGTH) {
+           if (currentLength >= config.maxLength) {
                setStatus("Great memory! Pattern solved.");
                acceptingInput = false;
                solvePuzzle();
