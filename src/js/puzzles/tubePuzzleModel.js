@@ -40,6 +40,29 @@ export const DEFAULT_LEVEL = {
     ],
 };
 
+/** Longer column: more straights to align; all start horizontal so path is broken until fixed. */
+export const CHALLENGE_LEVEL = {
+   id: "flow-challenge-01",
+   name: "Deep line",
+   rows: 7,
+   cols: 5,
+   cells: [
+       [c("empty"), c("empty"), c("source"), c("empty"), c("empty")],
+       [c("empty"), c("empty"), c("straight", 1), c("empty"), c("empty")],
+       [c("empty"), c("empty"), c("straight", 1), c("empty"), c("empty")],
+       [c("empty"), c("empty"), c("straight", 1), c("empty"), c("empty")],
+       [c("empty"), c("empty"), c("straight", 1), c("empty"), c("empty")],
+       [c("empty"), c("empty"), c("straight", 1), c("empty"), c("empty")],
+       [c("empty"), c("empty"), c("goal"), c("empty"), c("empty")],
+   ],
+};
+
+export function getTubeLevelTemplateForDifficulty() {
+   const settings = typeof window !== "undefined" ? window.getPyscheSettings?.() : undefined;
+   const isChallenge = settings?.difficulty === "challenge";
+   return isChallenge ? CHALLENGE_LEVEL : DEFAULT_LEVEL;
+}
+
 export function validateLevel(level) {
     if (!level?.cells || level.rows !== level.cells.length) {
         return false;
