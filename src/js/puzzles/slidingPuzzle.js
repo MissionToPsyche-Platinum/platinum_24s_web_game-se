@@ -1,7 +1,10 @@
 export function startSlidingPuzzle({ containerID }) {
     containerID.innerHTML = `
-        <h3>Sliding Puzzle</h3>
-    `;
+    <div class="sliding-wrapper">
+        <h3 class="sliding-header">Sliding Puzzle</h3>
+        <div id="sliding-grid"></div>
+    </div>
+`;
 
     const state = [
         {value: 0, finalPos: 0},
@@ -24,8 +27,8 @@ export function startSlidingPuzzle({ containerID }) {
 function renderSlidingPuzzle (container, state) {
     
 
-    const grid = document.createElement("div");
-    grid.className = "sliding-grid"
+    const grid = document.getElementById("sliding-grid");
+    
 
     state.forEach(tile => {
         const btn = document.createElement("button");
@@ -41,5 +44,5 @@ function renderSlidingPuzzle (container, state) {
         grid.appendChild(btn);
     });
 
-    container.appendChild(grid);
+    
 }
