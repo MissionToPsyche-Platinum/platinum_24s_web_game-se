@@ -1212,3 +1212,27 @@ button.tube-cell::-moz-focus-inner {
 .pysche-reduced-motion .tube-puzzle-flow-strip {
 	animation: none;
 }
+
+.sliding-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+#sliding-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 200px);
+    grid-template-rows: repeat(3, 200px);
+    justify-content: center;
+    align-content: center;
+    height: 100%;
+}
+
+.sliding-tile {
+    width: 200px;
+    height: 200px;
+    background-color: black;
+    color: white;
+    font-size: large;
+}
