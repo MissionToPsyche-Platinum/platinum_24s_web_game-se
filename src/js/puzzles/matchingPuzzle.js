@@ -99,8 +99,8 @@ function clickTile() {
     }
 
     function rehideNumber () {
-        clickedElement1.style.backgroundColor = "grey";
-        clickedElement2.style.backgroundColor = "grey";
+        clickedElement1.style.backgroundColor = "white";
+        clickedElement2.style.backgroundColor = "white";
         clickedElement1.textContent = "";
         clickedElement2.textContent = "";
         clickedElement1 = null;
