@@ -1,4 +1,8 @@
-import { DEFAULT_LEVEL, isSourceConnectedToGoal, validateLevel } from "./tubePuzzleModel.js";
+import {
+   getTubeLevelTemplateForDifficulty,
+   isSourceConnectedToGoal,
+   validateLevel,
+} from "./tubePuzzleModel.js";
 import { solvePuzzle } from "../gameController.js";
 
 const STROKE = "#302144";
@@ -31,10 +35,11 @@ function cloneLevel(level) {
 	};
 }
 
-function renderGrid(level) {
+function renderGrid(level, difficultyLabel) {
 	const { rows, cols, cells } = level;
 	let html = `<div class="tube-puzzle" role="application" aria-label="Tube puzzle board">
   	<p class="tube-puzzle-caption"><strong>Tube puzzle</strong> — ${level.name}</p>
+	<p class="tube-puzzle-mode">Mode: ${difficultyLabel}. Change in Settings → Difficulty for timed runs.</p>
   	<div class="tube-puzzle-grid" role="group" aria-label="Pipe tiles" aria-describedby="tube-puzzle-hint" style="--tube-rows:${rows};--tube-cols:${cols};">`;
 
 	for (let r = 0; r < rows; r++) {
@@ -209,21 +214,24 @@ function wireRotation(gridEl, level, state, tracker) {
 }
 
 export function startTubePuzzle({ containerID }) {
-	if (!validateLevel(DEFAULT_LEVEL)) {
-    	throw new Error("Invalid default tube level");
-	}
+   const template = getTubeLevelTemplateForDifficulty();
+   if (!validateLevel(template)) {
+       throw new Error("Invalid tube level template");
+   }
+	const difficultyLabel =
+    window.getPyscheSettings?.()?.difficulty === "challenge" ? "Challenge" : "Normal";
 
 	const ph = document.getElementById("puzzle-header");
 	if (ph) {
     	ph.textContent = "Tube Puzzle";
 	}
 
-	const level = cloneLevel(DEFAULT_LEVEL);
+    const level = cloneLevel(template);
 	const winState = { won: false };
 
 	containerID.innerHTML = `
-    	<div id="puzzle-layout" class="tube-puzzle-layout">
-        	${renderGrid(level)}
+       <div class="tube-puzzle-layout">
+           ${renderGrid(level, difficultyLabel)}
     	</div>
 	`;
 
