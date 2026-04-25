@@ -84,6 +84,7 @@ function renderSlidingPuzzle (container, state) {
 
     grid.innerHTML = "";
     
+    const tileSize = 200;
 
     state.forEach((tile , index) => {
         const btn = document.createElement("button");
@@ -93,6 +94,12 @@ function renderSlidingPuzzle (container, state) {
             btn.classList.add("empty");
             btn.disabled = true;
         } else {
+            const row = Math.floor(tile.value / 3);
+            const col = tile.value % 3;
+
+            btn.style.backgroundImage = `url("images/Psyche_Launch.jpg")`;
+            btn.style.backgroundSize = `${tileSize * 3}px ${tileSize * 3}px`;
+            btn.style.backgroundPosition = `-${col * tileSize}px -${row * tileSize}px`
             btn.textContent = tile.value;
             btn.addEventListener("click", () => {
                 handleClick(index, state, container);
