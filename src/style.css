@@ -1239,7 +1239,14 @@ button.tube-cell::-moz-focus-inner {
 .sliding-tile {
     width: 200px;
     height: 200px;
+    border: 1px solid #f0ffef;
+    background-repeat: no-repeat;
     background-color: black;
     color: white;
     font-size: large;
 }
+
+.sliding-tile.empty {
+    background-color: black;
+}
+
