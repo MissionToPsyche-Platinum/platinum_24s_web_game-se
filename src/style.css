@@ -1004,6 +1004,34 @@ body {
     "header"
     "main";
 }
+
+/* Pattern puzzle */
+.pattern-tile {
+   transition: transform 120ms ease, outline-color 120ms ease, opacity 120ms ease;
+   outline: 3px solid transparent;
+   outline-offset: 2px;
+}
+
+.pattern-tile--pressed {
+   transform: scale(0.96);
+}
+
+.pattern-tile--correct {
+   outline-color: rgba(46, 125, 50, 0.95);
+}
+
+.pattern-tile--wrong {
+   outline-color: rgba(198, 40, 40, 0.95);
+}
+
+.pattern-tile--playback {
+   outline-color: rgba(249, 160, 0, 0.9);
+}
+
+.pysche-reduced-motion .pattern-tile {
+   transition: none;
+}
+
 /* Tube puzzle */
 .tube-puzzle-layout {
 	display: flex;

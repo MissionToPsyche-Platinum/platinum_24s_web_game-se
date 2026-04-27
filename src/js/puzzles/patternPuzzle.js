@@ -1,6 +1,8 @@
 import { solvePuzzle } from "../gameController.js";
 
 const COLORS = ["red", "blue", "green", "yellow"];
+const COLOR_TONES_HZ = [329.63, 392.0, 261.63, 440.0]; // E4, G4, C4, A4
+
 const DIFFICULTY_CONFIG = {
    normal: {
        startLength: 3,
@@ -57,6 +59,63 @@ export function startPatternPuzzle({ containerID }) {
    let userInput = [];
    let acceptingInput = false;
 
+    // Audio (simple WebAudio tones; gated by Settings -> Sound effects)
+   let audioCtx = null;
+   function soundEnabled() {
+       return window.getPyscheSettings?.()?.soundEnabled ?? true;
+   }
+
+   function ensureAudio() {
+       if (audioCtx || !soundEnabled()) return audioCtx;
+       const Ctx = window.AudioContext || window.webkitAudioContext;
+       if (!Ctx) return null;
+       audioCtx = new Ctx();
+       return audioCtx;
+   }
+
+   function playToneForIndex(index, { type = "press" } = {}) {
+       if (!soundEnabled()) return;
+       const ctx = ensureAudio();
+       if (!ctx) return;
+
+       // Some browsers require a user gesture to start audio.
+       if (ctx.state === "suspended") ctx.resume().catch(() => {});
+
+       const now = ctx.currentTime;
+       const osc = ctx.createOscillator();
+       const gain = ctx.createGain();
+
+       const base = COLOR_TONES_HZ[index] ?? 440.0;
+       const freq = type === "wrong" ? 140.0 : type === "correct" ? base * 1.25 : base;
+       const dur = type === "wrong" ? 0.12 : 0.08;
+
+       osc.type = type === "wrong" ? "sawtooth" : "sine";
+       osc.frequency.setValueAtTime(freq, now);
+
+       gain.gain.setValueAtTime(0.0001, now);
+       gain.gain.exponentialRampToValueAtTime(type === "wrong" ? 0.18 : 0.12, now + 0.01);
+       gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+
+       osc.connect(gain);
+       gain.connect(ctx.destination);
+       osc.start(now);
+       osc.stop(now + dur + 0.02);
+   }
+
+
+   function clearFeedbackClasses(tile) {
+       tile.classList.remove("pattern-tile--pressed", "pattern-tile--correct", "pattern-tile--wrong");
+   }
+
+   function showTileFeedback(tile, kind) {
+       if (!tile) return;
+       clearFeedbackClasses(tile);
+       tile.classList.add("pattern-tile--pressed");
+       if (kind === "correct") tile.classList.add("pattern-tile--correct");
+       if (kind === "wrong") tile.classList.add("pattern-tile--wrong");
+       setTimeout(() => clearFeedbackClasses(tile), 220);
+   }
+
    async function showPattern() {
        acceptingInput = false;
        userInput = [];
@@ -98,19 +157,27 @@ export function startPatternPuzzle({ containerID }) {
        const index = Number(event.currentTarget?.dataset.index);
        if (Number.isNaN(index)) return;
 
+       const tile = tiles[index];
+       playToneForIndex(index, { type: "press" });
+       showTileFeedback(tile, "press");
+
        await flashTile(index);
        userInput.push(index);
 
        const step = userInput.length - 1;
        if (userInput[step] !== pattern[step]) {
+           playToneForIndex(index, { type: "wrong" });
+           showTileFeedback(tile, "wrong");
            setStatus("Incorrect pattern. Try this round again.");
            acceptingInput = false;
            setTimeout(showPattern, 600);
            return;
        }
+        showTileFeedback(tile, "correct");
 
        if (userInput.length === pattern.length) {
            if (currentLength >= config.maxLength) {
+               playToneForIndex(index, { type: "correct" });
                setStatus("Great memory! Pattern solved.");
                acceptingInput = false;
                solvePuzzle();
@@ -119,6 +186,7 @@ export function startPatternPuzzle({ containerID }) {
 
            currentLength += 1;
            pattern = createPattern(currentLength);
+           playToneForIndex(index, { type: "correct" });
            setStatus("Correct! Next pattern is longer.");
            setTimeout(showPattern, 700);
        }
