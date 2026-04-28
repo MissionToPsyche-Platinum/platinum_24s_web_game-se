@@ -926,21 +926,41 @@ body {
     height: 80vh;
 }
 
-#logicGrid {
+.logic-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 2px;
 
     width: 100%;
     max-width: 500px;
     aspect-ratio: 1 / 1;
 }
 
-#logicGrid input {
+.logic-grid input {
     width: 100%;
     height: 100%;
     font-size: 2rem;
     text-align: center;
+}
+
+.logic-grid input:nth-child(3n) {
+  border-right: 3px solid black;
+}
+
+.logic-grid input:nth-child(3n + 1) {
+  border-left: 3px solid black;
+}
+
+.logic-grid input:nth-child(n + 19):nth-child(-n + 27),
+.logic-grid input:nth-child(n + 46):nth-child(-n + 54),
+.logic-grid input:nth-child(n + 73):nth-child(-n + 81) {
+  border-bottom: 3px solid black;
+}
+
+.logic-grid input:nth-child(-n + 9),
+.logic-grid input:nth-child(n + 28):nth-child(-n + 36),
+.logic-grid input:nth-child(n + 55):nth-child(-n + 63) {
+  border-top: 3px solid black;
 }
 
 #number-logic-header {
@@ -984,6 +1004,34 @@ body {
     "header"
     "main";
 }
+
+/* Pattern puzzle */
+.pattern-tile {
+   transition: transform 120ms ease, outline-color 120ms ease, opacity 120ms ease;
+   outline: 3px solid transparent;
+   outline-offset: 2px;
+}
+
+.pattern-tile--pressed {
+   transform: scale(0.96);
+}
+
+.pattern-tile--correct {
+   outline-color: rgba(46, 125, 50, 0.95);
+}
+
+.pattern-tile--wrong {
+   outline-color: rgba(198, 40, 40, 0.95);
+}
+
+.pattern-tile--playback {
+   outline-color: rgba(249, 160, 0, 0.9);
+}
+
+.pysche-reduced-motion .pattern-tile {
+   transition: none;
+}
+
 /* Tube puzzle */
 .tube-puzzle-layout {
 	display: flex;
@@ -1002,6 +1050,13 @@ body {
 	color: #222;
 }
 
+.tube-puzzle-mode {
+   margin: 0 0 8px;
+   font-size: 0.85rem;
+   color: #444;
+   text-align: center;
+}
+
 .tube-puzzle {
 	width: 100%;
 }
@@ -1009,7 +1064,7 @@ body {
 .tube-puzzle-grid {
 	display: grid;
 	grid-template-columns: repeat(var(--tube-cols, 5), minmax(44px, 1fr));
-	grid-template-rows: repeat(var(--tube-rows, 5), minmax(44px, 1fr));
+    grid-template-rows: repeat(var(--tube-rows, 5), minmax(44px, auto));
 	gap: 4px;
 	width: 100%;
 	max-width: 420px;
@@ -1191,5 +1246,35 @@ button.tube-cell::-moz-focus-inner {
 
 .pysche-reduced-motion .tube-puzzle-flow-strip {
 	animation: none;
+}
+
+.sliding-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+#sliding-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 200px);
+    grid-template-rows: repeat(3, 200px);
+    justify-content: center;
+    align-content: center;
+    height: 100%;
+}
+
+.sliding-tile {
+    width: 200px;
+    height: 200px;
+    border: 1px solid #f0ffef;
+    background-repeat: no-repeat;
+    background-color: black;
+    color: white;
+    font-size: large;
+}
+
+.sliding-tile.empty {
+    background-color: black;
 }
 
