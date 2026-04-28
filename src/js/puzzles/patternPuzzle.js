@@ -32,10 +32,12 @@ export function startPatternPuzzle({ containerID }) {
        <div id="pattern-puzzle-layout">
            <header>
                <h3 id="puzzle-header">Pattern Puzzle</h3>
-               <p id="pattern-status">Watch the color pattern, then repeat it.</p>
-               <p id="pattern-mode">Mode: ${difficultyLabel}. Change this in Settings -> Difficulty for timed runs.</p>
+               <p id="pattern-status" role="status" aria-live="polite" aria-atomic="true">Watch the color pattern, then repeat it.</p>               <p id="pattern-mode">Mode: ${difficultyLabel}. Change this in Settings -> Difficulty for timed runs.</p>
            </header>
-           <div id="pattern-pad" style="display:grid;grid-template-columns:repeat(2,80px);gap:10px;justify-content:center;margin:15px 0;">
+           <p id="pattern-a11y-hint" class="pattern-hint">
+               Keyboard: use <strong>1–4</strong> to press tiles, or <strong>arrow keys</strong> to move, then <strong>Enter/Space</strong> to press. Press <strong>R</strong> to replay.
+           </p>
+           <div id="pattern-pad" role="group" aria-label="Pattern tiles" aria-describedby="pattern-a11y-hint" style="display:grid;grid-template-columns:repeat(2,80px);gap:10px;justify-content:center;margin:15px 0;">
                ${COLORS.map((color, index) => `
                    <button
                        type="button"
@@ -43,6 +45,7 @@ export function startPatternPuzzle({ containerID }) {
                        data-index="${index}"
                        style="height:80px;border:2px solid #222;border-radius:8px;background:${color};opacity:0.65;cursor:pointer;"
                        aria-label="${color} tile"
+                       aria-keyshortcuts="${index + 1}"
                    ></button>
                `).join("")}
            </div>
@@ -58,6 +61,7 @@ export function startPatternPuzzle({ containerID }) {
    let pattern = createPattern(currentLength);
    let userInput = [];
    let acceptingInput = false;
+   let focusedIndex = 0;
 
     // Audio (simple WebAudio tones; gated by Settings -> Sound effects)
    let audioCtx = null;
@@ -115,9 +119,31 @@ export function startPatternPuzzle({ containerID }) {
        if (kind === "wrong") tile.classList.add("pattern-tile--wrong");
        setTimeout(() => clearFeedbackClasses(tile), 220);
    }
+    function setTilesDisabled(disabled) {
+       tiles.forEach((t) => {
+           t.disabled = disabled;
+           if (disabled) t.classList.add("pattern-tile--disabled");
+           else t.classList.remove("pattern-tile--disabled");
+       });
+   }
+
+
+   function clampIndex(i) {
+       if (i < 0) return 0;
+       if (i >= tiles.length) return tiles.length - 1;
+       return i;
+   }
+
+
+   function focusTile(i) {
+       focusedIndex = clampIndex(i);
+       const t = tiles[focusedIndex];
+       if (t && !t.disabled) t.focus({ preventScroll: true });
+   }
 
    async function showPattern() {
        acceptingInput = false;
+       setTilesDisabled(true);
        userInput = [];
        setStatus(`Memorize ${currentLength} colors.`);
        for (const index of pattern) {
@@ -125,6 +151,8 @@ export function startPatternPuzzle({ containerID }) {
        }
        setStatus("Your turn: click colors in order.");
        acceptingInput = true;
+       setTilesDisabled(false);
+       focusTile(focusedIndex);
    }
 
    function setStatus(message) {
@@ -170,6 +198,7 @@ export function startPatternPuzzle({ containerID }) {
            showTileFeedback(tile, "wrong");
            setStatus("Incorrect pattern. Try this round again.");
            acceptingInput = false;
+           setTilesDisabled(true);
            setTimeout(showPattern, 600);
            return;
        }
@@ -188,11 +217,60 @@ export function startPatternPuzzle({ containerID }) {
            pattern = createPattern(currentLength);
            playToneForIndex(index, { type: "correct" });
            setStatus("Correct! Next pattern is longer.");
+           setTilesDisabled(true);
            setTimeout(showPattern, 700);
        }
    }
 
-   tiles.forEach((tile) => tile.addEventListener("click", onTileClick));
+ function onKeyDown(e) {
+       // Ignore if user is typing in an input somewhere (future-proof).
+       const tag = e.target?.tagName;
+       if (tag === "INPUT" || tag === "TEXTAREA" || e.target?.isContentEditable) return;
+
+       // Global shortcuts for this puzzle region.
+       if (e.key === "r" || e.key === "R") {
+           e.preventDefault();
+           showPattern();
+           return;
+       }
+
+       const numberIndex = ["1", "2", "3", "4"].indexOf(e.key);
+       if (numberIndex !== -1) {
+           e.preventDefault();
+           if (!tiles[numberIndex]?.disabled) tiles[numberIndex].click();
+           return;
+       }
+
+       const move = (di) => {
+           e.preventDefault();
+           focusTile(focusedIndex + di);
+       };
+
+       // 2x2 grid: indices 0 1 / 2 3
+       if (e.key === "ArrowLeft") return move(focusedIndex % 2 === 1 ? -1 : 0);
+       if (e.key === "ArrowRight") return move(focusedIndex % 2 === 0 ? 1 : 0);
+       if (e.key === "ArrowUp") return move(focusedIndex >= 2 ? -2 : 0);
+       if (e.key === "ArrowDown") return move(focusedIndex <= 1 ? 2 : 0);
+
+       if (e.key === "Enter" || e.key === " ") {
+           // Space key is " " in key values.
+           e.preventDefault();
+           const t = tiles[focusedIndex];
+           if (t && !t.disabled) t.click();
+       }
+   }
+
+   function updateFocusedIndexFromEvent(e) {
+       const idx = Number(e.currentTarget?.dataset.index);
+       if (!Number.isNaN(idx)) focusedIndex = idx;
+   }
+
+   tiles.forEach((tile) => {
+       tile.addEventListener("click", onTileClick);
+       tile.addEventListener("focus", updateFocusedIndexFromEvent);
+   });
+
    replayButton?.addEventListener("click", showPattern);
+   containerID.addEventListener("keydown", onKeyDown);
    showPattern();
 }
