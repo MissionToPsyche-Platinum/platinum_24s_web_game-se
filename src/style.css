@@ -987,9 +987,9 @@ body {
 
 .maze-item {
     border: 2px solid black;
-    padding-top: 65px;
-    height: 180px;
-    width: 180px;
+    padding-top: 30px;
+    height: 75px;
+    width: 100px;
     text-align: center;
     align-items: center;
     font-size: 28;
@@ -1000,8 +1000,8 @@ body {
 .maze-container {
     display: grid;
     place-items: center;
-    grid-template-rows: repeat(4, 1fr);
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    grid-template-columns: repeat(10, 1fr);
     border: 2px solid black;
     /* min-height: 100vh; */
 }
@@ -1013,6 +1013,10 @@ body {
     grid-template-areas: 
     "header"
     "main";
+}
+
+#maze-puzzle-header {
+    font-size: 22;
 }
 
 /* Pattern puzzle */
