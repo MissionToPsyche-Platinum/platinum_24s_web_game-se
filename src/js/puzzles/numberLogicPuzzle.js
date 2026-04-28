@@ -1,7 +1,11 @@
+import { solvePuzzle } from "../gameController.js";
+import { puzzleNotSolvedMessage } from "../gameController.js";
+import { puzzleSolvedMessage } from "../gameController.js";
 //9 x 9 sudoku puzzle implementation
 export function startNumberLogicPuzzle({ containerID }) {
     let board = Array.from({ length: 9 }, () => Array(9).fill(0));
     fillSudokuPuzzle(board);
+    let checkBoard = board.map(row => [...row]);
     //Added difficulty functionality for futher implementation
     const difficulty = {
         EASY: 10,
@@ -96,11 +100,21 @@ export function startNumberLogicPuzzle({ containerID }) {
                 <input type = "number" min = "1" max = "9">
                 <input type = "number" min = "1" max = "9">
             </div>
+            <button id = "submit">Submit</button>
         </div>
     `;
 
     removeCells(board, difficulty.EASY);
     renderSudokuUI(board);
+    const submitButton = document.getElementById("submit");
+    submitButton.addEventListener("click", function() {
+        let checked = checkWin(checkBoard);
+        if(checked === true) {
+            solvePuzzle();
+        } else {
+            incorrectSolvePuzzle();
+        }
+    });
 
     //Fills the sudoku puzzle with random numbers (Checked by isValid)
     function fillSudokuPuzzle(board) {
@@ -177,5 +191,36 @@ export function startNumberLogicPuzzle({ containerID }) {
                 count--;
             }
         }
+    }
+
+    //Gets current board state in order to detect win
+    function getCurrentBoard() {
+        const inputs = document.querySelectorAll(".logic-grid input");
+        let current = [];
+        for (let i = 0; i < 9; i++) {
+            current[i] = [];
+            for (let j = 0; j < 9; j++) {
+                const val = inputs[i * 9 + j].value;
+                current[i][j] = val ? parseInt(val) : 0;
+            }
+        }
+        return current;
+    }
+
+    function checkWin(checkBoard) {
+        const current = getCurrentBoard();
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                if (current[i][j] !== checkBoard[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    function incorrectSolvePuzzle() {
+        puzzleNotSolvedMessage.style.display = 'block';
+        solvePuzzleMessage.style.display = 'none';
     }
 }

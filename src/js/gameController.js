@@ -8,7 +8,8 @@ const gameScreenHeader = document.getElementById("second-header");
 const newGameButton = document.getElementById("new-game");
 const winMessage = document.getElementById("win-message");
 const solvePuzzleMessage = document.getElementById("solve-puzzle-message");
-const puzzleSolvedMessage = document.getElementById("puzzle-solved-message");
+export const puzzleSolvedMessage = document.getElementById("puzzle-solved-message");
+export const puzzleNotSolvedMessage = document.getElementById("puzzle-not-solved-message");
 const nextPuzzleButton = document.getElementById("next-puzzle");
 const displayFactMessage = document.getElementById("display-fact-message");
 const gridContainer = document.getElementById("grid-container");
@@ -62,6 +63,7 @@ function startGame() {
     newGameButton.style.display = 'none';
     winMessage.style.display= 'none';
     puzzleSolvedMessage.style.display = 'none';
+    puzzleNotSolvedMessage.style.display = 'none';
     clearMissionFact();
     solvePuzzleMessage.style.display = 'none';
     gameState.puzzleOrder = shufflePuzzles(puzzles);
@@ -80,7 +82,7 @@ function gameIsOver(x) {
 
 export function solvePuzzle() {
     gameState.solvedPuzzles += 1;
-    
+    puzzleNotSolvedMessage.style.display = 'none';
     puzzleSolvedMessage.style.display = 'block';
     solvePuzzleMessage.style.display = 'none';
     showMissionFactForSolveCount(gameState.solvedPuzzles);

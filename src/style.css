@@ -963,6 +963,16 @@ body {
   border-top: 3px solid black;
 }
 
+#submit {
+   background-color: #302144;
+    border-color: #302144;
+    color: #ef5966;
+    font-weight: bold;
+    padding: 10px 10px;
+    border-radius: 5px;
+    font-family: Helvetica;
+}
+
 #number-logic-header {
     margin-bottom: 20px;
 }
