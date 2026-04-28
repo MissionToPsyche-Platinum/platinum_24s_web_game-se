@@ -1042,6 +1042,23 @@ body {
    outline-color: rgba(249, 160, 0, 0.9);
 }
 
+.pattern-tile:focus-visible {
+   outline-color: rgba(48, 33, 68, 0.95);
+}
+
+.pattern-tile--disabled {
+   cursor: not-allowed;
+   opacity: 0.4;
+}
+
+.pattern-hint {
+   margin: 8px auto 0;
+   max-width: 520px;
+   font-size: 0.9rem;
+   color: #222;
+   text-align: center;
+}
+
 .pysche-reduced-motion .pattern-tile {
    transition: none;
 }
