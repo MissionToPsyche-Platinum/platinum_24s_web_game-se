@@ -5,6 +5,9 @@ export function startSlidingPuzzle({ containerID }) {
     <div class="sliding-wrapper">
         <h3 class="sliding-header">Sliding Puzzle</h3>
         <div id="sliding-grid"></div>
+        <div id="solved-overlay"></div>
+        <button id="solved-puzzle" class="button">View Solved Puzzle</button>
+        <p>Hold button to view solved puzzle image</p>
     </div>
 `;
 
@@ -20,11 +23,25 @@ export function startSlidingPuzzle({ containerID }) {
         {value: null, finalPos: 8}
     ]
 
+    setupHelpButton();
     state = shufflePieces (state);
     renderSlidingPuzzle (containerID, state);
 
 
     
+}
+
+function setupHelpButton() {
+    const btn = document.getElementById("solved-puzzle");
+    const overlay = document.getElementById("solved-overlay");
+
+    btn.addEventListener("mousedown", () => {
+        overlay.style.display = "block";
+    });
+
+    btn.addEventListener("mouseup", () => {
+        overlay.style.display = "none";
+    });
 }
 
 function shufflePieces (pieces) {
