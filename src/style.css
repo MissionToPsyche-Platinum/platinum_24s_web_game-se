@@ -1288,3 +1288,17 @@ button.tube-cell::-moz-focus-inner {
     background-color: black;
 }
 
+#solved-overlay {
+    position: absolute;
+    margin-top: 20px;
+    width: 600px;
+    height: 600px;
+
+    transform: -translateX(-50%);
+
+    background-image: url("images/Psyche_Launch.jpg");
+    background-size: 600px 600px;
+
+    display: none;
+}
+
