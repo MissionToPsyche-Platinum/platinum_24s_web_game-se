@@ -57,10 +57,32 @@ export const CHALLENGE_LEVEL = {
    ],
 };
 
+/** Winding path: a "snake" that requires corners/straights to connect. */
+export const SNAKE_LEVEL = {
+   id: "flow-challenge-snake-01",
+   name: "Snake run",
+   rows: 5,
+   cols: 5,
+   cells: [
+       // Solvable winding path. Solution path:
+       // source (0,0) ↓ to (4,0) → to (4,3) ↑ to (2,3) → to (2,4) ↓ to goal (4,4)
+       //
+       // Many pieces start rotated (scrambled), so the player must click to rotate.
+       [c("source"), c("empty"), c("empty"), c("empty"), c("empty")],
+       [c("straight", 1), c("empty"), c("empty"), c("empty"), c("empty")],
+       [c("straight", 1), c("empty"), c("empty"), c("corner", 3), c("corner", 1)],
+       [c("straight", 1), c("empty"), c("empty"), c("straight", 1), c("straight", 1)],
+       [c("corner", 2), c("straight", 1), c("straight", 1), c("corner", 0), c("goal")],
+   ],
+};
+
 export function getTubeLevelTemplateForDifficulty() {
    const settings = typeof window !== "undefined" ? window.getPyscheSettings?.() : undefined;
    const isChallenge = settings?.difficulty === "challenge";
-   return isChallenge ? CHALLENGE_LEVEL : DEFAULT_LEVEL;
+   if (!isChallenge) return DEFAULT_LEVEL;
+
+   // Challenge mode rotates between harder templates.
+   return Math.random() < 0.5 ? CHALLENGE_LEVEL : SNAKE_LEVEL;
 }
 
 export function validateLevel(level) {
