@@ -116,6 +116,12 @@ export function startMazePuzzle({ containerID }) {
                 <div data-id="98" class="maze-item" tabIndex = "0">Tile 98</div>
                 <div data-id="99" class="maze-item" tabIndex = "0">Tile 99</div>
             </div>
+            <div id="buttons">
+                <button id="up-button>up</button>
+                <button id="down-button>down</button>
+                <button id="left-button>left</button>
+                <button id="right-button>right</button>
+            </div>
         </div>
     `;
 
@@ -395,4 +401,8 @@ function createNormalMaze() {
     location[98] = new mazeTile(true, false, true, false, "");
     location[99] = new mazeTile(true, false, false, false, "End");
     
+}
+
+function arrowButtons () {
+
 }

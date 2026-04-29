@@ -984,15 +984,18 @@ body {
 .main {
     grid-area: main;
 }
+.buttons {
+    grid-area: buttons;
+}
 
 .maze-item {
     border: 2px solid black;
-    padding-top: 30px;
-    height: 75px;
-    width: 100px;
+    padding-top: 15px;
+    height: 60px;
+    width: 75px;
     text-align: center;
     align-items: center;
-    font-size: 28;
+    font-size: 24;
     
     /* aspect-ratio: 1/1; */
 }
@@ -1012,7 +1015,8 @@ body {
     grid-template-rows: auto 1fr;
     grid-template-areas: 
     "header"
-    "main";
+    "main",
+    "buttons";
 }
 
 #maze-puzzle-header {
