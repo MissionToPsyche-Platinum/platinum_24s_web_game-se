@@ -876,30 +876,29 @@ body {
 .grid-container {
     display: grid;
     place-items: center;
+    background-clip: padding-box;
     grid-template-rows: repeat(4, 1fr);
     grid-template-columns: repeat(4, 1fr);
-    border: 2px solid black;
-    /* min-height: 100vh; */
+    border: 2px solid rgba(249, 160, 0, 0.35);
 }
 
 .grid-item {
-    border: 2px solid #302144;
+    border: 2px solid rgba(249, 160, 0, 0.35);
+    background-clip: border-box;
     padding-top: 65px;
     height: 180px;
     width: 180px;
     text-align: center;
     align-items: center;
-    background-color: white;
-    color: grey;
     font-weight: 700;
-    font-size: 28;;
-    
-    /* aspect-ratio: 1/1; */
+    font-size: 28;
 }
 
-.clicked {
-    background-color: blue;
+#matching-puzzle-header {
+    font-size: 22;
+    color: #702963;
 }
+
 
 #matching-puzzle-header {
     display: grid;
