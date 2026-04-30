@@ -134,6 +134,43 @@ export function validateLevel(level) {
 
 const opp = (d) => (d + 2) % 4;
 
+/** BFS from source through currently connected open edges; returns "r,c" cell keys. */
+export function getCellsConnectedToSource(level) {
+  const { rows, cols, cells } = level;
+  let sr = -1;
+  let sc = -1;
+  for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+          if (cells[r][c].kind === "source") {
+              sr = r;
+              sc = c;
+          }
+      }
+  }
+  if (sr < 0) return new Set();
+
+
+  const key = (r, c) => `${r},${c}`;
+  const seen = new Set([key(sr, sc)]);
+  const q = [[sr, sc]];
+  while (q.length > 0) {
+      const [r, c] = q.shift();
+      const cell = cells[r][c];
+      for (const d of getOpenDirections(cell.kind, cell.rotation)) {
+          const nr = r + DELTA[d][0];
+          const nc = c + DELTA[d][1];
+          if (nr < 0 || nr >= rows || nc < 0 || nc >= cols) continue;
+          const ncell = cells[nr][nc];
+          if (!getOpenDirections(ncell.kind, ncell.rotation).includes(opp(d))) continue;
+          const k = key(nr, nc);
+          if (seen.has(k)) continue;
+          seen.add(k);
+          q.push([nr, nc]);
+      }
+  }
+  return seen;
+}
+
 /** BFS along open pipe edges; true if source cell links to goal cell. */
 export function isSourceConnectedToGoal(level) {
    const { rows, cols, cells } = level;

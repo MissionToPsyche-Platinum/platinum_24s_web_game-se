@@ -1,4 +1,5 @@
 import {
+   getCellsConnectedToSource,
    getTubeLevelFromPack,
    isSourceConnectedToGoal,
    validateLevel,
@@ -77,6 +78,25 @@ function setGridSolved(gridEl, solved) {
         	btn.classList.remove("tube-cell--selected");
     	}
 	});
+}
+
+function updateFlowPreview(level, gridEl, layoutEl) {
+   const connected = getCellsConnectedToSource(level);
+   const goalConnected = isSourceConnectedToGoal(level);
+
+
+   gridEl.querySelectorAll(".tube-cell").forEach((cellEl) => {
+       const r = Number(cellEl.dataset.r);
+       const c = Number(cellEl.dataset.c);
+       const k = `${r},${c}`;
+       const cell = level.cells[r]?.[c];
+       const isPipe = cell && cell.kind !== "empty";
+       cellEl.classList.toggle("tube-cell--flowing", isPipe && connected.has(k));
+   });
+
+
+   layoutEl?.classList.toggle("tube-puzzle-layout--flowing", connected.size > 1);
+   layoutEl?.classList.toggle("tube-puzzle-layout--goal-connected", goalConnected);
 }
 
 function tryWin(level, gridEl, state) {
@@ -192,7 +212,7 @@ function wireDpad(container, gridEl, rows, cols, tracker) {
 	});
 }
 
-function wireRotation(gridEl, level, state, tracker) {
+function wireRotation(gridEl, level, state, tracker, layoutEl) {
 	gridEl.addEventListener("click", (e) => {
     	const btn = e.target.closest("button.tube-cell");
     	if (!btn || btn.disabled || !gridEl.contains(btn)) {
@@ -209,6 +229,7 @@ function wireRotation(gridEl, level, state, tracker) {
     	btn.setAttribute("aria-label", label);
     	btn.title = label;
     	btn.focus({ preventScroll: true });
+		updateFlowPreview(level, gridEl, layoutEl);
     	tryWin(level, gridEl, state);
 	});
 }
@@ -247,7 +268,8 @@ export function startTubePuzzle({ containerID }) {
     	}
     	wireKeyboardNav(grid, level.rows, level.cols, tracker);
     	wireDpad(layout, grid, level.rows, level.cols, tracker);
-    	wireRotation(grid, level, winState, tracker);
-    	tryWin(level, grid, winState);
+        wireRotation(grid, level, winState, tracker, layout);
+        updateFlowPreview(level, grid, layout);
+        tryWin(level, grid, winState);
 	}
 }
