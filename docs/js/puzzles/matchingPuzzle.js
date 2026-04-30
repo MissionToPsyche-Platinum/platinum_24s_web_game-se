@@ -3,7 +3,7 @@ export function startMatchingPuzzle({ containerID }) {
     containerID.innerHTML = `
         <div id="puzzle-layout">
             <header>
-                <h3 id="puzzle-header">Matching Puzzle</h3>
+                <h3 id="matching-puzzle-header">Matching Puzzle</h3>
             </header>
             <div class="grid-container" id="gridContainer">
                 <div data-id="0" class="grid-item">Tile 0</div>
@@ -52,7 +52,7 @@ function populateMatchingPuzzle () {
 
     gridItems.forEach((item, index) => {
         item.textContent = "";
-        item.style.color = "white";
+        item.style.color = "rgba(249, 160, 0, 1)";
     });
 }
 
@@ -70,17 +70,18 @@ function clickTile() {
     if (clickedElement1 == null) {
         clickedElement1 = this;
         let element1Index = +clickedElement1.dataset.id;
-        console.log(element1Index);
         clickedElement1.textContent = numberArray[element1Index];
-        clickedElement1.style.backgroundColor = "red";
+        clickedElement1.style.border = 'solid #702963'
     }
     else if (clickedElement2 == null) {
         clickedElement2 = this;
         let element2Index = +clickedElement2.dataset.id;
         clickedElement2.textContent = numberArray[element2Index];
         if (clickedElement1.textContent === clickedElement2.textContent && clickedElement1 !== clickedElement2) {
-            clickedElement1.style.backgroundColor = "blue";
-            clickedElement2.style.backgroundColor = "blue";
+            clickedElement1.style.backgroundColor = '#301934';
+            clickedElement2.style.backgroundColor = '#301934';
+            clickedElement1.style.border = 'solid rgba(249, 160, 0, 0.35)';
+            clickedElement2.style.border = 'solid rgba(249, 160, 0, 0.35)';
             clickedElement1.removeEventListener('click', clickTile);
             clickedElement2.removeEventListener('click', clickTile);
             clickedElement1 = null;
@@ -88,19 +89,22 @@ function clickTile() {
             pairsFound++;
         }
         else {
-            clickedElement2.style.backgroundColor = "red";
+            clickedElement2.style.border = 'solid #702963';
             setTimeout(rehideNumber, 1000);
 
         }
         
         if (pairsFound === NUM_TILES/2) {
+            pairsFound = 0;
             solvePuzzle();
         }
     }
 
     function rehideNumber () {
-        clickedElement1.style.backgroundColor = "white";
-        clickedElement2.style.backgroundColor = "white";
+        clickedElement1.style.background = 'transparent';
+        clickedElement2.style.background = 'transparent';
+        clickedElement1.style.border = 'solid rgba(249, 160, 0, 0.35)';
+        clickedElement2.style.border = 'solid rgba(249, 160, 0, 0.35)';
         clickedElement1.textContent = "";
         clickedElement2.textContent = "";
         clickedElement1 = null;
