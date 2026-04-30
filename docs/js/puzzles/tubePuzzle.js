@@ -1,5 +1,5 @@
 import {
-   getTubeLevelTemplateForDifficulty,
+   getTubeLevelFromPack,
    isSourceConnectedToGoal,
    validateLevel,
 } from "./tubePuzzleModel.js";
@@ -35,11 +35,11 @@ function cloneLevel(level) {
 	};
 }
 
-function renderGrid(level, difficultyLabel) {
+function renderGrid(level, metaLabel) {
 	const { rows, cols, cells } = level;
 	let html = `<div class="tube-puzzle" role="application" aria-label="Tube puzzle board">
   	<p class="tube-puzzle-caption"><strong>Tube puzzle</strong> — ${level.name}</p>
-	<p class="tube-puzzle-mode">Mode: ${difficultyLabel}. Change in Settings → Difficulty for timed runs.</p>
+    <p class="tube-puzzle-mode">${metaLabel}</p>
   	<div class="tube-puzzle-grid" role="group" aria-label="Pipe tiles" aria-describedby="tube-puzzle-hint" style="--tube-rows:${rows};--tube-cols:${cols};">`;
 
 	for (let r = 0; r < rows; r++) {
@@ -214,14 +214,14 @@ function wireRotation(gridEl, level, state, tracker) {
 }
 
 export function startTubePuzzle({ containerID }) {
-   const template = getTubeLevelTemplateForDifficulty();
-   if (!validateLevel(template)) {
+   const picked = getTubeLevelFromPack();
+   const template = picked.level;
+     if (!validateLevel(template)) {
        throw new Error("Invalid tube level template");
    }
-	const difficultyLabel =
-    window.getPyscheSettings?.()?.difficulty === "challenge" ? "Challenge" : "Normal";
-
-	const ph = document.getElementById("puzzle-header");
+   const difficultyLabel = picked.difficulty === "challenge" ? "Challenge" : "Normal";
+   const metaLabel = `Mode: ${difficultyLabel}. Level ${picked.index + 1}/${picked.total}. Change in Settings → Difficulty for timed runs.`;
+   const ph = document.getElementById("puzzle-header");
 	if (ph) {
     	ph.textContent = "Tube Puzzle";
 	}
@@ -231,7 +231,7 @@ export function startTubePuzzle({ containerID }) {
 
 	containerID.innerHTML = `
        <div class="tube-puzzle-layout">
-           ${renderGrid(level, difficultyLabel)}
+            ${renderGrid(level, metaLabel)}
     	</div>
 	`;
 
