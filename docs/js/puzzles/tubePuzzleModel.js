@@ -40,6 +40,34 @@ export const DEFAULT_LEVEL = {
     ],
 };
 
+export const NORMAL_LEVEL_2 = {
+   id: "flow-normal-02",
+   name: "Corner hop",
+   rows: 5,
+   cols: 5,
+   cells: [
+       [c("empty"), c("empty"), c("source"), c("empty"), c("empty")],
+       [c("empty"), c("empty"), c("corner", 1), c("straight", 1), c("corner")],
+       [c("empty"), c("empty"), c("empty"), c("corner", 2), c("corner")],
+       [c("empty"), c("empty"), c("empty"), c("straight", 1), c("empty")],
+       [c("empty"), c("empty"), c("empty"), c("goal"), c("empty")],
+   ],
+};
+
+export const NORMAL_LEVEL_3 = {
+   id: "flow-normal-03",
+   name: "Mini zigzag",
+   rows: 5,
+   cols: 5,
+   cells: [
+       [c("empty"), c("source"), c("corner", 2), c("empty"), c("empty")],
+       [c("empty"), c("empty"), c("corner", 0), c("corner", 1), c("empty")],
+       [c("empty"), c("empty"), c("empty"), c("corner", 3), c("corner", 1)],
+       [c("empty"), c("empty"), c("empty"), c("empty"), c("straight", 1)],
+       [c("empty"), c("empty"), c("empty"), c("empty"), c("goal")],
+   ],
+};
+
 /** Longer column: more straights to align; all start horizontal so path is broken until fixed. */
 export const CHALLENGE_LEVEL = {
    id: "flow-challenge-01",
@@ -76,13 +104,25 @@ export const SNAKE_LEVEL = {
    ],
 };
 
-export function getTubeLevelTemplateForDifficulty() {
-   const settings = typeof window !== "undefined" ? window.getPyscheSettings?.() : undefined;
-   const isChallenge = settings?.difficulty === "challenge";
-   if (!isChallenge) return DEFAULT_LEVEL;
+const LEVEL_PACKS = {
+   normal: [DEFAULT_LEVEL, NORMAL_LEVEL_2, NORMAL_LEVEL_3],
+   challenge: [CHALLENGE_LEVEL, SNAKE_LEVEL],
+};
 
-   // Challenge mode rotates between harder templates.
-   return Math.random() < 0.5 ? CHALLENGE_LEVEL : SNAKE_LEVEL;
+export function getTubeLevelFromPack() {
+   const settings = typeof window !== "undefined" ? window.getPyscheSettings?.() : undefined;
+   const difficulty = settings?.difficulty === "challenge" ? "challenge" : "normal";
+   const pack = LEVEL_PACKS[difficulty];
+
+   // Rotate through the pack deterministically so players see all levels.
+   const key = `pysche_tube_level_index_${difficulty}`;
+   const raw = typeof localStorage !== "undefined" ? localStorage.getItem(key) : null;
+   const prev = raw ? Number(raw) : 0;
+   const idx = Number.isFinite(prev) ? prev % pack.length : 0;
+   const next = (idx + 1) % pack.length;
+   if (typeof localStorage !== "undefined") localStorage.setItem(key, String(next));
+  
+   return { level: pack[idx], difficulty, index: idx, total: pack.length };
 }
 
 export function validateLevel(level) {
