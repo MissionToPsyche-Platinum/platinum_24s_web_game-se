@@ -71,7 +71,7 @@ function clickTile() {
         clickedElement1 = this;
         let element1Index = +clickedElement1.dataset.id;
         clickedElement1.textContent = numberArray[element1Index];
-        clickedElement1.style.border = 'solid #702963'
+        clickedElement1.style.border = '4px solid #702963'
     }
     else if (clickedElement2 == null) {
         clickedElement2 = this;
@@ -80,8 +80,8 @@ function clickTile() {
         if (clickedElement1.textContent === clickedElement2.textContent && clickedElement1 !== clickedElement2) {
             clickedElement1.style.backgroundColor = '#301934';
             clickedElement2.style.backgroundColor = '#301934';
-            clickedElement1.style.border = 'solid rgba(249, 160, 0, 0.35)';
-            clickedElement2.style.border = 'solid rgba(249, 160, 0, 0.35)';
+            clickedElement1.style.border = '2px solid rgba(249, 160, 0, 0.35)';
+            clickedElement2.style.border = '2px solid rgba(249, 160, 0, 0.35)';
             clickedElement1.removeEventListener('click', clickTile);
             clickedElement2.removeEventListener('click', clickTile);
             clickedElement1 = null;
@@ -89,7 +89,7 @@ function clickTile() {
             pairsFound++;
         }
         else {
-            clickedElement2.style.border = 'solid #702963';
+            clickedElement2.style.border = '4px solid #702963';
             setTimeout(rehideNumber, 1000);
 
         }
@@ -103,8 +103,8 @@ function clickTile() {
     function rehideNumber () {
         clickedElement1.style.background = 'transparent';
         clickedElement2.style.background = 'transparent';
-        clickedElement1.style.border = 'solid rgba(249, 160, 0, 0.35)';
-        clickedElement2.style.border = 'solid rgba(249, 160, 0, 0.35)';
+        clickedElement1.style.border = '2px solid rgba(249, 160, 0, 0.35)';
+        clickedElement2.style.border = '2px solid rgba(249, 160, 0, 0.35)';
         clickedElement1.textContent = "";
         clickedElement2.textContent = "";
         clickedElement1 = null;
