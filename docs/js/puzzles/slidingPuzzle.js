@@ -1,9 +1,11 @@
 import { solvePuzzle } from "../gameController.js";
 
 export function startSlidingPuzzle({ containerID }) {
+    const difficultyLabel =
+    window.getPyscheSettings?.()?.difficulty === "challenge" ? "Challenge" : "Normal";
     containerID.innerHTML = `
     <div class="sliding-wrapper">
-        <h3 class="sliding-header">Sliding Puzzle</h3>
+        <h3 class="sliding-header">Sliding Puzzle - ${difficultyLabel}</h3>
         <div id="sliding-grid"></div>
         <div id="solved-overlay"></div>
         <button id="solved-puzzle" class="button">View Solved Puzzle</button>
