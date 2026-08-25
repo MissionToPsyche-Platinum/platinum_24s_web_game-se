@@ -1,11 +1,17 @@
 import { solvePuzzle } from "../gameController.js";
 
+
 export function startSlidingPuzzle({ containerID }) {
-    const difficultyLabel =
-    window.getPyscheSettings?.()?.difficulty === "challenge" ? "Challenge" : "Normal";
+    const settings = typeof window !== "undefined" ? window.getPyscheSettings?.() : undefined;
+    const difficulty = settings?.difficulty === "challenge" ? "challenge" : "normal";
+
+    const gridSize = difficulty === "challenge" ? 4 : 3;
+
+    console.log(difficulty);
+    console.log(gridSize);
     containerID.innerHTML = `
     <div class="sliding-wrapper">
-        <h3 class="sliding-header">Sliding Puzzle - ${difficultyLabel}</h3>
+        <h3 class="sliding-header">Sliding Puzzle - ${difficulty} - ${gridSize}</h3>
         <div id="sliding-grid"></div>
         <div id="solved-overlay"></div>
         <button id="solved-puzzle" class="button">View Solved Puzzle</button>
@@ -13,24 +19,34 @@ export function startSlidingPuzzle({ containerID }) {
     </div>
 `;
 
-    let state = [
-        {value: 0, finalPos: 0},
-        {value: 1, finalPos: 1},
-        {value: 2, finalPos: 2},
-        {value: 3, finalPos: 3},
-        {value: 4, finalPos: 4},
-        {value: 5, finalPos: 5},
-        {value: 6, finalPos: 6},
-        {value: 7, finalPos: 7},
-        {value: null, finalPos: 8}
-    ]
+    let state = buildPuzzle(gridSize);
 
     setupHelpButton();
     state = shufflePieces (state);
-    renderSlidingPuzzle (containerID, state);
+    renderSlidingPuzzle (containerID, state, gridSize);
 
 
     
+}
+
+function buildPuzzle(gridSize) {
+    const tileQuantity = gridSize * gridSize;
+
+    const state = [];
+
+    for (let i = 0; i < tileQuantity - 1; i++) {
+        state.push({
+            value: i,
+            finalPos: i
+        });
+    }
+
+    state.push({
+        value: null,
+        finalPos : tileQuantity - 1
+    });
+
+    return state;
 }
 
 function setupHelpButton() {
@@ -84,26 +100,30 @@ function checkWin(state){
     }
 }
 
-function handleClick (index, state, container){
+function handleClick (index, state, container, gridSize){
     const emptyIndex = getEmptyTile(state);
     
     if(checkSwap(index , emptyIndex)){
         swapTiles(state, index , emptyIndex);
-        renderSlidingPuzzle(container , state);
+        renderSlidingPuzzle(container , state, gridSize);
         checkWin(state);
     } else {
         return;
     }
 }
 
-function renderSlidingPuzzle (container, state) {
+function renderSlidingPuzzle (container, state, gridSize) {
     
 
     const grid = document.getElementById("sliding-grid");
 
     grid.innerHTML = "";
     
-    const tileSize = 200;
+    const puzzleSize = 600;
+    const tileSize = puzzleSize / gridSize;
+
+    grid.style.gridTemplateColumns = `repeat(${gridSize}, ${tileSize}px)`;
+    grid.style.gridTemplateRows = `repeat(${gridSize}, ${tileSize}px)`;
 
     state.forEach((tile , index) => {
         const btn = document.createElement("button");
@@ -113,15 +133,15 @@ function renderSlidingPuzzle (container, state) {
             btn.classList.add("empty");
             btn.disabled = true;
         } else {
-            const row = Math.floor(tile.value / 3);
-            const col = tile.value % 3;
+            const row = Math.floor(tile.value / gridSize);
+            const col = tile.value % gridSize;
 
-            btn.style.backgroundImage = `url("images/Psyche_Launch.jpg")`;
-            btn.style.backgroundSize = `${tileSize * 3}px ${tileSize * 3}px`;
-            btn.style.backgroundPosition = `-${col * tileSize}px -${row * tileSize}px`
+            btn.style.backgroundImage = 'url("images/Psyche_Launch.jpg")';
+            btn.style.backgroundSize = '${tileSize * gridSize}px ${tileSize * gridSize}px';
+            btn.style.backgroundPosition = '-${col * tileSize}px -${row * tileSize}px'
             btn.textContent = tile.value;
             btn.addEventListener("click", () => {
-                handleClick(index, state, container);
+                handleClick(index, state, container, gridSize);
             })
         }
 

@@ -1328,8 +1328,6 @@ button.tube-cell::-moz-focus-inner {
 
 #sliding-grid {
     display: grid;
-    grid-template-columns: repeat(3, 200px);
-    grid-template-rows: repeat(3, 200px);
     justify-content: center;
     align-content: center;
     height: 100%;
