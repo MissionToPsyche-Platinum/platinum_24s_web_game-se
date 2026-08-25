@@ -112,6 +112,7 @@ export function startNumberLogicPuzzle({ containerID }) {
         if(checked === true) {
             solvePuzzle();
         } else {
+            highlightIncorrectCells(checkBoard);
             incorrectSolvePuzzle();
         }
     });
@@ -219,8 +220,26 @@ export function startNumberLogicPuzzle({ containerID }) {
         return true;
     }
 
+    //Highlights incorrect answers for user
+    function highlightIncorrectCells(checkBoard) {
+        const userInputs = document.querySelectorAll(".logic-grid input");
+        userInputs.forEach((input, i) => {
+            if (input.disabled) {
+                return;
+            }
+            const row = Math.floor(i / 9);
+            const col = i % 9;
+            const userAnswer = parseInt(input.value);;
+            const correctAnswer = checkBoard[row][col];
+            input.classList.remove("incorrect");
+            if (userAnswer !== correctAnswer) {
+                input.classList.add("incorrect");
+            }
+        });
+    }
+
     function incorrectSolvePuzzle() {
         puzzleNotSolvedMessage.style.display = 'block';
-        solvePuzzleMessage.style.display = 'none';
+        puzzleSolvedMessage.style.display = 'none';
     }
 }
