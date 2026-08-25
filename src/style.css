@@ -824,6 +824,10 @@ body {
     color: #f0e4ff;
 }
 
+.logic-grid input.incorrect {
+    background-color: #cc0000;
+}
+
 #mission-fact {
     border: 1px solid rgba(249, 160, 0, 0.35);
     border-radius: 10px;
