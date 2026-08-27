@@ -40,6 +40,34 @@ export const DEFAULT_LEVEL = {
     ],
 };
 
+export const NORMAL_LEVEL_2 = {
+   id: "flow-normal-02",
+   name: "Corner hop",
+   rows: 5,
+   cols: 5,
+   cells: [
+       [c("empty"), c("empty"), c("source"), c("empty"), c("empty")],
+       [c("empty"), c("empty"), c("corner", 1), c("straight", 1), c("corner")],
+       [c("empty"), c("empty"), c("empty"), c("corner", 2), c("corner")],
+       [c("empty"), c("empty"), c("empty"), c("straight", 1), c("empty")],
+       [c("empty"), c("empty"), c("empty"), c("goal"), c("empty")],
+   ],
+};
+
+export const NORMAL_LEVEL_3 = {
+   id: "flow-normal-03",
+   name: "Mini zigzag",
+   rows: 5,
+   cols: 5,
+   cells: [
+       [c("empty"), c("source"), c("corner", 2), c("empty"), c("empty")],
+       [c("empty"), c("empty"), c("corner", 0), c("corner", 1), c("empty")],
+       [c("empty"), c("empty"), c("empty"), c("corner", 3), c("corner", 1)],
+       [c("empty"), c("empty"), c("empty"), c("empty"), c("straight", 1)],
+       [c("empty"), c("empty"), c("empty"), c("empty"), c("goal")],
+   ],
+};
+
 /** Longer column: more straights to align; all start horizontal so path is broken until fixed. */
 export const CHALLENGE_LEVEL = {
    id: "flow-challenge-01",
@@ -76,13 +104,25 @@ export const SNAKE_LEVEL = {
    ],
 };
 
-export function getTubeLevelTemplateForDifficulty() {
-   const settings = typeof window !== "undefined" ? window.getPyscheSettings?.() : undefined;
-   const isChallenge = settings?.difficulty === "challenge";
-   if (!isChallenge) return DEFAULT_LEVEL;
+const LEVEL_PACKS = {
+   normal: [DEFAULT_LEVEL, NORMAL_LEVEL_2, NORMAL_LEVEL_3],
+   challenge: [CHALLENGE_LEVEL, SNAKE_LEVEL],
+};
 
-   // Challenge mode rotates between harder templates.
-   return Math.random() < 0.5 ? CHALLENGE_LEVEL : SNAKE_LEVEL;
+export function getTubeLevelFromPack() {
+   const settings = typeof window !== "undefined" ? window.getPyscheSettings?.() : undefined;
+   const difficulty = settings?.difficulty === "challenge" ? "challenge" : "normal";
+   const pack = LEVEL_PACKS[difficulty];
+
+   // Rotate through the pack deterministically so players see all levels.
+   const key = `pysche_tube_level_index_${difficulty}`;
+   const raw = typeof localStorage !== "undefined" ? localStorage.getItem(key) : null;
+   const prev = raw ? Number(raw) : 0;
+   const idx = Number.isFinite(prev) ? prev % pack.length : 0;
+   const next = (idx + 1) % pack.length;
+   if (typeof localStorage !== "undefined") localStorage.setItem(key, String(next));
+  
+   return { level: pack[idx], difficulty, index: idx, total: pack.length };
 }
 
 export function validateLevel(level) {
@@ -93,6 +133,43 @@ export function validateLevel(level) {
 }
 
 const opp = (d) => (d + 2) % 4;
+
+/** BFS from source through currently connected open edges; returns "r,c" cell keys. */
+export function getCellsConnectedToSource(level) {
+  const { rows, cols, cells } = level;
+  let sr = -1;
+  let sc = -1;
+  for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+          if (cells[r][c].kind === "source") {
+              sr = r;
+              sc = c;
+          }
+      }
+  }
+  if (sr < 0) return new Set();
+
+
+  const key = (r, c) => `${r},${c}`;
+  const seen = new Set([key(sr, sc)]);
+  const q = [[sr, sc]];
+  while (q.length > 0) {
+      const [r, c] = q.shift();
+      const cell = cells[r][c];
+      for (const d of getOpenDirections(cell.kind, cell.rotation)) {
+          const nr = r + DELTA[d][0];
+          const nc = c + DELTA[d][1];
+          if (nr < 0 || nr >= rows || nc < 0 || nc >= cols) continue;
+          const ncell = cells[nr][nc];
+          if (!getOpenDirections(ncell.kind, ncell.rotation).includes(opp(d))) continue;
+          const k = key(nr, nc);
+          if (seen.has(k)) continue;
+          seen.add(k);
+          q.push([nr, nc]);
+      }
+  }
+  return seen;
+}
 
 /** BFS along open pipe edges; true if source cell links to goal cell. */
 export function isSourceConnectedToGoal(level) {
