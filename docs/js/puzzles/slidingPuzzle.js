@@ -62,13 +62,27 @@ function setupHelpButton() {
     });
 }
 
-function shufflePieces (pieces) {
-    const arr = [...pieces];
-    for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
+function shufflePieces (state) {
+    let lastIndex = null;
+
+    for(let i = 0; i < 50; i++) {
+        const emptyIndex = getEmptyTile(state);
+
+        let movableTiles = state
+            .map((tile, index) => index)
+            .filter(index => checkSwap(index, emptyIndex));
+
+        movableTiles = movableTiles.filter(index => index !== lastIndex);
+
+        const randomIndex = movableTiles[
+            Math.floor(Math.random() * movableTiles.length)
+        ];
+
+        swapTiles(state, randomIndex, emptyIndex);
+        lastIndex = emptyIndex;
     }
-    return arr;
+
+    return state;
 }
 
 function getEmptyTile(state){

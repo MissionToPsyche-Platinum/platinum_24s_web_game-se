@@ -60,7 +60,7 @@ function startGame() {
     // matchingHeader.style.display = 'none';
 
     //Remove for testing
-    //solvePuzzleButton.style.visibility = 'hidden';
+    // solvePuzzleButton.style.visibility = 'hidden';
     //
     solvePuzzleButton.disabled = false;
     nextPuzzleButton.disabled = true;
@@ -92,7 +92,7 @@ export function solvePuzzle() {
     showMissionFactForSolveCount(gameState.solvedPuzzles);
     nextPuzzleButton.disabled = false;
     //Remove for testing
-    //solvePuzzleButton.style.visibility = 'hidden';
+    // solvePuzzleButton.style.visibility = 'hidden';
     //
     solvePuzzleButton.disabled = true;
     puzzleHelpButton.disabled = true;
