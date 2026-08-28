@@ -20,7 +20,9 @@ export const puzzles = [
     {
         name: "Number Logic Puzzle",
         start: startNumberLogicPuzzle,
-        helpText: "Use logic to solve the puzzle with numbers",
+        helpText: "Use logic to solve the sudoku puzzle with numbers. Each column, row, and grid can " +
+        "have exactly 1 of each number 1 through 9. When you think you have the answer, press the " +
+        "submit button at the bottom of the puzzle. Incorrect answers will be highlighted in red.",
     },
     {
         name: "Maze Puzzle",
