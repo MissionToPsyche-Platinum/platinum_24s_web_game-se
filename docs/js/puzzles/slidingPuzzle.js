@@ -75,12 +75,12 @@ function getEmptyTile(state){
     return state.findIndex(tile => tile.value === null);
 }
 
-function checkSwap (index , emptyIndex) {
+function checkSwap (index , emptyIndex, gridSize) {
     const posValue = index - emptyIndex;
-    if(posValue === 3 || posValue == -3) return true;
+    if(posValue === gridSize || posValue == -gridSize) return true;
 
     if(posValue === -1 || posValue === 1){
-        return Math.floor(index / 3) === Math.floor(emptyIndex / 3);
+        return Math.floor(index / gridSize) === Math.floor(emptyIndex / gridSize);
     } 
 
     return false;
@@ -103,7 +103,7 @@ function checkWin(state){
 function handleClick (index, state, container, gridSize){
     const emptyIndex = getEmptyTile(state);
     
-    if(checkSwap(index , emptyIndex)){
+    if(checkSwap(index , emptyIndex, gridSize)){
         swapTiles(state, index , emptyIndex);
         renderSlidingPuzzle(container , state, gridSize);
         checkWin(state);
@@ -136,9 +136,9 @@ function renderSlidingPuzzle (container, state, gridSize) {
             const row = Math.floor(tile.value / gridSize);
             const col = tile.value % gridSize;
 
-            btn.style.backgroundImage = 'url("images/Psyche_Launch.jpg")';
-            btn.style.backgroundSize = '${tileSize * gridSize}px ${tileSize * gridSize}px';
-            btn.style.backgroundPosition = '-${col * tileSize}px -${row * tileSize}px'
+            btn.style.backgroundImage = `url("images/Psyche_Launch.jpg")`;
+            btn.style.backgroundSize = `${puzzleSize}px ${puzzleSize}px`;
+            btn.style.backgroundPosition = `-${col * tileSize}px -${row * tileSize}px`;
             btn.textContent = tile.value;
             btn.addEventListener("click", () => {
                 handleClick(index, state, container, gridSize);
