@@ -1024,14 +1024,91 @@ body {
 }
 
 /* Pattern puzzle */
+#pattern-pad {
+   display: grid;
+   grid-template-columns: repeat(2, 80px);
+   gap: 10px;
+   justify-content: center;
+   margin: 15px 0;
+}
+
 .pattern-tile {
-   transition: transform 120ms ease, outline-color 120ms ease, opacity 120ms ease;
+   position: relative;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   height: 80px;
+   border: 2px solid #222;
+   border-radius: 8px;
+   cursor: pointer;
+   opacity: 0.65;
+   transition: transform 120ms ease, outline-color 120ms ease, opacity 120ms ease, filter 120ms ease, box-shadow 120ms ease;
    outline: 3px solid transparent;
    outline-offset: 2px;
 }
 
+.pattern-tile--red {
+   background: #d32f2f;
+}
+
+.pattern-tile--blue {
+   background: #1565c0;
+}
+
+.pattern-tile--green {
+   background: #2e7d32;
+}
+
+.pattern-tile--yellow {
+   background: #f9a825;
+}
+
+.pattern-tile-icon {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 58%;
+   height: 58%;
+   pointer-events: none;
+   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+   transition: transform 120ms ease, filter 120ms ease;
+}
+
+.pattern-tile-icon svg {
+   width: 100%;
+   height: 100%;
+   overflow: visible;
+}
+
+.pattern-tile-icon-shape {
+   fill: rgba(255, 255, 255, 0.95);
+   stroke: #111;
+   stroke-width: 4;
+   paint-order: stroke fill;
+}
+
+.pattern-tile-icon-number {
+   font-size: 26px;
+   font-weight: 800;
+   font-family: system-ui, -apple-system, sans-serif;
+   fill: #fff;
+   stroke: #111;
+   stroke-width: 3px;
+   paint-order: stroke fill;
+}
+
+.pattern-tile--yellow .pattern-tile-icon-shape,
+.pattern-tile--yellow .pattern-tile-icon-number {
+   fill: #111;
+   stroke: #fff;
+}
+
 .pattern-tile--pressed {
    transform: scale(0.96);
+}
+
+.pattern-tile--pressed .pattern-tile-icon {
+   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.75));
 }
 
 .pattern-tile--correct {
@@ -1043,7 +1120,15 @@ body {
 }
 
 .pattern-tile--playback {
-   outline-color: rgba(249, 160, 0, 0.9);
+   opacity: 1;
+   outline-color: rgba(249, 160, 0, 0.95);
+   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85), 0 0 14px rgba(255, 255, 255, 0.55);
+   filter: brightness(1.12) saturate(1.08);
+}
+
+.pattern-tile--playback .pattern-tile-icon {
+   transform: scale(1.08);
+   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
 }
 
 .pattern-tile:focus-visible {
