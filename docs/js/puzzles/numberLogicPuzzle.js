@@ -104,6 +104,7 @@ export function startNumberLogicPuzzle({ containerID }) {
             <button id = "submit">Submit</button>
         </div>
     `;
+    loopScrolling();
     if(isChallenge) {
         removeCells(board, difficulty.CHALLENGING);
     } else {
@@ -141,6 +142,47 @@ export function startNumberLogicPuzzle({ containerID }) {
             }
         }
         return true;
+    }
+
+    //Allows numbers to loop through scrolling
+    function loopScrolling() {
+        const inputs = document.querySelectorAll(".logic-grid input");
+        inputs.forEach(input => {
+            //Scrolling with mousepad
+            input.addEventListener("wheel", function(event) {
+                event.preventDefault();
+                const min = Number(input.min);
+                const max = Number(input.max);
+                let value = input.value === "" ? min : Number(input.value);
+                if(event.deltaY > 0) {
+                    //Scrolling down
+                    value--;
+                    //If you're scrolling below 1
+                    if(value < min) {
+                        value = max;
+                    }
+                } else {
+                    //Scrolling up
+                    value++;
+                    //If you're scrolling above 9
+                    if(value > max) {
+                        value = min;
+                    }
+                }
+                input.value = value;
+            });
+            //Scrolling with manual buttons
+            input.addEventListener("input", function(event) {
+                const min = Number(input.min);
+                const max = Number(input.max);
+                let value = Number(input.value);
+                if (value < min) {
+                    input.value = max;
+                } else if (value > max) {
+                    input.value = min;
+                }
+            });
+        });
     }
 
     //Renders the numbers to the screen
