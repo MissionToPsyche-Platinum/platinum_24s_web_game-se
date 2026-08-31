@@ -6,11 +6,12 @@ export function startNumberLogicPuzzle({ containerID }) {
     let board = Array.from({ length: 9 }, () => Array(9).fill(0));
     fillSudokuPuzzle(board);
     let checkBoard = board.map(row => [...row]);
+    const settings = typeof window !== "undefined" ? window.getPyscheSettings?.() : undefined;
+    const isChallenge = settings?.difficulty === "challenge";
     //Added difficulty functionality for futher implementation
     const difficulty = {
         EASY: 10,
-        STANDARD: 20,
-        HARD: 30
+        CHALLENGING: 20,
     }
     containerID.innerHTML = `
         <div class = "number-logic-container" id = "numberLogicContainer">
@@ -103,8 +104,11 @@ export function startNumberLogicPuzzle({ containerID }) {
             <button id = "submit">Submit</button>
         </div>
     `;
-
-    removeCells(board, difficulty.EASY);
+    if(isChallenge) {
+        removeCells(board, difficulty.CHALLENGING);
+    } else {
+        removeCells(board, difficulty.EASY);
+    }
     renderSudokuUI(board);
     const submitButton = document.getElementById("submit");
     submitButton.addEventListener("click", function() {

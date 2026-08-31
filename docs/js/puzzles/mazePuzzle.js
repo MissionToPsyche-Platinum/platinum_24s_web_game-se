@@ -6,115 +6,115 @@ export function startMazePuzzle({ containerID }) {
                 <h3 id="maze-puzzle-header">Maze Puzzle</h3>
             </header>
             <div class="maze-container" id="gridContainer">
-                <div data-id="0" class="maze-item" tabIndex = "0">Start</div>
-                <div data-id="1" class="maze-item" tabIndex = "0">Tile 1</div>
-                <div data-id="2" class="maze-item" tabIndex = "0">Tile 2</div>
-                <div data-id="3" class="maze-item" tabIndex = "0">Tile 3</div>
-                <div data-id="4" class="maze-item" tabIndex = "0">Tile 4</div>
-                <div data-id="5" class="maze-item" tabIndex = "0">Tile 5</div>
-                <div data-id="6" class="maze-item" tabIndex = "0">Tile 6</div>
-                <div data-id="7" class="maze-item" tabIndex = "0">Tile 7</div>
-                <div data-id="8" class="maze-item" tabIndex = "0">Tile 8</div>
-                <div data-id="9" class="maze-item" tabIndex = "0">Tile 9</div>
+                <div data-id="0" class="maze-item" tabIndex = "-1", id="start-tile">Start</div>
+                <div data-id="1" class="maze-item">Tile 1</div>
+                <div data-id="2" class="maze-item">Tile 2</div>
+                <div data-id="3" class="maze-item">Tile 3</div>
+                <div data-id="4" class="maze-item">Tile 4</div>
+                <div data-id="5" class="maze-item">Tile 5</div>
+                <div data-id="6" class="maze-item">Tile 6</div>
+                <div data-id="7" class="maze-item">Tile 7</div>
+                <div data-id="8" class="maze-item">Tile 8</div>
+                <div data-id="9" class="maze-item">Tile 9</div>
 
-                <div data-id="10" class="maze-item" tabIndex = "0">Tile 10</div>
-                <div data-id="11" class="maze-item" tabIndex = "0">Tile 11</div>
-                <div data-id="12" class="maze-item" tabIndex = "0">Tile 12</div>
-                <div data-id="13" class="maze-item" tabIndex = "0">Tile 13</div>
-                <div data-id="14" class="maze-item" tabIndex = "0">Tile 14</div>
-                <div data-id="15" class="maze-item" tabIndex = "0">Tile 15</div>
-                <div data-id="16" class="maze-item" tabIndex = "0">Tile 16</div>
-                <div data-id="17" class="maze-item" tabIndex = "0">Tile 17</div>
-                <div data-id="18" class="maze-item" tabIndex = "0">Tile 18</div>
-                <div data-id="19" class="maze-item" tabIndex = "0">Tile 19</div>
+                <div data-id="10" class="maze-item">Tile 10</div>
+                <div data-id="11" class="maze-item">Tile 11</div>
+                <div data-id="12" class="maze-item">Tile 12</div>
+                <div data-id="13" class="maze-item">Tile 13</div>
+                <div data-id="14" class="maze-item">Tile 14</div>
+                <div data-id="15" class="maze-item">Tile 15</div>
+                <div data-id="16" class="maze-item">Tile 16</div>
+                <div data-id="17" class="maze-item">Tile 17</div>
+                <div data-id="18" class="maze-item">Tile 18</div>
+                <div data-id="19" class="maze-item">Tile 19</div>
 
-                <div data-id="20" class="maze-item" tabIndex = "0">Tile 20</div>
-                <div data-id="21" class="maze-item" tabIndex = "0">Tile 21</div>
-                <div data-id="22" class="maze-item" tabIndex = "0">Tile 22</div>
-                <div data-id="23" class="maze-item" tabIndex = "0">Tile 23</div>
-                <div data-id="24" class="maze-item" tabIndex = "0">Tile 24</div>
-                <div data-id="25" class="maze-item" tabIndex = "0">Tile 25</div>
-                <div data-id="26" class="maze-item" tabIndex = "0">Tile 26</div>
-                <div data-id="27" class="maze-item" tabIndex = "0">Tile 27</div>
-                <div data-id="28" class="maze-item" tabIndex = "0">Tile 28</div>
-                <div data-id="29" class="maze-item" tabIndex = "0">Tile 29</div>
+                <div data-id="20" class="maze-item">Tile 20</div>
+                <div data-id="21" class="maze-item">Tile 21</div>
+                <div data-id="22" class="maze-item">Tile 22</div>
+                <div data-id="23" class="maze-item">Tile 23</div>
+                <div data-id="24" class="maze-item">Tile 24</div>
+                <div data-id="25" class="maze-item">Tile 25</div>
+                <div data-id="26" class="maze-item">Tile 26</div>
+                <div data-id="27" class="maze-item">Tile 27</div>
+                <div data-id="28" class="maze-item">Tile 28</div>
+                <div data-id="29" class="maze-item">Tile 29</div>
 
-                <div data-id="30" class="maze-item" tabIndex = "0">Tile 30</div>
-                <div data-id="31" class="maze-item" tabIndex = "0">Tile 31</div>
-                <div data-id="32" class="maze-item" tabIndex = "0">Tile 32</div>
-                <div data-id="33" class="maze-item" tabIndex = "0">Tile 33</div>
-                <div data-id="34" class="maze-item" tabIndex = "0">Tile 34</div>
-                <div data-id="35" class="maze-item" tabIndex = "0">Tile 35</div>
-                <div data-id="36" class="maze-item" tabIndex = "0">Tile 36</div>
-                <div data-id="37" class="maze-item" tabIndex = "0">Tile 37</div>
-                <div data-id="38" class="maze-item" tabIndex = "0">Tile 38</div>
-                <div data-id="39" class="maze-item" tabIndex = "0">Tile 39</div>
+                <div data-id="30" class="maze-item">Tile 30</div>
+                <div data-id="31" class="maze-item">Tile 31</div>
+                <div data-id="32" class="maze-item">Tile 32</div>
+                <div data-id="33" class="maze-item">Tile 33</div>
+                <div data-id="34" class="maze-item">Tile 34</div>
+                <div data-id="35" class="maze-item">Tile 35</div>
+                <div data-id="36" class="maze-item">Tile 36</div>
+                <div data-id="37" class="maze-item">Tile 37</div>
+                <div data-id="38" class="maze-item">Tile 38</div>
+                <div data-id="39" class="maze-item">Tile 39</div>
 
-                <div data-id="40" class="maze-item" tabIndex = "0">Tile 40</div>
-                <div data-id="41" class="maze-item" tabIndex = "0">Tile 41</div>
-                <div data-id="42" class="maze-item" tabIndex = "0">Tile 42</div>
-                <div data-id="43" class="maze-item" tabIndex = "0">Tile 43</div>
-                <div data-id="44" class="maze-item" tabIndex = "0">Tile 44</div>
-                <div data-id="45" class="maze-item" tabIndex = "0">Tile 45</div>
-                <div data-id="46" class="maze-item" tabIndex = "0">Tile 46</div>
-                <div data-id="47" class="maze-item" tabIndex = "0">Tile 47</div>
-                <div data-id="48" class="maze-item" tabIndex = "0">Tile 48</div>
-                <div data-id="49" class="maze-item" tabIndex = "0">Tile 49</div>
+                <div data-id="40" class="maze-item">Tile 40</div>
+                <div data-id="41" class="maze-item">Tile 41</div>
+                <div data-id="42" class="maze-item">Tile 42</div>
+                <div data-id="43" class="maze-item">Tile 43</div>
+                <div data-id="44" class="maze-item">Tile 44</div>
+                <div data-id="45" class="maze-item">Tile 45</div>
+                <div data-id="46" class="maze-item">Tile 46</div>
+                <div data-id="47" class="maze-item">Tile 47</div>
+                <div data-id="48" class="maze-item">Tile 48</div>
+                <div data-id="49" class="maze-item">Tile 49</div>
 
-                <div data-id="50" class="maze-item" tabIndex = "0">Tile 50</div>
-                <div data-id="51" class="maze-item" tabIndex = "0">Tile 51</div>
-                <div data-id="52" class="maze-item" tabIndex = "0">Tile 52</div>
-                <div data-id="53" class="maze-item" tabIndex = "0">Tile 53</div>
-                <div data-id="54" class="maze-item" tabIndex = "0">Tile 54</div>
-                <div data-id="55" class="maze-item" tabIndex = "0">Tile 55</div>
-                <div data-id="56" class="maze-item" tabIndex = "0">Tile 56</div>
-                <div data-id="57" class="maze-item" tabIndex = "0">Tile 57</div>
-                <div data-id="58" class="maze-item" tabIndex = "0">Tile 58</div>
-                <div data-id="59" class="maze-item" tabIndex = "0">Tile 59</div>
+                <div data-id="50" class="maze-item">Tile 50</div>
+                <div data-id="51" class="maze-item">Tile 51</div>
+                <div data-id="52" class="maze-item">Tile 52</div>
+                <div data-id="53" class="maze-item">Tile 53</div>
+                <div data-id="54" class="maze-item">Tile 54</div>
+                <div data-id="55" class="maze-item">Tile 55</div>
+                <div data-id="56" class="maze-item">Tile 56</div>
+                <div data-id="57" class="maze-item">Tile 57</div>
+                <div data-id="58" class="maze-item">Tile 58</div>
+                <div data-id="59" class="maze-item">Tile 59</div>
 
-                <div data-id="60" class="maze-item" tabIndex = "0">Tile 60</div>
-                <div data-id="61" class="maze-item" tabIndex = "0">Tile 61</div>
-                <div data-id="62" class="maze-item" tabIndex = "0">Tile 62</div>
-                <div data-id="63" class="maze-item" tabIndex = "0">Tile 63</div>
-                <div data-id="64" class="maze-item" tabIndex = "0">Tile 64</div>
-                <div data-id="65" class="maze-item" tabIndex = "0">Tile 65</div>
-                <div data-id="66" class="maze-item" tabIndex = "0">Tile 66</div>
-                <div data-id="67" class="maze-item" tabIndex = "0">Tile 67</div>
-                <div data-id="68" class="maze-item" tabIndex = "0">Tile 68</div>
-                <div data-id="69" class="maze-item" tabIndex = "0">Tile 69</div>
+                <div data-id="60" class="maze-item">Tile 60</div>
+                <div data-id="61" class="maze-item">Tile 61</div>
+                <div data-id="62" class="maze-item">Tile 62</div>
+                <div data-id="63" class="maze-item">Tile 63</div>
+                <div data-id="64" class="maze-item">Tile 64</div>
+                <div data-id="65" class="maze-item">Tile 65</div>
+                <div data-id="66" class="maze-item">Tile 66</div>
+                <div data-id="67" class="maze-item">Tile 67</div>
+                <div data-id="68" class="maze-item">Tile 68</div>
+                <div data-id="69" class="maze-item">Tile 69</div>
 
-                <div data-id="70" class="maze-item" tabIndex = "0">Tile 70</div>
-                <div data-id="71" class="maze-item" tabIndex = "0">Tile 71</div>
-                <div data-id="72" class="maze-item" tabIndex = "0">Tile 72</div>
-                <div data-id="73" class="maze-item" tabIndex = "0">Tile 73</div>
-                <div data-id="74" class="maze-item" tabIndex = "0">Tile 74</div>
-                <div data-id="75" class="maze-item" tabIndex = "0">Tile 75</div>
-                <div data-id="76" class="maze-item" tabIndex = "0">Tile 76</div>
-                <div data-id="77" class="maze-item" tabIndex = "0">Tile 77</div>
-                <div data-id="78" class="maze-item" tabIndex = "0">Tile 78</div>
-                <div data-id="79" class="maze-item" tabIndex = "0">Tile 79</div>
+                <div data-id="70" class="maze-item">Tile 70</div>
+                <div data-id="71" class="maze-item">Tile 71</div>
+                <div data-id="72" class="maze-item">Tile 72</div>
+                <div data-id="73" class="maze-item">Tile 73</div>
+                <div data-id="74" class="maze-item">Tile 74</div>
+                <div data-id="75" class="maze-item">Tile 75</div>
+                <div data-id="76" class="maze-item">Tile 76</div>
+                <div data-id="77" class="maze-item">Tile 77</div>
+                <div data-id="78" class="maze-item">Tile 78</div>
+                <div data-id="79" class="maze-item">Tile 79</div>
 
-                <div data-id="80" class="maze-item" tabIndex = "0">Tile 80</div>
-                <div data-id="81" class="maze-item" tabIndex = "0">Tile 81</div>
-                <div data-id="82" class="maze-item" tabIndex = "0">Tile 82</div>
-                <div data-id="83" class="maze-item" tabIndex = "0">Tile 83</div>
-                <div data-id="84" class="maze-item" tabIndex = "0">Tile 84</div>
-                <div data-id="85" class="maze-item" tabIndex = "0">Tile 85</div>
-                <div data-id="86" class="maze-item" tabIndex = "0">Tile 86</div>
-                <div data-id="87" class="maze-item" tabIndex = "0">Tile 87</div>
-                <div data-id="88" class="maze-item" tabIndex = "0">Tile 88</div>
-                <div data-id="89" class="maze-item" tabIndex = "0">Tile 89</div>
+                <div data-id="80" class="maze-item">Tile 80</div>
+                <div data-id="81" class="maze-item">Tile 81</div>
+                <div data-id="82" class="maze-item">Tile 82</div>
+                <div data-id="83" class="maze-item">Tile 83</div>
+                <div data-id="84" class="maze-item">Tile 84</div>
+                <div data-id="85" class="maze-item">Tile 85</div>
+                <div data-id="86" class="maze-item">Tile 86</div>
+                <div data-id="87" class="maze-item">Tile 87</div>
+                <div data-id="88" class="maze-item">Tile 88</div>
+                <div data-id="89" class="maze-item">Tile 89</div>
 
-                <div data-id="90" class="maze-item" tabIndex = "0">Tile 90</div>
-                <div data-id="91" class="maze-item" tabIndex = "0">Tile 91</div>
-                <div data-id="92" class="maze-item" tabIndex = "0">Tile 92</div>
-                <div data-id="93" class="maze-item" tabIndex = "0">Tile 93</div>
-                <div data-id="94" class="maze-item" tabIndex = "0">Tile 94</div>
-                <div data-id="95" class="maze-item" tabIndex = "0">Tile 95</div>
-                <div data-id="96" class="maze-item" tabIndex = "0">Tile 96</div>
-                <div data-id="97" class="maze-item" tabIndex = "0">Tile 97</div>
-                <div data-id="98" class="maze-item" tabIndex = "0">Tile 98</div>
-                <div data-id="99" class="maze-item" tabIndex = "0">Tile 99</div>
+                <div data-id="90" class="maze-item">Tile 90</div>
+                <div data-id="91" class="maze-item">Tile 91</div>
+                <div data-id="92" class="maze-item">Tile 92</div>
+                <div data-id="93" class="maze-item">Tile 93</div>
+                <div data-id="94" class="maze-item">Tile 94</div>
+                <div data-id="95" class="maze-item">Tile 95</div>
+                <div data-id="96" class="maze-item">Tile 96</div>
+                <div data-id="97" class="maze-item">Tile 97</div>
+                <div data-id="98" class="maze-item">Tile 98</div>
+                <div data-id="99" class="maze-item">Tile 99</div>
             </div>
         </div>
     `;
@@ -122,7 +122,13 @@ export function startMazePuzzle({ containerID }) {
     const mazeItems = document.querySelectorAll(".maze-item");
     populateMazePuzzle();
 
+  
+    const startTile = document.querySelector("#start-tile");
+    startTile.focus();
+    
+
     mazeItems.forEach(item => {
+
         item.addEventListener('keydown', handleKeyDown);
     });
 

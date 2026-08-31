@@ -58,6 +58,10 @@ function startGame() {
     nextPuzzleButton.style.display = 'inline';
     // gridContainer.style.display = 'none';
     // matchingHeader.style.display = 'none';
+
+    //Remove for testing
+    // solvePuzzleButton.style.visibility = 'hidden';
+    //
     solvePuzzleButton.disabled = false;
     nextPuzzleButton.disabled = true;
     newGameButton.style.display = 'none';
@@ -87,6 +91,9 @@ export function solvePuzzle() {
     solvePuzzleMessage.style.display = 'none';
     showMissionFactForSolveCount(gameState.solvedPuzzles);
     nextPuzzleButton.disabled = false;
+    //Remove for testing
+    // solvePuzzleButton.style.visibility = 'hidden';
+    //
     solvePuzzleButton.disabled = true;
     puzzleHelpButton.disabled = true;
     updateProgress();
@@ -106,6 +113,9 @@ function updateHeader() {
     
     newGameButton.style.display = 'inline';
     winMessage.style.display = 'block';
+    //Remove for testing
+    solvePuzzleButton.style.visibility = 'hidden';
+    //
     solvePuzzleButton.disabled = true;
     puzzleSolvedMessage.style.display = 'none';
     nextPuzzleButton.style.display = 'none';
@@ -118,6 +128,9 @@ function displayNextPuzzle() {
     puzzleSolvedMessage.style.display = 'none';
     clearMissionFact();
     nextPuzzleButton.disabled = true;
+    //Remove for testing
+    solvePuzzleButton.style.visibilty = 'hidden';
+    //
     solvePuzzleButton.disabled = false;
     puzzleHelpButton.disabled = false;
     loadPuzzle(gameState.puzzleOrder[gameState.solvedPuzzles]);

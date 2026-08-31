@@ -1,5 +1,6 @@
 import {
-   getTubeLevelTemplateForDifficulty,
+   getCellsConnectedToSource,
+   getTubeLevelFromPack,
    isSourceConnectedToGoal,
    validateLevel,
 } from "./tubePuzzleModel.js";
@@ -35,11 +36,11 @@ function cloneLevel(level) {
 	};
 }
 
-function renderGrid(level, difficultyLabel) {
+function renderGrid(level, metaLabel) {
 	const { rows, cols, cells } = level;
 	let html = `<div class="tube-puzzle" role="application" aria-label="Tube puzzle board">
   	<p class="tube-puzzle-caption"><strong>Tube puzzle</strong> — ${level.name}</p>
-	<p class="tube-puzzle-mode">Mode: ${difficultyLabel}. Change in Settings → Difficulty for timed runs.</p>
+    <p class="tube-puzzle-mode">${metaLabel}</p>
   	<div class="tube-puzzle-grid" role="group" aria-label="Pipe tiles" aria-describedby="tube-puzzle-hint" style="--tube-rows:${rows};--tube-cols:${cols};">`;
 
 	for (let r = 0; r < rows; r++) {
@@ -65,6 +66,13 @@ function renderGrid(level, difficultyLabel) {
       	<button type="button" class="tube-dpad-btn" data-dr="0" data-dc="1" aria-label="Move selection right">→</button>
     	</div>
   	</div>
+	   <div class="tube-puzzle-dpad" role="toolbar" aria-label="Tube puzzle actions">
+       <span class="tube-puzzle-dpad-label">Actions:</span>
+       <div class="tube-puzzle-dpad-buttons">
+           <button type="button" class="tube-dpad-btn" id="tube-reset-btn">Reset</button>
+           <button type="button" class="tube-dpad-btn" id="tube-shuffle-btn">Shuffle</button>
+       </div>
+   </div>
   	<p id="tube-puzzle-hint" class="tube-puzzle-hint">Click a pipe to rotate it. Use the buttons above or your <strong>keyboard’s arrow keys</strong> (↑↓←→) to move between pipes—empty tiles are skipped. Connect source to goal to win.</p></div>`;
 	return html;
 }
@@ -77,6 +85,23 @@ function setGridSolved(gridEl, solved) {
         	btn.classList.remove("tube-cell--selected");
     	}
 	});
+}
+
+function updateFlowPreview(level, gridEl, layoutEl) {
+	const connected = getCellsConnectedToSource(level);
+	const goalConnected = isSourceConnectedToGoal(level);
+
+	gridEl.querySelectorAll(".tube-cell").forEach((cellEl) => {
+    	const r = Number(cellEl.dataset.r);
+    	const c = Number(cellEl.dataset.c);
+    	const k = `${r},${c}`;
+    	const cell = level.cells[r]?.[c];
+    	const isPipe = cell && cell.kind !== "empty";
+    	cellEl.classList.toggle("tube-cell--flowing", isPipe && connected.has(k));
+	});
+
+	layoutEl?.classList.toggle("tube-puzzle-layout--flowing", connected.size > 1);
+	layoutEl?.classList.toggle("tube-puzzle-layout--goal-connected", goalConnected);
 }
 
 function tryWin(level, gridEl, state) {
@@ -180,7 +205,8 @@ function wireKeyboardNav(gridEl, rows, cols, tracker) {
 }
 
 function wireDpad(container, gridEl, rows, cols, tracker) {
-	container.querySelectorAll(".tube-dpad-btn").forEach((b) => {
+	// Important: only bind movement arrows, not Reset/Shuffle
+	container.querySelectorAll(".tube-dpad-btn[data-dr][data-dc]").forEach((b) => {
     	b.addEventListener("mousedown", (e) => {
         	e.preventDefault();
     	});
@@ -192,7 +218,7 @@ function wireDpad(container, gridEl, rows, cols, tracker) {
 	});
 }
 
-function wireRotation(gridEl, level, state, tracker) {
+function wireRotation(gridEl, level, state, tracker, layoutEl) {
 	gridEl.addEventListener("click", (e) => {
     	const btn = e.target.closest("button.tube-cell");
     	if (!btn || btn.disabled || !gridEl.contains(btn)) {
@@ -209,19 +235,63 @@ function wireRotation(gridEl, level, state, tracker) {
     	btn.setAttribute("aria-label", label);
     	btn.title = label;
     	btn.focus({ preventScroll: true });
+    	updateFlowPreview(level, gridEl, layoutEl);
     	tryWin(level, gridEl, state);
 	});
 }
 
+function redrawGridFromLevel(gridEl, level) {
+	gridEl.querySelectorAll("button.tube-cell").forEach((btn) => {
+    	const r = Number(btn.dataset.r);
+    	const c = Number(btn.dataset.c);
+    	const cell = level.cells[r][c];
+    	const label = `${cell.kind}, rotation ${cell.rotation}`;
+    	btn.innerHTML = cellSvg(cell.kind, cell.rotation);
+    	btn.setAttribute("aria-label", label);
+    	btn.title = label;
+	});
+}
+
+function wireActions(layoutEl, gridEl, level, templateLevel, state, tracker) {
+	const resetBtn = layoutEl.querySelector("#tube-reset-btn");
+	const shuffleBtn = layoutEl.querySelector("#tube-shuffle-btn");
+
+	resetBtn?.addEventListener("click", () => {
+    	level.cells = templateLevel.cells.map((row) => row.map((cell) => ({ ...cell })));
+    	state.won = false;
+    	setGridSolved(gridEl, false);
+    	redrawGridFromLevel(gridEl, level);
+    	updateFlowPreview(level, gridEl, layoutEl);
+    	const firstPipe = gridEl.querySelector("button.tube-cell:not([disabled])");
+    	if (firstPipe) setSelectedPipe(gridEl, tracker, firstPipe);
+	});
+
+	shuffleBtn?.addEventListener("click", () => {
+    	for (let r = 0; r < level.rows; r++) {
+        	for (let c = 0; c < level.cols; c++) {
+            	const cell = level.cells[r][c];
+            	if (cell.kind === "empty" || cell.kind === "source" || cell.kind === "goal") continue;
+            	cell.rotation = Math.floor(Math.random() * 4);
+        	}
+    	}
+    	state.won = false;
+    	setGridSolved(gridEl, false);
+    	redrawGridFromLevel(gridEl, level);
+    	updateFlowPreview(level, gridEl, layoutEl);
+    	const firstPipe = gridEl.querySelector("button.tube-cell:not([disabled])");
+    	if (firstPipe) setSelectedPipe(gridEl, tracker, firstPipe);
+	});
+}
+
 export function startTubePuzzle({ containerID }) {
-   const template = getTubeLevelTemplateForDifficulty();
-   if (!validateLevel(template)) {
+   const picked = getTubeLevelFromPack();
+   const template = picked.level;
+     if (!validateLevel(template)) {
        throw new Error("Invalid tube level template");
    }
-	const difficultyLabel =
-    window.getPyscheSettings?.()?.difficulty === "challenge" ? "Challenge" : "Normal";
-
-	const ph = document.getElementById("puzzle-header");
+   const difficultyLabel = picked.difficulty === "challenge" ? "Challenge" : "Normal";
+   const metaLabel = `Mode: ${difficultyLabel}. Level ${picked.index + 1}/${picked.total}. Change in Settings → Difficulty for timed runs.`;
+   const ph = document.getElementById("puzzle-header");
 	if (ph) {
     	ph.textContent = "Tube Puzzle";
 	}
@@ -231,7 +301,7 @@ export function startTubePuzzle({ containerID }) {
 
 	containerID.innerHTML = `
        <div class="tube-puzzle-layout">
-           ${renderGrid(level, difficultyLabel)}
+            ${renderGrid(level, metaLabel)}
     	</div>
 	`;
 
@@ -247,7 +317,9 @@ export function startTubePuzzle({ containerID }) {
     	}
     	wireKeyboardNav(grid, level.rows, level.cols, tracker);
     	wireDpad(layout, grid, level.rows, level.cols, tracker);
-    	wireRotation(grid, level, winState, tracker);
-    	tryWin(level, grid, winState);
+        wireRotation(grid, level, winState, tracker, layout);
+    	wireActions(layout, grid, level, template, winState, tracker);
+        updateFlowPreview(level, grid, layout);
+        tryWin(level, grid, winState);
 	}
 }

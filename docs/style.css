@@ -880,30 +880,29 @@ body {
 .grid-container {
     display: grid;
     place-items: center;
+    background-clip: padding-box;
     grid-template-rows: repeat(4, 1fr);
     grid-template-columns: repeat(4, 1fr);
-    border: 2px solid black;
-    /* min-height: 100vh; */
+    border: 2px solid rgba(249, 160, 0, 0.35);
 }
 
 .grid-item {
-    border: 2px solid #302144;
+    border: 2px solid rgba(249, 160, 0, 0.35);
+    background-clip: border-box;
     padding-top: 65px;
     height: 180px;
     width: 180px;
     text-align: center;
     align-items: center;
-    background-color: white;
-    color: grey;
     font-weight: 700;
-    font-size: 28;;
-    
-    /* aspect-ratio: 1/1; */
+    font-size: 28;
 }
 
-.clicked {
-    background-color: blue;
+#matching-puzzle-header {
+    font-size: 22;
+    color: #702963;
 }
+
 
 #matching-puzzle-header {
     display: grid;
@@ -1171,6 +1170,28 @@ button.tube-cell::-moz-focus-inner {
 	animation: tube-source-pulse 2.4s ease-in-out infinite;
 }
 
+.tube-cell--flowing {
+   background: linear-gradient(165deg, #e7f7ff 0%, #cdeeff 100%);
+   box-shadow:
+       inset 0 0 0 1px rgba(93, 181, 255, 0.45),
+       0 0 12px rgba(93, 181, 255, 0.55);
+   animation: tube-cell-flow-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes tube-cell-flow-pulse {
+   0%,
+   100% {
+       box-shadow:
+           inset 0 0 0 1px rgba(93, 181, 255, 0.35),
+           0 0 8px rgba(93, 181, 255, 0.35);
+   }
+   50% {
+       box-shadow:
+           inset 0 0 0 1px rgba(93, 181, 255, 0.55),
+           0 0 16px rgba(93, 181, 255, 0.7);
+   }
+}
+
 @keyframes tube-source-pulse {
 	0%,
 	100% {
@@ -1264,6 +1285,25 @@ button.tube-cell::-moz-focus-inner {
 	background-size: 35% 100%;
 	background-repeat: no-repeat;
 	animation: tube-flow-shimmer 3s ease-in-out infinite;
+}
+
+.tube-puzzle-layout--flowing .tube-puzzle-flow-strip {
+   background-image: linear-gradient(
+       90deg,
+       transparent,
+       rgba(77, 166, 255, 0.65),
+       transparent
+   );
+   animation-duration: 1.8s;
+}
+
+.tube-puzzle-layout--goal-connected .tube-puzzle-flow-strip {
+   background-image: linear-gradient(
+       90deg,
+       transparent,
+       rgba(92, 210, 126, 0.75),
+       transparent
+   );
 }
 
 @keyframes tube-flow-shimmer {
