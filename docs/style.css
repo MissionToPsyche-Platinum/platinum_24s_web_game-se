@@ -877,6 +877,7 @@ body {
 
 }
 
+
 .grid-container {
     display: grid;
     place-items: center;
@@ -1450,4 +1451,35 @@ button.tube-cell::-moz-focus-inner {
     background-size: 600px 600px;
 
     display: none;
+}
+
+@media (max-width: 1080px) {
+    .grid-item {
+        height: 145px;
+        width: 145px;
+    }
+}
+
+@media (max-width: 660px) {
+    .grid-item {
+        height: 120px;
+        width: 120px;
+    }
+}
+
+@media (max-width: 560px) {
+    /* .grid-container{
+        max-width: 60vw;
+    } */
+    .grid-item {
+        height: 90px;
+        width: 90px;
+    }
+}
+
+@media (max-width: 360px) {
+    .grid-item {
+        height: 60px;
+        width: 60px;
+    }
 }
