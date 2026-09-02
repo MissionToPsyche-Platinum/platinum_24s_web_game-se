@@ -3,6 +3,29 @@ import { solvePuzzle } from "../gameController.js";
 const COLORS = ["red", "blue", "green", "yellow"];
 const COLOR_TONES_HZ = [329.63, 392.0, 261.63, 440.0]; // E4, G4, C4, A4
 
+const TILE_DEFS = [
+   { color: "red", shape: "circle", number: 1 },
+   { color: "blue", shape: "square", number: 2 },
+   { color: "green", shape: "triangle", number: 3 },
+   { color: "yellow", shape: "star", number: 4 },
+];
+
+function tileShapeMarkup({ shape, number }) {
+   const shapes = {
+       circle: '<circle class="pattern-tile-icon-shape" cx="50" cy="50" r="34" />',
+       square: '<rect class="pattern-tile-icon-shape" x="18" y="18" width="64" height="64" rx="4" />',
+       triangle: '<polygon class="pattern-tile-icon-shape" points="50,14 86,86 14,86" />',
+       star: '<polygon class="pattern-tile-icon-shape" points="50,8 61,36 92,36 67,54 76,86 50,68 24,86 33,54 8,36 39,36" />',
+   };
+
+   return `<span class="pattern-tile-icon" aria-hidden="true">
+       <svg viewBox="0 0 100 100" focusable="false">
+           ${shapes[shape] ?? ""}
+           <text class="pattern-tile-icon-number" x="50" y="54" text-anchor="middle" dominant-baseline="middle">${number}</text>
+       </svg>
+   </span>`;
+}
+
 const DIFFICULTY_CONFIG = {
    normal: {
        startLength: 3,
@@ -35,18 +58,18 @@ export function startPatternPuzzle({ containerID }) {
                <p id="pattern-status" role="status" aria-live="polite" aria-atomic="true">Watch the color pattern, then repeat it.</p>               <p id="pattern-mode">Mode: ${difficultyLabel}. Change this in Settings -> Difficulty for timed runs.</p>
            </header>
            <p id="pattern-a11y-hint" class="pattern-hint">
+               Each tile has a shape and number: circle (1), square (2), triangle (3), star (4).
                Keyboard: use <strong>1–4</strong> to press tiles, or <strong>arrow keys</strong> to move, then <strong>Enter/Space</strong> to press. Press <strong>R</strong> to replay.
            </p>
-           <div id="pattern-pad" role="group" aria-label="Pattern tiles" aria-describedby="pattern-a11y-hint" style="display:grid;grid-template-columns:repeat(2,80px);gap:10px;justify-content:center;margin:15px 0;">
-               ${COLORS.map((color, index) => `
+           <div id="pattern-pad" role="group" aria-label="Pattern tiles" aria-describedby="pattern-a11y-hint">
+               ${TILE_DEFS.map((tile, index) => `
                    <button
                        type="button"
-                       class="pattern-tile"
+                       class="pattern-tile pattern-tile--${tile.color}"
                        data-index="${index}"
-                       style="height:80px;border:2px solid #222;border-radius:8px;background:${color};opacity:0.65;cursor:pointer;"
-                       aria-label="${color} tile"
-                       aria-keyshortcuts="${index + 1}"
-                   ></button>
+                       aria-label="${tile.color} tile, ${tile.shape}, number ${tile.number}"
+                       aria-keyshortcuts="${tile.number}"
+                   >${tileShapeMarkup(tile)}</button>
                `).join("")}
            </div>
            <button id="pattern-replay" type="button">Replay Pattern</button>
@@ -108,7 +131,12 @@ export function startPatternPuzzle({ containerID }) {
 
 
    function clearFeedbackClasses(tile) {
-       tile.classList.remove("pattern-tile--pressed", "pattern-tile--correct", "pattern-tile--wrong");
+       tile.classList.remove(
+           "pattern-tile--pressed",
+           "pattern-tile--correct",
+           "pattern-tile--wrong",
+           "pattern-tile--playback",
+       );
    }
 
    function showTileFeedback(tile, kind) {
@@ -171,9 +199,9 @@ export function startPatternPuzzle({ containerID }) {
                return;
            }
 
-           tile.style.opacity = "1";
+           tile.classList.add("pattern-tile--playback");
            setTimeout(() => {
-               tile.style.opacity = "0.65";
+               tile.classList.remove("pattern-tile--playback");
                setTimeout(resolve, config.gapMs);
            }, config.flashMs);
        });
