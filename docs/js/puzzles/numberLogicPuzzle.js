@@ -104,13 +104,13 @@ export function startNumberLogicPuzzle({ containerID }) {
             <button id = "submit">Submit</button>
         </div>
     `;
-    loopScrolling();
     if(isChallenge) {
         removeCells(board, difficulty.CHALLENGING);
     } else {
         removeCells(board, difficulty.EASY);
     }
     renderSudokuUI(board);
+    loopScrolling();
     const submitButton = document.getElementById("submit");
     submitButton.addEventListener("click", function() {
         let checked = checkWin(checkBoard);
@@ -148,6 +148,10 @@ export function startNumberLogicPuzzle({ containerID }) {
     function loopScrolling() {
         const inputs = document.querySelectorAll(".logic-grid input");
         inputs.forEach(input => {
+            //Don't allow scrolling for pre-filled numbers
+            if(input.disabled) {
+                return;
+            }
             //Scrolling with mousepad
             input.addEventListener("wheel", function(event) {
                 event.preventDefault();
@@ -170,17 +174,6 @@ export function startNumberLogicPuzzle({ containerID }) {
                     }
                 }
                 input.value = value;
-            });
-            //Scrolling with manual buttons
-            input.addEventListener("input", function(event) {
-                const min = Number(input.min);
-                const max = Number(input.max);
-                let value = Number(input.value);
-                if (value < min) {
-                    input.value = max;
-                } else if (value > max) {
-                    input.value = min;
-                }
             });
         });
     }
