@@ -1147,7 +1147,46 @@ body {
    text-align: center;
 }
 
-.pysche-reduced-motion .pattern-tile {
+.pattern-replay {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   margin: 4px auto 0;
+   min-width: 170px;
+   min-height: 48px;
+   padding: 8px 16px;
+   border: 2px solid #222;
+   border-radius: 8px;
+   background: #302144;
+   color: #f9a000;
+   font-family: Helvetica, Arial, sans-serif;
+   font-weight: bold;
+   cursor: pointer;
+   opacity: 0.95;
+   transition: transform 120ms ease, outline-color 120ms ease, opacity 120ms ease, filter 120ms ease, box-shadow 120ms ease;
+   outline: 3px solid transparent;
+   outline-offset: 2px;
+}
+
+.pattern-replay:hover:not(:disabled) {
+   filter: brightness(1.12) saturate(1.08);
+}
+
+.pattern-replay:active:not(:disabled) {
+   transform: scale(0.96);
+}
+
+.pattern-replay:focus-visible {
+   outline-color: rgba(48, 33, 68, 0.95);
+}
+
+.pattern-replay:disabled {
+   cursor: not-allowed;
+   opacity: 0.4;
+}
+
+.pysche-reduced-motion .pattern-tile,
+.pysche-reduced-motion .pattern-replay {
    transition: none;
 }
 
