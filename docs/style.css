@@ -1455,6 +1455,7 @@ button.tube-cell::-moz-focus-inner {
 
 @media (max-width: 1080px) {
     .grid-item {
+        padding-top: 50px;
         height: 145px;
         width: 145px;
     }
@@ -1462,16 +1463,15 @@ button.tube-cell::-moz-focus-inner {
 
 @media (max-width: 660px) {
     .grid-item {
+        padding-top: 40px;
         height: 120px;
         width: 120px;
     }
 }
 
 @media (max-width: 560px) {
-    /* .grid-container{
-        max-width: 60vw;
-    } */
     .grid-item {
+        padding-top: 25px;
         height: 90px;
         width: 90px;
     }
@@ -1479,6 +1479,7 @@ button.tube-cell::-moz-focus-inner {
 
 @media (max-width: 360px) {
     .grid-item {
+        padding-top: 15px;
         height: 60px;
         width: 60px;
     }
