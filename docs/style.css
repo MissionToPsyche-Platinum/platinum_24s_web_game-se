@@ -1283,6 +1283,76 @@ button.tube-cell::-moz-focus-inner {
 	width: 85%;
 	height: 85%;
 	display: block;
+	overflow: visible;
+}
+
+.tube-port--linked {
+	fill: #111;
+	stroke: #fff;
+	stroke-width: 1.75;
+}
+
+.tube-port--open {
+	fill: #fff;
+	stroke: #111;
+	stroke-width: 2.25;
+}
+
+.tube-cell-letter {
+	font-size: 16px;
+	font-weight: 800;
+	font-family: Helvetica, Arial, sans-serif;
+	fill: #111;
+	pointer-events: none;
+}
+
+.tube-cell-letter--on-dark {
+	fill: #fff;
+}
+
+.tube-puzzle-legend {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 8px 14px;
+	list-style: none;
+	margin: 8px 0 0;
+	padding: 0;
+	max-width: 28rem;
+	font-size: 0.78rem;
+	color: #222;
+}
+
+.tube-puzzle-legend li {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.tube-legend-mark {
+	width: 12px;
+	height: 12px;
+	flex-shrink: 0;
+	box-sizing: border-box;
+}
+
+.tube-legend-mark--linked {
+	background: #111;
+	transform: rotate(45deg);
+	border: 1px solid #fff;
+	box-shadow: 0 0 0 1px #111;
+}
+
+.tube-legend-mark--open {
+	border-radius: 50%;
+	background: #fff;
+	border: 2px solid #111;
+}
+
+.tube-legend-mark--flow {
+	border-radius: 2px;
+	background: linear-gradient(165deg, #e7f7ff 0%, #cdeeff 100%);
+	box-shadow: 0 0 0 1px rgba(26, 140, 255, 0.8);
 }
 
 .tube-cell--empty {
@@ -1445,6 +1515,76 @@ button.tube-cell::-moz-focus-inner {
 
 .pysche-reduced-motion .tube-puzzle-flow-strip {
 	animation: none;
+}
+
+.pysche-reduced-motion .tube-cell--flowing {
+	animation: none;
+}
+
+/* Color-blind: patterns, letters, and contrast instead of hue alone */
+.pysche-color-blind .tube-cell--source {
+	box-shadow: 0 0 0 3px #111;
+	animation: none;
+}
+
+.pysche-color-blind .tube-cell--goal {
+	box-shadow: inset 0 0 0 2px #111;
+}
+
+.pysche-color-blind .tube-cell--flowing {
+	background: repeating-linear-gradient(
+		45deg,
+		#ffffff 0 5px,
+		#cfcfcf 5px 10px
+	);
+	box-shadow:
+		inset 0 0 0 3px #111,
+		0 0 0 1px #111;
+	animation: none;
+}
+
+.pysche-color-blind .tube-puzzle-grid--solved {
+	box-shadow:
+		inset 0 1px 0 rgba(255, 255, 255, 0.35),
+		0 0 0 4px #111;
+}
+
+.pysche-color-blind button.tube-cell.tube-cell--selected {
+	outline: 3px dashed #111;
+	outline-offset: 2px;
+}
+
+.pysche-color-blind .tube-flow-core {
+	stroke-dasharray: 7 5;
+}
+
+.pysche-color-blind .tube-puzzle-layout--flowing .tube-puzzle-flow-strip,
+.pysche-color-blind .tube-puzzle-flow-strip {
+	background-image: repeating-linear-gradient(
+		90deg,
+		#111 0 8px,
+		transparent 8px 14px
+	);
+	animation: none;
+}
+
+.pysche-color-blind .tube-puzzle-layout--goal-connected .tube-puzzle-flow-strip {
+	background-image: repeating-linear-gradient(
+		90deg,
+		#111 0 10px,
+		#fff 10px 14px,
+		#111 14px 18px,
+		transparent 18px 24px
+	);
+}
+
+.pysche-color-blind .tube-legend-mark--flow {
+	background: repeating-linear-gradient(
+		45deg,
+		#ffffff 0 3px,
+		#cfcfcf 3px 6px
+	);
+	box-shadow: 0 0 0 2px #111;
 }
 
 .sliding-wrapper {

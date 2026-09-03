@@ -37,8 +37,7 @@ export const puzzles = [
     {
         name: "Tube Puzzle",
         start: startTubePuzzle,
-        helpText: "Turn the tubes to make the water flow!",
-    },
+        helpText: "Rotate pipes so open ends meet and a path runs from the source to the goal. Filled diamonds mark joined ports; hollow circles mark open ends that are not connected. Color-blind mode is in Settings.",    },
     {
        name: "Pattern Puzzle",
        start: startPatternPuzzle,
