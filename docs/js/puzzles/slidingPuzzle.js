@@ -6,9 +6,7 @@ export function startSlidingPuzzle({ containerID }) {
     const difficulty = settings?.difficulty === "challenge" ? "challenge" : "normal";
 
     const gridSize = difficulty === "challenge" ? 4 : 3;
-
-    console.log(difficulty);
-    console.log(gridSize);
+    
     containerID.innerHTML = `
     <div class="sliding-wrapper">
         <h3 class="sliding-header">Sliding Puzzle - ${difficulty} - ${gridSize}</h3>
@@ -20,12 +18,14 @@ export function startSlidingPuzzle({ containerID }) {
 `;
 
     let state = buildPuzzle(gridSize);
-
-    setupHelpButton();
-    state = shufflePieces (state);
+    
+    
+    state = shufflePieces (state, gridSize);
+    
     renderSlidingPuzzle (containerID, state, gridSize);
-
-
+    
+    setupHelpButton();
+    
     
 }
 
@@ -62,7 +62,7 @@ function setupHelpButton() {
     });
 }
 
-function shufflePieces (state) {
+function shufflePieces (state, gridSize) {
     let lastIndex = null;
 
     for(let i = 0; i < 50; i++) {
@@ -70,13 +70,20 @@ function shufflePieces (state) {
 
         let movableTiles = state
             .map((tile, index) => index)
-            .filter(index => checkSwap(index, emptyIndex));
+            .filter(index => checkSwap(index, emptyIndex, gridSize));
 
-        movableTiles = movableTiles.filter(index => index !== lastIndex);
+        let possibleMoves = movableTiles.filter(
+            index => index !== lastIndex
+        );
 
-        const randomIndex = movableTiles[
-            Math.floor(Math.random() * movableTiles.length)
-        ];
+        if (possibleMoves.length === 0) {
+            possibleMoves = movableTiles;
+        }
+
+        const randomIndex =
+            possibleMoves[
+                Math.floor(Math.random() * possibleMoves.length)
+            ];
 
         swapTiles(state, randomIndex, emptyIndex);
         lastIndex = emptyIndex;
