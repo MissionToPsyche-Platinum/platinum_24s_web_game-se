@@ -1,5 +1,7 @@
 import {
    getCellsConnectedToSource,
+   getConnectedDirections,
+   getOpenDirections,
    getTubeLevelFromPack,
    isSourceConnectedToGoal,
    validateLevel,
@@ -8,22 +10,99 @@ import { solvePuzzle } from "../gameController.js";
 
 const STROKE = "#302144";
 const ACCENT = "#f9a000";
+const FLOW = "#1a8cff";
+const PORT_POS = [
+	[50, 10],
+	[90, 50],
+	[50, 90],
+	[10, 50],
+];
 
-/** SVG fragments at rotation 0; group is rotated by rotation × 90° */
-const SHAPES = {
-	empty: `<circle cx="50" cy="50" r="3" fill="#999" opacity="0.35"/>`,
-	straight: `<line x1="50" y1="8" x2="50" y2="92" stroke="${STROKE}" stroke-width="10" stroke-linecap="round"/>`,
-	corner: `<path d="M 50 8 L 50 50 L 92 50" fill="none" stroke="${STROKE}" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>`,
-	tee: `<path d="M 50 8 L 50 92 M 50 50 L 92 50" fill="none" stroke="${STROKE}" stroke-width="10" stroke-linecap="round"/>`,
-	cross: `<line x1="50" y1="8" x2="50" y2="92" stroke="${STROKE}" stroke-width="9"/><line x1="8" y1="50" x2="92" y2="50" stroke="${STROKE}" stroke-width="9"/>`,
-	source: `<circle cx="50" cy="36" r="14" fill="${ACCENT}" stroke="${STROKE}" stroke-width="3"/><line x1="50" y1="50" x2="50" y2="92" stroke="${STROKE}" stroke-width="10" stroke-linecap="round"/>`,
-	goal: `<line x1="50" y1="8" x2="50" y2="42" stroke="${STROKE}" stroke-width="10" stroke-linecap="round"/><path d="M 26 48 Q 50 90 74 48" fill="none" stroke="${STROKE}" stroke-width="8" stroke-linecap="round"/>`,
-};
+function isColorBlindMode() {
+	return !!window.getPyscheSettings?.()?.colorBlind;
+}
 
-function cellSvg(kind, rotation) {
-	const inner = SHAPES[kind] ?? SHAPES.empty;
+function pipeStrokeAttrs(stroke, width, extra = "") {
+	return `fill="none" stroke="${stroke}" stroke-width="${width}" stroke-linecap="round" stroke-linejoin="round"${extra}`;
+}
+
+function pipeCore(kind, stroke, width) {
+	const a = pipeStrokeAttrs(stroke, width);
+	switch (kind) {
+		case "straight":
+			return `<line class="tube-pipe-core" x1="50" y1="8" x2="50" y2="92" ${a}/>`;
+		case "corner":
+			return `<path class="tube-pipe-core" d="M 50 8 L 50 50 L 92 50" ${a}/>`;
+		case "tee":
+			return `<path class="tube-pipe-core" d="M 50 8 L 50 92 M 50 50 L 92 50" ${a}/>`;
+		case "cross":
+			return `<line class="tube-pipe-core" x1="50" y1="8" x2="50" y2="92" ${a}/><line class="tube-pipe-core" x1="8" y1="50" x2="92" y2="50" ${a}/>`;
+		case "source":
+			return `<line class="tube-pipe-core" x1="50" y1="50" x2="50" y2="92" ${a}/>`;
+		case "goal":
+			return `<line class="tube-pipe-core" x1="50" y1="8" x2="50" y2="42" ${a}/>`;
+		default:
+			return "";
+	}
+}
+
+function sourceGoalMarks(kind, colorBlind) {
+	if (kind === "source") {
+		const fill = colorBlind ? "#111" : ACCENT;
+		return `<circle cx="50" cy="36" r="14" fill="${fill}" stroke="${STROKE}" stroke-width="3"/>`;
+	}
+	if (kind === "goal") {
+		return `<path d="M 26 48 Q 50 90 74 48" fill="none" stroke="${STROKE}" stroke-width="8" stroke-linecap="round"/>`;
+	}
+	return "";
+}
+
+function cellLetter(kind, colorBlind, rotation) {
+	if (!colorBlind) {
+		return "";
+	}
 	const deg = rotation * 90;
-	return `<svg class="tube-cell-svg" viewBox="0 0 100 100" aria-hidden="true"><g transform="rotate(${deg} 50 50)">${inner}</g></svg>`;
+	if (kind === "source") {
+		return `<g transform="rotate(${-deg} 50 36)"><text class="tube-cell-letter tube-cell-letter--on-dark" x="50" y="36" text-anchor="middle" dominant-baseline="middle">S</text></g>`;
+	}
+	if (kind === "goal") {
+		return `<g transform="rotate(${-deg} 50 68)"><text class="tube-cell-letter" x="50" y="68" text-anchor="middle" dominant-baseline="middle">G</text></g>`;
+	}
+	return "";
+}
+
+function portMarkers(kind, rotation, connectedDirs) {
+	const linked = new Set(connectedDirs);
+	return getOpenDirections(kind, rotation)
+		.map((d) => {
+			const [x, y] = PORT_POS[d];
+			if (linked.has(d)) {
+				return `<polygon class="tube-port tube-port--linked" points="${x},${y - 6} ${x + 6},${y} ${x},${y + 6} ${x - 6},${y}"/>`;
+			}
+			return `<circle class="tube-port tube-port--open" cx="${x}" cy="${y}" r="5"/>`;
+		})
+		.join("");
+}
+
+function cellSvg(kind, rotation, { flowing = false, connectedDirs = [], colorBlind = false } = {}) {
+	if (kind === "empty") {
+		return `<svg class="tube-cell-svg" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="3" fill="#999" opacity="0.35"/></svg>`;
+	}
+	const deg = rotation * 90;
+	const stroke = colorBlind ? "#111" : STROKE;
+	const width = colorBlind ? 12 : 10;
+	const core = pipeCore(kind, stroke, width);
+	const flowInner =
+		flowing && kind !== "empty"
+			? pipeCore(kind, colorBlind ? "#fff" : FLOW, colorBlind ? 5 : 4).replaceAll(
+					"tube-pipe-core",
+					"tube-flow-core",
+				)
+			: "";
+	const extras = sourceGoalMarks(kind, colorBlind);
+	const letter = cellLetter(kind, colorBlind, rotation);
+	const ports = portMarkers(kind, rotation, connectedDirs);
+	return `<svg class="tube-cell-svg" viewBox="0 0 100 100" aria-hidden="true"><g transform="rotate(${deg} 50 50)">${core}${flowInner}${extras}${letter}</g>${ports}</svg>`;
 }
 
 function cloneLevel(level) {
@@ -38,6 +117,7 @@ function cloneLevel(level) {
 
 function renderGrid(level, metaLabel) {
 	const { rows, cols, cells } = level;
+	const colorBlind = isColorBlindMode();
 	let html = `<div class="tube-puzzle" role="application" aria-label="Tube puzzle board">
   	<p class="tube-puzzle-caption"><strong>Tube puzzle</strong> — ${level.name}</p>
     <p class="tube-puzzle-mode">${metaLabel}</p>
@@ -47,7 +127,7 @@ function renderGrid(level, metaLabel) {
     	for (let c = 0; c < cols; c++) {
         	const cell = cells[r][c];
         	const label = `${cell.kind}, rotation ${cell.rotation}`;
-        	const svg = cellSvg(cell.kind, cell.rotation);
+        	const svg = cellSvg(cell.kind, cell.rotation, { colorBlind });
         	if (cell.kind === "empty") {
             	html += `<div class="tube-cell tube-cell--empty" data-r="${r}" data-c="${c}" aria-hidden="true">${svg}</div>`;
         	} else {
@@ -57,6 +137,11 @@ function renderGrid(level, metaLabel) {
 	}
 
 	html += `</div><div class="tube-puzzle-flow-strip" aria-hidden="true"></div>
+	<ul class="tube-puzzle-legend" aria-label="Pipe connection key">
+		<li><span class="tube-legend-mark tube-legend-mark--linked" aria-hidden="true"></span> Joined ports</li>
+		<li><span class="tube-legend-mark tube-legend-mark--open" aria-hidden="true"></span> Open, not joined</li>
+		<li><span class="tube-legend-mark tube-legend-mark--flow" aria-hidden="true"></span> Path from source</li>
+	</ul>
   	<div class="tube-puzzle-dpad" role="toolbar" aria-label="Move between pipes">
     	<span class="tube-puzzle-dpad-label">Move:</span>
     	<div class="tube-puzzle-dpad-buttons">
@@ -73,7 +158,7 @@ function renderGrid(level, metaLabel) {
            <button type="button" class="tube-dpad-btn" id="tube-shuffle-btn">Shuffle</button>
        </div>
    </div>
-  	<p id="tube-puzzle-hint" class="tube-puzzle-hint">Click a pipe to rotate it. Use the buttons above or your <strong>keyboard’s arrow keys</strong> (↑↓←→) to move between pipes—empty tiles are skipped. Connect source to goal to win.</p></div>`;
+  	<p id="tube-puzzle-hint" class="tube-puzzle-hint">Click a pipe to rotate it. Use the buttons above or your <strong>keyboard’s arrow keys</strong> (↑↓←→) to move between pipes—empty tiles are skipped. Connect source to goal to win. Filled diamonds show joined pipes; hollow circles show open ends that do not meet a neighbor.</p></div>`;
 	return html;
 }
 
@@ -90,18 +175,37 @@ function setGridSolved(gridEl, solved) {
 function updateFlowPreview(level, gridEl, layoutEl) {
 	const connected = getCellsConnectedToSource(level);
 	const goalConnected = isSourceConnectedToGoal(level);
+	const colorBlind = isColorBlindMode();
 
 	gridEl.querySelectorAll(".tube-cell").forEach((cellEl) => {
     	const r = Number(cellEl.dataset.r);
     	const c = Number(cellEl.dataset.c);
     	const k = `${r},${c}`;
     	const cell = level.cells[r]?.[c];
-    	const isPipe = cell && cell.kind !== "empty";
-    	cellEl.classList.toggle("tube-cell--flowing", isPipe && connected.has(k));
+    	if (!cell) {
+    		return;
+    	}
+    	const isPipe = cell.kind !== "empty";
+    	const flowing = isPipe && connected.has(k);
+    	const ports = getConnectedDirections(level, r, c);
+    	cellEl.classList.toggle("tube-cell--flowing", flowing);
+    	if (!isPipe) {
+    		return;
+    	}
+    	const openCount = getOpenDirections(cell.kind, cell.rotation).length;
+    	const label = `${cell.kind}, rotation ${cell.rotation}, ${ports.length} of ${openCount} ports connected${flowing ? ", on source path" : ""}`;
+    	cellEl.innerHTML = cellSvg(cell.kind, cell.rotation, {
+    		flowing,
+    		connectedDirs: ports,
+    		colorBlind,
+    	});
+    	cellEl.setAttribute("aria-label", label);
+    	cellEl.title = label;
 	});
 
 	layoutEl?.classList.toggle("tube-puzzle-layout--flowing", connected.size > 1);
 	layoutEl?.classList.toggle("tube-puzzle-layout--goal-connected", goalConnected);
+	layoutEl?.classList.toggle("tube-puzzle-layout--color-blind", colorBlind);
 }
 
 function tryWin(level, gridEl, state) {
@@ -230,26 +334,14 @@ function wireRotation(gridEl, level, state, tracker, layoutEl) {
     	const c = Number(btn.dataset.c);
     	const cell = level.cells[r][c];
     	cell.rotation = (cell.rotation + 1) % 4;
-    	const label = `${cell.kind}, rotation ${cell.rotation}`;
-    	btn.innerHTML = cellSvg(cell.kind, cell.rotation);
-    	btn.setAttribute("aria-label", label);
-    	btn.title = label;
-    	btn.focus({ preventScroll: true });
     	updateFlowPreview(level, gridEl, layoutEl);
+    	btn.focus({ preventScroll: true });
     	tryWin(level, gridEl, state);
 	});
 }
 
-function redrawGridFromLevel(gridEl, level) {
-	gridEl.querySelectorAll("button.tube-cell").forEach((btn) => {
-    	const r = Number(btn.dataset.r);
-    	const c = Number(btn.dataset.c);
-    	const cell = level.cells[r][c];
-    	const label = `${cell.kind}, rotation ${cell.rotation}`;
-    	btn.innerHTML = cellSvg(cell.kind, cell.rotation);
-    	btn.setAttribute("aria-label", label);
-    	btn.title = label;
-	});
+function redrawGridFromLevel(gridEl, level, layoutEl) {
+	updateFlowPreview(level, gridEl, layoutEl);
 }
 
 function wireActions(layoutEl, gridEl, level, templateLevel, state, tracker) {
@@ -260,8 +352,7 @@ function wireActions(layoutEl, gridEl, level, templateLevel, state, tracker) {
     	level.cells = templateLevel.cells.map((row) => row.map((cell) => ({ ...cell })));
     	state.won = false;
     	setGridSolved(gridEl, false);
-    	redrawGridFromLevel(gridEl, level);
-    	updateFlowPreview(level, gridEl, layoutEl);
+    	redrawGridFromLevel(gridEl, level, layoutEl);
     	const firstPipe = gridEl.querySelector("button.tube-cell:not([disabled])");
     	if (firstPipe) setSelectedPipe(gridEl, tracker, firstPipe);
 	});
@@ -276,8 +367,7 @@ function wireActions(layoutEl, gridEl, level, templateLevel, state, tracker) {
     	}
     	state.won = false;
     	setGridSolved(gridEl, false);
-    	redrawGridFromLevel(gridEl, level);
-    	updateFlowPreview(level, gridEl, layoutEl);
+    	redrawGridFromLevel(gridEl, level, layoutEl);
     	const firstPipe = gridEl.querySelector("button.tube-cell:not([disabled])");
     	if (firstPipe) setSelectedPipe(gridEl, tracker, firstPipe);
 	});

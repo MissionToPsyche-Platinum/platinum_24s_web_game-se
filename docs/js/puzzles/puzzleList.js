@@ -20,7 +20,9 @@ export const puzzles = [
     {
         name: "Number Logic Puzzle",
         start: startNumberLogicPuzzle,
-        helpText: "Use logic to solve the puzzle with numbers",
+        helpText: "Use logic to solve the sudoku puzzle with numbers. Each column, row, and grid can " +
+        "have exactly 1 of each number 1 through 9. When you think you have the answer, press the " +
+        "submit button at the bottom of the puzzle. Incorrect answers will be highlighted in red.",
     },
     {
         name: "Maze Puzzle",
@@ -35,8 +37,7 @@ export const puzzles = [
     {
         name: "Tube Puzzle",
         start: startTubePuzzle,
-        helpText: "Turn the tubes to make the water flow!",
-    },
+        helpText: "Rotate pipes so open ends meet and a path runs from the source to the goal. Filled diamonds mark joined ports; hollow circles mark open ends that are not connected. Color-blind mode is in Settings.",    },
     {
        name: "Pattern Puzzle",
        start: startPatternPuzzle,

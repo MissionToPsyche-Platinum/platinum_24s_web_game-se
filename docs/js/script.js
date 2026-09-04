@@ -8,6 +8,7 @@ const LS = {
   timer: "pysche_settings_show_timer",
   hints: "pysche_settings_hints",
   motion: "pysche_settings_reduced_motion",
+  colorBlind: "pysche_settings_color_blind",
   diff: "pysche_settings_difficulty",
 };
 
@@ -44,6 +45,7 @@ const settingDisplayName = document.getElementById("settingDisplayName");
 const settingShowTimer = document.getElementById("settingShowTimer");
 const settingHints = document.getElementById("settingHints");
 const settingReducedMotion = document.getElementById("settingReducedMotion");
+const settingColorBlind = document.getElementById("settingColorBlind");
 const settingDifficulty = document.getElementById("settingDifficulty");
 const runTimerDisplay = document.getElementById("run-timer-display");
 const runTimerEl = document.getElementById("run-timer");
@@ -100,6 +102,15 @@ function applyReducedMotion() {
   }
 }
 
+function applyColorBlindMode() {
+  if (settingColorBlind) {
+    document.documentElement.classList.toggle(
+      "pysche-color-blind",
+      settingColorBlind.checked
+    );
+  }
+}
+
 function loadGameplaySettings() {
   if (settingDisplayName) {
     const name = localStorage.getItem(LS.displayName);
@@ -111,12 +122,15 @@ function loadGameplaySettings() {
     settingHints.checked = localStorage.getItem(LS.hints) !== "false";
   if (settingReducedMotion)
     settingReducedMotion.checked = localStorage.getItem(LS.motion) === "true";
+  if (settingColorBlind)
+    settingColorBlind.checked = localStorage.getItem(LS.colorBlind) === "true";
   if (settingDifficulty) {
     const d = localStorage.getItem(LS.diff);
     settingDifficulty.value =
       d === "challenge" || d === "normal" ? d : "normal";
   }
   applyReducedMotion();
+  applyColorBlindMode();
 }
 
 function resetSettingsToDefaults() {
@@ -188,6 +202,9 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
     else if (t === settingReducedMotion) {
       localStorage.setItem(LS.motion, String(t.checked));
       applyReducedMotion();
+    } else if (t === settingColorBlind) {
+      localStorage.setItem(LS.colorBlind, String(t.checked));
+      applyColorBlindMode();
     } else if (t === settingDifficulty)
       localStorage.setItem(LS.diff, t.value);
   });
@@ -214,6 +231,9 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
     else if (t === settingReducedMotion) {
       localStorage.setItem(LS.motion, String(t.checked));
       applyReducedMotion();
+    } else if (t === settingColorBlind) {
+      localStorage.setItem(LS.colorBlind, String(t.checked));
+      applyColorBlindMode();
     } else if (t === settingDifficulty)
       localStorage.setItem(LS.diff, t.value);
   });
@@ -407,6 +427,7 @@ function getPyscheSettings() {
     showTimer: settingShowTimer?.checked ?? true,
     hintsEnabled: settingHints?.checked ?? true,
     reducedMotion: !!settingReducedMotion?.checked,
+    colorBlind: !!settingColorBlind?.checked,
     difficulty: settingDifficulty?.value ?? "normal",
   };
 }

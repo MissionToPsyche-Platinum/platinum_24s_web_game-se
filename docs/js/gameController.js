@@ -114,7 +114,7 @@ function updateHeader() {
     newGameButton.style.display = 'inline';
     winMessage.style.display = 'block';
     //Remove for testing
-    //solvePuzzleButton.style.visibility = 'hidden';
+    // solvePuzzleButton.style.visibility = 'hidden';
     //
     solvePuzzleButton.disabled = true;
     puzzleSolvedMessage.style.display = 'none';
@@ -129,7 +129,7 @@ function displayNextPuzzle() {
     clearMissionFact();
     nextPuzzleButton.disabled = true;
     //Remove for testing
-    //solvePuzzleButton.style.visibilty = 'hidden';
+    // solvePuzzleButton.style.visibilty = 'hidden';
     //
     solvePuzzleButton.disabled = false;
     puzzleHelpButton.disabled = false;

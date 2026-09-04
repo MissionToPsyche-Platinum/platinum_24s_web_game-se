@@ -134,6 +134,30 @@ export function validateLevel(level) {
 
 const opp = (d) => (d + 2) % 4;
 
+/** World-space open directions (N=0…W=3) that currently meet a matching neighbor. */
+export function getConnectedDirections(level, r, c) {
+    const cell = level.cells[r]?.[c];
+    if (!cell || cell.kind === "empty") {
+        return [];
+    }
+    const linked = [];
+    for (const d of getOpenDirections(cell.kind, cell.rotation)) {
+        const nr = r + DELTA[d][0];
+        const nc = c + DELTA[d][1];
+        if (nr < 0 || nr >= level.rows || nc < 0 || nc >= level.cols) {
+            continue;
+        }
+        const ncell = level.cells[nr][nc];
+        if (!ncell || ncell.kind === "empty") {
+            continue;
+        }
+        if (getOpenDirections(ncell.kind, ncell.rotation).includes(opp(d))) {
+            linked.push(d);
+        }
+    }
+    return linked;
+}
+
 /** BFS from source through currently connected open edges; returns "r,c" cell keys. */
 export function getCellsConnectedToSource(level) {
   const { rows, cols, cells } = level;

@@ -824,6 +824,10 @@ body {
     color: #f0e4ff;
 }
 
+.logic-grid input.incorrect {
+    background-color: #cc0000;
+}
+
 #mission-fact {
     border: 1px solid rgba(249, 160, 0, 0.35);
     border-radius: 10px;
@@ -1019,14 +1023,91 @@ body {
 }
 
 /* Pattern puzzle */
+#pattern-pad {
+   display: grid;
+   grid-template-columns: repeat(2, 80px);
+   gap: 10px;
+   justify-content: center;
+   margin: 15px 0;
+}
+
 .pattern-tile {
-   transition: transform 120ms ease, outline-color 120ms ease, opacity 120ms ease;
+   position: relative;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   height: 80px;
+   border: 2px solid #222;
+   border-radius: 8px;
+   cursor: pointer;
+   opacity: 0.65;
+   transition: transform 120ms ease, outline-color 120ms ease, opacity 120ms ease, filter 120ms ease, box-shadow 120ms ease;
    outline: 3px solid transparent;
    outline-offset: 2px;
 }
 
+.pattern-tile--red {
+   background: #d32f2f;
+}
+
+.pattern-tile--blue {
+   background: #1565c0;
+}
+
+.pattern-tile--green {
+   background: #2e7d32;
+}
+
+.pattern-tile--yellow {
+   background: #f9a825;
+}
+
+.pattern-tile-icon {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 58%;
+   height: 58%;
+   pointer-events: none;
+   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+   transition: transform 120ms ease, filter 120ms ease;
+}
+
+.pattern-tile-icon svg {
+   width: 100%;
+   height: 100%;
+   overflow: visible;
+}
+
+.pattern-tile-icon-shape {
+   fill: rgba(255, 255, 255, 0.95);
+   stroke: #111;
+   stroke-width: 4;
+   paint-order: stroke fill;
+}
+
+.pattern-tile-icon-number {
+   font-size: 26px;
+   font-weight: 800;
+   font-family: system-ui, -apple-system, sans-serif;
+   fill: #fff;
+   stroke: #111;
+   stroke-width: 3px;
+   paint-order: stroke fill;
+}
+
+.pattern-tile--yellow .pattern-tile-icon-shape,
+.pattern-tile--yellow .pattern-tile-icon-number {
+   fill: #111;
+   stroke: #fff;
+}
+
 .pattern-tile--pressed {
    transform: scale(0.96);
+}
+
+.pattern-tile--pressed .pattern-tile-icon {
+   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.75));
 }
 
 .pattern-tile--correct {
@@ -1038,7 +1119,15 @@ body {
 }
 
 .pattern-tile--playback {
-   outline-color: rgba(249, 160, 0, 0.9);
+   opacity: 1;
+   outline-color: rgba(249, 160, 0, 0.95);
+   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85), 0 0 14px rgba(255, 255, 255, 0.55);
+   filter: brightness(1.12) saturate(1.08);
+}
+
+.pattern-tile--playback .pattern-tile-icon {
+   transform: scale(1.08);
+   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
 }
 
 .pattern-tile:focus-visible {
@@ -1058,7 +1147,46 @@ body {
    text-align: center;
 }
 
-.pysche-reduced-motion .pattern-tile {
+.pattern-replay {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   margin: 4px auto 0;
+   min-width: 170px;
+   min-height: 48px;
+   padding: 8px 16px;
+   border: 2px solid #222;
+   border-radius: 8px;
+   background: #302144;
+   color: #f9a000;
+   font-family: Helvetica, Arial, sans-serif;
+   font-weight: bold;
+   cursor: pointer;
+   opacity: 0.95;
+   transition: transform 120ms ease, outline-color 120ms ease, opacity 120ms ease, filter 120ms ease, box-shadow 120ms ease;
+   outline: 3px solid transparent;
+   outline-offset: 2px;
+}
+
+.pattern-replay:hover:not(:disabled) {
+   filter: brightness(1.12) saturate(1.08);
+}
+
+.pattern-replay:active:not(:disabled) {
+   transform: scale(0.96);
+}
+
+.pattern-replay:focus-visible {
+   outline-color: rgba(48, 33, 68, 0.95);
+}
+
+.pattern-replay:disabled {
+   cursor: not-allowed;
+   opacity: 0.4;
+}
+
+.pysche-reduced-motion .pattern-tile,
+.pysche-reduced-motion .pattern-replay {
    transition: none;
 }
 
@@ -1155,6 +1283,76 @@ button.tube-cell::-moz-focus-inner {
 	width: 85%;
 	height: 85%;
 	display: block;
+	overflow: visible;
+}
+
+.tube-port--linked {
+	fill: #111;
+	stroke: #fff;
+	stroke-width: 1.75;
+}
+
+.tube-port--open {
+	fill: #fff;
+	stroke: #111;
+	stroke-width: 2.25;
+}
+
+.tube-cell-letter {
+	font-size: 16px;
+	font-weight: 800;
+	font-family: Helvetica, Arial, sans-serif;
+	fill: #111;
+	pointer-events: none;
+}
+
+.tube-cell-letter--on-dark {
+	fill: #fff;
+}
+
+.tube-puzzle-legend {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 8px 14px;
+	list-style: none;
+	margin: 8px 0 0;
+	padding: 0;
+	max-width: 28rem;
+	font-size: 0.78rem;
+	color: #222;
+}
+
+.tube-puzzle-legend li {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.tube-legend-mark {
+	width: 12px;
+	height: 12px;
+	flex-shrink: 0;
+	box-sizing: border-box;
+}
+
+.tube-legend-mark--linked {
+	background: #111;
+	transform: rotate(45deg);
+	border: 1px solid #fff;
+	box-shadow: 0 0 0 1px #111;
+}
+
+.tube-legend-mark--open {
+	border-radius: 50%;
+	background: #fff;
+	border: 2px solid #111;
+}
+
+.tube-legend-mark--flow {
+	border-radius: 2px;
+	background: linear-gradient(165deg, #e7f7ff 0%, #cdeeff 100%);
+	box-shadow: 0 0 0 1px rgba(26, 140, 255, 0.8);
 }
 
 .tube-cell--empty {
@@ -1319,6 +1517,76 @@ button.tube-cell::-moz-focus-inner {
 	animation: none;
 }
 
+.pysche-reduced-motion .tube-cell--flowing {
+	animation: none;
+}
+
+/* Color-blind: patterns, letters, and contrast instead of hue alone */
+.pysche-color-blind .tube-cell--source {
+	box-shadow: 0 0 0 3px #111;
+	animation: none;
+}
+
+.pysche-color-blind .tube-cell--goal {
+	box-shadow: inset 0 0 0 2px #111;
+}
+
+.pysche-color-blind .tube-cell--flowing {
+	background: repeating-linear-gradient(
+		45deg,
+		#ffffff 0 5px,
+		#cfcfcf 5px 10px
+	);
+	box-shadow:
+		inset 0 0 0 3px #111,
+		0 0 0 1px #111;
+	animation: none;
+}
+
+.pysche-color-blind .tube-puzzle-grid--solved {
+	box-shadow:
+		inset 0 1px 0 rgba(255, 255, 255, 0.35),
+		0 0 0 4px #111;
+}
+
+.pysche-color-blind button.tube-cell.tube-cell--selected {
+	outline: 3px dashed #111;
+	outline-offset: 2px;
+}
+
+.pysche-color-blind .tube-flow-core {
+	stroke-dasharray: 7 5;
+}
+
+.pysche-color-blind .tube-puzzle-layout--flowing .tube-puzzle-flow-strip,
+.pysche-color-blind .tube-puzzle-flow-strip {
+	background-image: repeating-linear-gradient(
+		90deg,
+		#111 0 8px,
+		transparent 8px 14px
+	);
+	animation: none;
+}
+
+.pysche-color-blind .tube-puzzle-layout--goal-connected .tube-puzzle-flow-strip {
+	background-image: repeating-linear-gradient(
+		90deg,
+		#111 0 10px,
+		#fff 10px 14px,
+		#111 14px 18px,
+		transparent 18px 24px
+	);
+}
+
+.pysche-color-blind .tube-legend-mark--flow {
+	background: repeating-linear-gradient(
+		45deg,
+		#ffffff 0 3px,
+		#cfcfcf 3px 6px
+	);
+	box-shadow: 0 0 0 2px #111;
+}
+
 .sliding-wrapper {
     display: flex;
     flex-direction: column;
@@ -1359,4 +1627,3 @@ button.tube-cell::-moz-focus-inner {
 
     display: none;
 }
-
