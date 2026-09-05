@@ -1596,16 +1596,13 @@ button.tube-cell::-moz-focus-inner {
 
 #sliding-grid {
     display: grid;
-    grid-template-columns: repeat(3, 200px);
-    grid-template-rows: repeat(3, 200px);
     justify-content: center;
     align-content: center;
     height: 100%;
 }
 
 .sliding-tile {
-    width: 200px;
-    height: 200px;
+  
     border: 1px solid #f0ffef;
     background-repeat: no-repeat;
     background-color: black;

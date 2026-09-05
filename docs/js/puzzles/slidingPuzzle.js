@@ -1,9 +1,15 @@
 import { solvePuzzle } from "../gameController.js";
 
+
 export function startSlidingPuzzle({ containerID }) {
+    const settings = typeof window !== "undefined" ? window.getPyscheSettings?.() : undefined;
+    const difficulty = settings?.difficulty === "challenge" ? "challenge" : "normal";
+
+    const gridSize = difficulty === "challenge" ? 4 : 3;
+    
     containerID.innerHTML = `
     <div class="sliding-wrapper">
-        <h3 class="sliding-header">Sliding Puzzle</h3>
+        <h3 class="sliding-header">Sliding Puzzle - ${difficulty} - ${gridSize}</h3>
         <div id="sliding-grid"></div>
         <div id="solved-overlay"></div>
         <button id="solved-puzzle" class="button">View Solved Puzzle</button>
@@ -11,24 +17,36 @@ export function startSlidingPuzzle({ containerID }) {
     </div>
 `;
 
-    let state = [
-        {value: 0, finalPos: 0},
-        {value: 1, finalPos: 1},
-        {value: 2, finalPos: 2},
-        {value: 3, finalPos: 3},
-        {value: 4, finalPos: 4},
-        {value: 5, finalPos: 5},
-        {value: 6, finalPos: 6},
-        {value: 7, finalPos: 7},
-        {value: null, finalPos: 8}
-    ]
-
-    setupHelpButton();
-    state = shufflePieces (state);
-    renderSlidingPuzzle (containerID, state);
-
-
+    let state = buildPuzzle(gridSize);
     
+    
+    state = shufflePieces (state, gridSize);
+    
+    renderSlidingPuzzle (containerID, state, gridSize);
+    
+    setupHelpButton();
+    
+    
+}
+
+function buildPuzzle(gridSize) {
+    const tileQuantity = gridSize * gridSize;
+
+    const state = [];
+
+    for (let i = 0; i < tileQuantity - 1; i++) {
+        state.push({
+            value: i,
+            finalPos: i
+        });
+    }
+
+    state.push({
+        value: null,
+        finalPos : tileQuantity - 1
+    });
+
+    return state;
 }
 
 function setupHelpButton() {
@@ -44,7 +62,7 @@ function setupHelpButton() {
     });
 }
 
-function shufflePieces (state) {
+function shufflePieces (state, gridSize) {
     let lastIndex = null;
 
     for(let i = 0; i < 50; i++) {
@@ -52,13 +70,20 @@ function shufflePieces (state) {
 
         let movableTiles = state
             .map((tile, index) => index)
-            .filter(index => checkSwap(index, emptyIndex));
+            .filter(index => checkSwap(index, emptyIndex, gridSize));
 
-        movableTiles = movableTiles.filter(index => index !== lastIndex);
+        let possibleMoves = movableTiles.filter(
+            index => index !== lastIndex
+        );
 
-        const randomIndex = movableTiles[
-            Math.floor(Math.random() * movableTiles.length)
-        ];
+        if (possibleMoves.length === 0) {
+            possibleMoves = movableTiles;
+        }
+
+        const randomIndex =
+            possibleMoves[
+                Math.floor(Math.random() * possibleMoves.length)
+            ];
 
         swapTiles(state, randomIndex, emptyIndex);
         lastIndex = emptyIndex;
@@ -71,12 +96,12 @@ function getEmptyTile(state){
     return state.findIndex(tile => tile.value === null);
 }
 
-function checkSwap (index , emptyIndex) {
+function checkSwap (index , emptyIndex, gridSize) {
     const posValue = index - emptyIndex;
-    if(posValue === 3 || posValue == -3) return true;
+    if(posValue === gridSize || posValue == -gridSize) return true;
 
     if(posValue === -1 || posValue === 1){
-        return Math.floor(index / 3) === Math.floor(emptyIndex / 3);
+        return Math.floor(index / gridSize) === Math.floor(emptyIndex / gridSize);
     } 
 
     return false;
@@ -96,26 +121,30 @@ function checkWin(state){
     }
 }
 
-function handleClick (index, state, container){
+function handleClick (index, state, container, gridSize){
     const emptyIndex = getEmptyTile(state);
     
-    if(checkSwap(index , emptyIndex)){
+    if(checkSwap(index , emptyIndex, gridSize)){
         swapTiles(state, index , emptyIndex);
-        renderSlidingPuzzle(container , state);
+        renderSlidingPuzzle(container , state, gridSize);
         checkWin(state);
     } else {
         return;
     }
 }
 
-function renderSlidingPuzzle (container, state) {
+function renderSlidingPuzzle (container, state, gridSize) {
     
 
     const grid = document.getElementById("sliding-grid");
 
     grid.innerHTML = "";
     
-    const tileSize = 200;
+    const puzzleSize = 600;
+    const tileSize = puzzleSize / gridSize;
+
+    grid.style.gridTemplateColumns = `repeat(${gridSize}, ${tileSize}px)`;
+    grid.style.gridTemplateRows = `repeat(${gridSize}, ${tileSize}px)`;
 
     state.forEach((tile , index) => {
         const btn = document.createElement("button");
@@ -125,15 +154,15 @@ function renderSlidingPuzzle (container, state) {
             btn.classList.add("empty");
             btn.disabled = true;
         } else {
-            const row = Math.floor(tile.value / 3);
-            const col = tile.value % 3;
+            const row = Math.floor(tile.value / gridSize);
+            const col = tile.value % gridSize;
 
             btn.style.backgroundImage = `url("images/Psyche_Launch.jpg")`;
-            btn.style.backgroundSize = `${tileSize * 3}px ${tileSize * 3}px`;
-            btn.style.backgroundPosition = `-${col * tileSize}px -${row * tileSize}px`
+            btn.style.backgroundSize = `${puzzleSize}px ${puzzleSize}px`;
+            btn.style.backgroundPosition = `-${col * tileSize}px -${row * tileSize}px`;
             btn.textContent = tile.value;
             btn.addEventListener("click", () => {
-                handleClick(index, state, container);
+                handleClick(index, state, container, gridSize);
             })
         }
 
