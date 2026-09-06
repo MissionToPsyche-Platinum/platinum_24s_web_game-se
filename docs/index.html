@@ -110,6 +110,30 @@
             </div>
         </section>
 
+        <!-- Win / mission complete page -->
+        <section id="win-screen" class="screen" style="display: none;" aria-labelledby="win-screen-title">
+            <div class="win-stars" aria-hidden="true"></div>
+            <div class="win-card">
+                <p class="win-kicker">Mission Complete</p>
+                <h1 id="win-screen-title">You Reached Psyche!</h1>
+                <p class="win-lead">
+                    Outstanding work, <span id="win-player-name">Astronaut</span>.
+                    All required puzzles are solved.
+                </p>
+                <dl class="win-stats">
+                    <div class="win-stat">
+                        <dt>Puzzles Solved</dt>
+                        <dd id="win-puzzles-solved">0</dd>
+                    </div>
+                </dl>
+                <p class="win-copy">Start another run, or return to the main menu.</p>
+                <div class="win-actions">
+                    <button id="win-play-again" class="button" type="button">Play Again</button>
+                    <button id="win-return-menu" class="button" type="button">Return to Main Menu</button>
+                </div>
+            </div>
+        </section>
+
         <!-- Name Creation screen -->
          <div id = "nameCreationOverlay" class = "overlay"></div>
          <section id = "nameCreationScreen" class = "screen" style = "display: none">
@@ -197,8 +221,6 @@
                     </p>
                 </div>
             </div>
-            <header id="win-message">Congratulations, you win!</header>
-
             <div class="puzzle-content">
                 <aside class="left-panel">
                     <header id="solve-puzzle-message">Please solve puzzle to advance</header>
@@ -206,7 +228,6 @@
                     <header id = "puzzle-not-solved-message">Puzzle incorrect, please try again!</header>
                     <button class="back-to-menu">Back to Main Menu</button>
                     <button id="solve-puzzle">Solve Puzzle</button>
-                    <button id="new-game">New Game</button>
                     <button id="next-puzzle">Next Puzzle</button>
                     <button id="puzzle-help">Show Puzzle Help</button>
 

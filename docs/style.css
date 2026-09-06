@@ -517,6 +517,143 @@ body {
     border: 2px solid #302144;
 }
 
+#win-screen {
+    min-height: 100vh;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: radial-gradient(circle at 75% 15%, #6a4a1a 0%, #3d2458 40%, #1a1228 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.win-stars {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    background-image:
+        radial-gradient(circle at 12% 18%, #fff 0 1px, transparent 1px),
+        radial-gradient(circle at 30% 65%, #f9a000 0 1.5px, transparent 1.5px),
+        radial-gradient(circle at 55% 28%, #fff 0 1px, transparent 1px),
+        radial-gradient(circle at 72% 78%, #fff 0 1.5px, transparent 1.5px),
+        radial-gradient(circle at 88% 22%, #f9a000 0 1px, transparent 1px);
+}
+
+.win-card {
+    width: min(640px, 92vw);
+    border-radius: 14px;
+    border: 2px solid rgba(249, 160, 0, 0.95);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.97) 0%, rgba(248, 244, 236, 0.94) 100%);
+    box-shadow:
+        0 14px 30px rgba(0, 0, 0, 0.35),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    padding: 28px 24px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    animation: win-card-enter 420ms ease-out;
+}
+
+.win-kicker {
+    display: inline-block;
+    margin: 0 0 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #302144;
+    color: #f9a000;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.win-card h1 {
+    margin: 0 0 14px;
+    color: #1f1f2a;
+    font-family: Knockout, Helvetica, Arial, sans-serif;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-size: clamp(1.55rem, 3vw, 2.15rem);
+}
+
+.win-lead {
+    margin: 0 0 18px;
+    font-size: 1.05rem;
+    color: #2b2b3a;
+}
+
+.win-lead #win-player-name {
+    font-weight: 700;
+    color: #302144;
+}
+
+.win-stats {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin: 0 0 16px;
+}
+
+.win-stat {
+    margin: 0;
+    padding: 12px 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(48, 33, 68, 0.2);
+    background: rgba(48, 33, 68, 0.06);
+}
+
+.win-stat dt {
+    margin: 0 0 4px;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #5a5a6a;
+}
+
+.win-stat dd {
+    margin: 0;
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: #302144;
+}
+
+.win-copy {
+    margin: 0;
+    line-height: 1.55;
+    color: #3a3a46;
+}
+
+.win-actions {
+    margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.win-actions .button {
+    min-width: 190px;
+    border: 2px solid #302144;
+    cursor: pointer;
+}
+
+@keyframes win-card-enter {
+    from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.pysche-reduced-motion .win-card {
+    animation: none;
+}
+
 /* Exit confirmation popup */
 #exitPopUp {
     display: none;
@@ -699,18 +836,6 @@ body {
    letter-spacing: 0.06em;
    text-transform: uppercase;
    color: #f9a000;
-}
-
-
-#win-message {
-   display: none;
-   text-align: center;
-   padding: 8px 14px;
-   border-radius: 10px;
-   border: 1px solid rgba(249, 160, 0, 0.35);
-   background: rgba(88, 165, 90, 0.2);
-   color: #f0ffef;
-   font-weight: bold;
 }
 
 
@@ -1620,7 +1745,7 @@ button.tube-cell::-moz-focus-inner {
     width: 600px;
     height: 600px;
 
-    transform: -translateX(-50%);
+    transform: translateX(-50%);
 
     background-image: url("images/Psyche_Launch.jpg");
     background-size: 600px 600px;
