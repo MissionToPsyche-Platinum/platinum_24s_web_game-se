@@ -64,8 +64,8 @@ function startGame() {
     //
     solvePuzzleButton.disabled = false;
     nextPuzzleButton.disabled = true;
-    newGameButton.style.display = 'none';
-    winMessage.style.display= 'none';
+    if (newGameButton) newGameButton.style.display = 'none';
+    if (winMessage) winMessage.style.display= 'none';
     puzzleSolvedMessage.style.display = 'none';
     puzzleNotSolvedMessage.style.display = 'none';
     clearMissionFact();
@@ -111,8 +111,8 @@ function detectWin() {
 
 function updateHeader() {
     
-    newGameButton.style.display = 'inline';
-    winMessage.style.display = 'block';
+    if (newGameButton) newGameButton.style.display = 'inline';
+    if (winMessage) winMessage.style.display = 'block';
     //Remove for testing
     // solvePuzzleButton.style.visibility = 'hidden';
     //
@@ -120,7 +120,17 @@ function updateHeader() {
     puzzleSolvedMessage.style.display = 'none';
     nextPuzzleButton.style.display = 'none';
     gameIsOver(true);
-    newGameButton.addEventListener("click", startGame);
+    if (newGameButton) newGameButton.addEventListener("click", startGame);
+
+    const playerName =
+        window.getPlayerDisplayName?.() ||
+        document.getElementById("playerNameDisplay")?.textContent?.trim() ||
+        "Astronaut";
+
+    window.showWinScreen?.({
+        playerName,
+        puzzlesSolved: gameState.solvedPuzzles,
+    });
 }
 
 function displayNextPuzzle() {
@@ -153,8 +163,10 @@ function showPuzzleHelp() {
 }
 
 solvePuzzleButton.addEventListener("click", solvePuzzle);
-newGameButton.addEventListener("click", startGame);
+if (newGameButton) newGameButton.addEventListener("click", startGame);
 nextPuzzleButton.addEventListener("click", displayNextPuzzle);
 puzzleHelpButton.addEventListener("click", showPuzzleHelp);
+
+window.onWinPlayAgain = startGame;
 
 startGame();
