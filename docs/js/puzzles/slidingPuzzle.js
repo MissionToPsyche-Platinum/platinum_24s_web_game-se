@@ -116,18 +116,23 @@ function checkWin(state){
         return index === tile.finalPos;
     });
 
-    if(puzzleSolved) {
-        solvePuzzle();
-    }
+    return puzzleSolved;
 }
 
 function handleClick (index, state, container, gridSize){
+    if (checkWin(state)) {
+        return;
+    }
+
     const emptyIndex = getEmptyTile(state);
     
     if(checkSwap(index , emptyIndex, gridSize)){
         swapTiles(state, index , emptyIndex);
         renderSlidingPuzzle(container , state, gridSize);
-        checkWin(state);
+
+        if (checkWin(state)) {
+            solvePuzzle();
+        }
     } else {
         return;
     }
