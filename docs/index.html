@@ -54,6 +54,11 @@
                     <input type="checkbox" id="settingReducedMotion" style="margin-top: 3px;">
                     <span>Reduce motion (less animation)</span>
                 </label>
+                <p><strong>Accessibility</strong></p>
+                <label style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; cursor: pointer;">
+                    <input type="checkbox" id="settingColorBlind" style="margin-top: 3px;">
+                    <span>Color-blind friendly (patterns and shapes, not color alone)</span>
+                </label>
                 <p>Difficulty for timed runs:</p>
                 <label style="display: block; margin-bottom: 20px;">
                     <select id="settingDifficulty" style="width: 100%; padding: 6px 8px; border: 1px solid #333;">
@@ -101,6 +106,30 @@
                 <p class="exit-copy">You can return to the main menu to start a new mission, or close this browser tab.</p>
                 <div class="exit-actions">
                     <button id="exit-return-menu" class="button">Return to Main Menu</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Win / mission complete page -->
+        <section id="win-screen" class="screen" style="display: none;" aria-labelledby="win-screen-title">
+            <div class="win-stars" aria-hidden="true"></div>
+            <div class="win-card">
+                <p class="win-kicker">Mission Complete</p>
+                <h1 id="win-screen-title">You Reached Psyche!</h1>
+                <p class="win-lead">
+                    Outstanding work, <span id="win-player-name">Astronaut</span>.
+                    All required puzzles are solved.
+                </p>
+                <dl class="win-stats">
+                    <div class="win-stat">
+                        <dt>Puzzles Solved</dt>
+                        <dd id="win-puzzles-solved">0</dd>
+                    </div>
+                </dl>
+                <p class="win-copy">Start another run, or return to the main menu.</p>
+                <div class="win-actions">
+                    <button id="win-play-again" class="button" type="button">Play Again</button>
+                    <button id="win-return-menu" class="button" type="button">Return to Main Menu</button>
                 </div>
             </div>
         </section>
@@ -192,8 +221,6 @@
                     </p>
                 </div>
             </div>
-            <header id="win-message">Congratulations, you win!</header>
-
             <div class="puzzle-content">
                 <aside class="left-panel">
                     <header id="solve-puzzle-message">Please solve puzzle to advance</header>
@@ -201,7 +228,6 @@
                     <header id = "puzzle-not-solved-message">Puzzle incorrect, please try again!</header>
                     <button class="back-to-menu">Back to Main Menu</button>
                     <button id="solve-puzzle">Solve Puzzle</button>
-                    <button id="new-game">New Game</button>
                     <button id="next-puzzle">Next Puzzle</button>
                     <button id="puzzle-help">Show Puzzle Help</button>
 

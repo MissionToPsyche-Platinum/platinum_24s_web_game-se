@@ -110,6 +110,7 @@ export function startNumberLogicPuzzle({ containerID }) {
         removeCells(board, difficulty.EASY);
     }
     renderSudokuUI(board);
+    loopScrolling();
     const submitButton = document.getElementById("submit");
     submitButton.addEventListener("click", function() {
         let checked = checkWin(checkBoard);
@@ -141,6 +142,44 @@ export function startNumberLogicPuzzle({ containerID }) {
             }
         }
         return true;
+    }
+
+    //Allows numbers to loop through scrolling
+    function loopScrolling() {
+        const inputs = document.querySelectorAll(".logic-grid input");
+        inputs.forEach(input => {
+            //Don't allow scrolling for pre-filled numbers
+            if(input.disabled) {
+                return;
+            }
+            //Scrolling with mousepad
+            input.addEventListener("wheel", enableScrolling);
+        });
+    }
+
+    //Function that enables scrolling 
+    function enableScrolling(event) {
+        event.preventDefault();
+        const input = event.target;
+        const min = Number(input.min);
+        const max = Number(input.max);
+        let value = input.value === "" ? min : Number(input.value);
+        if(event.deltaY > 0) {
+            //Scrolling down
+            value--;
+            //If you're scrolling below 1
+            if(value < min) {
+                value = max;
+            }
+        } else {
+            //Scrolling up
+            value++;
+            //If you're scrolling above 9
+            if(value > max) {
+                value = min;
+            }
+        }
+        input.value = value;
     }
 
     //Renders the numbers to the screen
@@ -235,9 +274,14 @@ export function startNumberLogicPuzzle({ containerID }) {
             const col = i % 9;
             const userAnswer = parseInt(input.value);;
             const correctAnswer = checkBoard[row][col];
+            input.classList.remove("correct");
             input.classList.remove("incorrect");
             if (userAnswer !== correctAnswer) {
                 input.classList.add("incorrect");
+            } else {
+                input.classList.add("correct");
+                input.disabled = true;
+                input.removeEventListener("wheel", enableScrolling);
             }
         });
     }

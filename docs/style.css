@@ -517,6 +517,143 @@ body {
     border: 2px solid #302144;
 }
 
+#win-screen {
+    min-height: 100vh;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: radial-gradient(circle at 75% 15%, #6a4a1a 0%, #3d2458 40%, #1a1228 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.win-stars {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    background-image:
+        radial-gradient(circle at 12% 18%, #fff 0 1px, transparent 1px),
+        radial-gradient(circle at 30% 65%, #f9a000 0 1.5px, transparent 1.5px),
+        radial-gradient(circle at 55% 28%, #fff 0 1px, transparent 1px),
+        radial-gradient(circle at 72% 78%, #fff 0 1.5px, transparent 1.5px),
+        radial-gradient(circle at 88% 22%, #f9a000 0 1px, transparent 1px);
+}
+
+.win-card {
+    width: min(640px, 92vw);
+    border-radius: 14px;
+    border: 2px solid rgba(249, 160, 0, 0.95);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.97) 0%, rgba(248, 244, 236, 0.94) 100%);
+    box-shadow:
+        0 14px 30px rgba(0, 0, 0, 0.35),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    padding: 28px 24px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    animation: win-card-enter 420ms ease-out;
+}
+
+.win-kicker {
+    display: inline-block;
+    margin: 0 0 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #302144;
+    color: #f9a000;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.win-card h1 {
+    margin: 0 0 14px;
+    color: #1f1f2a;
+    font-family: Knockout, Helvetica, Arial, sans-serif;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-size: clamp(1.55rem, 3vw, 2.15rem);
+}
+
+.win-lead {
+    margin: 0 0 18px;
+    font-size: 1.05rem;
+    color: #2b2b3a;
+}
+
+.win-lead #win-player-name {
+    font-weight: 700;
+    color: #302144;
+}
+
+.win-stats {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin: 0 0 16px;
+}
+
+.win-stat {
+    margin: 0;
+    padding: 12px 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(48, 33, 68, 0.2);
+    background: rgba(48, 33, 68, 0.06);
+}
+
+.win-stat dt {
+    margin: 0 0 4px;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #5a5a6a;
+}
+
+.win-stat dd {
+    margin: 0;
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: #302144;
+}
+
+.win-copy {
+    margin: 0;
+    line-height: 1.55;
+    color: #3a3a46;
+}
+
+.win-actions {
+    margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.win-actions .button {
+    min-width: 190px;
+    border: 2px solid #302144;
+    cursor: pointer;
+}
+
+@keyframes win-card-enter {
+    from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.pysche-reduced-motion .win-card {
+    animation: none;
+}
+
 /* Exit confirmation popup */
 #exitPopUp {
     display: none;
@@ -699,18 +836,6 @@ body {
    letter-spacing: 0.06em;
    text-transform: uppercase;
    color: #f9a000;
-}
-
-
-#win-message {
-   display: none;
-   text-align: center;
-   padding: 8px 14px;
-   border-radius: 10px;
-   border: 1px solid rgba(249, 160, 0, 0.35);
-   background: rgba(88, 165, 90, 0.2);
-   color: #f0ffef;
-   font-weight: bold;
 }
 
 
@@ -1148,7 +1273,46 @@ body {
    text-align: center;
 }
 
-.pysche-reduced-motion .pattern-tile {
+.pattern-replay {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   margin: 4px auto 0;
+   min-width: 170px;
+   min-height: 48px;
+   padding: 8px 16px;
+   border: 2px solid #222;
+   border-radius: 8px;
+   background: #302144;
+   color: #f9a000;
+   font-family: Helvetica, Arial, sans-serif;
+   font-weight: bold;
+   cursor: pointer;
+   opacity: 0.95;
+   transition: transform 120ms ease, outline-color 120ms ease, opacity 120ms ease, filter 120ms ease, box-shadow 120ms ease;
+   outline: 3px solid transparent;
+   outline-offset: 2px;
+}
+
+.pattern-replay:hover:not(:disabled) {
+   filter: brightness(1.12) saturate(1.08);
+}
+
+.pattern-replay:active:not(:disabled) {
+   transform: scale(0.96);
+}
+
+.pattern-replay:focus-visible {
+   outline-color: rgba(48, 33, 68, 0.95);
+}
+
+.pattern-replay:disabled {
+   cursor: not-allowed;
+   opacity: 0.4;
+}
+
+.pysche-reduced-motion .pattern-tile,
+.pysche-reduced-motion .pattern-replay {
    transition: none;
 }
 
@@ -1245,6 +1409,76 @@ button.tube-cell::-moz-focus-inner {
 	width: 85%;
 	height: 85%;
 	display: block;
+	overflow: visible;
+}
+
+.tube-port--linked {
+	fill: #111;
+	stroke: #fff;
+	stroke-width: 1.75;
+}
+
+.tube-port--open {
+	fill: #fff;
+	stroke: #111;
+	stroke-width: 2.25;
+}
+
+.tube-cell-letter {
+	font-size: 16px;
+	font-weight: 800;
+	font-family: Helvetica, Arial, sans-serif;
+	fill: #111;
+	pointer-events: none;
+}
+
+.tube-cell-letter--on-dark {
+	fill: #fff;
+}
+
+.tube-puzzle-legend {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 8px 14px;
+	list-style: none;
+	margin: 8px 0 0;
+	padding: 0;
+	max-width: 28rem;
+	font-size: 0.78rem;
+	color: #222;
+}
+
+.tube-puzzle-legend li {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.tube-legend-mark {
+	width: 12px;
+	height: 12px;
+	flex-shrink: 0;
+	box-sizing: border-box;
+}
+
+.tube-legend-mark--linked {
+	background: #111;
+	transform: rotate(45deg);
+	border: 1px solid #fff;
+	box-shadow: 0 0 0 1px #111;
+}
+
+.tube-legend-mark--open {
+	border-radius: 50%;
+	background: #fff;
+	border: 2px solid #111;
+}
+
+.tube-legend-mark--flow {
+	border-radius: 2px;
+	background: linear-gradient(165deg, #e7f7ff 0%, #cdeeff 100%);
+	box-shadow: 0 0 0 1px rgba(26, 140, 255, 0.8);
 }
 
 .tube-cell--empty {
@@ -1409,6 +1643,76 @@ button.tube-cell::-moz-focus-inner {
 	animation: none;
 }
 
+.pysche-reduced-motion .tube-cell--flowing {
+	animation: none;
+}
+
+/* Color-blind: patterns, letters, and contrast instead of hue alone */
+.pysche-color-blind .tube-cell--source {
+	box-shadow: 0 0 0 3px #111;
+	animation: none;
+}
+
+.pysche-color-blind .tube-cell--goal {
+	box-shadow: inset 0 0 0 2px #111;
+}
+
+.pysche-color-blind .tube-cell--flowing {
+	background: repeating-linear-gradient(
+		45deg,
+		#ffffff 0 5px,
+		#cfcfcf 5px 10px
+	);
+	box-shadow:
+		inset 0 0 0 3px #111,
+		0 0 0 1px #111;
+	animation: none;
+}
+
+.pysche-color-blind .tube-puzzle-grid--solved {
+	box-shadow:
+		inset 0 1px 0 rgba(255, 255, 255, 0.35),
+		0 0 0 4px #111;
+}
+
+.pysche-color-blind button.tube-cell.tube-cell--selected {
+	outline: 3px dashed #111;
+	outline-offset: 2px;
+}
+
+.pysche-color-blind .tube-flow-core {
+	stroke-dasharray: 7 5;
+}
+
+.pysche-color-blind .tube-puzzle-layout--flowing .tube-puzzle-flow-strip,
+.pysche-color-blind .tube-puzzle-flow-strip {
+	background-image: repeating-linear-gradient(
+		90deg,
+		#111 0 8px,
+		transparent 8px 14px
+	);
+	animation: none;
+}
+
+.pysche-color-blind .tube-puzzle-layout--goal-connected .tube-puzzle-flow-strip {
+	background-image: repeating-linear-gradient(
+		90deg,
+		#111 0 10px,
+		#fff 10px 14px,
+		#111 14px 18px,
+		transparent 18px 24px
+	);
+}
+
+.pysche-color-blind .tube-legend-mark--flow {
+	background: repeating-linear-gradient(
+		45deg,
+		#ffffff 0 3px,
+		#cfcfcf 3px 6px
+	);
+	box-shadow: 0 0 0 2px #111;
+}
+
 .sliding-wrapper {
     display: flex;
     flex-direction: column;
@@ -1418,16 +1722,13 @@ button.tube-cell::-moz-focus-inner {
 
 #sliding-grid {
     display: grid;
-    grid-template-columns: repeat(3, 200px);
-    grid-template-rows: repeat(3, 200px);
     justify-content: center;
     align-content: center;
     height: 100%;
 }
 
 .sliding-tile {
-    width: 200px;
-    height: 200px;
+  
     border: 1px solid #f0ffef;
     background-repeat: no-repeat;
     background-color: black;
@@ -1445,7 +1746,7 @@ button.tube-cell::-moz-focus-inner {
     width: 600px;
     height: 600px;
 
-    transform: -translateX(-50%);
+    transform: translateX(-50%);
 
     background-image: url("images/Psyche_Launch.jpg");
     background-size: 600px 600px;

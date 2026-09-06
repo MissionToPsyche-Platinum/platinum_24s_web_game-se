@@ -72,7 +72,7 @@ export function startPatternPuzzle({ containerID }) {
                    >${tileShapeMarkup(tile)}</button>
                `).join("")}
            </div>
-           <button id="pattern-replay" type="button">Replay Pattern</button>
+           <button id="pattern-replay" class="pattern-replay" type="button">Replay Pattern</button>
        </div>
    `;
 

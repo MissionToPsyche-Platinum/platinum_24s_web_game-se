@@ -8,6 +8,7 @@ const LS = {
   timer: "pysche_settings_show_timer",
   hints: "pysche_settings_hints",
   motion: "pysche_settings_reduced_motion",
+  colorBlind: "pysche_settings_color_blind",
   diff: "pysche_settings_difficulty",
 };
 
@@ -44,6 +45,7 @@ const settingDisplayName = document.getElementById("settingDisplayName");
 const settingShowTimer = document.getElementById("settingShowTimer");
 const settingHints = document.getElementById("settingHints");
 const settingReducedMotion = document.getElementById("settingReducedMotion");
+const settingColorBlind = document.getElementById("settingColorBlind");
 const settingDifficulty = document.getElementById("settingDifficulty");
 const runTimerDisplay = document.getElementById("run-timer-display");
 const runTimerEl = document.getElementById("run-timer");
@@ -52,6 +54,11 @@ const creditsPopUp = document.getElementById("creditsPopUp");
 const exitScreen = document.getElementById("exit-screen");
 const exitReturnMenuButton = document.getElementById("exit-return-menu");
 const exitCloseTabButton = document.getElementById("exit-close-tab");
+const winScreen = document.getElementById("win-screen");
+const winPlayerName = document.getElementById("win-player-name");
+const winPuzzlesSolved = document.getElementById("win-puzzles-solved");
+const winPlayAgainButton = document.getElementById("win-play-again");
+const winReturnMenuButton = document.getElementById("win-return-menu");
 
 const exitButton = document.getElementById("exit");
 const exitPopUp = document.getElementById("exitPopUp");
@@ -100,6 +107,15 @@ function applyReducedMotion() {
   }
 }
 
+function applyColorBlindMode() {
+  if (settingColorBlind) {
+    document.documentElement.classList.toggle(
+      "pysche-color-blind",
+      settingColorBlind.checked
+    );
+  }
+}
+
 function loadGameplaySettings() {
   if (settingDisplayName) {
     const name = localStorage.getItem(LS.displayName);
@@ -111,12 +127,15 @@ function loadGameplaySettings() {
     settingHints.checked = localStorage.getItem(LS.hints) !== "false";
   if (settingReducedMotion)
     settingReducedMotion.checked = localStorage.getItem(LS.motion) === "true";
+  if (settingColorBlind)
+    settingColorBlind.checked = localStorage.getItem(LS.colorBlind) === "true";
   if (settingDifficulty) {
     const d = localStorage.getItem(LS.diff);
     settingDifficulty.value =
       d === "challenge" || d === "normal" ? d : "normal";
   }
   applyReducedMotion();
+  applyColorBlindMode();
 }
 
 function resetSettingsToDefaults() {
@@ -163,6 +182,46 @@ function startRunTimer() {
   }, 250);
 }
 
+function hideWinScreen() {
+  if (winScreen) winScreen.style.display = "none";
+}
+
+function showWinScreen({ playerName, puzzlesSolved } = {}) {
+  stopRunTimer();
+  closeExitConfirm();
+  closeSettings();
+
+  mainMenu.style.display = "none";
+  gameScreen.style.display = "none";
+  leaderBoardPopUp.style.display = "none";
+  instructionsPopUp.style.display = "none";
+  nameCreationScreen.style.display = "none";
+  creditsPopUp.style.display = "none";
+  if (exitScreen) exitScreen.style.display = "none";
+
+  if (winPlayerName) {
+    winPlayerName.textContent = playerName?.trim() || "Astronaut";
+  }
+  if (winPuzzlesSolved) {
+    winPuzzlesSolved.textContent = String(puzzlesSolved ?? 0);
+  }
+  if (winScreen) winScreen.style.display = "flex";
+}
+
+function playAgainFromWinScreen() {
+  hideWinScreen();
+  closeExitConfirm();
+  closeSettings();
+  document.getElementById("playerNameDisplay").textContent = firstName + " " + lastName;
+  mainMenu.style.display = "none";
+  gameScreen.style.display = "block";
+  nameCreationScreen.style.display = "none";
+  loadGameplaySettings();
+  startRunTimer();
+  hideOverlay();
+  window.onWinPlayAgain?.();
+}
+
 
 if (settingsButton && settingsPopUp && closeSettingsButton) {
   settingsButton.addEventListener("click", openSettings);
@@ -188,6 +247,9 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
     else if (t === settingReducedMotion) {
       localStorage.setItem(LS.motion, String(t.checked));
       applyReducedMotion();
+    } else if (t === settingColorBlind) {
+      localStorage.setItem(LS.colorBlind, String(t.checked));
+      applyColorBlindMode();
     } else if (t === settingDifficulty)
       localStorage.setItem(LS.diff, t.value);
   });
@@ -214,6 +276,9 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
     else if (t === settingReducedMotion) {
       localStorage.setItem(LS.motion, String(t.checked));
       applyReducedMotion();
+    } else if (t === settingColorBlind) {
+      localStorage.setItem(LS.colorBlind, String(t.checked));
+      applyColorBlindMode();
     } else if (t === settingDifficulty)
       localStorage.setItem(LS.diff, t.value);
   });
@@ -231,6 +296,12 @@ if (exitReturnMenuButton) {
 if (exitCloseTabButton) {
   exitCloseTabButton.addEventListener("click", tryCloseTabFromExitScreen);
 }
+if (winPlayAgainButton) {
+  winPlayAgainButton.addEventListener("click", playAgainFromWinScreen);
+}
+if (winReturnMenuButton) {
+  winReturnMenuButton.addEventListener("click", backToMenu);
+}
 loadGameplaySettings();
 
 //Resets the screen back to the main menu
@@ -239,6 +310,7 @@ function backToMenu() {
   closeExitConfirm();
   closeSettings();
   hideOverlay();
+  hideWinScreen();
   gameScreen.style.display = "none";
   leaderBoardPopUp.style.display = "none";
   instructionsPopUp.style.display = "none";
@@ -253,11 +325,14 @@ function backToMenu() {
 function startPuzzle() {
   closeExitConfirm();
   closeSettings();
+  hideWinScreen();
   document.getElementById("playerNameDisplay").textContent = firstName + " " + lastName;
   mainMenu.style.display = "none";
   gameScreen.style.display = "block";
   nameCreationScreen.style.display = "none";
   loadGameplaySettings();
+  // Reset puzzle state from a previous win
+  window.onWinPlayAgain?.();
   startRunTimer();
   hideOverlay();
 }
@@ -378,9 +453,9 @@ function closeExitConfirm() {
 
 function confirmExitGame() {
   stopRunTimer();
-  stopRunTimer();
   closeExitConfirm();
   closeSettings();
+  hideWinScreen();
 
   mainMenu.style.display = "none";
   gameScreen.style.display = "none";
@@ -407,9 +482,13 @@ function getPyscheSettings() {
     showTimer: settingShowTimer?.checked ?? true,
     hintsEnabled: settingHints?.checked ?? true,
     reducedMotion: !!settingReducedMotion?.checked,
+    colorBlind: !!settingColorBlind?.checked,
     difficulty: settingDifficulty?.value ?? "normal",
   };
 }
 
 window.getPyscheSettings = getPyscheSettings;
+window.showWinScreen = showWinScreen;
+window.hideWinScreen = hideWinScreen;
+window.getPlayerDisplayName = () => `${firstName} ${lastName}`.trim();
 });
