@@ -96,6 +96,11 @@ instructionsButton.addEventListener("click", startInstructions);
 creditsButton.addEventListener("click", startCredits);
 
 let runTimerInterval = null;
+let runActive = false;
+let runTimerIsRunning = false;
+let runTimerElapsedMs = 0;
+let runTimerSegmentStart = 0;
+let timerHold = false;
 
 
 function applyReducedMotion() {
@@ -159,27 +164,87 @@ function formatRunTime(ms) {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
-function stopRunTimer() {
+function getRunTimerMs() {
+  if (runTimerIsRunning) {
+    return runTimerElapsedMs + (Date.now() - runTimerSegmentStart);
+  }
+  return runTimerElapsedMs;
+}
+
+function applyTimerVisibility() {
+  if (!runTimerDisplay) return;
+  const showTimer = !settingShowTimer || settingShowTimer.checked;
+  runTimerDisplay.style.display = showTimer && runActive ? "block" : "none";
+}
+
+function updateRunTimerDisplay() {
+  if (runTimerEl) runTimerEl.textContent = formatRunTime(getRunTimerMs());
+}
+
+function stopRunTimerTick() {
   if (runTimerInterval !== null) {
     clearInterval(runTimerInterval);
     runTimerInterval = null;
   }
 }
 
-function startRunTimer() {
-  stopRunTimer();
-  if (!runTimerDisplay || !runTimerEl) return;
-  const showTimer = !settingShowTimer || settingShowTimer.checked;
-  if (!showTimer) {
-    runTimerDisplay.style.display = "none";
-    return;
+function startRunTimerTick() {
+  stopRunTimerTick();
+  applyTimerVisibility();
+  updateRunTimerDisplay();
+  runTimerInterval = setInterval(updateRunTimerDisplay, 250);
+}
+
+function pauseRunTimer() {
+  if (!runActive) return;
+  if (runTimerIsRunning) {
+    runTimerElapsedMs = getRunTimerMs();
+    runTimerIsRunning = false;
   }
-  runTimerDisplay.style.display = "block";
-  const started = Date.now();
-  runTimerEl.textContent = formatRunTime(0);
-  runTimerInterval = setInterval(() => {
-    runTimerEl.textContent = formatRunTime(Date.now() - started);
-  }, 250);
+  stopRunTimerTick();
+  updateRunTimerDisplay();
+}
+
+function resumeRunTimer() {
+  if (!runActive || timerHold || runTimerIsRunning || document.hidden) return;
+  runTimerSegmentStart = Date.now();
+  runTimerIsRunning = true;
+  startRunTimerTick();
+}
+
+function holdRunTimer() {
+  if (!runActive) return;
+  timerHold = true;
+  pauseRunTimer();
+}
+
+function releaseRunTimerHold() {
+  timerHold = false;
+  resumeRunTimer();
+}
+
+function stopRunTimer() {
+  if (runTimerIsRunning) {
+    runTimerElapsedMs = getRunTimerMs();
+    runTimerIsRunning = false;
+  }
+  runActive = false;
+  timerHold = false;
+  stopRunTimerTick();
+  updateRunTimerDisplay();
+  applyTimerVisibility();
+}
+
+function startRunTimer() {
+  stopRunTimerTick();
+  runActive = true;
+  timerHold = false;
+  runTimerElapsedMs = 0;
+  runTimerSegmentStart = Date.now();
+  runTimerIsRunning = true;
+  applyTimerVisibility();
+  if (!runTimerDisplay || !runTimerEl) return;
+  startRunTimerTick();
 }
 
 function hideWinScreen() {
@@ -240,8 +305,10 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
   settingsPopUp.addEventListener("change", (e) => {
     const t = e.target;
     if (t === settingSound || t === settingMusic) updateAudioSettings();
-    else if (t === settingShowTimer)
+    else if (t === settingShowTimer) {
       localStorage.setItem(LS.timer, String(t.checked));
+      applyTimerVisibility();
+    }
     else if (t === settingHints)
       localStorage.setItem(LS.hints, String(t.checked));
     else if (t === settingReducedMotion) {
@@ -269,8 +336,10 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
   settingsPopUp.addEventListener("change", (e) => {
     const t = e.target;
     if (t === settingSound || t === settingMusic) updateAudioSettings();
-    else if (t === settingShowTimer)
+    else if (t === settingShowTimer) {
       localStorage.setItem(LS.timer, String(t.checked));
+      applyTimerVisibility();
+    }
     else if (t === settingHints)
       localStorage.setItem(LS.hints, String(t.checked));
     else if (t === settingReducedMotion) {
@@ -423,6 +492,7 @@ function openSettings() {
   if(!(firstName == null || lastName == null)) {
     document.getElementById("settingDisplayName").textContent = firstName + " " + lastName;
   }
+  pauseRunTimer();
   settingsPopUp.style.display = "block";
 }
 
@@ -430,6 +500,7 @@ function openSettings() {
 function closeSettings() {
   if (!settingsPopUp) return;
   settingsPopUp.style.display = "none";
+  resumeRunTimer();
 }
 
 function updateAudioSettings() {
@@ -443,12 +514,14 @@ function updateAudioSettings() {
 
 function openExitConfirm() {
   if (!exitPopUp) return;
+  pauseRunTimer();
   exitPopUp.style.display = "block";
 }
 
 function closeExitConfirm() {
   if (!exitPopUp) return;
   exitPopUp.style.display = "none";
+  resumeRunTimer();
 }
 
 function confirmExitGame() {
@@ -491,4 +564,17 @@ window.getPyscheSettings = getPyscheSettings;
 window.showWinScreen = showWinScreen;
 window.hideWinScreen = hideWinScreen;
 window.getPlayerDisplayName = () => `${firstName} ${lastName}`.trim();
+window.startRunTimer = startRunTimer;
+window.stopRunTimer = stopRunTimer;
+window.pauseRunTimer = pauseRunTimer;
+window.resumeRunTimer = resumeRunTimer;
+window.holdRunTimer = holdRunTimer;
+window.releaseRunTimerHold = releaseRunTimerHold;
+window.isRunTimerRunning = () => runTimerIsRunning;
+window.getRunTimerMs = getRunTimerMs;
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) pauseRunTimer();
+  else resumeRunTimer();
+});
 });

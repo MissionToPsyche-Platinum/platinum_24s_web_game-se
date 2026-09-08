@@ -97,6 +97,7 @@ export function solvePuzzle() {
     solvePuzzleButton.disabled = true;
     puzzleHelpButton.disabled = true;
     updateProgress();
+    window.holdRunTimer?.();
     if (detectWin()) {
         updateHeader();
     }
@@ -134,6 +135,7 @@ function updateHeader() {
 }
 
 function displayNextPuzzle() {
+    window.releaseRunTimerHold?.();
     solvePuzzleMessage.style.display = 'block';
     puzzleSolvedMessage.style.display = 'none';
     clearMissionFact();
@@ -159,7 +161,10 @@ function updateProgress() {
 }
 
 function showPuzzleHelp() {
+    const shouldResume = window.isRunTimerRunning?.();
+    window.pauseRunTimer?.();
     alert(`${gameState.puzzleOrder[gameState.solvedPuzzles].helpText}`);
+    if (shouldResume) window.resumeRunTimer?.();
 }
 
 solvePuzzleButton.addEventListener("click", solvePuzzle);
