@@ -1002,6 +1002,7 @@ body {
 
 }
 
+
 .grid-container {
     display: grid;
     place-items: center;
@@ -1751,4 +1752,36 @@ button.tube-cell::-moz-focus-inner {
     background-size: 600px 600px;
 
     display: none;
+}
+
+@media (max-width: 1080px) {
+    .grid-item {
+        padding-top: 50px;
+        height: 145px;
+        width: 145px;
+    }
+}
+
+@media (max-width: 660px) {
+    .grid-item {
+        padding-top: 40px;
+        height: 120px;
+        width: 120px;
+    }
+}
+
+@media (max-width: 560px) {
+    .grid-item {
+        padding-top: 25px;
+        height: 90px;
+        width: 90px;
+    }
+}
+
+@media (max-width: 360px) {
+    .grid-item {
+        padding-top: 15px;
+        height: 60px;
+        width: 60px;
+    }
 }
