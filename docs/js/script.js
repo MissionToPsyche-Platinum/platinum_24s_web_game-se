@@ -54,6 +54,11 @@ const creditsPopUp = document.getElementById("creditsPopUp");
 const exitScreen = document.getElementById("exit-screen");
 const exitReturnMenuButton = document.getElementById("exit-return-menu");
 const exitCloseTabButton = document.getElementById("exit-close-tab");
+const winScreen = document.getElementById("win-screen");
+const winPlayerName = document.getElementById("win-player-name");
+const winPuzzlesSolved = document.getElementById("win-puzzles-solved");
+const winPlayAgainButton = document.getElementById("win-play-again");
+const winReturnMenuButton = document.getElementById("win-return-menu");
 
 const exitButton = document.getElementById("exit");
 const exitPopUp = document.getElementById("exitPopUp");
@@ -91,6 +96,11 @@ instructionsButton.addEventListener("click", startInstructions);
 creditsButton.addEventListener("click", startCredits);
 
 let runTimerInterval = null;
+let runActive = false;
+let runTimerIsRunning = false;
+let runTimerElapsedMs = 0;
+let runTimerSegmentStart = 0;
+let timerHold = false;
 
 
 function applyReducedMotion() {
@@ -154,27 +164,127 @@ function formatRunTime(ms) {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
-function stopRunTimer() {
+function getRunTimerMs() {
+  if (runTimerIsRunning) {
+    return runTimerElapsedMs + (Date.now() - runTimerSegmentStart);
+  }
+  return runTimerElapsedMs;
+}
+
+function applyTimerVisibility() {
+  if (!runTimerDisplay) return;
+  const showTimer = !settingShowTimer || settingShowTimer.checked;
+  runTimerDisplay.style.display = showTimer && runActive ? "block" : "none";
+}
+
+function updateRunTimerDisplay() {
+  if (runTimerEl) runTimerEl.textContent = formatRunTime(getRunTimerMs());
+}
+
+function stopRunTimerTick() {
   if (runTimerInterval !== null) {
     clearInterval(runTimerInterval);
     runTimerInterval = null;
   }
 }
 
-function startRunTimer() {
-  stopRunTimer();
-  if (!runTimerDisplay || !runTimerEl) return;
-  const showTimer = !settingShowTimer || settingShowTimer.checked;
-  if (!showTimer) {
-    runTimerDisplay.style.display = "none";
-    return;
+function startRunTimerTick() {
+  stopRunTimerTick();
+  applyTimerVisibility();
+  updateRunTimerDisplay();
+  runTimerInterval = setInterval(updateRunTimerDisplay, 250);
+}
+
+function pauseRunTimer() {
+  if (!runActive) return;
+  if (runTimerIsRunning) {
+    runTimerElapsedMs = getRunTimerMs();
+    runTimerIsRunning = false;
   }
-  runTimerDisplay.style.display = "block";
-  const started = Date.now();
-  runTimerEl.textContent = formatRunTime(0);
-  runTimerInterval = setInterval(() => {
-    runTimerEl.textContent = formatRunTime(Date.now() - started);
-  }, 250);
+  stopRunTimerTick();
+  updateRunTimerDisplay();
+}
+
+function resumeRunTimer() {
+  if (!runActive || timerHold || runTimerIsRunning || document.hidden) return;
+  runTimerSegmentStart = Date.now();
+  runTimerIsRunning = true;
+  startRunTimerTick();
+}
+
+function holdRunTimer() {
+  if (!runActive) return;
+  timerHold = true;
+  pauseRunTimer();
+}
+
+function releaseRunTimerHold() {
+  timerHold = false;
+  resumeRunTimer();
+}
+
+function stopRunTimer() {
+  if (runTimerIsRunning) {
+    runTimerElapsedMs = getRunTimerMs();
+    runTimerIsRunning = false;
+  }
+  runActive = false;
+  timerHold = false;
+  stopRunTimerTick();
+  updateRunTimerDisplay();
+  applyTimerVisibility();
+}
+
+function startRunTimer() {
+  stopRunTimerTick();
+  runActive = true;
+  timerHold = false;
+  runTimerElapsedMs = 0;
+  runTimerSegmentStart = Date.now();
+  runTimerIsRunning = true;
+  applyTimerVisibility();
+  if (!runTimerDisplay || !runTimerEl) return;
+  startRunTimerTick();
+}
+
+function hideWinScreen() {
+  if (winScreen) winScreen.style.display = "none";
+}
+
+function showWinScreen({ playerName, puzzlesSolved } = {}) {
+  stopRunTimer();
+  closeExitConfirm();
+  closeSettings();
+
+  mainMenu.style.display = "none";
+  gameScreen.style.display = "none";
+  leaderBoardPopUp.style.display = "none";
+  instructionsPopUp.style.display = "none";
+  nameCreationScreen.style.display = "none";
+  creditsPopUp.style.display = "none";
+  if (exitScreen) exitScreen.style.display = "none";
+
+  if (winPlayerName) {
+    winPlayerName.textContent = playerName?.trim() || "Astronaut";
+  }
+  if (winPuzzlesSolved) {
+    winPuzzlesSolved.textContent = String(puzzlesSolved ?? 0);
+  }
+  if (winScreen) winScreen.style.display = "flex";
+}
+
+function playAgainFromWinScreen() {
+  hideWinScreen();
+  closeExitConfirm();
+  closeSettings();
+  document.getElementById("playerNameDisplay").textContent = firstName + " " + lastName;
+  mainMenu.style.display = "none";
+  gameScreen.style.display = "block";
+  nameCreationScreen.style.display = "none";
+  loadGameplaySettings();
+  startRunTimer();
+  hideOverlay();
+  window.onWinPlayAgain?.();
 }
 
 
@@ -195,8 +305,10 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
   settingsPopUp.addEventListener("change", (e) => {
     const t = e.target;
     if (t === settingSound || t === settingMusic) updateAudioSettings();
-    else if (t === settingShowTimer)
+    else if (t === settingShowTimer) {
       localStorage.setItem(LS.timer, String(t.checked));
+      applyTimerVisibility();
+    }
     else if (t === settingHints)
       localStorage.setItem(LS.hints, String(t.checked));
     else if (t === settingReducedMotion) {
@@ -224,8 +336,10 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
   settingsPopUp.addEventListener("change", (e) => {
     const t = e.target;
     if (t === settingSound || t === settingMusic) updateAudioSettings();
-    else if (t === settingShowTimer)
+    else if (t === settingShowTimer) {
       localStorage.setItem(LS.timer, String(t.checked));
+      applyTimerVisibility();
+    }
     else if (t === settingHints)
       localStorage.setItem(LS.hints, String(t.checked));
     else if (t === settingReducedMotion) {
@@ -251,6 +365,12 @@ if (exitReturnMenuButton) {
 if (exitCloseTabButton) {
   exitCloseTabButton.addEventListener("click", tryCloseTabFromExitScreen);
 }
+if (winPlayAgainButton) {
+  winPlayAgainButton.addEventListener("click", playAgainFromWinScreen);
+}
+if (winReturnMenuButton) {
+  winReturnMenuButton.addEventListener("click", backToMenu);
+}
 loadGameplaySettings();
 
 //Resets the screen back to the main menu
@@ -259,6 +379,7 @@ function backToMenu() {
   closeExitConfirm();
   closeSettings();
   hideOverlay();
+  hideWinScreen();
   gameScreen.style.display = "none";
   leaderBoardPopUp.style.display = "none";
   instructionsPopUp.style.display = "none";
@@ -273,11 +394,14 @@ function backToMenu() {
 function startPuzzle() {
   closeExitConfirm();
   closeSettings();
+  hideWinScreen();
   document.getElementById("playerNameDisplay").textContent = firstName + " " + lastName;
   mainMenu.style.display = "none";
   gameScreen.style.display = "block";
   nameCreationScreen.style.display = "none";
   loadGameplaySettings();
+  // Reset puzzle state from a previous win
+  window.onWinPlayAgain?.();
   startRunTimer();
   hideOverlay();
 }
@@ -368,6 +492,7 @@ function openSettings() {
   if(!(firstName == null || lastName == null)) {
     document.getElementById("settingDisplayName").textContent = firstName + " " + lastName;
   }
+  pauseRunTimer();
   settingsPopUp.style.display = "block";
 }
 
@@ -375,6 +500,7 @@ function openSettings() {
 function closeSettings() {
   if (!settingsPopUp) return;
   settingsPopUp.style.display = "none";
+  resumeRunTimer();
 }
 
 function updateAudioSettings() {
@@ -388,19 +514,21 @@ function updateAudioSettings() {
 
 function openExitConfirm() {
   if (!exitPopUp) return;
+  pauseRunTimer();
   exitPopUp.style.display = "block";
 }
 
 function closeExitConfirm() {
   if (!exitPopUp) return;
   exitPopUp.style.display = "none";
+  resumeRunTimer();
 }
 
 function confirmExitGame() {
   stopRunTimer();
-  stopRunTimer();
   closeExitConfirm();
   closeSettings();
+  hideWinScreen();
 
   mainMenu.style.display = "none";
   gameScreen.style.display = "none";
@@ -433,4 +561,20 @@ function getPyscheSettings() {
 }
 
 window.getPyscheSettings = getPyscheSettings;
+window.showWinScreen = showWinScreen;
+window.hideWinScreen = hideWinScreen;
+window.getPlayerDisplayName = () => `${firstName} ${lastName}`.trim();
+window.startRunTimer = startRunTimer;
+window.stopRunTimer = stopRunTimer;
+window.pauseRunTimer = pauseRunTimer;
+window.resumeRunTimer = resumeRunTimer;
+window.holdRunTimer = holdRunTimer;
+window.releaseRunTimerHold = releaseRunTimerHold;
+window.isRunTimerRunning = () => runTimerIsRunning;
+window.getRunTimerMs = getRunTimerMs;
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) pauseRunTimer();
+  else resumeRunTimer();
+});
 });
