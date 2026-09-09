@@ -117,10 +117,10 @@ export function startMazePuzzle({ containerID }) {
                 <div data-id="99" class="maze-item">Tile 99</div>
             </div>
             <div id="buttons">
-                <button id="up-button>up</button>
-                <button id="down-button>down</button>
-                <button id="left-button>left</button>
-                <button id="right-button>right</button>
+                <button id="up-button" class="movement-button">up</button>
+                <button id="down-button" class="movement-button">down</button>
+                <button id="left-button" class="movement-button">left</button>
+                <button id="right-button" class="movement-button">right</button>
             </div>
         </div>
     `;
@@ -132,12 +132,23 @@ export function startMazePuzzle({ containerID }) {
     const startTile = document.querySelector("#start-tile");
     startTile.focus();
     
+    // const movementButtons = document.querySelectorAll(".movement-buttons");
 
     mazeItems.forEach(item => {
 
         item.addEventListener('keydown', handleKeyDown);
     });
 
+    const upButton = document.getElementById("up-button");
+    const downButton = document.getElementById("down-button");
+    const rightButton = document.getElementById("right-button");
+    const leftButton = document.getElementById("left-button");
+
+    upButton.addEventListener("click", moveUp);
+    downButton.addEventListener("click", moveDown);
+    rightButton.addEventListener("click", moveRight);
+    leftButton.addEventListener("click", moveLeft);
+    
 }
 
 const NUM_TILES = 100;
