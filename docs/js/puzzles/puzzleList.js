@@ -32,7 +32,8 @@ export const puzzles = [
     {
         name: "Sliding Puzzle",
         start: startSlidingPuzzle,
-        helpText: "Slide pieces to form the correct picture",
+        helpText: "Slide pieces to form the correct picture. You can move pieces by clicking on" +
+         " them or using the arrow keys. The empty space is represented by a blank tile.",
     },
     {
         name: "Tube Puzzle",

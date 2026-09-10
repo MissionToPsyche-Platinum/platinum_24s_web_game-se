@@ -25,6 +25,8 @@ export function startSlidingPuzzle({ containerID }) {
     renderSlidingPuzzle (containerID, state, gridSize);
     
     setupHelpButton();
+
+    setupKeys(state, containerID, gridSize);
     
     
 }
@@ -119,7 +121,7 @@ function checkWin(state){
     return puzzleSolved;
 }
 
-function handleClick (index, state, container, gridSize){
+function moveTile (index, state, container, gridSize){
     if (checkWin(state)) {
         return;
     }
@@ -167,7 +169,7 @@ function renderSlidingPuzzle (container, state, gridSize) {
             btn.style.backgroundPosition = `-${col * tileSize}px -${row * tileSize}px`;
             btn.textContent = tile.value;
             btn.addEventListener("click", () => {
-                handleClick(index, state, container, gridSize);
+                moveTile(index, state, container, gridSize);
             })
         }
 
@@ -175,4 +177,32 @@ function renderSlidingPuzzle (container, state, gridSize) {
     });
 
     
+}
+
+function setupKeys (state, container, gridSize) {
+    document.addEventListener("keydown", (event) => {
+        const emptyIndex = getEmptyTile(state);
+        let targetIndex;
+
+        switch (event.key) {
+            case "ArrowUp":
+                targetIndex = emptyIndex + gridSize;
+                break;
+            case "ArrowDown":
+                targetIndex = emptyIndex - gridSize;
+                break;
+            case "ArrowLeft":
+                targetIndex = emptyIndex + 1;
+                break;
+            case "ArrowRight":
+                targetIndex = emptyIndex - 1;
+                break;
+            default:
+                return;
+        }
+
+        if (targetIndex >= 0 && targetIndex < state.length) {
+            moveTile(targetIndex, state, container, gridSize);
+        }
+    });
 }
