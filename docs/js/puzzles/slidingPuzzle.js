@@ -150,8 +150,8 @@ function renderSlidingPuzzle (container, state, gridSize) {
     const puzzleSize = 600;
     const tileSize = puzzleSize / gridSize;
 
-    grid.style.gridTemplateColumns = `repeat(${gridSize}, ${tileSize}px)`;
-    grid.style.gridTemplateRows = `repeat(${gridSize}, ${tileSize}px)`;
+    grid.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+    grid.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
 
     state.forEach((tile , index) => {
         const btn = document.createElement("button");
@@ -165,8 +165,12 @@ function renderSlidingPuzzle (container, state, gridSize) {
             const col = tile.value % gridSize;
 
             btn.style.backgroundImage = `url("images/Psyche_Launch.jpg")`;
-            btn.style.backgroundSize = `${puzzleSize}px ${puzzleSize}px`;
-            btn.style.backgroundPosition = `-${col * tileSize}px -${row * tileSize}px`;
+            btn.style.backgroundSize = `${gridSize * 100}% ${gridSize * 100}%`;
+
+            const x = (col / (gridSize - 1)) * 100;
+            const y = (row / (gridSize - 1)) * 100;
+
+            btn.style.backgroundPosition = `${x}% ${y}%`;
             btn.textContent = tile.value;
             btn.addEventListener("click", () => {
                 moveTile(index, state, container, gridSize);
