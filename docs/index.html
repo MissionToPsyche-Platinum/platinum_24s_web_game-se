@@ -223,9 +223,11 @@
             </div>
             <div class="puzzle-content">
                 <aside class="left-panel">
-                    <header id="solve-puzzle-message">Please solve puzzle to advance</header>
-                    <header id="puzzle-solved-message">Puzzle successfully solved!</header>
-                    <header id = "puzzle-not-solved-message">Puzzle incorrect, please try again!</header>
+                    <div class="game-status-messages" aria-live="polite" aria-atomic="true">
+                        <p id="solve-puzzle-message">Solve this puzzle to continue.</p>
+                        <p id="puzzle-solved-message">Puzzle solved!</p>
+                        <p id="puzzle-not-solved-message">That is not the solution. Try again.</p>
+                    </div>
                     <button class="back-to-menu">Back to Main Menu</button>
                     <button id="solve-puzzle">Solve Puzzle</button>
                     <button id="next-puzzle">Next Puzzle</button>
