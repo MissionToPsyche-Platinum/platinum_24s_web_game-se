@@ -1,6 +1,9 @@
 import { solvePuzzle } from "../gameController.js";
 
 export function startTangramPuzzle({ containerID }) {
+    const settings = typeof window !== "undefined" ? window.getPyscheSettings?.() : undefined;
+    const difficulty = settings?.difficulty === "challenge" ? "challenge" : "normal";
+
     containerID.innerHTML = `
         <div class="tangram-container">
             <h3>Tangram Puzzle</h3>
@@ -50,6 +53,12 @@ export function startTangramPuzzle({ containerID }) {
     ];
 
     const randomConfig = puzzleCombos[Math.floor(Math.random() * puzzleCombos.length)];
+
+    if (difficulty === "challenge") {
+        randomConfig.pieces.forEach(piece => {
+            piece.rotation = Math.floor(Math.random() * 4) * 90;
+        });
+    }
 
     renderTangram(svg, randomConfig);
     enableDragAndDrop(svg, randomConfig.pieces);
