@@ -430,6 +430,9 @@ function startInstructions() {
 //Opens the name creation screen for the user and populates the dropdown menus
 function startNameCreation() {
   emptyNameScreen.style.display = "none";
+  //Empty name lists before loading to ensure there is no doubling
+  firstNameMenu.innerHTML = "";
+  lastNameMenu.innerHTML = "";
   firstNames.forEach(name => {
     const menuItem = document.createElement("button");
     menuItem.textContent = name;

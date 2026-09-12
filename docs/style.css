@@ -839,26 +839,36 @@ body {
 }
 
 
-#solve-puzzle-message,
-#puzzle-solved-message {
+.game-status-messages {
    width: 100%;
+   min-height: 3.4em;
+}
+
+#solve-puzzle-message,
+#puzzle-solved-message,
+#puzzle-not-solved-message {
+   width: 100%;
+   margin: 0;
    text-align: center;
    border-radius: 8px;
    padding: 8px 10px;
    line-height: 1.35;
+   color: #f7f1ff;
 }
-
 
 #solve-puzzle-message {
    background: rgba(249, 160, 0, 0.16);
    border: 1px solid rgba(249, 160, 0, 0.35);
 }
 
-
 #puzzle-solved-message {
    background: rgba(88, 165, 90, 0.24);
    border: 1px solid rgba(88, 165, 90, 0.5);
+}
 
+#puzzle-not-solved-message {
+   background: rgba(239, 89, 102, 0.22);
+   border: 1px solid rgba(239, 89, 102, 0.5);
 }
 
 .timer {
