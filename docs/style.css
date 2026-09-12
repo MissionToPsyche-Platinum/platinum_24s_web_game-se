@@ -1118,14 +1118,14 @@ body {
 }
 
 .maze-item {
-    border: 2px solid black;
+    border: 2px solid rgba(249, 160, 0, 0.35);
     padding-top: 15px;
     height: 60px;
     width: 75px;
     text-align: center;
     align-items: center;
     font-size: 24;
-    
+    color: #702963;
     /* aspect-ratio: 1/1; */
 }
 
@@ -1134,8 +1134,18 @@ body {
     place-items: center;
     grid-template-rows: repeat(10, 1fr);
     grid-template-columns: repeat(10, 1fr);
-    border: 2px solid black;
+    border: 2px solid rgba(249, 160, 0, 0.35);
     /* min-height: 100vh; */
+}
+
+.movement-button {
+    border: 2px solid rgba(249, 160, 0, 0.35);
+    height: 2vw;
+    width: 10vh;
+    margin-top: 5px;
+    font-size: 20;
+    background-color: transparent;
+    color: #702963;
 }
 
 #maze-puzzle-layout {
@@ -1150,6 +1160,7 @@ body {
 
 #maze-puzzle-header {
     font-size: 22;
+    color: #702963;
 }
 
 /* Pattern puzzle */
