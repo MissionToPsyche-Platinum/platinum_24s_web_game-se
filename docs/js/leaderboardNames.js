@@ -12,7 +12,14 @@ export const firstNames = [
     "Small",
     "Large",
     "Silly",
-    "Quirky"
+    "Quirky",
+    "Super",
+    "Crazy",
+    "Amazing",
+    "Vicious",
+    "Patient",
+    "Friendly",
+    "Creative"
 ]
 
 export const lastNames = [
@@ -33,5 +40,8 @@ export const lastNames = [
     "Toast",
     "Butter",
     "Apple",
-    "Potato"
+    "Potato",
+    "Dolphin",
+    "Astronaut",
+    "Captain"
 ]
