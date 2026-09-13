@@ -1153,6 +1153,8 @@ body {
     height: 2vw;
     width: 10vh;
     margin-top: 5px;
+    margin-left: 2.5px;
+    margin-right: 2.5px;
     font-size: 20;
     background-color: transparent;
     color: #702963;
@@ -1171,6 +1173,31 @@ body {
 #maze-puzzle-header {
     font-size: 22;
     color: #702963;
+}
+
+#maze-buttons {
+    display: grid;
+    grid-template-areas:
+        ". up ."
+        "left down right";
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+}
+
+#maze-up-button {
+    grid-area: up;
+}
+
+#maze-down-button {
+    grid-area: down;
+}
+
+#maze-right-button {
+    grid-area: right;
+}
+
+#maze-left-button {
+    grid-area: left;
 }
 
 /* Pattern puzzle */

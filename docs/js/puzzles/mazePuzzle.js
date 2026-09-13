@@ -116,11 +116,11 @@ export function startMazePuzzle({ containerID }) {
                 <div data-id="98" class="maze-item">Tile 98</div>
                 <div data-id="99" class="maze-item">Tile 99</div>
             </div>
-            <div id="buttons">
-                <button id="up-button" class="movement-button">up</button>
-                <button id="down-button" class="movement-button">down</button>
-                <button id="left-button" class="movement-button">left</button>
-                <button id="right-button" class="movement-button">right</button>
+            <div id="maze-buttons">
+                <button id="maze-up-button" class="movement-button">up</button>
+                <button id="maze-down-button" class="movement-button">down</button>
+                <button id="maze-left-button" class="movement-button">left</button>
+                <button id="maze-right-button" class="movement-button">right</button>
             </div>
         </div>
     `;
@@ -139,10 +139,10 @@ export function startMazePuzzle({ containerID }) {
         item.addEventListener('keydown', handleKeyDown);
     });
 
-    const upButton = document.getElementById("up-button");
-    const downButton = document.getElementById("down-button");
-    const rightButton = document.getElementById("right-button");
-    const leftButton = document.getElementById("left-button");
+    const upButton = document.getElementById("maze-up-button");
+    const downButton = document.getElementById("maze-down-button");
+    const rightButton = document.getElementById("maze-right-button");
+    const leftButton = document.getElementById("maze-left-button");
 
     upButton.addEventListener("click", moveUp);
     downButton.addEventListener("click", moveDown);
