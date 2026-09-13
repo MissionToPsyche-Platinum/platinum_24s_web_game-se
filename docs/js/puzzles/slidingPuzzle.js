@@ -10,8 +10,10 @@ export function startSlidingPuzzle({ containerID }) {
     containerID.innerHTML = `
     <div class="sliding-wrapper">
         <h3 class="sliding-header">Sliding Puzzle - ${difficulty} - ${gridSize}</h3>
-        <div id="sliding-grid"></div>
-        <div id="solved-overlay"></div>
+        <div class="sliding-board">
+            <div id="sliding-grid"></div>
+            <div id="solved-overlay"></div>
+        </div>
         <button id="solved-puzzle" class="button">View Solved Puzzle</button>
         <p>Hold button to view solved puzzle image</p>
     </div>

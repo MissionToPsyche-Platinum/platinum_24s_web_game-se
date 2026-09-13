@@ -1717,14 +1717,21 @@ button.tube-cell::-moz-focus-inner {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+}
+
+.sliding-board {
+    position: relative;
+    width: min(600px, 100%);
+    aspect-ratio: 1 / 1;
 }
 
 
 #sliding-grid {
     display: grid;
-    
-    width: min(600px, 90vw);
-    aspect-ratio: 1 / 1;
+
+    width: 100%;
+    height: 100%;
 
     margin: 0 auto;
 }
@@ -1747,15 +1754,14 @@ button.tube-cell::-moz-focus-inner {
 
 #solved-overlay {
     position: absolute;
-    margin-top: 20px;
-    width: 600px;
-    height: 600px;
-
-    transform: translateX(-50%);
+    inset: 0;
+    width: 100%;
+    height: 100%;
 
     background-image: url("images/Psyche_Launch.jpg");
-    background-size: 600px 600px;
-
+    
+    background-position: center;
+    background-size: cover;
     display: none;
 }
 
