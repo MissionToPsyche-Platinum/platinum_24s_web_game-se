@@ -950,13 +950,49 @@ body {
     border: 1px solid rgba(249, 160, 0, 0.35);
     border-radius: 10px;
     background: rgba(8, 8, 16, 0.75);
-    background: lightgray;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 20px;
     height: 80px;
     color: #f0e4ff;
+}
+
+.game-status {
+    width: min(420px, 90%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+#puzzles-completed {
+    margin: 0;
+    font-weight: bold;
+    letter-spacing: 0.04em;
+    color: #f9a000;
+}
+
+#puzzle-progress-bar {
+    width: 100%;
+    height: 12px;
+    appearance: none;
+    border: none;
+    border-radius: 6px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.16);
+}
+
+#puzzle-progress-bar::-webkit-progress-bar {
+    background: rgba(255, 255, 255, 0.16);
+}
+
+#puzzle-progress-bar::-webkit-progress-value {
+    background: #f9a000;
+}
+
+#puzzle-progress-bar::-moz-progress-bar {
+    background: #f9a000;
 }
 
 .logic-grid input.incorrect {

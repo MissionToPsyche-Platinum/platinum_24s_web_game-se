@@ -15,6 +15,7 @@ const displayFactMessage = document.getElementById("display-fact-message");
 const gridContainer = document.getElementById("grid-container");
 const matchingHeader = document.getElementById("matching-header");
 const progressElement = document.getElementById("puzzles-completed");
+const progressBar = document.getElementById("puzzle-progress-bar");
 const puzzleHelpButton = document.getElementById("puzzle-help");
 
 function clearMissionFact() {
@@ -157,7 +158,12 @@ function loadPuzzle(puzzle) {
 }
 
 function updateProgress() {
-    progressElement.textContent = `Puzzles Completed: ${gameState.solvedPuzzles}`;
+    const solved = gameState.solvedPuzzles;
+    progressElement.textContent = `Puzzles completed: ${solved} / ${PUZZLES_TO_WIN}`;
+    if (progressBar) {
+        progressBar.max = PUZZLES_TO_WIN;
+        progressBar.value = solved;
+    }
 }
 
 function showPuzzleHelp() {
