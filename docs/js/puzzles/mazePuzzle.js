@@ -116,6 +116,12 @@ export function startMazePuzzle({ containerID }) {
                 <div data-id="98" class="maze-item">Tile 98</div>
                 <div data-id="99" class="maze-item">Tile 99</div>
             </div>
+            <div id="maze-buttons">
+                <button id="maze-up-button" class="movement-button">up</button>
+                <button id="maze-down-button" class="movement-button">down</button>
+                <button id="maze-left-button" class="movement-button">left</button>
+                <button id="maze-right-button" class="movement-button">right</button>
+            </div>
         </div>
     `;
 
@@ -126,12 +132,23 @@ export function startMazePuzzle({ containerID }) {
     const startTile = document.querySelector("#start-tile");
     startTile.focus();
     
+    // const movementButtons = document.querySelectorAll(".movement-buttons");
 
     mazeItems.forEach(item => {
 
         item.addEventListener('keydown', handleKeyDown);
     });
 
+    const upButton = document.getElementById("maze-up-button");
+    const downButton = document.getElementById("maze-down-button");
+    const rightButton = document.getElementById("maze-right-button");
+    const leftButton = document.getElementById("maze-left-button");
+
+    upButton.addEventListener("click", moveUp);
+    downButton.addEventListener("click", moveDown);
+    rightButton.addEventListener("click", moveRight);
+    leftButton.addEventListener("click", moveLeft);
+    
 }
 
 const NUM_TILES = 100;
@@ -401,4 +418,8 @@ function createNormalMaze() {
     location[98] = new mazeTile(true, false, true, false, "");
     location[99] = new mazeTile(true, false, false, false, "End");
     
+}
+
+function arrowButtons () {
+
 }

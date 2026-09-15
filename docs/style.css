@@ -1159,15 +1159,24 @@ body {
 .main {
     grid-area: main;
 }
+.buttons {
+    grid-area: buttons;
+}
 
 .maze-item {
-    border: 2px solid black;
-    padding-top: 30px;
-    height: 75px;
-    width: 100px;
+    border: 2px solid rgba(249, 160, 0, 0.35);
+    padding-top: 15px;
+    height: 60px;
+    width: 75px;
     text-align: center;
     align-items: center;
+<<<<<<< HEAD
+    font-size: 24;
+    color: #702963;
+    /* aspect-ratio: 1/1; */
+=======
     font-size: 28;
+>>>>>>> main
 }
 
 .maze-container {
@@ -1175,8 +1184,20 @@ body {
     place-items: center;
     grid-template-rows: repeat(10, 1fr);
     grid-template-columns: repeat(10, 1fr);
-    border: 2px solid black;
+    border: 2px solid rgba(249, 160, 0, 0.35);
     /* min-height: 100vh; */
+}
+
+.movement-button {
+    border: 2px solid rgba(249, 160, 0, 0.35);
+    height: 2vw;
+    width: 10vh;
+    margin-top: 5px;
+    margin-left: 2.5px;
+    margin-right: 2.5px;
+    font-size: 20;
+    background-color: transparent;
+    color: #702963;
 }
 
 #maze-puzzle-layout {
@@ -1185,11 +1206,38 @@ body {
     grid-template-rows: auto 1fr;
     grid-template-areas: 
     "header"
-    "main";
+    "main",
+    "buttons";
 }
 
 #maze-puzzle-header {
     font-size: 22;
+    color: #702963;
+}
+
+#maze-buttons {
+    display: grid;
+    grid-template-areas:
+        ". up ."
+        "left down right";
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+}
+
+#maze-up-button {
+    grid-area: up;
+}
+
+#maze-down-button {
+    grid-area: down;
+}
+
+#maze-right-button {
+    grid-area: right;
+}
+
+#maze-left-button {
+    grid-area: left;
 }
 
 /* Pattern puzzle */
