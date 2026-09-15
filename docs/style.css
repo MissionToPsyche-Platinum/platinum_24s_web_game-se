@@ -1134,9 +1134,13 @@ body {
     width: 75px;
     text-align: center;
     align-items: center;
+<<<<<<< HEAD
     font-size: 24;
     color: #702963;
     /* aspect-ratio: 1/1; */
+=======
+    font-size: 28;
+>>>>>>> main
 }
 
 .maze-container {
@@ -1769,17 +1773,29 @@ button.tube-cell::-moz-focus-inner {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+}
+
+.sliding-board {
+    position: relative;
+    width: min(600px, 100%);
+    aspect-ratio: 1 / 1;
 }
 
 
 #sliding-grid {
     display: grid;
-    justify-content: center;
-    align-content: center;
+
+    width: 100%;
     height: 100%;
+
+    margin: 0 auto;
 }
 
 .sliding-tile {
+
+    width: 100%;
+    height: 100%;
   
     border: 1px solid #f0ffef;
     background-repeat: no-repeat;
@@ -1794,16 +1810,66 @@ button.tube-cell::-moz-focus-inner {
 
 #solved-overlay {
     position: absolute;
-    margin-top: 20px;
-    width: 600px;
-    height: 600px;
-
-    transform: translateX(-50%);
+    inset: 0;
+    width: 100%;
+    height: 100%;
 
     background-image: url("images/Psyche_Launch.jpg");
-    background-size: 600px 600px;
-
+    
+    background-position: center;
+    background-size: cover;
     display: none;
+}
+
+@media (max-width: 1445px) {
+    .maze-item {
+        padding-top: 25px;
+        width: 80px;
+        height: 75px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .maze-item {
+        padding-top: 20x;
+        width: 70px;
+        height: 70px;
+    }
+}
+
+@media (max-width: 1045px) {
+    .maze-item {
+        padding-top: 15px;
+        width: 65px;
+        height: 65px;
+        font-size: 24;
+    }
+}
+
+@media (max-width: 975px) {
+    .maze-item {
+        padding-top: 10px;
+        width: 55px;
+        height: 60px;
+    }
+}
+
+@media (max-width: 630px) {
+    .maze-item {
+        padding-top: 5px;
+        width: 45px;
+        height: 50px;
+        font-size: 20;
+    }
+}
+
+@media (max-width: 530px) {
+    .maze-item {
+        padding-top: 2px;
+        width: 40px;
+        height: 45px;
+        font-size: 18;
+    }
 }
 
 @media (max-width: 1080px) {
