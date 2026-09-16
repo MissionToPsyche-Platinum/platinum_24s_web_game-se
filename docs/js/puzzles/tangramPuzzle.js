@@ -61,7 +61,7 @@ export function startTangramPuzzle({ containerID }) {
     }
 
     renderTangram(svg, randomConfig);
-    enableDragAndDrop(svg, randomConfig.pieces);
+    enableDragAndDrop(svg, randomConfig.pieces, difficulty);
 }
 
 function calculateCetner(points) {
@@ -85,7 +85,7 @@ function checkPosition(piece) {
     const dx = Math.abs(piece.x - piece.solvedX);
     const dy = Math.abs(piece.y - piece.solvedY);
 
-    if(dx < tolerance && dy < tolerance){
+    if(dx < tolerance && dy < tolerance && piece.rotation % 360 === 0) {
         piece.inPlace = true;
         const target = document.getElementById(piece.id);
         const { cx, cy } = calculateCetner(piece.points);
@@ -121,7 +121,7 @@ function renderTangram(svg, puzzle) {
     });
 }
 
-function enableDragAndDrop(svg, pieces) {
+function enableDragAndDrop(svg, pieces, difficulty) {
     let selectedPiece = null;
     let offsetX, offsetY;
     svg.addEventListener("mousedown", (e) => {
@@ -162,9 +162,12 @@ function enableDragAndDrop(svg, pieces) {
         selectedPiece = null;
     });
 
-    svg.addEventListener("dblclick", (e) => {
-        const target = e.target;
-        if (target.tagName !== "polygon" && target.id === "outline") {
+
+
+    if(difficulty === "challenge") {
+        svg.addEventListener("dblclick", (e) => {
+            const target = e.target;
+            if (target.tagName !== "polygon" && target.id === "outline") {
             return;
         }
         const piece = pieces.find(p => p.id === target.id);
@@ -174,7 +177,8 @@ function enableDragAndDrop(svg, pieces) {
         const { cx, cy } = calculateCetner(piece.points);
         piece.rotation = (piece.rotation + 90) % 360;
         target.setAttribute("transform", `translate(${piece.x}, ${piece.y}) rotate(${piece.rotation}, ${cx}, ${cy})`);
-    });
+        });
+    }
 }
 
 const puzzleHeader = document.getElementById("puzzle-header");
