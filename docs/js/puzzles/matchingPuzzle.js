@@ -1,113 +1,172 @@
 import { solvePuzzle } from '../gameController.js';
 export function startMatchingPuzzle({ containerID }) {
-    containerID.innerHTML = `
-        <div id="puzzle-layout">
-            <header>
-                <h3 id="matching-puzzle-header">Matching Puzzle</h3>
-            </header>
-            <div class="grid-container" id="gridContainer">
-                <div data-id="0" class="grid-item">Tile 0</div>
-                <div data-id="1" class="grid-item">Tile 1</div>
-                <div data-id="2" class="grid-item">Tile 2</div>
-                <div data-id="3" class="grid-item">Tile 3</div>
-                <div data-id="4" class="grid-item">Tile 4</div>
-                <div data-id="5" class="grid-item">Tile 5</div>
-                <div data-id="6" class="grid-item">Tile 6</div>
-                <div data-id="7" class="grid-item">Tile 7</div>
-                <div data-id="8" class="grid-item">Tile 8</div>
-                <div data-id="9" class="grid-item">Tile 9</div>
-                <div data-id="10" class="grid-item">Tile 10</div>
-                <div data-id="11" class="grid-item">Tile 11</div>
-                <div data-id="12" class="grid-item">Tile 12</div>
-                <div data-id="13" class="grid-item">Tile 13</div>
-                <div data-id="14" class="grid-item">Tile 14</div>
-                <div data-id="15" class="grid-item">Tile 15</div>
-            </div>
-        </div>
-    `;
+    const settings = typeof window !== "undefined" ? window.getPyscheSettings?.() : undefined;
+    const difficulty = settings?.difficulty === "challenge" ? "challenge" : "normal";
 
-    const gridItems = document.querySelectorAll(".grid-item");
+
+    let clickedElement1;
+    let clickedElement2;
+    let pairsFound = 0;
+    let numberArray = [];
+
+    if (difficulty === "normal") {
+        containerID.innerHTML = `
+            <div id="puzzle-layout">
+                <header>
+                    <h3 id="matching-puzzle-header">Matching Puzzle</h3>
+                </header>
+                <div class="matching-grid-container" id="gridContainer">
+                    <div data-id="0" class="matching-grid-item">Tile 0</div>
+                    <div data-id="1" class="matching-grid-item">Tile 1</div>
+                    <div data-id="2" class="matching-grid-item">Tile 2</div>
+                    <div data-id="3" class="matching-grid-item">Tile 3</div>
+                    <div data-id="4" class="matching-grid-item">Tile 4</div>
+                    <div data-id="5" class="matching-grid-item">Tile 5</div>
+                    <div data-id="6" class="matching-grid-item">Tile 6</div>
+                    <div data-id="7" class="matching-grid-item">Tile 7</div>
+                    <div data-id="8" class="matching-grid-item">Tile 8</div>
+                    <div data-id="9" class="matching-grid-item">Tile 9</div>
+                    <div data-id="10" class="matching-grid-item">Tile 10</div>
+                    <div data-id="11" class="matching-grid-item">Tile 11</div>
+                    <div data-id="12" class="matching-grid-item">Tile 12</div>
+                    <div data-id="13" class="matching-grid-item">Tile 13</div>
+                    <div data-id="14" class="matching-grid-item">Tile 14</div>
+                    <div data-id="15" class="matching-grid-item">Tile 15</div>
+                </div>
+            </div>
+        `;
+    }
+    else {
+        containerID.innerHTML = `
+            <div id="puzzle-layout">
+                <header>
+                    <h3 id="matching-puzzle-header">Matching Puzzle</h3>
+                </header>
+                <div class="matching-challenge-grid-container" id="gridContainer">
+                    <div data-id="0" class="matching-challenge-grid-item">Tile 0</div>
+                    <div data-id="1" class="matching-challenge-grid-item">Tile 1</div>
+                    <div data-id="2" class="matching-challenge-grid-item">Tile 2</div>
+                    <div data-id="3" class="matching-challenge-grid-item">Tile 3</div>
+                    <div data-id="4" class="matching-challenge-grid-item">Tile 4</div>
+                    <div data-id="5" class="matching-challenge-grid-item">Tile 5</div>
+                    <div data-id="6" class="matching-challenge-grid-item">Tile 6</div>
+                    <div data-id="7" class="matching-challenge-grid-item">Tile 7</div>
+                    <div data-id="8" class="matching-challenge-grid-item">Tile 8</div>
+                    <div data-id="9" class="matching-challenge-grid-item">Tile 9</div>
+                    <div data-id="10" class="matching-challenge-grid-item">Tile 10</div>
+                    <div data-id="11" class="matching-challenge-grid-item">Tile 11</div>
+                    <div data-id="12" class="matching-challenge-grid-item">Free!</div>
+                    <div data-id="13" class="matching-challenge-grid-item">Tile 13</div>
+                    <div data-id="14" class="matching-challenge-grid-item">Tile 14</div>
+                    <div data-id="15" class="matching-challenge-grid-item">Tile 15</div>
+                    <div data-id="16" class="matching-challenge-grid-item">Tile 16</div>
+                    <div data-id="17" class="matching-challenge-grid-item">Tile 17</div>
+                    <div data-id="18" class="matching-challenge-grid-item">Tile 18</div>
+                    <div data-id="19" class="matching-challenge-grid-item">Tile 19</div>
+                    <div data-id="20" class="matching-challenge-grid-item">Tile 20</div>
+                    <div data-id="21" class="matching-challenge-grid-item">Tile 21</div>
+                    <div data-id="22" class="matching-challenge-grid-item">Tile 22</div>
+                    <div data-id="23" class="matching-challenge-grid-item">Tile 23</div>
+                    <div data-id="24" class="matching-challenge-grid-item">Tile 24</div>
+                </div>
+            </div>
+        `;
+    }
+    const tileClass = difficulty === "normal" ? ".matching-grid-item" : ".matching-challenge-grid-item";
+    const NUM_TILES = difficulty === "normal" ? 16 : 25;
+    const gridItems = document.querySelectorAll(tileClass);
     populateMatchingPuzzle();
 
     gridItems.forEach(item => {
-        item.addEventListener('click', clickTile);
-    });
-}
-
-let clickedElement1;
-let clickedElement2;
-let pairsFound = 0;
-let numberArray = [];
-const NUM_TILES = 16;
-
-
-function populateMatchingPuzzle () {
-    for (let i = 0; i < NUM_TILES; i++) {
-        numberArray[i] = i % (NUM_TILES/2);
-    }
-
-    numberArray = shuffleArray(numberArray);
-
-    const gridItems = document.querySelectorAll(".grid-item");
-
-    gridItems.forEach((item, index) => {
-        item.textContent = "";
-        item.style.color = "rgba(249, 160, 0, 1)";
-    });
-}
-
-function shuffleArray(array) {
-    const arr = [...array];
-    for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-}
-
-
-function clickTile() {
-    if (clickedElement1 == null) {
-        clickedElement1 = this;
-        let element1Index = +clickedElement1.dataset.id;
-        clickedElement1.textContent = numberArray[element1Index];
-        clickedElement1.style.border = '4px solid #702963'
-    }
-    else if (clickedElement2 == null) {
-        clickedElement2 = this;
-        let element2Index = +clickedElement2.dataset.id;
-        clickedElement2.textContent = numberArray[element2Index];
-        if (clickedElement1.textContent === clickedElement2.textContent && clickedElement1 !== clickedElement2) {
-            clickedElement1.style.backgroundColor = '#301934';
-            clickedElement2.style.backgroundColor = '#301934';
-            clickedElement1.style.border = '2px solid rgba(249, 160, 0, 0.35)';
-            clickedElement2.style.border = '2px solid rgba(249, 160, 0, 0.35)';
-            clickedElement1.removeEventListener('click', clickTile);
-            clickedElement2.removeEventListener('click', clickTile);
-            clickedElement1 = null;
-            clickedElement2 = null;
-            pairsFound++;
+        if (item.textContent !== "Free!") {
+            item.addEventListener('click', clickTile);
         }
         else {
-            clickedElement2.style.border = '4px solid #702963';
-            setTimeout(rehideNumber, 1000);
-
+            item.style.backgroundColor = '#301934';
         }
+    });
+
+    function populateMatchingPuzzle () {
         
-        if (pairsFound === NUM_TILES/2) {
-            pairsFound = 0;
-            solvePuzzle();
+        for (let i = 0; i < NUM_TILES; i++) {
+            if (difficulty === 'challenge' && i === 12) {
+                numberArray[i] = 'Free!';
+            }
+            else {
+                numberArray[i] = i % Math.ceil((NUM_TILES/2));
+            }
+        }
+        numberArray = shuffleArray(numberArray);
+
+        const gridItems = document.querySelectorAll(tileClass);
+
+        gridItems.forEach((item, index) => {
+            if (item.textContent !== "Free!") {
+                item.textContent = "";
+            }
+            item.style.color = "rgba(249, 160, 0, 1)";
+        });
+    }
+
+    function shuffleArray(array) {
+        const arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            if (i === 12 && difficulty === 'challenge') {
+
+            }
+            else {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+        }
+        return arr;
+    }
+
+
+    function clickTile() {
+        if (clickedElement1 == null) {
+            clickedElement1 = this;
+            let element1Index = +clickedElement1.dataset.id;
+            clickedElement1.textContent = numberArray[element1Index];
+            clickedElement1.style.border = '4px solid #702963'
+        }
+        else if (clickedElement2 == null) {
+            clickedElement2 = this;
+            let element2Index = +clickedElement2.dataset.id;
+            clickedElement2.textContent = numberArray[element2Index];
+            if (clickedElement1.textContent === clickedElement2.textContent && clickedElement1 !== clickedElement2) {
+                clickedElement1.style.backgroundColor = '#301934';
+                clickedElement2.style.backgroundColor = '#301934';
+                clickedElement1.style.border = '2px solid rgba(249, 160, 0, 0.35)';
+                clickedElement2.style.border = '2px solid rgba(249, 160, 0, 0.35)';
+                clickedElement1.removeEventListener('click', clickTile);
+                clickedElement2.removeEventListener('click', clickTile);
+                clickedElement1 = null;
+                clickedElement2 = null;
+                pairsFound++;
+            }
+            else {
+                clickedElement2.style.border = '4px solid #702963';
+                setTimeout(rehideNumber, 1000);
+
+            }
+            
+            if (pairsFound === Math.floor(NUM_TILES/2)) {
+                pairsFound = 0;
+                solvePuzzle();
+            }
+        }
+
+        function rehideNumber () {
+            clickedElement1.style.background = 'transparent';
+            clickedElement2.style.background = 'transparent';
+            clickedElement1.style.border = '2px solid rgba(249, 160, 0, 0.35)';
+            clickedElement2.style.border = '2px solid rgba(249, 160, 0, 0.35)';
+            clickedElement1.textContent = "";
+            clickedElement2.textContent = "";
+            clickedElement1 = null;
+            clickedElement2 = null;
         }
     }
 
-    function rehideNumber () {
-        clickedElement1.style.background = 'transparent';
-        clickedElement2.style.background = 'transparent';
-        clickedElement1.style.border = '2px solid rgba(249, 160, 0, 0.35)';
-        clickedElement2.style.border = '2px solid rgba(249, 160, 0, 0.35)';
-        clickedElement1.textContent = "";
-        clickedElement2.textContent = "";
-        clickedElement1 = null;
-        clickedElement2 = null;
-    }
 }
