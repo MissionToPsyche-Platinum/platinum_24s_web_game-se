@@ -1187,13 +1187,8 @@ body {
     width: 75px;
     text-align: center;
     align-items: center;
-<<<<<<< HEAD
     font-size: 24;
     color: #702963;
-    /* aspect-ratio: 1/1; */
-=======
-    font-size: 28;
->>>>>>> main
 }
 
 .maze-container {
