@@ -1273,13 +1273,4 @@ export function startMazePuzzle({ containerID }) {
         location[399] = new mazeTile(true, false, false, false, "End");
         console.log(location);
     }
-    
-    // function createChallengeMaze () {
-    //     location[0] = new mazeTile(false, false, false, false, 1);
-    //     for (let i = 1; i < NUM_TILES - 1; i++) {
-    //         location[i] = new mazeTile(false, false, false, false, "");
-    //     }
-    //     location[399] = new mazeTile(false, false, false, false, "End");
-    //     console.log(location);
-    // }
 }
