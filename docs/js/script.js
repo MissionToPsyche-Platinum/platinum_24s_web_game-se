@@ -44,6 +44,7 @@ const settingMusic = document.getElementById("settingMusic");
 const settingDisplayName = document.getElementById("settingDisplayName");
 const settingShowTimer = document.getElementById("settingShowTimer");
 const settingHints = document.getElementById("settingHints");
+const puzzleHelpButton = document.getElementById("puzzle-help");
 const settingReducedMotion = document.getElementById("settingReducedMotion");
 const settingColorBlind = document.getElementById("settingColorBlind");
 const settingDifficulty = document.getElementById("settingDifficulty");
@@ -118,6 +119,14 @@ function applyColorBlindMode() {
       "pysche-color-blind",
       settingColorBlind.checked
     );
+  }
+}
+
+function applyDisabledHints() {
+  if(!settingHints.checked) {
+    puzzleHelpButton.disabled = true;
+  } else {
+    puzzleHelpButton.disabled = false;
   }
 }
 
@@ -308,10 +317,10 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
     else if (t === settingShowTimer) {
       localStorage.setItem(LS.timer, String(t.checked));
       applyTimerVisibility();
-    }
-    else if (t === settingHints)
+    } else if (t === settingHints) {
       localStorage.setItem(LS.hints, String(t.checked));
-    else if (t === settingReducedMotion) {
+      applyDisabledHints();
+    } else if (t === settingReducedMotion) {
       localStorage.setItem(LS.motion, String(t.checked));
       applyReducedMotion();
     } else if (t === settingColorBlind) {
@@ -339,10 +348,10 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
     else if (t === settingShowTimer) {
       localStorage.setItem(LS.timer, String(t.checked));
       applyTimerVisibility();
-    }
-    else if (t === settingHints)
+    } else if (t === settingHints) {
       localStorage.setItem(LS.hints, String(t.checked));
-    else if (t === settingReducedMotion) {
+      applyDisabledHints();
+    } else if (t === settingReducedMotion) {
       localStorage.setItem(LS.motion, String(t.checked));
       applyReducedMotion();
     } else if (t === settingColorBlind) {
