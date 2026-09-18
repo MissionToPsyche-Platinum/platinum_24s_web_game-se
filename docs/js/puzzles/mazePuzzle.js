@@ -660,7 +660,7 @@ export function startMazePuzzle({ containerID }) {
     }
 
     function moveRight () {
-        if (index >= 19 && (index - 19) % 20 === 0 && index < array.length) {
+        if (index >= 19 && (index - 19) % 20 === 0 && index < location.length) {
             return
         }
         if (location[index].right && location[index + 1].left) {
