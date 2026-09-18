@@ -12,6 +12,8 @@ export const puzzleSolvedMessage = document.getElementById("puzzle-solved-messag
 export const puzzleNotSolvedMessage = document.getElementById("puzzle-not-solved-message");
 const nextPuzzleButton = document.getElementById("next-puzzle");
 const displayFactMessage = document.getElementById("display-fact-message");
+const missionFactSection = document.getElementById("mission-fact");
+const missionFactTitle = document.getElementById("mission-fact-title");
 const gridContainer = document.getElementById("grid-container");
 const matchingHeader = document.getElementById("matching-header");
 const progressElement = document.getElementById("puzzles-completed");
@@ -23,6 +25,8 @@ function clearMissionFact() {
     displayFactMessage.textContent = "";
     displayFactMessage.hidden = true;
     displayFactMessage.style.display = "none";
+    missionFactSection.classList.remove("is-reward");
+    missionFactTitle.textContent = "Mission Intel";
 }
 
 function showMissionFactForSolveCount(solvedCount) {
@@ -31,6 +35,8 @@ function showMissionFactForSolveCount(solvedCount) {
     displayFactMessage.textContent = missionFacts[idx] ?? "";
     displayFactMessage.hidden = false;
     displayFactMessage.style.display = "block";
+    missionFactTitle.textContent = "Intel Unlocked!";
+    missionFactSection.classList.add("is-reward");
 }
 
 const PUZZLES_TO_WIN = 5;

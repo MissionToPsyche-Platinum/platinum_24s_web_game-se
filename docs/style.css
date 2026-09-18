@@ -1014,6 +1014,37 @@ body {
     box-sizing: border-box;
 }
 
+#mission-fact.is-reward {
+    border-color: #f9a000;
+    background: rgba(40, 24, 4, 0.92);
+    box-shadow: 0 0 18px rgba(249, 160, 0, 0.45);
+    animation: mission-fact-reward 0.45s ease-out;
+}
+
+.mission-fact-kicker {
+    display: none;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.7rem;
+    color: #f9a000;
+}
+
+#mission-fact.is-reward .mission-fact-kicker {
+    display: block;
+}
+
+@keyframes mission-fact-reward {
+    from {
+        transform: scale(0.96);
+        box-shadow: 0 0 0 transparent;
+    }
+    to {
+        transform: scale(1);
+        box-shadow: 0 0 18px rgba(249, 160, 0, 0.45);
+    }
+}
+
 #mission-fact h1 {
     margin: 0;
     text-align: center;
@@ -1187,13 +1218,9 @@ body {
     width: 75px;
     text-align: center;
     align-items: center;
-<<<<<<< HEAD
     font-size: 24;
     color: #702963;
     /* aspect-ratio: 1/1; */
-=======
-    font-size: 28;
->>>>>>> main
 }
 
 .maze-container {
