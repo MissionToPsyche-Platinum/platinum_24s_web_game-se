@@ -152,7 +152,7 @@ function displayNextPuzzle() {
     // solvePuzzleButton.style.visibilty = 'hidden';
     //
     solvePuzzleButton.disabled = false;
-    puzzleHelpButton.disabled = false;
+    puzzleHelpButton.disabled = !settingHints.checked;
     loadPuzzle(gameState.puzzleOrder[gameState.solvedPuzzles]);
 }
 

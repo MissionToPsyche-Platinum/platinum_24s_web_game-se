@@ -1045,12 +1045,6 @@ body {
     }
 }
 
-#puzzle-help:disabled {
-    cursor: not-allowed;
-    opacity: 0.45;
-    filter: grayscale(50%);
-}
-
 #mission-fact h1 {
     margin: 0;
     text-align: center;

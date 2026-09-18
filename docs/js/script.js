@@ -150,6 +150,7 @@ function loadGameplaySettings() {
   }
   applyReducedMotion();
   applyColorBlindMode();
+  applyDisabledHints();
 }
 
 function resetSettingsToDefaults() {
