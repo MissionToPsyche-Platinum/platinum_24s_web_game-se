@@ -165,7 +165,6 @@ export function startMazePuzzle({ containerID }) {
                     <div data-id="7" class="maze-challenge-item">Tile 7</div>
                     <div data-id="8" class="maze-challenge-item">Tile 8</div>
                     <div data-id="9" class="maze-challenge-item">Tile 9</div>
-
                     <div data-id="10" class="maze-challenge-item">Tile 10</div>
                     <div data-id="11" class="maze-challenge-item">Tile 11</div>
                     <div data-id="12" class="maze-challenge-item">Tile 12</div>
@@ -187,7 +186,6 @@ export function startMazePuzzle({ containerID }) {
                     <div data-id="27" class="maze-challenge-item">Tile 27</div>
                     <div data-id="28" class="maze-challenge-item">Tile 28</div>
                     <div data-id="29" class="maze-challenge-item">Tile 29</div>
-
                     <div data-id="30" class="maze-challenge-item">Tile 30</div>
                     <div data-id="31" class="maze-challenge-item">Tile 31</div>
                     <div data-id="32" class="maze-challenge-item">Tile 32</div>
@@ -209,7 +207,6 @@ export function startMazePuzzle({ containerID }) {
                     <div data-id="47" class="maze-challenge-item">Tile 47</div>
                     <div data-id="48" class="maze-challenge-item">Tile 48</div>
                     <div data-id="49" class="maze-challenge-item">Tile 49</div>
-
                     <div data-id="50" class="maze-challenge-item">Tile 50</div>
                     <div data-id="51" class="maze-challenge-item">Tile 51</div>
                     <div data-id="52" class="maze-challenge-item">Tile 52</div>
@@ -231,7 +228,6 @@ export function startMazePuzzle({ containerID }) {
                     <div data-id="67" class="maze-challenge-item">Tile 67</div>
                     <div data-id="68" class="maze-challenge-item">Tile 68</div>
                     <div data-id="69" class="maze-challenge-item">Tile 69</div>
-
                     <div data-id="70" class="maze-challenge-item">Tile 70</div>
                     <div data-id="71" class="maze-challenge-item">Tile 71</div>
                     <div data-id="72" class="maze-challenge-item">Tile 72</div>
@@ -253,7 +249,6 @@ export function startMazePuzzle({ containerID }) {
                     <div data-id="87" class="maze-challenge-item">Tile 87</div>
                     <div data-id="88" class="maze-challenge-item">Tile 88</div>
                     <div data-id="89" class="maze-challenge-item">Tile 89</div>
-
                     <div data-id="90" class="maze-challenge-item">Tile 90</div>
                     <div data-id="91" class="maze-challenge-item">Tile 91</div>
                     <div data-id="92" class="maze-challenge-item">Tile 92</div>
@@ -275,7 +270,6 @@ export function startMazePuzzle({ containerID }) {
                     <div data-id="107" class="maze-challenge-item">Tile 7</div>
                     <div data-id="108" class="maze-challenge-item">Tile 8</div>
                     <div data-id="109" class="maze-challenge-item">Tile 9</div>
-
                     <div data-id="110" class="maze-challenge-item">Tile 10</div>
                     <div data-id="111" class="maze-challenge-item">Tile 11</div>
                     <div data-id="112" class="maze-challenge-item">Tile 12</div>
@@ -297,7 +291,6 @@ export function startMazePuzzle({ containerID }) {
                     <div data-id="127" class="maze-challenge-item">Tile 27</div>
                     <div data-id="128" class="maze-challenge-item">Tile 28</div>
                     <div data-id="129" class="maze-challenge-item">Tile 29</div>
-
                     <div data-id="130" class="maze-challenge-item">Tile 30</div>
                     <div data-id="131" class="maze-challenge-item">Tile 31</div>
                     <div data-id="132" class="maze-challenge-item">Tile 32</div>
@@ -319,7 +312,6 @@ export function startMazePuzzle({ containerID }) {
                     <div data-id="147" class="maze-challenge-item">Tile 47</div>
                     <div data-id="148" class="maze-challenge-item">Tile 48</div>
                     <div data-id="149" class="maze-challenge-item">Tile 49</div>
-
                     <div data-id="150" class="maze-challenge-item">Tile 50</div>
                     <div data-id="151" class="maze-challenge-item">Tile 51</div>
                     <div data-id="152" class="maze-challenge-item">Tile 52</div>
@@ -341,7 +333,6 @@ export function startMazePuzzle({ containerID }) {
                     <div data-id="167" class="maze-challenge-item">Tile 67</div>
                     <div data-id="168" class="maze-challenge-item">Tile 68</div>
                     <div data-id="169" class="maze-challenge-item">Tile 69</div>
-
                     <div data-id="170" class="maze-challenge-item">Tile 70</div>
                     <div data-id="171" class="maze-challenge-item">Tile 71</div>
                     <div data-id="172" class="maze-challenge-item">Tile 72</div>
@@ -363,7 +354,6 @@ export function startMazePuzzle({ containerID }) {
                     <div data-id="187" class="maze-challenge-item">Tile 87</div>
                     <div data-id="188" class="maze-challenge-item">Tile 88</div>
                     <div data-id="189" class="maze-challenge-item">Tile 89</div>
-
                     <div data-id="190" class="maze-challenge-item">Tile 90</div>
                     <div data-id="191" class="maze-challenge-item">Tile 91</div>
                     <div data-id="192" class="maze-challenge-item">Tile 92</div>
@@ -385,7 +375,6 @@ export function startMazePuzzle({ containerID }) {
                     <div data-id="207" class="maze-challenge-item">Tile 7</div>
                     <div data-id="208" class="maze-challenge-item">Tile 8</div>
                     <div data-id="209" class="maze-challenge-item">Tile 9</div>
-
                     <div data-id="210" class="maze-challenge-item">Tile 10</div>
                     <div data-id="211" class="maze-challenge-item">Tile 11</div>
                     <div data-id="212" class="maze-challenge-item">Tile 12</div>
@@ -407,7 +396,6 @@ export function startMazePuzzle({ containerID }) {
                     <div data-id="227" class="maze-challenge-item">Tile 27</div>
                     <div data-id="228" class="maze-challenge-item">Tile 28</div>
                     <div data-id="229" class="maze-challenge-item">Tile 29</div>
-
                     <div data-id="230" class="maze-challenge-item">Tile 30</div>
                     <div data-id="231" class="maze-challenge-item">Tile 31</div>
                     <div data-id="232" class="maze-challenge-item">Tile 32</div>
@@ -429,7 +417,6 @@ export function startMazePuzzle({ containerID }) {
                     <div data-id="247" class="maze-challenge-item">Tile 47</div>
                     <div data-id="248" class="maze-challenge-item">Tile 48</div>
                     <div data-id="249" class="maze-challenge-item">Tile 49</div>
-
                     <div data-id="250" class="maze-challenge-item">Tile 50</div>
                     <div data-id="251" class="maze-challenge-item">Tile 51</div>
                     <div data-id="252" class="maze-challenge-item">Tile 52</div>
@@ -451,7 +438,6 @@ export function startMazePuzzle({ containerID }) {
                     <div data-id="267" class="maze-challenge-item">Tile 67</div>
                     <div data-id="268" class="maze-challenge-item">Tile 68</div>
                     <div data-id="269" class="maze-challenge-item">Tile 69</div>
-
                     <div data-id="270" class="maze-challenge-item">Tile 70</div>
                     <div data-id="271" class="maze-challenge-item">Tile 71</div>
                     <div data-id="272" class="maze-challenge-item">Tile 72</div>
@@ -473,7 +459,6 @@ export function startMazePuzzle({ containerID }) {
                     <div data-id="287" class="maze-challenge-item">Tile 87</div>
                     <div data-id="288" class="maze-challenge-item">Tile 88</div>
                     <div data-id="289" class="maze-challenge-item">Tile 89</div>
-
                     <div data-id="290" class="maze-challenge-item">Tile 90</div>
                     <div data-id="291" class="maze-challenge-item">Tile 91</div>
                     <div data-id="292" class="maze-challenge-item">Tile 92</div>
@@ -495,7 +480,6 @@ export function startMazePuzzle({ containerID }) {
                     <div data-id="307" class="maze-challenge-item">Tile 7</div>
                     <div data-id="308" class="maze-challenge-item">Tile 8</div>
                     <div data-id="309" class="maze-challenge-item">Tile 9</div>
-
                     <div data-id="310" class="maze-challenge-item">Tile 10</div>
                     <div data-id="311" class="maze-challenge-item">Tile 11</div>
                     <div data-id="312" class="maze-challenge-item">Tile 12</div>
@@ -517,7 +501,6 @@ export function startMazePuzzle({ containerID }) {
                     <div data-id="327" class="maze-challenge-item">Tile 27</div>
                     <div data-id="328" class="maze-challenge-item">Tile 28</div>
                     <div data-id="329" class="maze-challenge-item">Tile 29</div>
-
                     <div data-id="330" class="maze-challenge-item">Tile 30</div>
                     <div data-id="331" class="maze-challenge-item">Tile 31</div>
                     <div data-id="332" class="maze-challenge-item">Tile 32</div>
@@ -539,7 +522,6 @@ export function startMazePuzzle({ containerID }) {
                     <div data-id="347" class="maze-challenge-item">Tile 47</div>
                     <div data-id="348" class="maze-challenge-item">Tile 48</div>
                     <div data-id="349" class="maze-challenge-item">Tile 49</div>
-
                     <div data-id="350" class="maze-challenge-item">Tile 50</div>
                     <div data-id="351" class="maze-challenge-item">Tile 51</div>
                     <div data-id="352" class="maze-challenge-item">Tile 52</div>
@@ -561,7 +543,6 @@ export function startMazePuzzle({ containerID }) {
                     <div data-id="367" class="maze-challenge-item">Tile 67</div>
                     <div data-id="368" class="maze-challenge-item">Tile 68</div>
                     <div data-id="369" class="maze-challenge-item">Tile 69</div>
-
                     <div data-id="370" class="maze-challenge-item">Tile 70</div>
                     <div data-id="371" class="maze-challenge-item">Tile 71</div>
                     <div data-id="372" class="maze-challenge-item">Tile 72</div>
@@ -583,7 +564,6 @@ export function startMazePuzzle({ containerID }) {
                     <div data-id="387" class="maze-challenge-item">Tile 87</div>
                     <div data-id="388" class="maze-challenge-item">Tile 88</div>
                     <div data-id="389" class="maze-challenge-item">Tile 89</div>
-
                     <div data-id="390" class="maze-challenge-item">Tile 90</div>
                     <div data-id="391" class="maze-challenge-item">Tile 91</div>
                     <div data-id="392" class="maze-challenge-item">Tile 92</div>
@@ -752,27 +732,6 @@ export function startMazePuzzle({ containerID }) {
         }
     }
 
-    function createOriginalMaze () {
-        location[0] = new mazeTile(false, true, false, false, 1);
-        location[1] = new mazeTile(false, true, false, true, "");
-        location[2] = new mazeTile(false, false, true, true, "");
-        location[3] = new mazeTile(false, true, true, false, "");
-
-        location[4] = new mazeTile(true, false, false, true, "");
-        location[5] = new mazeTile(true, false, true, false, "");
-        location[6] = new mazeTile(false, false, false, false, "");
-        location[7] = new mazeTile(true, true, false, false, "");
-
-        location[8] = new mazeTile(false, true, false, true, "");
-        location[9] = new mazeTile(false, false, true, true, "");
-        location[10] = new mazeTile(false, false, true, true, "");
-        location[11] = new mazeTile(true, false, true, false, "");
-
-        location[12] = new mazeTile(true, false, false, true, "");
-        location[13] = new mazeTile(false, false, true, true, "");
-        location[14] = new mazeTile(false, false, true, true, "");
-        location[15] = new mazeTile(false, false, true, false, "End");
-    }
 
     function createNormalMaze() {
         location[0] = new mazeTile(false, true, false, false, 1);
