@@ -628,7 +628,10 @@ export function startMazePuzzle({ containerID }) {
     }
 
     function moveUp () {
-        if (location[index].top) {
+        if (index - NUM_COLS < 0) {
+            return;
+        }
+        if (location[index].top && location[index - NUM_COLS].bottom) {
             location[index].text = "";
             index  = index - NUM_COLS;
             location[index].text = 1;
@@ -641,7 +644,10 @@ export function startMazePuzzle({ containerID }) {
     }
 
     function moveDown () {
-        if (location[index].bottom) {
+        if (index + NUM_COLS >= location.length) {
+            return;
+        }
+        if (location[index].bottom && location[index + NUM_COLS].top) {
             location[index].text = "";
             index  = index + NUM_COLS;
             location[index].text = 1;
@@ -654,7 +660,10 @@ export function startMazePuzzle({ containerID }) {
     }
 
     function moveRight () {
-        if (location[index].right) {
+        if (index >= 19 && (index - 19) % 20 === 0 && index < array.length) {
+            return
+        }
+        if (location[index].right && location[index + 1].left) {
             location[index].text = "";
             index++;
             location[index].text = 1;
@@ -667,7 +676,10 @@ export function startMazePuzzle({ containerID }) {
     }
 
     function moveLeft () {
-        if (location[index].left) {
+        if (index % 20 === 0) {
+            return;
+        }
+        if (location[index].left && location[index - 1].right) {
             location[index].text = "";
             index--;
             location[index].text = 1;
@@ -1256,7 +1268,7 @@ export function startMazePuzzle({ containerID }) {
         location[382] = new mazeTile(false, false, true, true, "");
         location[383] = new mazeTile(false, false, true, true, "");
         location[384] = new mazeTile(false, false, true, true, "");
-        location[385] = new mazeTile(false, true, true, false, "");
+        location[385] = new mazeTile(false, false, true, false, "");
         location[386] = new mazeTile(true, false, false, true, "");
         location[387] = new mazeTile(true, false, true, false, "");
         location[388] = new mazeTile(true, false, false, true, "");
