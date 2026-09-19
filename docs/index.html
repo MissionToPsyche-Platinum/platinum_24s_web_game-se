@@ -95,6 +95,29 @@
                 <button type="button" id="confirmExit">Exit Game</button>
             </div>
         </div>
+
+        <!-- Return-to-menu confirm popup (puzzle screen) -->
+        <div id="menuConfirmPopUp">
+            <div class="exit-icon-row">
+                <img
+                    src="images/Psyche_LogoAssets/Badge_Solid/Color/Psyche_BadgeSolid_Color-JPG.jpg"
+                    alt="Psyche mission badge"
+                    class="exit-logo"
+                >
+            </div>
+            <h2 class="exit-title">Return to Menu?</h2>
+            <p class="exit-subtitle">
+                You are about to leave this puzzle and go back to
+                <span class="exit-highlight">Mission to Psyche</span>.
+            </p>
+            <p class="exit-warning">
+                Your current run will end. Progress on this mission will not be saved.
+            </p>
+            <div class="exit-actions">
+                <button type="button" id="cancelMenuReturn">Keep Playing</button>
+                <button type="button" id="confirmMenuReturn">Return to Main Menu</button>
+            </div>
+        </div>
         
         <!-- Exit page -->
         <section id="exit-screen" class="screen" style="display: none;">
