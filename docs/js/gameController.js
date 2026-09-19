@@ -19,6 +19,7 @@ const matchingHeader = document.getElementById("matching-header");
 const progressElement = document.getElementById("puzzles-completed");
 const progressBar = document.getElementById("puzzle-progress-bar");
 const puzzleHelpButton = document.getElementById("puzzle-help");
+const settingHints = document.getElementById("settingHints");
 
 function clearMissionFact() {
     if (!displayFactMessage) return;
@@ -151,7 +152,7 @@ function displayNextPuzzle() {
     // solvePuzzleButton.style.visibilty = 'hidden';
     //
     solvePuzzleButton.disabled = false;
-    puzzleHelpButton.disabled = false;
+    puzzleHelpButton.disabled = !settingHints.checked;
     loadPuzzle(gameState.puzzleOrder[gameState.solvedPuzzles]);
 }
 
@@ -173,6 +174,10 @@ function updateProgress() {
 }
 
 function showPuzzleHelp() {
+    if (!settingHints.checked) {
+        showPuzzleHelp.disabled = true;
+        return;
+    }
     const shouldResume = window.isRunTimerRunning?.();
     window.pauseRunTimer?.();
     alert(`${gameState.puzzleOrder[gameState.solvedPuzzles].helpText}`);
