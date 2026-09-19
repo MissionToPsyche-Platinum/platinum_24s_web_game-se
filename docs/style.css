@@ -1228,7 +1228,25 @@ body {
     grid-template-rows: repeat(10, 1fr);
     grid-template-columns: repeat(10, 1fr);
     border: 2px solid rgba(249, 160, 0, 0.35);
-    /* min-height: 100vh; */
+}
+
+.maze-challenge-container {
+    display: grid;
+    place-items: center;
+    grid-template-rows: repeat(20, 1fr);
+    grid-template-columns: repeat(20, 1fr);
+    border: 2px solid rgba(249, 160, 0, 0.35);
+}
+
+.maze-challenge-item {
+    border: 2px solid rgba(249, 160, 0, 0.35);
+    padding-top: 5px;
+    height: 30px;
+    width: 35px;
+    text-align: center;
+    align-items: center;
+    font-size: 16;
+    color: #702963;
 }
 
 .movement-button {
