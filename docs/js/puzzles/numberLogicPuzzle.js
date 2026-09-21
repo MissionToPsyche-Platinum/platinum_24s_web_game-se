@@ -19,87 +19,87 @@ export function startNumberLogicPuzzle({ containerID }) {
                 <h3 id = "number-logic-header">Number Logic Puzzle</h3>
             </header>
             <div class = "logic-grid" id = "logicGrid">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
-                <input type = "text" inputmode = "numeric" maxlength = "1">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
             </div>
             <button id = "submit">Submit</button>
         </div>
@@ -121,8 +121,11 @@ export function startNumberLogicPuzzle({ containerID }) {
             incorrectSolvePuzzle();
         }
     });
-    input.addEventListener("input", function() {
-        this.value = this.value.replace(/[^1-9]/g, "").slice(0, 1);
+    const inputs = document.querySelectorAll(".sudoku-input");
+    inputs.forEach(input => {
+        input.addEventListener("input", function() {
+            this.value = this.value.replace(/[^1-9]/g, "");
+        });
     });
 
     //Fills the sudoku puzzle with random numbers (Checked by isValid)
