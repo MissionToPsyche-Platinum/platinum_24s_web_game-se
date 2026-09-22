@@ -92,17 +92,31 @@ function checkPosition(piece , solution) {
 
     for (const spot of solution){
 
+        if (piece.type !== spot.type) {
+            continue;
+        }
 
-    const dx = Math.abs(piece.x - piece.solvedX);
-    const dy = Math.abs(piece.y - piece.solvedY);
+        if (spot.occupied) {
+            continue;
+        }   
 
-    if(dx < tolerance && dy < tolerance && piece.rotation % 360 === 0) {
-        piece.inPlace = true;
-        const target = document.getElementById(piece.id);
-        const { cx, cy } = calculateCetner(piece.points);
-        target.setAttribute("transform", `translate(${piece.solvedX}, ${piece.solvedY}) rotate(${piece.rotation}, ${cx}, ${cy})`);
-        target.style.cursor = "default";
-    }
+        const dx = Math.abs(piece.x - spot.solvedX);
+        const dy = Math.abs(piece.y - spot.solvedY);
+
+        const correctRotation = piece.rotation % 360 === 0;
+
+        if(dx < tolerance && dy < tolerance && correctRotation) {
+            piece.inPlace = true;
+            spot.occupied = true;
+
+            piece.x = spot.solvedX;
+            piece.y = spot.solvedY;
+
+            const target = document.getElementById(piece.id);
+            const { cx, cy } = calculateCetner(piece.points);
+            target.setAttribute("transform", `translate(${piece.x}, ${piece.y}) rotate(${piece.rotation}, ${cx}, ${cy})`);
+            target.style.cursor = "default";
+        }
     }
 }
 
@@ -136,20 +150,29 @@ function renderTangram(svg, puzzle) {
 function enableDragAndDrop(svg, pieces, solution, difficulty) {
     let selectedPiece = null;
     let offsetX, offsetY;
+    const getSvgPoint = (event) => {
+        const rect = svg.getBoundingClientRect();
+        return {
+            x: (event.clientX - rect.left) * (svg.viewBox.baseVal.width / rect.width || 1),
+            y: (event.clientY - rect.top) * (svg.viewBox.baseVal.height / rect.height || 1)
+        };
+    };
+
     svg.addEventListener("mousedown", (e) => {
         const target = e.target;
-        if (target.tagName !== "polygon" && target.id === "outline") {
+        if (target.tagName !== "polygon" || target.id === "outline") {
             return;
         }
 
         const piece = pieces.find(p => p.id === target.id);
-        if (piece.inPlace) {
+        if (!piece || piece.inPlace) {
             return;
         }
 
+        const point = getSvgPoint(e);
         selectedPiece = piece;
-        offsetX = e.clientX - piece.x;
-        offsetY = e.clientY - piece.y;
+        offsetX = point.x - piece.x;
+        offsetY = point.y - piece.y;
         target.style.cursor = "grabbing";
     });
 
@@ -158,8 +181,9 @@ function enableDragAndDrop(svg, pieces, solution, difficulty) {
     svg.addEventListener("mousemove", (e) => {
         if (!selectedPiece) return;
 
-        selectedPiece.x = e.clientX - offsetX;
-        selectedPiece.y = e.clientY - offsetY;
+        const point = getSvgPoint(e);
+        selectedPiece.x = point.x - offsetX;
+        selectedPiece.y = point.y - offsetY;
         const target = document.getElementById(selectedPiece.id);
         const { cx, cy } = calculateCetner(selectedPiece.points);
         target.setAttribute("transform", `translate(${selectedPiece.x}, ${selectedPiece.y}) rotate(${selectedPiece.rotation}, ${cx}, ${cy})`);
@@ -179,7 +203,7 @@ function enableDragAndDrop(svg, pieces, solution, difficulty) {
     if(difficulty === "challenge") {
         svg.addEventListener("dblclick", (e) => {
             const target = e.target;
-            if (target.tagName !== "polygon" && target.id === "outline") {
+            if (target.tagName !== "polygon" || target.id === "outline") {
             return;
         }
         const piece = pieces.find(p => p.id === target.id);
