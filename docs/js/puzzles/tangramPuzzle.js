@@ -26,10 +26,50 @@ export function startTangramPuzzle({ containerID }) {
             { id: "piece4", type: "triangle", points: "200,400 300,200 400,400", color: "#ffff00", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 500, solvedY: 0 }
             ],
             solution: [
-                { id: "spot1", type: "triangle", solvedX: 550, solvedY: 200 , occupied: false},
-                { id: "spot2", type: "triangle", solvedX: 350, solvedY: 0 , occupied: false},
-                { id: "spot3", type: "triangle", solvedX: 500, solvedY: 0 , occupied: false},
-                { id: "spot4", type: "triangle", solvedX: 500, solvedY: 0 , occupied: false}
+                { 
+                    id: "spot1", 
+                    type: "triangle", 
+                    occupied: false,
+                    possiblePlacements: {
+                        piece1: { x: 550, y: 200, rotation: 0 },
+                        piece2: { x: 350, y: 133.33, rotation: 180 },
+                        piece3: { x: 600, y: -66.67, rotation: 180 },
+                        piece4: { x: 400, y: -66.67, rotation: 180 }
+                    }   
+                },
+                { 
+                    id: "spot2", 
+                    type: "triangle", 
+                    occupied: false,
+                    possiblePlacements: {
+                        piece1: { x: 550, y: 66.67, rotation: 180 },
+                        piece2: { x: 350, y: 0, rotation: 0 },
+                        piece3: { x: 600, y: -200, rotation: 0 },
+                        piece4: { x: 400, y: -200, rotation: 0 }
+                    }   
+                },
+                { 
+                    id: "spot3", 
+                    type: "triangle", 
+                    occupied: false,
+                    possiblePlacements: {
+                        piece1: { x: 450, y: 266.67, rotation: 180 },
+                        piece2: { x: 250, y: 200, rotation: 0 },
+                        piece3: { x: 500, y: 0, rotation: 0 },
+                        piece4: { x: 300, y: 0, rotation: 0 }
+                    }   
+                },
+                { 
+                    id: "spot4", 
+                    type: "triangle", 
+                    occupied: false,
+                    possiblePlacements: {
+                        piece1: { x: 650, y: 266.67, rotation: 180 },
+                        piece2: { x: 450, y: 200, rotation: 0 },
+                        piece3: { x: 700, y: 0, rotation: 0 },
+                        piece4: { x: 500, y: 0, rotation: 0 }
+                    }   
+                },
             ]
         },
         {
@@ -100,22 +140,30 @@ function checkPosition(piece , solution) {
             continue;
         }   
 
-        const dx = Math.abs(piece.x - spot.solvedX);
-        const dy = Math.abs(piece.y - spot.solvedY);
+        const checkedPlacement = spot.possiblePlacements[piece.id];
+        if (!checkedPlacement) {
+            continue;
+        }
 
-        const correctRotation = piece.rotation % 360 === 0;
+        const dx = Math.abs(piece.x - checkedPlacement.x);
+        const dy = Math.abs(piece.y - checkedPlacement.y);
+
+        const correctRotation = piece.rotation % 360 === checkedPlacement.rotation;
 
         if(dx < tolerance && dy < tolerance && correctRotation) {
             piece.inPlace = true;
             spot.occupied = true;
 
-            piece.x = spot.solvedX;
-            piece.y = spot.solvedY;
+            piece.x = checkedPlacement.x;
+            piece.y = checkedPlacement.y;
+            piece.rotation = checkedPlacement.rotation;
 
             const target = document.getElementById(piece.id);
             const { cx, cy } = calculateCetner(piece.points);
             target.setAttribute("transform", `translate(${piece.x}, ${piece.y}) rotate(${piece.rotation}, ${cx}, ${cy})`);
             target.style.cursor = "default";
+
+            return;
         }
     }
 }
