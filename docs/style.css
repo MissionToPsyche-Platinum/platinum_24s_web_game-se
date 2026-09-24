@@ -1251,7 +1251,7 @@ body {
 
 .maze-challenge-item {
     border: 2px solid rgba(249, 160, 0, 0.35);
-    padding-top: 5px;
+    /* padding-top: 5px; */
     height: 30px;
     width: 35px;
     text-align: center;
