@@ -175,19 +175,28 @@ function updateProgress() {
 
 function showPuzzleHelp() {
     if (!settingHints.checked) {
-        showPuzzleHelp.disabled = true;
+        puzzleHelpButton.disabled = true;
         return;
     }
-    const shouldResume = window.isRunTimerRunning?.();
+    const help = gameState.puzzleOrder[gameState.solvedPuzzles]?.helpText ?? "";
+    const puzzleHelpText = document.getElementById("puzzleHelpText");
+    const puzzleHelpPopUp = document.getElementById("puzzleHelpPopUp");
+    if (puzzleHelpText) puzzleHelpText.textContent = help;
     window.pauseRunTimer?.();
-    alert(`${gameState.puzzleOrder[gameState.solvedPuzzles].helpText}`);
-    if (shouldResume) window.resumeRunTimer?.();
+    if (puzzleHelpPopUp) puzzleHelpPopUp.style.display = "block";
+}
+
+function closePuzzleHelp() {
+    const puzzleHelpPopUp = document.getElementById("puzzleHelpPopUp");
+    if (puzzleHelpPopUp) puzzleHelpPopUp.style.display = "none";
+    window.resumeRunTimer?.();
 }
 
 solvePuzzleButton.addEventListener("click", solvePuzzle);
 if (newGameButton) newGameButton.addEventListener("click", startGame);
 nextPuzzleButton.addEventListener("click", displayNextPuzzle);
 puzzleHelpButton.addEventListener("click", showPuzzleHelp);
+document.getElementById("closePuzzleHelp")?.addEventListener("click", closePuzzleHelp);
 
 window.onWinPlayAgain = startGame;
 

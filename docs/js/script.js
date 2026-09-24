@@ -68,6 +68,7 @@ const confirmExitButton = document.getElementById("confirmExit");
 const menuConfirmPopUp = document.getElementById("menuConfirmPopUp");
 const cancelMenuReturnButton = document.getElementById("cancelMenuReturn");
 const confirmMenuReturnButton = document.getElementById("confirmMenuReturn");
+const puzzleHelpPopUp = document.getElementById("puzzleHelpPopUp");
 
 // Event listeners for buttons
 document.addEventListener("DOMContentLoaded", () => {
@@ -404,6 +405,7 @@ function backToMenu() {
   stopRunTimer();
   closeExitConfirm();
   closeMenuConfirm();
+  if (puzzleHelpPopUp) puzzleHelpPopUp.style.display = "none";
   closeSettings();
   hideOverlay();
   hideWinScreen();
@@ -556,6 +558,7 @@ function closeExitConfirm() {
 
 function openMenuConfirm() {
   if (!menuConfirmPopUp) return;
+  if (puzzleHelpPopUp) puzzleHelpPopUp.style.display = "none";
   pauseRunTimer();
   menuConfirmPopUp.style.display = "block";
 }
