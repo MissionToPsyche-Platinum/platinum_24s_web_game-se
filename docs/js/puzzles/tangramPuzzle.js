@@ -78,10 +78,75 @@ export function startTangramPuzzle({ containerID }) {
             pieces: [
             { id: "piece1", type: "triangle", points: "50,0 250,0 150,200", color: "#ff0000", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 450, solvedY: 0 },
             { id: "piece2", type: "triangle", points: "250,200 450,200 350,0", color: "#00ff2f", inPlace: false, x: -20, y: 250, rotation: 0, solvedX: 350, solvedY: 0 },
-            { id: "piece3", type: "iTriangle", points: "0,400 0,0 200,400", color: "#ff7300", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 500, solvedY: 0 },
+            { id: "piece3", type: "largeTriangle", points: "0,400 0,0 200,400", color: "#ff7300", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 500, solvedY: 0 },
             { id: "piece4", type: "triangle", points: "200,400 300,200 400,400", color: "#ffff00", inPlace: false, x: 0, y: 250, rotation: 0, solvedX: 500, solvedY: 0 },
             { id: "piece5", type: "triangle", points: "600,450 700,650 800,450", color: "#00ffff", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 0, solvedY: -250 },
-            { id: "piece6", type: "iTriangle", points: "700,0 900,400 900,0", color: "#ff00ff", inPlace: false, x: -450, y: 0, rotation: 0, solvedX: 0, solvedY: 0 }
+            { id: "piece6", type: "largeTriangle", points: "700,0 900,400 900,0", color: "#ff00ff", inPlace: false, x: -450, y: 0, rotation: 0, solvedX: 0, solvedY: 0 }
+            ],
+            solution: [
+                { 
+                    id: "spot1", 
+                    type: "triangle",
+                    occupied: false,
+                    possiblePlacements: {
+                        piece1: { x: 450, y: 0, rotation: 0 },
+                        piece2: { x: 250, y: -66.67, rotation: 180 },
+                        piece4: { x: 300, y: -266.67, rotation: 180 },
+                        piece5: { x: -100, y: -450, rotation: 0 }
+                    }
+                },
+                { 
+                    id: "spot2",
+                    type: "triangle",
+                    occupied: false,
+                    possiblePlacements: {
+                        piece1: { x: 550, y: 66.67, rotation: 180 },
+                        piece2: { x: 350, y: 0, rotation: 0 },
+                        piece4: { x: 400, y: -200, rotation: 0 },
+                        piece5: { x: 0, y: -383.33, rotation: 180 }
+                    }
+                },
+                {
+                    id: "spot3",
+                    type: "triangle",
+                    occupied: false,
+                    possiblePlacements: {
+                        piece1: { x: 650, y: 266.67, rotation: 180 },
+                        piece2: { x: 450, y: 200, rotation: 0 },
+                        piece4: { x: 500, y: 0, rotation: 0 },
+                        piece5: { x: 100, y: -183.33, rotation: 180 }
+                    }
+                },
+                {
+                    id: "spot4",
+                    type: "triangle",
+                    occupied: false,
+                    possiblePlacements: {
+                        piece1: { x: 550, y: 200, rotation: 0 },
+                        piece2: { x: 350, y: 133.33, rotation: 180 },
+                        piece4: { x: 400, y: -66.67, rotation: 180 },
+                        piece5: { x: 0, y: -250, rotation: 0 }
+                    }
+                },
+                {
+                    id: "spot5",
+                    type: "largeTriangle",
+                    occupied: false,
+                    possiblePlacements: {
+                        piece3: { x: 500, y: 0, rotation: 0 },
+                        piece6: { x: -266.67, y: 133.33, rotation: 180 }
+                    }
+                },
+                {
+                    id: "spot6",
+                    type: "largeTriangle",
+                    occupied: "false",
+                    possiblePlacements: {
+                        piece3: { x: 766.67, y: -133.33, rotation: 180 },
+                        piece6: { x: 0, y: 0, rotation: 0 }
+                    }
+                }
+
             ]
         },
 
@@ -100,7 +165,7 @@ export function startTangramPuzzle({ containerID }) {
     ];
     //revert back after testing
     //const randomConfig = puzzleCombos[Math.floor(Math.random() * puzzleCombos.length)];
-    const randomConfig = puzzleCombos[0];
+    const randomConfig = puzzleCombos[1];
 
     if (difficulty === "challenge") {
         randomConfig.pieces.forEach(piece => {
