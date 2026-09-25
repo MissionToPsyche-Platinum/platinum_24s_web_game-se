@@ -362,9 +362,45 @@ body {
     padding: 20px;
     border: 2px solid black;
     z-index: 1000;
-    width: 400px;
+    width: 420px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
     text-align: center;
     border-radius: 10px;
+}
+
+.scoring-box {
+    margin: 16px 0;
+    padding: 12px 14px;
+    text-align: left;
+    background: rgba(0, 0, 0, 0.22);
+    border: 1px solid #f9a000;
+    border-radius: 8px;
+}
+
+.scoring-box h3 {
+    margin: 0 0 8px;
+    text-align: center;
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #f9a000;
+}
+
+.scoring-box p {
+    margin: 0 0 8px;
+    line-height: 1.45;
+}
+
+.scoring-box ul {
+    margin: 0;
+    padding-left: 18px;
+    line-height: 1.45;
+}
+
+.scoring-box li + li {
+    margin-top: 6px;
 }
 
 #instructionsBackButton {
