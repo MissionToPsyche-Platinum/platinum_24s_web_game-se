@@ -654,8 +654,10 @@ body {
     animation: none;
 }
 
-/* Exit confirmation popup */
-#exitPopUp {
+/* Exit / return-to-menu confirmation popups */
+#exitPopUp,
+#menuConfirmPopUp,
+#puzzleHelpPopUp {
     display: none;
     position: fixed;
     top: 50%;
@@ -719,7 +721,10 @@ body {
 }
 
 #cancelExit,
-#confirmExit {
+#confirmExit,
+#cancelMenuReturn,
+#confirmMenuReturn,
+#closePuzzleHelp {
     min-width: 130px;
     padding: 10px 14px;
     font-weight: bold;
@@ -729,23 +734,29 @@ body {
     border-width: 2px;
 }
 
-#cancelExit {
+#cancelExit,
+#cancelMenuReturn {
     background-color: transparent;
     border-color: #f9a000;
     color: #f9a000;
 }
 
-#confirmExit {
+#confirmExit,
+#confirmMenuReturn,
+#closePuzzleHelp {
     background-color: #f9a000;
     border-color: #f9a000;
     color: #302144;
 }
 
-#cancelExit:hover {
+#cancelExit:hover,
+#cancelMenuReturn:hover {
     background-color: rgba(249, 160, 0, 0.12);
 }
 
-#confirmExit:hover {
+#confirmExit:hover,
+#confirmMenuReturn:hover,
+#closePuzzleHelp:hover {
     filter: brightness(1.05);
 }
 

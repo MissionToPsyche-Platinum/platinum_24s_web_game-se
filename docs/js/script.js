@@ -65,6 +65,10 @@ const exitButton = document.getElementById("exit");
 const exitPopUp = document.getElementById("exitPopUp");
 const cancelExitButton = document.getElementById("cancelExit");
 const confirmExitButton = document.getElementById("confirmExit");
+const menuConfirmPopUp = document.getElementById("menuConfirmPopUp");
+const cancelMenuReturnButton = document.getElementById("cancelMenuReturn");
+const confirmMenuReturnButton = document.getElementById("confirmMenuReturn");
+const puzzleHelpPopUp = document.getElementById("puzzleHelpPopUp");
 
 // Event listeners for buttons
 document.addEventListener("DOMContentLoaded", () => {
@@ -83,7 +87,13 @@ lastNameButton.addEventListener("click", function() {
 });
 okayButton.addEventListener("click", startNameCreation);
 backToMenuButtons.forEach((btn) => {
-  btn.addEventListener("click", backToMenu);
+  btn.addEventListener("click", () => {
+    if (btn.closest("#puzzle-screen")) {
+      openMenuConfirm();
+      return;
+    }
+    backToMenu();
+  });
 });
 beginGameButton.addEventListener("click", function() {
   if(firstName === "" || lastName === "") {
@@ -369,6 +379,13 @@ if (exitButton && exitPopUp && cancelExitButton && confirmExitButton) {
   cancelExitButton.addEventListener("click", closeExitConfirm);
   confirmExitButton.addEventListener("click", confirmExitGame);
 }
+if (menuConfirmPopUp && cancelMenuReturnButton && confirmMenuReturnButton) {
+  cancelMenuReturnButton.addEventListener("click", closeMenuConfirm);
+  confirmMenuReturnButton.addEventListener("click", () => {
+    closeMenuConfirm();
+    backToMenu();
+  });
+}
 if (exitReturnMenuButton) {
   exitReturnMenuButton.addEventListener("click", backToMenu);
 }
@@ -387,6 +404,8 @@ loadGameplaySettings();
 function backToMenu() {
   stopRunTimer();
   closeExitConfirm();
+  closeMenuConfirm();
+  if (puzzleHelpPopUp) puzzleHelpPopUp.style.display = "none";
   closeSettings();
   hideOverlay();
   hideWinScreen();
@@ -534,6 +553,19 @@ function openExitConfirm() {
 function closeExitConfirm() {
   if (!exitPopUp) return;
   exitPopUp.style.display = "none";
+  resumeRunTimer();
+}
+
+function openMenuConfirm() {
+  if (!menuConfirmPopUp) return;
+  if (puzzleHelpPopUp) puzzleHelpPopUp.style.display = "none";
+  pauseRunTimer();
+  menuConfirmPopUp.style.display = "block";
+}
+
+function closeMenuConfirm() {
+  if (!menuConfirmPopUp) return;
+  menuConfirmPopUp.style.display = "none";
   resumeRunTimer();
 }
 
