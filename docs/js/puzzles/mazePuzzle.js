@@ -625,7 +625,6 @@ export function startMazePuzzle({ containerID }) {
     startTile.focus();
 
     mazeItems.forEach(item => {
-
         item.addEventListener('keydown', handleKeyDown);
     });
 
@@ -654,12 +653,21 @@ export function startMazePuzzle({ containerID }) {
 
         mazeItems.forEach((item, i) => {
             if (i === NUM_TILES - 1) {
-                    // item.textContent = location[i].text;
-                    item.appendChild(end_maze_icon);
-                }
-                else {
-                    item.textContent = location[i].text;
-                }
+                item.appendChild(end_maze_icon);
+            }
+            else if (i === 0) {
+                item.appendChild(icon_top);
+            }
+            else {
+                item.textContent = location[i].text;
+            }
+            // if (i === NUM_TILES - 1) {
+            //         // item.textContent = location[i].text;
+            //         item.appendChild(end_maze_icon);
+            //     }
+            //     else {
+            //         item.textContent = location[i].text;
+            //     }
         });
     }
 
@@ -673,11 +681,14 @@ export function startMazePuzzle({ containerID }) {
             // location[index].text = 1;
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
-                if (i !== NUM_TILES - 1) {
-                    item.textContent = location[i].text;
+                if (i === NUM_TILES - 1) {
+                    item.appendChild(end_maze_icon);
+                }
+                else if (i === index) {
+                    item.appendChild(icon_top);
                 }
                 else {
-                    item.appendChild(end_maze_icon);
+                    item.textContent = location[i].text;
                 }
             });
             detectWin();
@@ -694,11 +705,14 @@ export function startMazePuzzle({ containerID }) {
             // location[index].text = 1;
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
-                if (i !== NUM_TILES - 1) {
-                    item.textContent = location[i].text;
+                if (i === NUM_TILES - 1) {
+                    item.appendChild(end_maze_icon);
+                }
+                else if (i === index) {
+                    item.appendChild(icon_bottom);
                 }
                 else {
-                    item.appendChild(end_maze_icon);
+                    item.textContent = location[i].text;
                 }
             });
             detectWin();
@@ -715,11 +729,14 @@ export function startMazePuzzle({ containerID }) {
             // location[index].text = 1;
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
-                if (i !== NUM_TILES - 1) {
-                    item.textContent = location[i].text;
+                if (i === NUM_TILES - 1) {
+                    item.appendChild(end_maze_icon);
+                }
+                else if (i === index) {
+                    item.appendChild(icon_right);
                 }
                 else {
-                    item.appendChild(end_maze_icon);
+                    item.textContent = location[i].text;
                 }
             });
             detectWin();
@@ -736,11 +753,14 @@ export function startMazePuzzle({ containerID }) {
         
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
-                if (i !== NUM_TILES - 1) {
-                    item.textContent = location[i].text;
+                if (i === NUM_TILES - 1) {
+                    item.appendChild(end_maze_icon);
+                }
+                else if (i === index) {
+                    item.appendChild(icon_left);
                 }
                 else {
-                    item.appendChild(end_maze_icon);
+                    item.textContent = location[i].text;
                 }
             });
             detectWin();
