@@ -20,10 +20,10 @@ export function startTangramPuzzle({ containerID }) {
             name: "triangle",
             outline: "700,0 500,400 900,400",
             pieces: [
-            { id: "piece1", type: "triangle", points: "50,0 250,0 150,200", color: "#ff0000", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 550, solvedY: 200 },
-            { id: "piece2", type: "triangle", points: "250,200 450,200 350,0", color: "#00ff2f", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 350, solvedY: 0 },
-            { id: "piece3", type: "triangle", points: "0,400 100,200 200,400", color: "#ff7300", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 500, solvedY: 0 },
-            { id: "piece4", type: "triangle", points: "200,400 300,200 400,400", color: "#ffff00", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 500, solvedY: 0 }
+            { id: "piece1", type: "triangle", points: "50,0 250,0 150,200", color: "#ff0000", inPlace: false, x: 0, y: 0, rotation: 0},
+            { id: "piece2", type: "triangle", points: "250,200 450,200 350,0", color: "#00ff2f", inPlace: false, x: 0, y: 0, rotation: 0},
+            { id: "piece3", type: "triangle", points: "0,400 100,200 200,400", color: "#ff7300", inPlace: false, x: 0, y: 0, rotation: 0},
+            { id: "piece4", type: "triangle", points: "200,400 300,200 400,400", color: "#ffff00", inPlace: false, x: 0, y: 0, rotation: 0}
             ],
             solution: [
                 { 
@@ -76,12 +76,12 @@ export function startTangramPuzzle({ containerID }) {
             name: "square",
             outline: "500,0 500,400 900,400 900,0",
             pieces: [
-            { id: "piece1", type: "triangle", points: "50,0 250,0 150,200", color: "#ff0000", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 450, solvedY: 0 },
-            { id: "piece2", type: "triangle", points: "250,200 450,200 350,0", color: "#00ff2f", inPlace: false, x: -20, y: 250, rotation: 0, solvedX: 350, solvedY: 0 },
-            { id: "piece3", type: "largeTriangle", points: "0,400 0,0 200,400", color: "#ff7300", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 500, solvedY: 0 },
-            { id: "piece4", type: "triangle", points: "200,400 300,200 400,400", color: "#ffff00", inPlace: false, x: 0, y: 250, rotation: 0, solvedX: 500, solvedY: 0 },
-            { id: "piece5", type: "triangle", points: "600,450 700,650 800,450", color: "#00ffff", inPlace: false, x: 0, y: 0, rotation: 0, solvedX: 0, solvedY: -250 },
-            { id: "piece6", type: "largeTriangle", points: "700,0 900,400 900,0", color: "#ff00ff", inPlace: false, x: -450, y: 0, rotation: 0, solvedX: 0, solvedY: 0 }
+            { id: "piece1", type: "triangle", points: "50,0 250,0 150,200", color: "#ff0000", inPlace: false, x: 0, y: 0, rotation: 0},
+            { id: "piece2", type: "triangle", points: "250,200 450,200 350,0", color: "#00ff2f", inPlace: false, x: -20, y: 250, rotation: 0},
+            { id: "piece3", type: "largeTriangle", points: "0,400 0,0 200,400", color: "#ff7300", inPlace: false, x: 0, y: 0, rotation: 0},
+            { id: "piece4", type: "triangle", points: "200,400 300,200 400,400", color: "#ffff00", inPlace: false, x: 0, y: 250, rotation: 0},
+            { id: "piece5", type: "triangle", points: "600,450 700,650 800,450", color: "#00ffff", inPlace: false, x: 0, y: 0, rotation: 0},
+            { id: "piece6", type: "largeTriangle", points: "700,0 900,400 900,0", color: "#ff00ff", inPlace: false, x: -450, y: 0, rotation: 0}
             ],
             solution: [
                 { 
@@ -154,11 +154,11 @@ export function startTangramPuzzle({ containerID }) {
             name: "rectangle",
             outline: "250,0 250,400 500,400 500,0",
             pieces: [
-            { id: "piece1", type: "lgTriangle" ,  points: "250,0 500,0 500,200", color: "#ff0000", inPlace: false, x: -260, y: 225, rotation: 0, solvedX: 0, solvedY: 0 },
-            { id: "piece2", type: "lgPent" , points: "250,0 250,400 400,200 400,120", color: "#00ff2f", inPlace: false, x: 350, y: 0, rotation: 0, solvedX: 0, solvedY: 0 },
-            { id: "piece3", type: "smTriangle" , points: "250,400 400,200 400,400", color: "#ff7300", inPlace: false, x: -250, y: -200, rotation: 0, solvedX: 0, solvedY: 0 },
-            { id: "piece4", type: "smPent" , points: "400,120 400,300 500,300 500,200", color: "#ffff00", inPlace: false, x: -325, y: 300, rotation: 0, solvedX: 0, solvedY: 0 },
-            { id: "piece5", type: "square" , points: "400,300 400,400 500,400 500,300", color: "#00ffff", inPlace: false, x: 75, y: 150, rotation: 0, solvedX: 0, solvedY: 0 },
+            { id: "piece1", type: "lgTriangle" ,  points: "250,0 500,0 500,200", color: "#ff0000", inPlace: false, x: -260, y: 225, rotation: 0},
+            { id: "piece2", type: "lgPent" , points: "250,0 250,400 400,200 400,120", color: "#00ff2f", inPlace: false, x: 350, y: 0, rotation: 0},
+            { id: "piece3", type: "smTriangle" , points: "250,400 400,200 400,400", color: "#ff7300", inPlace: false, x: -250, y: -200, rotation: 0},
+            { id: "piece4", type: "smPent" , points: "400,120 400,300 500,300 500,200", color: "#ffff00", inPlace: false, x: -325, y: 300, rotation: 0},
+            { id: "piece5", type: "square" , points: "400,300 400,400 500,400 500,300", color: "#00ffff", inPlace: false, x: 75, y: 150, rotation: 0}
             ],
             solution: [
                 { 
@@ -198,9 +198,9 @@ export function startTangramPuzzle({ containerID }) {
         }
 
     ];
-    //revert back after testing
-    //const randomConfig = puzzleCombos[Math.floor(Math.random() * puzzleCombos.length)];
-    const randomConfig = puzzleCombos[2];
+    
+    const randomConfig = puzzleCombos[Math.floor(Math.random() * puzzleCombos.length)];
+    
 
     if (difficulty === "challenge") {
         randomConfig.pieces.forEach(piece => {
