@@ -167,9 +167,9 @@ export function startNumberLogicPuzzle({ containerID }) {
     function enableScrolling(event) {
         event.preventDefault();
         const input = event.target;
-        const min = Number(input.min);
-        const max = Number(input.max);
-        let value = input.value === "" ? min : Number(input.value);
+        const min = 1;
+        const max = 9;
+        let value = parseInt(this.value) || min;
         if(event.deltaY > 0) {
             //Scrolling down
             value--;
