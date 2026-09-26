@@ -627,7 +627,7 @@ body {
 
 .win-stats {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 12px;
     margin: 0 0 16px;
 }
