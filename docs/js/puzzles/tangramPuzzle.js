@@ -140,7 +140,7 @@ export function startTangramPuzzle({ containerID }) {
                 {
                     id: "spot6",
                     type: "largeTriangle",
-                    occupied: "false",
+                    occupied: false,
                     possiblePlacements: {
                         piece3: { x: 766.67, y: -133.33, rotation: 180 },
                         piece6: { x: 0, y: 0, rotation: 0 }
@@ -154,21 +154,59 @@ export function startTangramPuzzle({ containerID }) {
             name: "rectangle",
             outline: "250,0 250,400 500,400 500,0",
             pieces: [
-            { id: "piece1", points: "250,0 500,0 500,200", color: "#ff0000", inPlace: false, x: -260, y: 225, rotation: 0, solvedX: 0, solvedY: 0 },
-            { id: "piece2", points: "250,0 250,400 400,200 400,120", color: "#00ff2f", inPlace: false, x: 350, y: 0, rotation: 0, solvedX: 0, solvedY: 0 },
-            { id: "piece3", points: "250,400 400,200 400,400", color: "#ff7300", inPlace: false, x: -250, y: -200, rotation: 0, solvedX: 0, solvedY: 0 },
-            { id: "piece4", points: "400,120 400,300 500,300 500,200", color: "#ffff00", inPlace: false, x: -325, y: 300, rotation: 0, solvedX: 0, solvedY: 0 },
+            { id: "piece1", type: "lgTriangle" ,  points: "250,0 500,0 500,200", color: "#ff0000", inPlace: false, x: -260, y: 225, rotation: 0, solvedX: 0, solvedY: 0 },
+            { id: "piece2", type: "lgPent" , points: "250,0 250,400 400,200 400,120", color: "#00ff2f", inPlace: false, x: 350, y: 0, rotation: 0, solvedX: 0, solvedY: 0 },
+            { id: "piece3", type: "smTriangle" , points: "250,400 400,200 400,400", color: "#ff7300", inPlace: false, x: -250, y: -200, rotation: 0, solvedX: 0, solvedY: 0 },
+            { id: "piece4", type: "smPent" , points: "400,120 400,300 500,300 500,200", color: "#ffff00", inPlace: false, x: -325, y: 300, rotation: 0, solvedX: 0, solvedY: 0 },
             { id: "piece5", type: "square" , points: "400,300 400,400 500,400 500,300", color: "#00ffff", inPlace: false, x: 75, y: 150, rotation: 0, solvedX: 0, solvedY: 0 },
+            ],
+            solution: [
+                { 
+                    id: "spot1",
+                    type: "lgTriangle",
+                    occupied: false,
+                    possiblePlacements: {piece1: { x: 0, y: 0, rotation: 0 }}
+                },
+                { 
+                    id: "spot2",
+                    type: "lgPent",
+                    occupied: false,
+                    possiblePlacements: {piece2: { x: 0, y: 0, rotation: 0 }}
+                },
+                { 
+                    id: "spot3",
+                    type: "smTriangle",
+                    occupied: false,
+                    possiblePlacements: {piece3: { x: 0, y: 0, rotation: 0 }}
+                },
+                { 
+                    id: "spot4",
+                    type: "smPent",
+                    occupied: false,
+                    possiblePlacements: {piece4: { x: 0, y: 0, rotation: 0 }}
+                },
+                { 
+                    id: "spot5",
+                    type: "square",
+                    occupied: false,
+                    possiblePlacements: {
+                        piece5: { x: 0, y: 0, rotation: 0 }
+                    }
+                }
+
             ]
         }
 
     ];
     //revert back after testing
     //const randomConfig = puzzleCombos[Math.floor(Math.random() * puzzleCombos.length)];
-    const randomConfig = puzzleCombos[1];
+    const randomConfig = puzzleCombos[2];
 
     if (difficulty === "challenge") {
         randomConfig.pieces.forEach(piece => {
+            if (piece.type === "square") {
+                return;
+            }
             piece.rotation = Math.floor(Math.random() * 4) * 90;
         });
     }
@@ -320,7 +358,7 @@ function enableDragAndDrop(svg, pieces, solution, difficulty) {
             return;
         }
         const piece = pieces.find(p => p.id === target.id);
-        if (piece.inPlace || !piece) {
+        if (piece.inPlace || !piece || piece.type === "square") {
             return;
         }
         const { cx, cy } = calculateCetner(piece.points);
