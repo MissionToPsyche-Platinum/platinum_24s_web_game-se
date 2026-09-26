@@ -58,8 +58,18 @@ const exitCloseTabButton = document.getElementById("exit-close-tab");
 const winScreen = document.getElementById("win-screen");
 const winPlayerName = document.getElementById("win-player-name");
 const winPuzzlesSolved = document.getElementById("win-puzzles-solved");
+const winMissionTime = document.getElementById("win-mission-time");
 const winPlayAgainButton = document.getElementById("win-play-again");
+const winLeaderboardButton = document.getElementById("win-leaderboard");
 const winReturnMenuButton = document.getElementById("win-return-menu");
+const LEADERBOARD_KEY = "pysche_leaderboard";
+const LEADERBOARD_PLACE_IDS = [
+  "firstPlace",
+  "secondPlace",
+  "thirdPlace",
+  "fourthPlace",
+  "fifthPlace",
+];
 
 const exitButton = document.getElementById("exit");
 const exitPopUp = document.getElementById("exitPopUp");
@@ -271,6 +281,34 @@ function hideWinScreen() {
   if (winScreen) winScreen.style.display = "none";
 }
 
+function loadLeaderboard() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(LEADERBOARD_KEY) || "[]");
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveLeaderboardEntry(name, timeMs) {
+  const scores = loadLeaderboard();
+  scores.push({ name, timeMs });
+  scores.sort((a, b) => a.timeMs - b.timeMs);
+  localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(scores.slice(0, 5)));
+}
+
+function renderLeaderboard() {
+  const scores = loadLeaderboard();
+  LEADERBOARD_PLACE_IDS.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const entry = scores[i];
+    el.textContent = entry
+      ? `${i + 1}. ${entry.name} — ${formatRunTime(entry.timeMs)}`
+      : `${i + 1}.`;
+  });
+}
+
 function showWinScreen({ playerName, puzzlesSolved } = {}) {
   stopRunTimer();
   closeExitConfirm();
@@ -284,12 +322,12 @@ function showWinScreen({ playerName, puzzlesSolved } = {}) {
   creditsPopUp.style.display = "none";
   if (exitScreen) exitScreen.style.display = "none";
 
-  if (winPlayerName) {
-    winPlayerName.textContent = playerName?.trim() || "Astronaut";
-  }
-  if (winPuzzlesSolved) {
-    winPuzzlesSolved.textContent = String(puzzlesSolved ?? 0);
-  }
+  const name = playerName?.trim() || "Astronaut";
+  const timeMs = getRunTimerMs();
+  if (winPlayerName) winPlayerName.textContent = name;
+  if (winPuzzlesSolved) winPuzzlesSolved.textContent = String(puzzlesSolved ?? 0);
+  if (winMissionTime) winMissionTime.textContent = formatRunTime(timeMs);
+  saveLeaderboardEntry(name, timeMs);
   if (winScreen) winScreen.style.display = "flex";
 }
 
@@ -395,6 +433,9 @@ if (exitCloseTabButton) {
 if (winPlayAgainButton) {
   winPlayAgainButton.addEventListener("click", playAgainFromWinScreen);
 }
+if (winLeaderboardButton) {
+  winLeaderboardButton.addEventListener("click", startLeaderBoard);
+}
 if (winReturnMenuButton) {
   winReturnMenuButton.addEventListener("click", backToMenu);
 }
@@ -446,6 +487,7 @@ function startCredits() {
 function startLeaderBoard() {
   closeExitConfirm();
   closeSettings();
+  renderLeaderboard();
   leaderBoardPopUp.style.display = "block";
 }
 
