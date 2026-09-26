@@ -8,6 +8,28 @@ export function startMazePuzzle({ containerID }) {
     // const NUM_COLS = 10;
     let location = [];
     let index = 0;
+    const icon_top = document.createElement('img');
+    const icon_bottom = document.createElement('img');
+    const icon_left = document.createElement('img');
+    const icon_right = document.createElement('img');
+
+
+    icon_top.src = './images/psyche_spacex_falcon9_transparent_resized.png';
+    icon_bottom.src = './images/psyche_spacex_falcon9_transparent_resized_bottom.png';
+    icon_left.src = './images/psyche_spacex_falcon9_transparent_resized_left.png';
+    icon_right.src = './images/psyche_spacex_falcon9_transparent_resized_right.png';
+    icon_top.width = 30;
+    icon_top.height = 35;
+
+    icon_bottom.width = 30;
+    icon_bottom.height = 35;
+
+    icon_left.width = 30;
+    icon_left.height = 35;
+
+    icon_right.width = 30;
+    icon_right.height = 35;
+
 
     const end_maze_icon = document.createElement('img');
     const end_height = difficulty === 'normal' ? 45 : 30;
@@ -37,7 +59,7 @@ export function startMazePuzzle({ containerID }) {
                     <h3 id="maze-puzzle-header">Maze Puzzle</h3>
                 </header>
                 <div class="maze-container" id="gridContainer">
-                    <div data-id="0" class="maze-item" tabIndex = "-1", id="start-tile">Start</div>
+                    <div data-id="0" class="maze-item" tabIndex = "-1", id="start-tile"></div>
                     <div data-id="1" class="maze-item">Tile 1</div>
                     <div data-id="2" class="maze-item">Tile 2</div>
                     <div data-id="3" class="maze-item">Tile 3</div>
@@ -163,7 +185,7 @@ export function startMazePuzzle({ containerID }) {
                     <h3 id="maze-puzzle-header">Maze Puzzle</h3>
                 </header>
                 <div class="maze-challenge-container" id="gridContainer">
-                    <div data-id="0" class="maze-challenge-item" tabIndex = "-1", id="start-tile">Start</div>
+                    <div data-id="0" class="maze-challenge-item" tabIndex = "-1", id="start-tile"></div>
                     <div data-id="1" class="maze-challenge-item">Tile 1</div>
                     <div data-id="2" class="maze-challenge-item">Tile 2</div>
                     <div data-id="3" class="maze-challenge-item">Tile 3</div>
@@ -603,7 +625,6 @@ export function startMazePuzzle({ containerID }) {
     startTile.focus();
 
     mazeItems.forEach(item => {
-
         item.addEventListener('keydown', handleKeyDown);
     });
 
@@ -632,12 +653,21 @@ export function startMazePuzzle({ containerID }) {
 
         mazeItems.forEach((item, i) => {
             if (i === NUM_TILES - 1) {
-                    // item.textContent = location[i].text;
-                    item.appendChild(end_maze_icon);
-                }
-                else {
-                    item.textContent = location[i].text;
-                }
+                item.appendChild(end_maze_icon);
+            }
+            else if (i === 0) {
+                item.appendChild(icon_top);
+            }
+            else {
+                item.textContent = location[i].text;
+            }
+            // if (i === NUM_TILES - 1) {
+            //         // item.textContent = location[i].text;
+            //         item.appendChild(end_maze_icon);
+            //     }
+            //     else {
+            //         item.textContent = location[i].text;
+            //     }
         });
     }
 
@@ -648,14 +678,17 @@ export function startMazePuzzle({ containerID }) {
         if (location[index].top && location[index - NUM_COLS].bottom) {
             location[index].text = "";
             index  = index - NUM_COLS;
-            location[index].text = 1;
+            // location[index].text = 1;
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
-                if (i !== NUM_TILES - 1) {
-                    item.textContent = location[i].text;
+                if (i === NUM_TILES - 1) {
+                    item.appendChild(end_maze_icon);
+                }
+                else if (i === index) {
+                    item.appendChild(icon_top);
                 }
                 else {
-                    item.appendChild(end_maze_icon);
+                    item.textContent = location[i].text;
                 }
             });
             detectWin();
@@ -669,14 +702,17 @@ export function startMazePuzzle({ containerID }) {
         if (location[index].bottom && location[index + NUM_COLS].top) {
             location[index].text = "";
             index  = index + NUM_COLS;
-            location[index].text = 1;
+            // location[index].text = 1;
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
-                if (i !== NUM_TILES - 1) {
-                    item.textContent = location[i].text;
+                if (i === NUM_TILES - 1) {
+                    item.appendChild(end_maze_icon);
+                }
+                else if (i === index) {
+                    item.appendChild(icon_bottom);
                 }
                 else {
-                    item.appendChild(end_maze_icon);
+                    item.textContent = location[i].text;
                 }
             });
             detectWin();
@@ -690,14 +726,17 @@ export function startMazePuzzle({ containerID }) {
         if (location[index].right && location[index + 1].left) {
             location[index].text = "";
             index++;
-            location[index].text = 1;
+            // location[index].text = 1;
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
-                if (i !== NUM_TILES - 1) {
-                    item.textContent = location[i].text;
+                if (i === NUM_TILES - 1) {
+                    item.appendChild(end_maze_icon);
+                }
+                else if (i === index) {
+                    item.appendChild(icon_right);
                 }
                 else {
-                    item.appendChild(end_maze_icon);
+                    item.textContent = location[i].text;
                 }
             });
             detectWin();
@@ -711,15 +750,17 @@ export function startMazePuzzle({ containerID }) {
         if (location[index].left && location[index - 1].right) {
             location[index].text = "";
             index--;
-            location[index].text = 1;
         
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
-                if (i !== NUM_TILES - 1) {
-                    item.textContent = location[i].text;
+                if (i === NUM_TILES - 1) {
+                    item.appendChild(end_maze_icon);
+                }
+                else if (i === index) {
+                    item.appendChild(icon_left);
                 }
                 else {
-                    item.appendChild(end_maze_icon);
+                    item.textContent = location[i].text;
                 }
             });
             detectWin();
