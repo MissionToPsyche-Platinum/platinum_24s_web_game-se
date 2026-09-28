@@ -41,7 +41,9 @@ function showMissionFactForSolveCount(solvedCount) {
 }
 
 const PUZZLES_TO_WIN = 5;
+const PUZZLE_BREAK_SECONDS = 3;
 let isGameOver;
+let puzzleBreakTimer = null;
 
 const gameScreen = document.getElementById("puzzle-screen");
 const gamePageContent = gameScreen.innerHTML;
@@ -61,7 +63,40 @@ function shufflePuzzles(puzzles) {
     return arr;
 }
 
+function hidePuzzleBreak() {
+    clearInterval(puzzleBreakTimer);
+    puzzleBreakTimer = null;
+    const overlay = document.getElementById("puzzle-break-overlay");
+    if (overlay) overlay.style.display = "none";
+}
+
+function startPuzzleBreak() {
+    const overlay = document.getElementById("puzzle-break-overlay");
+    const countEl = document.getElementById("puzzle-break-count");
+    if (!overlay || !countEl) {
+        displayNextPuzzle();
+        return;
+    }
+
+    hidePuzzleBreak();
+    nextPuzzleButton.disabled = true;
+    let remaining = PUZZLE_BREAK_SECONDS;
+    countEl.textContent = remaining;
+    overlay.style.display = "flex";
+
+    puzzleBreakTimer = setInterval(() => {
+        remaining -= 1;
+        if (remaining <= 0) {
+            hidePuzzleBreak();
+            displayNextPuzzle();
+            return;
+        }
+        countEl.textContent = remaining;
+    }, 1000);
+}
+
 function startGame() {
+    hidePuzzleBreak();
     gameState.solvedPuzzles = 0;
     nextPuzzleButton.style.display = 'inline';
     // gridContainer.style.display = 'none';
@@ -194,7 +229,8 @@ function closePuzzleHelp() {
 
 solvePuzzleButton.addEventListener("click", solvePuzzle);
 if (newGameButton) newGameButton.addEventListener("click", startGame);
-nextPuzzleButton.addEventListener("click", displayNextPuzzle);
+nextPuzzleButton.addEventListener("click", startPuzzleBreak);
+window.cancelPuzzleBreak = hidePuzzleBreak;
 puzzleHelpButton.addEventListener("click", showPuzzleHelp);
 document.getElementById("closePuzzleHelp")?.addEventListener("click", closePuzzleHelp);
 
