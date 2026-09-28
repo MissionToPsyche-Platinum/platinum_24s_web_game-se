@@ -18,17 +18,20 @@ export function startMazePuzzle({ containerID }) {
     icon_bottom.src = './images/psyche_spacex_falcon9_transparent_resized_bottom.png';
     icon_left.src = './images/psyche_spacex_falcon9_transparent_resized_left.png';
     icon_right.src = './images/psyche_spacex_falcon9_transparent_resized_right.png';
-    icon_top.width = 30;
-    icon_top.height = 35;
 
-    icon_bottom.width = 30;
-    icon_bottom.height = 35;
+    const rocket_icon_width = difficulty === 'normal' ? 40 : 28;
+    const rocket_icon_height = difficulty === 'normal' ? 45 : 30;
+    icon_top.width = rocket_icon_width;
+    icon_top.height = rocket_icon_height;
 
-    icon_left.width = 30;
-    icon_left.height = 35;
+    icon_bottom.width = rocket_icon_width;
+    icon_bottom.height = rocket_icon_height;
 
-    icon_right.width = 30;
-    icon_right.height = 35;
+    icon_left.width = rocket_icon_width;
+    icon_left.height = rocket_icon_height;
+
+    icon_right.width = rocket_icon_width;
+    icon_right.height = rocket_icon_height;
 
 
     const end_maze_icon = document.createElement('img');
