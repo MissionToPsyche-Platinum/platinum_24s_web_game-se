@@ -20,6 +20,10 @@ const progressElement = document.getElementById("puzzles-completed");
 const progressBar = document.getElementById("puzzle-progress-bar");
 const puzzleHelpButton = document.getElementById("puzzle-help");
 const settingHints = document.getElementById("settingHints");
+const playerScorePanel = document.getElementById("playerScorePanel");
+const currentScore = document.getElementById("currentScore");
+const correctScore = 100;
+let playerScore = 0;
 
 function clearMissionFact() {
     if (!displayFactMessage) return;
@@ -38,6 +42,10 @@ function showMissionFactForSolveCount(solvedCount) {
     displayFactMessage.style.display = "block";
     missionFactTitle.textContent = "Intel Unlocked!";
     missionFactSection.classList.add("is-reward");
+}
+
+function updateScore() {
+    currentScore.textContent = playerScore;
 }
 
 const PUZZLES_TO_WIN = 5;
@@ -63,6 +71,8 @@ function shufflePuzzles(puzzles) {
 
 function startGame() {
     gameState.solvedPuzzles = 0;
+    playerScore = 0;
+    updateScore();
     nextPuzzleButton.style.display = 'inline';
     // gridContainer.style.display = 'none';
     // matchingHeader.style.display = 'none';
@@ -93,6 +103,8 @@ function gameIsOver(x) {
 }
 
 export function solvePuzzle() {
+    playerScore += correctScore;
+    updateScore();
     gameState.solvedPuzzles += 1;
     puzzleNotSolvedMessage.style.display = 'none';
     puzzleSolvedMessage.style.display = 'block';
