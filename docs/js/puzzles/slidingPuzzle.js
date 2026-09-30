@@ -166,14 +166,14 @@ function renderSlidingPuzzle (container, state, gridSize) {
             const row = Math.floor(tile.value / gridSize);
             const col = tile.value % gridSize;
 
-            btn.style.backgroundImage = `url("images/Psyche_Launch.jpg")`;
+            btn.style.backgroundImage = `url("images/Psyche_Illustration.jpg")`;
             btn.style.backgroundSize = `${gridSize * 100}% ${gridSize * 100}%`;
 
             const x = (col / (gridSize - 1)) * 100;
             const y = (row / (gridSize - 1)) * 100;
 
             btn.style.backgroundPosition = `${x}% ${y}%`;
-            btn.textContent = tile.value;
+            //btn.textContent = tile.value;
             btn.addEventListener("click", () => {
                 moveTile(index, state, container, gridSize);
             })
