@@ -653,8 +653,8 @@ export function startMazePuzzle({ containerID }) {
         autorunButton.addEventListener('click', toggleAutorun);
     }
 
-  
-    const startTile = document.querySelector("#start-tile");
+    const startTile = document.getElementById("start-tile");
+    // const startTile = document.querySelector("#start-tile");
     startTile.focus();
 
     mazeItems.forEach(item => {
@@ -788,7 +788,7 @@ export function startMazePuzzle({ containerID }) {
                 index = moveHistory.pop();
             }
             else {
-                location[endTile].text = "End";
+                // location[endTile].text = "End";
                 break;
             }
         }
