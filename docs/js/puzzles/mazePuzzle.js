@@ -704,6 +704,7 @@ export function startMazePuzzle({ containerID }) {
 
         mazeItems.forEach((item, i) => {
             if (i === endTile) {
+                item.textContent = location[i].text;
                 item.appendChild(end_maze_icon);
             }
             else if (i === 0) {
