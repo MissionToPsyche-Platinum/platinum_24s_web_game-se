@@ -14,7 +14,6 @@ export function startMazePuzzle({ containerID }) {
     let lastMove = randomMove;
     const junctionsQueue = [];
     const moveHistory = [];
-    const allMoves = [];
     let endTile = 0;
     let isWon = false;
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -207,6 +206,7 @@ export function startMazePuzzle({ containerID }) {
     else {
         containerID.innerHTML = `
             <div id="maze-puzzle-layout">
+                <button id="maze-toggle-auto">Auto run</button>
                 <header>
                     <h3 id="maze-puzzle-header">Maze Puzzle</h3>
                 </header>
@@ -646,9 +646,11 @@ export function startMazePuzzle({ containerID }) {
     const mazeItems = document.querySelectorAll(tileClass);
     populateMazePuzzle();
 
-    const autorunButton = document.getElementById("maze-toggle-auto");
-    let isAutorun = false;
-    autorunButton.addEventListener('click', toggleAutorun);
+    if (difficulty === 'challenge') {
+        const autorunButton = document.getElementById("maze-toggle-auto");
+        let isAutorun = false;
+        autorunButton.addEventListener('click', toggleAutorun);
+    }
 
   
     const startTile = document.querySelector("#start-tile");
@@ -700,7 +702,7 @@ export function startMazePuzzle({ containerID }) {
         const mazeItems = document.querySelectorAll(tileClass);
 
         mazeItems.forEach((item, i) => {
-            if (i === NUM_TILES - 1) {
+            if (i === endTile) {
                 item.appendChild(end_maze_icon);
             }
             else if (i === 0) {
@@ -901,7 +903,7 @@ export function startMazePuzzle({ containerID }) {
             }
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
-                if (i === NUM_TILES - 1) {
+                if (i === endTile) {
                     item.appendChild(end_maze_icon);
                 }
                 else if (i === index) {
@@ -934,7 +936,7 @@ export function startMazePuzzle({ containerID }) {
             }
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
-                if (i === NUM_TILES - 1) {
+                if (i === endTile) {
                     item.appendChild(end_maze_icon);
                 }
                 else if (i === index) {
@@ -967,7 +969,7 @@ export function startMazePuzzle({ containerID }) {
             }
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
-                if (i === NUM_TILES - 1) {
+                if (i === endTile) {
                     item.appendChild(end_maze_icon);
                 }
                 else if (i === index) {
@@ -1000,7 +1002,7 @@ export function startMazePuzzle({ containerID }) {
             }
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
-                if (i === NUM_TILES - 1) {
+                if (i === endTile) {
                     item.appendChild(end_maze_icon);
                 }
                 else if (i === index) {
@@ -1020,10 +1022,15 @@ export function startMazePuzzle({ containerID }) {
     }
 
     function detectWin () {
-        if (index === NUM_TILES - 1) {
+        if (index === endTile) {
+            isWon = true;
+            endrunMaze();
+
             solvePuzzle();
             index = 0;
             const mazeItems = document.querySelectorAll(tileClass);
+            const autorunButton = document.getElementById("maze-toggle-auto");
+            autorunButton.removeEventListener('click', toggleAutorun);
             mazeItems.forEach(item => {
                 item.removeEventListener('keydown', handleKeyDown);
             });
