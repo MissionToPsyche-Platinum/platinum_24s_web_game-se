@@ -646,9 +646,10 @@ export function startMazePuzzle({ containerID }) {
     const mazeItems = document.querySelectorAll(tileClass);
     populateMazePuzzle();
 
+    let isAutorun = false;
+
     if (difficulty === 'challenge') {
         const autorunButton = document.getElementById("maze-toggle-auto");
-        let isAutorun = false;
         autorunButton.addEventListener('click', toggleAutorun);
     }
 
