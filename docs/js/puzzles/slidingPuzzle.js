@@ -9,7 +9,7 @@ export function startSlidingPuzzle({ containerID }) {
     
     containerID.innerHTML = `
     <div class="sliding-wrapper">
-        <h3 class="sliding-header">Sliding Puzzle - ${difficulty} - ${gridSize}</h3>
+        <h3 class="sliding-header">Sliding Puzzle</h3>
         <div class="sliding-board">
             <div id="sliding-grid"></div>
             <div id="solved-overlay"></div>
@@ -173,7 +173,9 @@ function renderSlidingPuzzle (container, state, gridSize) {
             const y = (row / (gridSize - 1)) * 100;
 
             btn.style.backgroundPosition = `${x}% ${y}%`;
-            //btn.textContent = tile.value;
+            if (isColorBlindMode()) {
+            btn.textContent = tile.value;
+            }
             btn.addEventListener("click", () => {
                 moveTile(index, state, container, gridSize);
             })
@@ -211,4 +213,8 @@ function setupKeys (state, container, gridSize) {
             moveTile(targetIndex, state, container, gridSize);
         }
     });
+}
+
+function isColorBlindMode() {
+	return !!window.getPyscheSettings?.()?.colorBlind;
 }
