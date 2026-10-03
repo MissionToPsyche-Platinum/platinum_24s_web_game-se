@@ -3,9 +3,9 @@ export function startMatchingPuzzle({ containerID }) {
     const settings = typeof window !== "undefined" ? window.getPyscheSettings?.() : undefined;
     const difficulty = settings?.difficulty === "challenge" ? "challenge" : "normal";
 
-    let psyche_image_1 = document.createElement('img');
+    const psyche_image_1 = document.createElement('img');
 
-    psyche_image_1.src = './images/Psyche_Astroid_Imagae_No_Background_Resize';
+    psyche_image_1.src = './images/Psyche_Astroid_Image_No_Background_Resized.png';
     psyche_image_1.width = 80;
     psyche_image_1.length = 80;
 
@@ -110,6 +110,9 @@ export function startMatchingPuzzle({ containerID }) {
                 item.textContent = "";
             }
             item.style.color = "rgba(249, 160, 0, 1)";
+            if (numberArray[index] === 1) {
+                item.appendChild(psyche_image_1);
+            }
         });
     }
 
