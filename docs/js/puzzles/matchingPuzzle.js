@@ -5,7 +5,7 @@ export function startMatchingPuzzle({ containerID }) {
 
     const psyche_image_1 = document.createElement('img');
 
-    psyche_image_1.src = './images/Psyche_Astroid_Image_No_Background_Resized.png';
+    psyche_image_1.src = './images/Psyche_Asteroid_Image_No_Background_Resized.png';
     psyche_image_1.width = 80;
     psyche_image_1.length = 80;
 
