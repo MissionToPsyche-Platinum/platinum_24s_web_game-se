@@ -3,6 +3,11 @@ export function startMatchingPuzzle({ containerID }) {
     const settings = typeof window !== "undefined" ? window.getPyscheSettings?.() : undefined;
     const difficulty = settings?.difficulty === "challenge" ? "challenge" : "normal";
 
+    let psyche_image_1 = document.createElement('img');
+
+    psyche_image_1.src = './images/Psyche_Astroid_Imagae_No_Background_Resize';
+    psyche_image_1.width = 80;
+    psyche_image_1.length = 80;
 
     let clickedElement1;
     let clickedElement2;
