@@ -444,6 +444,7 @@ loadGameplaySettings();
 //Resets the screen back to the main menu
 function backToMenu() {
   stopRunTimer();
+  window.cancelPuzzleBreak?.();
   closeExitConfirm();
   closeMenuConfirm();
   if (puzzleHelpPopUp) puzzleHelpPopUp.style.display = "none";
