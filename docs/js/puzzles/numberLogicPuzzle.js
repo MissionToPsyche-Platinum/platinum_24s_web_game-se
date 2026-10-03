@@ -1,6 +1,8 @@
 import { solvePuzzle } from "../gameController.js";
 import { puzzleNotSolvedMessage } from "../gameController.js";
 import { puzzleSolvedMessage } from "../gameController.js";
+import { updateScore } from "../gameController.js";
+
 //9 x 9 sudoku puzzle implementation
 export function startNumberLogicPuzzle({ containerID }) {
     let board = Array.from({ length: 9 }, () => Array(9).fill(0));
@@ -117,6 +119,8 @@ export function startNumberLogicPuzzle({ containerID }) {
         if(checked === true) {
             solvePuzzle();
         } else {
+            let wrongAnswer = 50;
+            updateScore(wrongAnswer);
             highlightIncorrectCells(checkBoard);
             incorrectSolvePuzzle();
         }
