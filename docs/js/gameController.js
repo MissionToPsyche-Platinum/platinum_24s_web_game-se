@@ -44,8 +44,12 @@ function showMissionFactForSolveCount(solvedCount) {
     missionFactSection.classList.add("is-reward");
 }
 
-function updateScore() {
-    currentScore.textContent = playerScore;
+export function updateScore(wrongAnswer) {
+    if(wrongAnswer === 0) {
+        currentScore.textContent = playerScore;
+    } else {
+        currentScore.textContent = currentScore.textContent - wrongAnswer;
+    }
 }
 
 const PUZZLES_TO_WIN = 5;
@@ -72,7 +76,7 @@ function shufflePuzzles(puzzles) {
 function startGame() {
     gameState.solvedPuzzles = 0;
     playerScore = 0;
-    updateScore();
+    updateScore(0);
     nextPuzzleButton.style.display = 'inline';
     // gridContainer.style.display = 'none';
     // matchingHeader.style.display = 'none';
@@ -104,7 +108,7 @@ function gameIsOver(x) {
 
 export function solvePuzzle() {
     playerScore += correctScore;
-    updateScore();
+    updateScore(0);
     gameState.solvedPuzzles += 1;
     puzzleNotSolvedMessage.style.display = 'none';
     puzzleSolvedMessage.style.display = 'block';
