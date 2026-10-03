@@ -1075,6 +1075,17 @@ body {
     background-color: #cc0000;
 }
 
+#playerScorePanel {
+    border: 1px solid rgba(249, 160, 0, 0.55);
+    border-radius: 10px;    padding: 5px 10px;
+    height: 80%;
+    min-width: 122px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.12);
+    color: #f9a000;
+    font-weight: bold;
+}
+
 #mission-fact {
     border: 1px solid rgba(249, 160, 0, 0.35);
     border-radius: 10px;
