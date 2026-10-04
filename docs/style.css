@@ -1730,16 +1730,70 @@ button.tube-cell:disabled {
 	cursor: default;
 	opacity: 0.88;
 }
-
 .tube-cell {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	aspect-ratio: 1;
-	background: #e8e8e8;
-	border: 1px solid #444;
-	border-radius: 4px;
-	box-sizing: border-box;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+    background: #e8e8e8;
+    border: 1px solid #444;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Allow flying meteor to cross over cell borders */
+.tube-cell:has(.tube-tile-image--flying) {
+    overflow: visible;
+    z-index: 5;
+    opacity: 1;
+}
+
+/* Subtle glowing background for source & goal tiles */
+.tube-cell--source,
+.tube-cell--goal {
+    background: radial-gradient(circle at center, rgba(0, 229, 255, 0.18) 0%, #e0f7fa 100%);
+}
+
+/* Base image styling centered cleanly */
+.tube-tile-image {
+    position: absolute;
+    z-index: 2;
+    width: 68%;
+    height: 68%;
+    left: 16%;
+    top: 16%;
+    object-fit: contain;
+    pointer-events: none;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Meteor size & position adjustments */
+.tube-tile-image--meteor {
+    width: 75%;
+    height: 75%;
+    left: 12.5%;
+    top: 8%;
+}
+
+/* Spacecraft scaled slightly so wings don't cover the top port */
+.tube-tile-image--spacecraft {
+    width: 62%;
+    height: 62%;
+    left: 19%;
+    top: 22%;
+}
+
+/* Slower, highly visible flying meteor effect */
+.tube-tile-image--flying {
+    z-index: 10 !important;
+    transition: transform 2.2s cubic-bezier(0.25, 1, 0.5, 1) !important;
+    filter: drop-shadow(0 0 12px #00e5ff) drop-shadow(0 0 24px #3ad7ff) !important;
+}
+
+/* Completed connection glowing effect */
+.tube-puzzle-layout--goal-connected .tube-tile-image--spacecraft {
+    filter: drop-shadow(0 0 8px #00e5ff) drop-shadow(0 0 15px #00e5ff);
 }
 
 button.tube-cell {
