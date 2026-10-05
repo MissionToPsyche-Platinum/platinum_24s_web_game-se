@@ -315,6 +315,30 @@ body {
     background: white;
 }
 
+#firstNameDropdownButton,
+#lastNameDropdownButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    min-width: 148px;
+}
+
+#firstNameDropdownButton::after,
+#lastNameDropdownButton::after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #ef5966;
+}
+
+#firstNameDropdownButton:has(+ .dropdown-content.show)::after,
+#lastNameDropdownButton:has(+ .dropdown-content.show)::after {
+    transform: rotate(180deg);
+}
+
 .show {
     display: block;
 }
