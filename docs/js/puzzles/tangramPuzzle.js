@@ -8,7 +8,7 @@ export function startTangramPuzzle({ containerID }) {
         <div class="tangram-container">
             <h3>Tangram Puzzle</h3>
             
-            <svg id="tangram-svg" width="950" height="650""></svg>
+            <svg id="tangram-svg" viewBox="0 0 1000 650"></svg>
         </div>
     `;
 
