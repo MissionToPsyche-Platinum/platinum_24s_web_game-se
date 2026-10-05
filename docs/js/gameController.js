@@ -41,6 +41,8 @@ function showMissionFactForSolveCount(solvedCount) {
     displayFactMessage.hidden = false;
     displayFactMessage.style.display = "block";
     missionFactTitle.textContent = "Intel Unlocked!";
+    missionFactSection.classList.remove("is-reward");
+    void missionFactSection.offsetWidth;
     missionFactSection.classList.add("is-reward");
 }
 
