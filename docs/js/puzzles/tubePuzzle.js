@@ -9,7 +9,6 @@ import {
 import { solvePuzzle } from "../gameController.js";
 
 const STROKE = "#302144";
-const ACCENT = "#f9a000";
 const FLOW = "#1a8cff";
 const PORT_POS = [
 	[50, 10],
@@ -38,23 +37,27 @@ function pipeCore(kind, stroke, width) {
 		case "cross":
 			return `<line class="tube-pipe-core" x1="50" y1="8" x2="50" y2="92" ${a}/><line class="tube-pipe-core" x1="8" y1="50" x2="92" y2="50" ${a}/>`;
 		case "source":
-			return `<line class="tube-pipe-core" x1="50" y1="50" x2="50" y2="92" ${a}/>`;
+			return `<line class="tube-pipe-core" x1="50" y1="70" x2="50" y2="92" ${a}/>`;
 		case "goal":
-			return `<line class="tube-pipe-core" x1="50" y1="8" x2="50" y2="42" ${a}/>`;
+			return `<line class="tube-pipe-core" x1="50" y1="8" x2="50" y2="30" ${a}/>`;
 		default:
 			return "";
 	}
 }
 
-function sourceGoalMarks(kind, colorBlind) {
-	if (kind === "source") {
-		const fill = colorBlind ? "#111" : ACCENT;
-		return `<circle cx="50" cy="36" r="14" fill="${fill}" stroke="${STROKE}" stroke-width="3"/>`;
-	}
-	if (kind === "goal") {
-		return `<path d="M 26 48 Q 50 90 74 48" fill="none" stroke="${STROKE}" stroke-width="8" stroke-linecap="round"/>`;
-	}
-	return "";
+function tileArt(kind, rotation = 0) {
+    const turn = rotation * 90;
+    if (kind === "source") {
+        return `<img class="tube-tile-image tube-tile-image--meteor" src="./images/meteor.png" alt="" style="transform: rotate(${turn}deg)">`;
+    }
+    if (kind === "goal") {
+        return `<img class="tube-tile-image tube-tile-image--spacecraft" src="./images/spacecraft.png" alt="" style="transform: rotate(${turn}deg)">`;
+    }
+    return "";
+}
+
+function cellInnerHtml(kind, rotation, opts) {
+	return `${cellSvg(kind, rotation, opts)}${tileArt(kind, rotation)}`;
 }
 
 function cellLetter(kind, colorBlind, rotation) {
@@ -99,10 +102,9 @@ function cellSvg(kind, rotation, { flowing = false, connectedDirs = [], colorBli
 					"tube-flow-core",
 				)
 			: "";
-	const extras = sourceGoalMarks(kind, colorBlind);
 	const letter = cellLetter(kind, colorBlind, rotation);
 	const ports = portMarkers(kind, rotation, connectedDirs);
-	return `<svg class="tube-cell-svg" viewBox="0 0 100 100" aria-hidden="true"><g transform="rotate(${deg} 50 50)">${core}${flowInner}${extras}${letter}</g>${ports}</svg>`;
+	return `<svg class="tube-cell-svg" viewBox="0 0 100 100" aria-hidden="true"><g transform="rotate(${deg} 50 50)">${core}${flowInner}${letter}</g>${ports}</svg>`;
 }
 
 function cloneLevel(level) {
@@ -127,11 +129,11 @@ function renderGrid(level, metaLabel) {
     	for (let c = 0; c < cols; c++) {
         	const cell = cells[r][c];
         	const label = `${cell.kind}, rotation ${cell.rotation}`;
-        	const svg = cellSvg(cell.kind, cell.rotation, { colorBlind });
+        	const inner = cellInnerHtml(cell.kind, cell.rotation, { colorBlind });
         	if (cell.kind === "empty") {
-            	html += `<div class="tube-cell tube-cell--empty" data-r="${r}" data-c="${c}" aria-hidden="true">${svg}</div>`;
+            	html += `<div class="tube-cell tube-cell--empty" data-r="${r}" data-c="${c}" aria-hidden="true">${inner}</div>`;
         	} else {
-            	html += `<button type="button" class="tube-cell tube-cell--${cell.kind}" data-r="${r}" data-c="${c}" title="${label}" aria-label="${label}">${svg}</button>`;
+            	html += `<button type="button" class="tube-cell tube-cell--${cell.kind}" data-r="${r}" data-c="${c}" title="${label}" aria-label="${label}">${inner}</button>`;
         	}
     	}
 	}
@@ -194,7 +196,7 @@ function updateFlowPreview(level, gridEl, layoutEl) {
     	}
     	const openCount = getOpenDirections(cell.kind, cell.rotation).length;
     	const label = `${cell.kind}, rotation ${cell.rotation}, ${ports.length} of ${openCount} ports connected${flowing ? ", on source path" : ""}`;
-    	cellEl.innerHTML = cellSvg(cell.kind, cell.rotation, {
+    	cellEl.innerHTML = cellInnerHtml(cell.kind, cell.rotation, {
     		flowing,
     		connectedDirs: ports,
     		colorBlind,
@@ -208,12 +210,32 @@ function updateFlowPreview(level, gridEl, layoutEl) {
 	layoutEl?.classList.toggle("tube-puzzle-layout--color-blind", colorBlind);
 }
 
+function flyMeteorToCraft(gridEl) {
+	if (document.documentElement.classList.contains("pysche-reduced-motion")) {
+		return;
+	}
+	const meteor = gridEl.querySelector(".tube-tile-image--meteor");
+	const craft = gridEl.querySelector(".tube-tile-image--spacecraft");
+	if (!meteor || !craft) {
+		return;
+	}
+	const from = meteor.getBoundingClientRect();
+	const to = craft.getBoundingClientRect();
+	const dx = to.left + to.width / 2 - (from.left + from.width / 2);
+	const dy = to.top + to.height / 2 - (from.top + from.height / 2);
+	meteor.classList.add("tube-tile-image--flying");
+	requestAnimationFrame(() => {
+		meteor.style.transform = `translate(${dx}px, ${dy}px)`;
+	});
+}
+
 function tryWin(level, gridEl, state) {
 	if (state.won || !isSourceConnectedToGoal(level)) {
     	return;
 	}
 	state.won = true;
 	setGridSolved(gridEl, true);
+	flyMeteorToCraft(gridEl);
 	solvePuzzle();
 }
 
