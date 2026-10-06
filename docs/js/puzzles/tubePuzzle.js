@@ -160,7 +160,7 @@ function renderGrid(level, metaLabel) {
            <button type="button" class="tube-dpad-btn" id="tube-shuffle-btn">Shuffle</button>
        </div>
    </div>
-  	<p id="tube-puzzle-hint" class="tube-puzzle-hint">Click a pipe to rotate it. Use the buttons above or your <strong>keyboard’s arrow keys</strong> (↑↓←→) to move between pipes—empty tiles are skipped. Connect source to goal to win. Filled diamonds show joined pipes; hollow circles show open ends that do not meet a neighbor.</p></div>`;
+  	<p id="tube-puzzle-hint" class="tube-puzzle-hint">Click a pipe to rotate it. Connect the meteor to the spacecraft.</p></div>`;
 	return html;
 }
 

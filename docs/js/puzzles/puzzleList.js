@@ -39,7 +39,8 @@ export const puzzles = [
     {
         name: "Tube Puzzle",
         start: startTubePuzzle,
-        helpText: "Rotate pipes so open ends meet and a path runs from the source to the goal. Filled diamonds mark joined ports; hollow circles mark open ends that are not connected. Color-blind mode is in Settings.",    },
+        helpText: "Click pipes to rotate them until a path links the meteor to the spacecraft. Filled diamonds are joined; hollow circles are still open. Use the on-screen arrows or keyboard arrow keys to move between pipes. Color-blind mode is in Settings.",
+    },
     {
        name: "Pattern Puzzle",
        start: startPatternPuzzle,
