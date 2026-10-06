@@ -3,11 +3,23 @@ export function startMazePuzzle({ containerID }) {
     const settings = typeof window !== "undefined" ? window.getPyscheSettings?.() : undefined;
     const difficulty = settings?.difficulty === "challenge" ? "challenge" : "normal";
 
-    // const NUM_TILES = 100;
-    const NUM_ROWS = 10;
-    // const NUM_COLS = 10;
     let location = [];
     let index = 0;
+
+    let isValidMove = false;
+    let isProgress = false;
+    let isJunction = false;
+    let isBackwards = false;
+    let randomMove = 0;
+    let lastMove = randomMove;
+    const junctionsQueue = [];
+    const moveHistory = [];
+    let endTile = 0;
+    let isWon = false;
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+
+
     const icon_top = document.createElement('img');
     const icon_bottom = document.createElement('img');
     const icon_left = document.createElement('img');
@@ -44,6 +56,16 @@ export function startMazePuzzle({ containerID }) {
 
     const NUM_TILES = difficulty === "normal" ? 100 : 400;
     const NUM_COLS = difficulty === "normal" ? 10 : 20;
+    const NUM_ROWS = difficulty === "normal" ? 10 : 20;
+
+    class junction {
+        constructor(index, pathsTaken, possibleMoves) {
+            this.index = index;
+            this. pathsTaken = pathsTaken;
+            this.possibleMoves = possibleMoves;
+        }
+    }
+
     class mazeTile {
         constructor(top, bottom, left, right, text) {
             this.top = top;
@@ -184,6 +206,7 @@ export function startMazePuzzle({ containerID }) {
     else {
         containerID.innerHTML = `
             <div id="maze-puzzle-layout">
+                <button id="maze-toggle-auto">Auto run</button>
                 <header>
                     <h3 id="maze-puzzle-header">Maze Puzzle</h3>
                 </header>
@@ -623,8 +646,15 @@ export function startMazePuzzle({ containerID }) {
     const mazeItems = document.querySelectorAll(tileClass);
     populateMazePuzzle();
 
-  
-    const startTile = document.querySelector("#start-tile");
+    let isAutorun = false;
+
+    if (difficulty === 'challenge') {
+        const autorunButton = document.getElementById("maze-toggle-auto");
+        autorunButton.addEventListener('click', toggleAutorun);
+    }
+
+    const startTile = document.getElementById("start-tile");
+    // const startTile = document.querySelector("#start-tile");
     startTile.focus();
 
     mazeItems.forEach(item => {
@@ -641,21 +671,40 @@ export function startMazePuzzle({ containerID }) {
     rightButton.addEventListener("click", moveRight);
     leftButton.addEventListener("click", moveLeft);
 
+    function toggleAutorun () {
+        if (isAutorun) {
+            console.log("end auto");
+            endrunMaze();
+        }
+        else {
+            console.log("start atuo");
+            isValidMove = false;
+            isProgress = false;
+            isWon = false;
+            runMaze();
+        }
+        isAutorun = !isAutorun;
+    }
+
     function populateMazePuzzle () {
 
         if (difficulty === "normal") {
             createNormalMaze();
         }
         else {
-            createChallengeMaze();
+            // createChallengeMaze();
+            generateMaze();
         }
         
         setBorderStyle();
+        isBackwards = false;
+        isWon = false;
 
         const mazeItems = document.querySelectorAll(tileClass);
 
         mazeItems.forEach((item, i) => {
-            if (i === NUM_TILES - 1) {
+            if (i === endTile) {
+                item.textContent = location[i].text;
                 item.appendChild(end_maze_icon);
             }
             else if (i === 0) {
@@ -664,27 +713,199 @@ export function startMazePuzzle({ containerID }) {
             else {
                 item.textContent = location[i].text;
             }
-            // if (i === NUM_TILES - 1) {
-            //         // item.textContent = location[i].text;
-            //         item.appendChild(end_maze_icon);
-            //     }
-            //     else {
-            //         item.textContent = location[i].text;
-            //     }
         });
     }
 
-    function moveUp () {
+    function generateMaze () {
+        let furthestLength = 0;
+        const hasBeen = new Array(NUM_TILES).fill(false);
+        for (let i = 0; i < NUM_TILES; i++) {
+            location[i] = new mazeTile(false, false, false, false, "");
+        }
+
+        const getIndex = (x, y) => (x < 0 || x >= NUM_COLS || y < 0 || y >= NUM_ROWS) ? -1 : y * NUM_COLS + x;
+
+        index = 0;
+        location[index].text = "1";
+        hasBeen[index] = true;
+
+        while (true) {
+            const x = index % NUM_COLS;
+            const y = Math.floor(index / NUM_COLS);
+
+            const possibleMoves = [];
+
+            const topIndex = getIndex(x, y - 1);
+            if (topIndex !== -1 && !hasBeen[topIndex]) {
+                possibleMoves.push({index: topIndex, direction: "top"});
+            }
+
+            const bottomIndex = getIndex(x, y + 1);
+            if(bottomIndex !== -1 && !hasBeen[bottomIndex]) {
+                possibleMoves.push({index: bottomIndex, direction: "bottom"});
+            }
+
+            const leftIndex = getIndex(x - 1, y);
+            if (leftIndex !== -1 && !hasBeen[leftIndex]) {
+                possibleMoves.push({index: leftIndex, direction: "left"})
+            }
+
+            const rightIndex = getIndex(x + 1, y);
+            if (rightIndex !== -1 && !hasBeen[rightIndex]) {
+                possibleMoves.push({index: rightIndex, direction: "right"})
+            }
+
+            if (possibleMoves.length > 0) {
+                const nextTile = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+                const nextIndex = nextTile.index;
+
+                if (nextTile.direction === "top") {
+                    location[index].top = true;
+                    location[nextIndex].bottom = true;
+                }
+                else if (nextTile.direction === "bottom") {
+                    location[index].bottom = true;
+                    location[nextIndex].top = true;
+                }
+                else if (nextTile.direction === "left") {
+                    location[index].left = true;
+                    location[nextIndex].right = true;
+                }
+                else if (nextTile.direction === "right") {
+                    location[index].right = true;
+                    location[nextIndex].left = true;
+                }
+
+                moveHistory.push(index);
+                let depth = moveHistory.length;
+                if (depth > furthestLength) {
+                    furthestLength = depth;
+                    endTile = nextIndex;
+                }
+                hasBeen[nextIndex] = true;
+                index = nextIndex;
+            }
+            else if (moveHistory.length > 0) {
+                index = moveHistory.pop();
+            }
+            else {
+                // location[endTile].text = "End";
+                break;
+            }
+        }
+    }
+
+    function detectJunction() {
+        const moves = findPossibleMoves();
+        
+        if (moves.length >= 3) {
+            const move = getMoveFromPreviousMove(randomMove);
+            if (junctionsQueue.length === 0) {
+                junctionsQueue.push(new junction(index, [move], moves));
+                isJunction = true;
+                return;
+            }
+            for (let i = 0; i < junctionsQueue.length; i++) {
+                if (junctionsQueue[i].index === index) {
+                    return;
+                }
+            }
+            junctionsQueue.push(new junction(index, [move], moves));
+            isJunction = true;
+            return;
+        }
+        isJunction = false;
+    }
+
+    function findPossibleMoves () {
+        let arr = [];
+        if (location[index].top) {
+            arr.push(1)
+        }
+        if (location[index].bottom) {
+            arr.push(2)
+        }
+        if (location[index].left) {
+            arr.push(3)
+        }
+        if (location[index].right) {
+            arr.push(4)
+        }
+        return arr;
+    }
+
+    function getMoveFromPreviousMove (move) {
+        if (move === 1) {
+            return 2;
+        }
+        if (move === 2) {
+            return 1;
+        }
+        if (move === 3) {
+            return 4;
+        }
+        if (move === 4) {
+            return 3;
+        }
+        return -1;
+    }
+
+    async function reverseToJunction() {
+        await delay(125);
+        const junction = junctionsQueue[junctionsQueue.length - 1];
+
+        if (junction !== undefined) {
+        
+            while (index !== junctionsQueue[junctionsQueue.length - 1].index) {
+                if (moveHistory[moveHistory.length - 1] === 1) {
+                    isBackwards = true;
+                    await moveDown();
+                }
+                else if (moveHistory[moveHistory.length - 1] === 2) {
+                    isBackwards = true;
+                    await moveUp();
+                }
+                else if (moveHistory[moveHistory.length - 1] === 3) {
+                    isBackwards = true;
+                    await moveRight();
+                }
+                else if (moveHistory[moveHistory.length - 1] === 4) {
+                    isBackwards = true;
+                    await moveLeft();
+                }
+                moveHistory.pop();
+
+                await delay(125);
+            }
+            isBackwards = false;
+            lastMove = 6;
+            // console.log(`junction returned to @ ${index} with prev moves: ${junction.pathsTaken}`);
+            isJunction = true;
+            if (junction.pathsTaken.length >= junction.possibleMoves.length) {
+                junctionsQueue.pop();
+                if (junctionsQueue.length > 0) {
+                    isBackwards = true;
+                    await reverseToJunction();
+                }
+            }
+        }
+    }
+
+    async function moveUp () {
         if (index - NUM_COLS < 0) {
             return;
         }
         if (location[index].top && location[index - NUM_COLS].bottom) {
+            isValidMove = true;
             location[index].text = "";
             index  = index - NUM_COLS;
-            // location[index].text = 1;
+            detectWin();
+            if (!isBackwards) {
+                detectJunction();
+            }
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
-                if (i === NUM_TILES - 1) {
+                if (i === endTile) {
                     item.appendChild(end_maze_icon);
                 }
                 else if (i === index) {
@@ -694,21 +915,30 @@ export function startMazePuzzle({ containerID }) {
                     item.textContent = location[i].text;
                 }
             });
-            detectWin();
+            if (!isBackwards) {
+                moveHistory.push(randomMove);
+            }
+            if ((!location[index].top && !location[index].left && !location[index].right) && index < NUM_TILES) {
+                await reverseToJunction();
+            }
         }
     }
 
-    function moveDown () {
+    async function moveDown () {
         if (index + NUM_COLS >= location.length) {
             return;
         }
         if (location[index].bottom && location[index + NUM_COLS].top) {
+            isValidMove = true;
             location[index].text = "";
             index  = index + NUM_COLS;
-            // location[index].text = 1;
+            detectWin();
+            if (!isBackwards) {
+                detectJunction();
+            }
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
-                if (i === NUM_TILES - 1) {
+                if (i === endTile) {
                     item.appendChild(end_maze_icon);
                 }
                 else if (i === index) {
@@ -718,21 +948,30 @@ export function startMazePuzzle({ containerID }) {
                     item.textContent = location[i].text;
                 }
             });
-            detectWin();
+            if (!isBackwards) {
+                moveHistory.push(randomMove);
+            }
+            if ((!location[index].bottom && !location[index].right && !location[index].left) && index < NUM_TILES) {
+                await reverseToJunction();
+            }
         }
     }
 
-    function moveRight () {
+    async function moveRight () {
         if (index >= 19 && (index - 19) % 20 === 0 && index < location.length) {
             return
         }
         if (location[index].right && location[index + 1].left) {
+            isValidMove = true;
             location[index].text = "";
             index++;
-            // location[index].text = 1;
+            detectWin();
+            if (!isBackwards) {
+                detectJunction();
+            }
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
-                if (i === NUM_TILES - 1) {
+                if (i === endTile) {
                     item.appendChild(end_maze_icon);
                 }
                 else if (i === index) {
@@ -742,21 +981,30 @@ export function startMazePuzzle({ containerID }) {
                     item.textContent = location[i].text;
                 }
             });
-            detectWin();
+            if (!isBackwards) {
+                moveHistory.push(randomMove);
+            }
+            if ((!location[index].bottom && !location[index].right && !location[index].top) && index < NUM_TILES) {
+                await reverseToJunction();
+            }
         }
     }
 
-    function moveLeft () {
+    async function moveLeft () {
         if (index % 20 === 0) {
             return;
         }
         if (location[index].left && location[index - 1].right) {
+            isValidMove = true;
             location[index].text = "";
             index--;
-        
+            detectWin();
+            if (!isBackwards) {
+                detectJunction();
+            }
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
-                if (i === NUM_TILES - 1) {
+                if (i === endTile) {
                     item.appendChild(end_maze_icon);
                 }
                 else if (i === index) {
@@ -766,15 +1014,25 @@ export function startMazePuzzle({ containerID }) {
                     item.textContent = location[i].text;
                 }
             });
-            detectWin();
+            if (!isBackwards) {
+                moveHistory.push(randomMove);
+            }
+            if ((!location[index].bottom && !location[index].top && !location[index].left) && index < NUM_TILES) {
+                await reverseToJunction();
+            }
         }
     }
 
     function detectWin () {
-        if (index === NUM_TILES - 1) {
+        if (index === endTile) {
+            isWon = true;
+            endrunMaze();
+
             solvePuzzle();
             index = 0;
             const mazeItems = document.querySelectorAll(tileClass);
+            const autorunButton = document.getElementById("maze-toggle-auto");
+            autorunButton.removeEventListener('click', toggleAutorun);
             mazeItems.forEach(item => {
                 item.removeEventListener('keydown', handleKeyDown);
             });
@@ -825,6 +1083,134 @@ export function startMazePuzzle({ containerID }) {
                 moveRight();
                 break;
         }
+    }
+
+    function endrunMaze () {
+        isValidMove = true;
+        isProgress = true;
+        isWon = true;
+    }
+
+    async function runMaze() {
+        while (!isWon) {
+            // console.log("restarting runMaze");
+            isProgress = false;
+            isValidMove = false;
+            if (!isBackwards) {
+                while (!isProgress && !isValidMove) {
+                    randomMove = Math.floor(Math.random() * 4) + 1;
+                    if (randomMove === 1 && validateMove(randomMove)) {
+                        if (lastMove !== 2) {
+                            lastMove = randomMove;
+                            await moveUp();
+                            isProgress = true;
+                        }
+                    }
+                    if (randomMove === 2 && validateMove(randomMove)) {
+                        if (lastMove !== 1) {
+                            lastMove = randomMove;
+                            await moveDown();
+                            isProgress = true;
+                        }
+                    }
+                    if (randomMove === 3 && validateMove(randomMove)) {
+                        if (lastMove !== 4) {
+                            lastMove = randomMove;
+                            await moveLeft();
+                            isProgress = true;
+                        }
+                    }
+                    if (randomMove === 4 && validateMove(randomMove)) {
+                        if (lastMove !== 3) {
+                            lastMove = randomMove;
+                            await moveRight();
+                            isProgress = true;
+                        }
+                    }
+                }
+            }
+            await delay(125);
+        }
+    }
+
+    function newJunctionMove (move) {
+        const junction = junctionsQueue[junctionsQueue.length - 1];
+        if (junction !== undefined) {
+            const direction = isBackwards ? "backwards" : "forwards";
+            console.log(`checking for new move at junction ${junction.index}. Prev moves: ${junction.pathsTaken} out of ${junction.possibleMoves} while heading ${direction}`);
+            if ((!junction.pathsTaken.includes(move) && junction.possibleMoves.includes(move)) && 
+            (junction.possibleMoves.length !== junction.pathsTaken.length)) {
+                junction.pathsTaken.push(move);
+                console.log(`move ${move} added from njm @ junction ${junction.index}`);
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    function validateMove(move) {
+        let isNewMove = false;;
+        if(isJunction) {
+            isNewMove = newJunctionMove(move);
+        }
+        if (move === 1) {
+            if (isJunction) {
+                if (index - NUM_COLS >= 0 && isNewMove) {
+                    if (location[index].top && location[index - NUM_COLS].bottom) {
+                        return true;
+                    }
+                }
+            }
+            else if (index - NUM_COLS >= 0) {
+                if (location[index].top && location[index - NUM_COLS].bottom) {
+                    return true;
+                }
+            }
+        }
+        else if (move === 2) {
+            if (isJunction) {
+                if (index + NUM_COLS < location.length && isNewMove) {
+                    if (location[index].bottom && location[index + NUM_COLS].top) {
+                        return true;
+                    }
+                }
+            }
+            else if (index + NUM_COLS < location.length) {
+                if (location[index].bottom && location[index + NUM_COLS].top) {
+                    return true;
+                }
+            }
+        }
+        else if (move === 3) {
+            if (isJunction) {
+                if (index % 20 !== 0 && isNewMove) {
+                    if (location[index].left && location[index - 1].right) {
+                        return true;
+                    }
+                }
+            }
+            else if (index % 20 !== 0) {
+                if (location[index].left && location[index - 1].right) {
+                    return true;
+                }
+            }
+        }
+        else if (move === 4) {
+            if (isJunction) {
+                if ((index < 19 || (index - 19) % 20 !== 0 || index >= location.length) && isNewMove) {
+                    if (location[index].right && location[index + 1].left) {
+                        return true;
+                    }
+                }
+            }
+            else if (index < 19 || (index - 19) % 20 !== 0 || index >= location.length) {
+                if (location[index].right && location[index + 1].left) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 
