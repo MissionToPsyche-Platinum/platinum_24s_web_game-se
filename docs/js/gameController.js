@@ -20,10 +20,12 @@ const progressElement = document.getElementById("puzzles-completed");
 const progressBar = document.getElementById("puzzle-progress-bar");
 const puzzleHelpButton = document.getElementById("puzzle-help");
 const settingHints = document.getElementById("settingHints");
-const playerScorePanel = document.getElementById("playerScorePanel");
 const currentScore = document.getElementById("currentScore");
 const correctScore = 100;
 let playerScore = 0;
+const settingDifficulty = document.getElementById("settingDifficulty");
+let puzzleStartTime = null;
+let puzzleElapsedTime = 0;
 
 function clearMissionFact() {
     if (!displayFactMessage) return;
@@ -135,6 +137,48 @@ function startGame() {
     displayNextPuzzle();
 }
 
+function startPuzzleTimer() {
+    puzzleStartTime = Date.now();
+}
+
+function stopPuzzleTimer() {
+    puzzleElapsedTime = Date.now() - puzzleStartTime;
+    const seconds = Math.floor(puzzleElapsedTime / 1000);
+    return seconds;
+}
+
+function calculateTimeScore(seconds) {
+    if(settingDifficulty.value === "normal") {
+        if(seconds <= 10) {
+            return 100;
+        } else if(seconds <= 20) {
+            return 75;
+        } else if(seconds <= 30) {
+            return 50;
+        } else if(seconds <= 45) {
+            return 25;
+        } else if(seconds <= 60) {
+            return 0;
+        } else {
+            return -25;
+        }
+    } else {
+        if(seconds <= 20) {
+            return 100;
+        } else if(seconds <= 30) {
+            return 75;
+        } else if(seconds <= 45) {
+            return 50;
+        } else if(seconds <= 60) {
+            return 25;
+        } else if(seconds <= 75) {
+            return 0;
+        } else {
+            return -25;
+        }
+    }
+}
+
 function playGame() {
 
 }
@@ -144,7 +188,10 @@ function gameIsOver(x) {
 }
 
 export function solvePuzzle() {
+    const timeTaken = stopPuzzleTimer();
+    const timeScore = calculateTimeScore(timeTaken);
     playerScore += correctScore;
+    playerScore += timeScore;
     updateScore(0);
     gameState.solvedPuzzles += 1;
     puzzleNotSolvedMessage.style.display = 'none';
@@ -204,6 +251,7 @@ function displayNextPuzzle() {
     //Remove for testing
     // solvePuzzleButton.style.visibilty = 'hidden';
     //
+    startPuzzleTimer();
     solvePuzzleButton.disabled = false;
     puzzleHelpButton.disabled = !settingHints.checked;
     loadPuzzle(gameState.puzzleOrder[gameState.solvedPuzzles]);
