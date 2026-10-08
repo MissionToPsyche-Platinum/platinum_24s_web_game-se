@@ -43,6 +43,6 @@ export const puzzles = [
     {
        name: "Pattern Puzzle",
        start: startPatternPuzzle,
-       helpText: "Watch the color sequence and repeat it from memory.",
+       helpText: "Watch the flashing tiles, then click them in the same order. Each round is longer. Replay Pattern shows the sequence again. Tiles: circle 1, square 2, triangle 3, star 4. Keyboard: 1–4 to press a tile, arrows to move, Enter or Space to press, R to replay.",
    }
 ];

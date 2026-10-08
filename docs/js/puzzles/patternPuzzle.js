@@ -55,11 +55,11 @@ export function startPatternPuzzle({ containerID }) {
        <div id="pattern-puzzle-layout">
            <header>
                <h3 id="puzzle-header">Pattern Puzzle</h3>
-               <p id="pattern-status" role="status" aria-live="polite" aria-atomic="true">Watch the color pattern, then repeat it.</p>               <p id="pattern-mode">Mode: ${difficultyLabel}. Change this in Settings -> Difficulty for timed runs.</p>
+               <p id="pattern-status" role="status" aria-live="polite" aria-atomic="true">Watch the pattern, then repeat it.</p>
+               <p id="pattern-mode">Mode: ${difficultyLabel}. Change this in Settings → Difficulty for timed runs.</p>
            </header>
            <p id="pattern-a11y-hint" class="pattern-hint">
-               Each tile has a shape and number: circle (1), square (2), triangle (3), star (4).
-               Keyboard: use <strong>1–4</strong> to press tiles, or <strong>arrow keys</strong> to move, then <strong>Enter/Space</strong> to press. Press <strong>R</strong> to replay.
+               Watch the tiles light up, then click them in the same order.
            </p>
            <div id="pattern-pad" role="group" aria-label="Pattern tiles" aria-describedby="pattern-a11y-hint">
                ${TILE_DEFS.map((tile, index) => `
@@ -177,7 +177,7 @@ export function startPatternPuzzle({ containerID }) {
        for (const index of pattern) {
            await flashTile(index);
        }
-       setStatus("Your turn: click colors in order.");
+       setStatus("Your turn — repeat the pattern.");
        acceptingInput = true;
        setTilesDisabled(false);
        focusTile(focusedIndex);
