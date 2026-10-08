@@ -4,10 +4,40 @@ export function startMatchingPuzzle({ containerID }) {
     const difficulty = settings?.difficulty === "challenge" ? "challenge" : "normal";
 
     const psyche_image_1 = document.createElement('img');
+    const psyche_image_2 = document.createElement('img');
+    const psyche_image_3 = document.createElement('img');
+    const psyche_image_4 = document.createElement('img');
+    const psyche_image_5 = document.createElement('img');
+    const psyche_image_6 = document.createElement('img');
+    const psyche_image_7 = document.createElement('img');
 
     psyche_image_1.src = './images/Psyche_Asteroid_Image_No_Background_Resized.png';
     psyche_image_1.width = 80;
     psyche_image_1.length = 80;
+
+    psyche_image_2.src = './images/Psyche_at_sunset.jpg';
+    psyche_image_2.width = 80;
+    psyche_image_2.length = 80;
+
+    psyche_image_3.src = './images/Psyche_closeup.jpg';
+    psyche_image_3.width = 80;
+    psyche_image_3.length = 80;
+
+    psyche_image_4.src = './images/Psyche_countdown.jpg';
+    psyche_image_4.width = 80;
+    psyche_image_4.length = 80;
+
+    psyche_image_5.src = './images/Psyche_Launch_2.jpg';
+    psyche_image_5.width = 80;
+    psyche_image_5.length = 80;
+
+    psyche_image_6.src = './images/Psyche_ring_of_firepower.jpg';
+    psyche_image_6.width = 80;
+    psyche_image_6.length = 80;
+
+    psyche_image_7.src = './images/Psyche_spacecraft.jpg';
+    psyche_image_7.width = 80;
+    psyche_image_7.length = 80;
 
     let clickedElement1;
     let clickedElement2;
