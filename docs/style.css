@@ -2281,3 +2281,16 @@ button.tube-cell::-moz-focus-inner {
         width: 60px;
     }
 }
+
+.tangram-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+#tangram-svg {
+    width: 1100px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
