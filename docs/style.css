@@ -1642,11 +1642,31 @@ body {
    opacity: 0.4;
 }
 
+#pattern-status {
+   margin: 8px auto 0;
+   max-width: 420px;
+   padding: 8px 12px;
+   border-radius: 8px;
+   background: rgba(48, 33, 68, 0.92);
+   border: 1px solid rgba(249, 160, 0, 0.55);
+   color: #f9a000;
+   font-weight: bold;
+   font-size: 1rem;
+   text-align: center;
+}
+
+#pattern-mode {
+   margin: 6px auto 0;
+   font-size: 0.82rem;
+   color: #444;
+   text-align: center;
+}
+
 .pattern-hint {
    margin: 8px auto 0;
    max-width: 520px;
    font-size: 0.9rem;
-   color: #222;
+   color: #302144;
    text-align: center;
 }
 
