@@ -1966,7 +1966,7 @@ button.tube-cell::-moz-focus-inner {
 .tube-puzzle-dpad-label {
 	font-size: 0.85rem;
 	font-weight: bold;
-	color: #1a1a1a;
+	color: #f9a000;
 }
 
 .tube-puzzle-dpad-buttons {
@@ -1979,23 +1979,26 @@ button.tube-cell::-moz-focus-inner {
 .tube-dpad-btn {
 	min-width: 2.25rem;
 	min-height: 2.25rem;
-	padding: 4px 10px;
+	padding: 6px 12px;
 	font-size: 1rem;
 	line-height: 1;
 	cursor: pointer;
-	border: 2px solid #302144;
-	border-radius: 6px;
-	background: #f9a000;
-	color: #302144;
+	border: 1px solid #f9a000;
+	border-radius: 8px;
+	background: rgba(249, 160, 0, 0.12);
+	color: #f9a000;
 	font-weight: bold;
+	font-family: Helvetica, Arial, sans-serif;
+	transition: background 120ms ease, transform 120ms ease;
 }
 
 .tube-dpad-btn:hover {
-	filter: brightness(1.05);
+	background: rgba(249, 160, 0, 0.22);
+	transform: translateY(-1px);
 }
 
 .tube-dpad-btn:focus-visible {
-	outline: 3px solid #302144;
+	outline: 3px solid rgba(249, 160, 0, 0.65);
 	outline-offset: 2px;
 }
 
