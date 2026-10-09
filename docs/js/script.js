@@ -292,9 +292,9 @@ function loadLeaderboard() {
   }
 }
 
-function saveLeaderboardEntry(name, timeMs) {
+function saveLeaderboardEntry(name, timeMs, score) {
   const scores = loadLeaderboard();
-  scores.push({ name, timeMs });
+  scores.push({ name, timeMs, score });
   scores.sort((a, b) => a.timeMs - b.timeMs);
   localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(scores.slice(0, 5)));
 }
@@ -306,7 +306,7 @@ function renderLeaderboard() {
     if (!el) return;
     const entry = scores[i];
     el.textContent = entry
-      ? `${i + 1}. ${entry.name} — ${formatRunTime(entry.timeMs)}`
+      ? `${i + 1}. ${entry.name} — ${formatRunTime(entry.timeMs)} - ${entry.score}`
       : `${i + 1}.`;
   });
 }
@@ -326,10 +326,11 @@ function showWinScreen({ playerName, puzzlesSolved } = {}) {
 
   const name = playerName?.trim() || "Astronaut";
   const timeMs = getRunTimerMs();
+  const score = currentScore.textContent;
   if (winPlayerName) winPlayerName.textContent = name;
   if (winPuzzlesSolved) winPuzzlesSolved.textContent = String(puzzlesSolved ?? 0);
   if (winMissionTime) winMissionTime.textContent = formatRunTime(timeMs);
-  saveLeaderboardEntry(name, timeMs);
+  saveLeaderboardEntry(name, timeMs, score);
   if (winScreen) winScreen.style.display = "flex";
 }
 
