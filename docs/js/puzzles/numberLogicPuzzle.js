@@ -154,6 +154,10 @@ export function startNumberLogicPuzzle({ containerID }) {
         return true;
     }
 
+    function isColorBlindMode() {
+        return !!window.getPyscheSettings?.()?.colorBlind;
+    }
+
     //Allows numbers to loop through scrolling
     function loopScrolling() {
         const inputs = document.querySelectorAll(".logic-grid input");
@@ -284,14 +288,26 @@ export function startNumberLogicPuzzle({ containerID }) {
             const col = i % 9;
             const userAnswer = parseInt(input.value);;
             const correctAnswer = checkBoard[row][col];
-            input.classList.remove("correct");
-            input.classList.remove("incorrect");
-            if (userAnswer !== correctAnswer) {
-                input.classList.add("incorrect");
+            if(isColorBlindMode() === false) { 
+                input.classList.remove("correct");
+                input.classList.remove("incorrect");
+                if (userAnswer !== correctAnswer) {
+                    input.classList.add("incorrect");
+                } else {
+                    input.classList.add("correct");
+                    input.disabled = true;
+                    input.removeEventListener("wheel", enableScrolling);
+                }
             } else {
-                input.classList.add("correct");
-                input.disabled = true;
-                input.removeEventListener("wheel", enableScrolling);
+                input.classList.remove("correctColorBlind");
+                input.classList.remove("incorrectColorBlind");
+                if(userAnswer !== correctAnswer) {
+                    input.classList.add("incorrectColorBlind");
+                } else {
+                    input.classList.add("correctColorBlind");
+                    input.disabled = true;
+                    input.removeEventListener("wheel", enableScrolling);
+                }
             }
         });
     }

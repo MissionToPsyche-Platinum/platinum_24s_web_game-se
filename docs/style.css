@@ -1099,6 +1099,18 @@ body {
     background-color: #cc0000;
 }
 
+.logic-grid input.correctColorBlind {
+    background-color: #00A6D6;
+    color: #333333;
+    border: 2px solid #005A75;
+}
+
+.logic-grid input.incorrectColorBlind {
+    background-color: #E87500;
+    color: #333333;
+    border: 2px solid #8A4200;
+}
+
 #playerScorePanel {
     border: 1px solid rgba(249, 160, 0, 0.55);
     border-radius: 10px;    padding: 5px 10px;
