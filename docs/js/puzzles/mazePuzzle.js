@@ -690,6 +690,7 @@ export function startMazePuzzle({ containerID }) {
 
         if (difficulty === "normal") {
             createNormalMaze();
+            endTile = location.length - 1;
         }
         else {
             // createChallengeMaze();
