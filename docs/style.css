@@ -2314,3 +2314,13 @@ button.tube-cell::-moz-focus-inner {
     display: block;
     margin: 0 auto;
 }
+
+.puzzle-title {
+    font-size: 22;
+    color: #702963;
+    display: grid;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    text-align: center;
+}

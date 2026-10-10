@@ -9,7 +9,7 @@ export function startSlidingPuzzle({ containerID }) {
     
     containerID.innerHTML = `
     <div class="sliding-wrapper">
-        <h3 class="sliding-header">Sliding Puzzle</h3>
+        <h2 class="puzzle-title">Sliding Puzzle</h2>
         <div class="sliding-board">
             <div id="sliding-grid"></div>
             <div id="solved-overlay"></div>

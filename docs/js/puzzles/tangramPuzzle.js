@@ -6,8 +6,7 @@ export function startTangramPuzzle({ containerID }) {
 
     containerID.innerHTML = `
         <div class="tangram-container">
-            <h3>Tangram Puzzle</h3>
-            
+            <h2 class="puzzle-title">Tangram Puzzle</h2>
             <svg id="tangram-svg" viewBox="0 0 1000 650"></svg>
         </div>
     `;
