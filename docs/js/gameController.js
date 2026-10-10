@@ -4,6 +4,7 @@ import { startTangramPuzzle } from "./puzzles/tangramPuzzle.js";
 
 
 const solvePuzzleButton = document.getElementById("solve-puzzle");
+const skipPuzzleButton = document.getElementById("skip-puzzle");
 const gameScreenHeader = document.getElementById("second-header");
 const newGameButton = document.getElementById("new-game");
 const winMessage = document.getElementById("win-message");
@@ -22,10 +23,15 @@ const puzzleHelpButton = document.getElementById("puzzle-help");
 const settingHints = document.getElementById("settingHints");
 const currentScore = document.getElementById("currentScore");
 const correctScore = 100;
+const skippedScore = 75;
 let playerScore = 0;
 const settingDifficulty = document.getElementById("settingDifficulty");
 let puzzleStartTime = null;
 let puzzleElapsedTime = 0;
+let skipsLeft = document.getElementById("skipsLeft");
+let puzzleSkippedMessage = document.getElementById("puzzle-skipped-message");
+let noSkipsLeftMessage = document.getElementById("no-skips-left-message");
+let puzzleSkipped = false;
 
 function clearMissionFact() {
     if (!displayFactMessage) return;
@@ -67,7 +73,8 @@ const gamePageContent = gameScreen.innerHTML;
 
 const gameState = {
     puzzleOrder: [],
-    solvedPuzzles: 0
+    solvedPuzzles: 0,
+    skippedPuzzles: 0
 };
 
 function shufflePuzzles(puzzles) {
@@ -127,6 +134,8 @@ function startGame() {
     nextPuzzleButton.disabled = true;
     if (newGameButton) newGameButton.style.display = 'none';
     if (winMessage) winMessage.style.display= 'none';
+    noSkipsLeftMessage.style.display = 'none';
+    puzzleSkippedMessage.style.display = 'none';
     puzzleSolvedMessage.style.display = 'none';
     puzzleNotSolvedMessage.style.display = 'none';
     clearMissionFact();
@@ -179,12 +188,35 @@ function calculateTimeScore(seconds) {
     }
 }
 
-function playGame() {
-
-}
-
 function gameIsOver(x) {
     isGameOver = x;
+}
+
+function skipPuzzle() {
+    puzzleSkipped = true;
+    playerScore -= skippedScore;
+    updateScore(0);
+    gameState.skippedPuzzles += 1;
+    puzzleNotSolvedMessage.style.display = 'none';
+    let skipsAmount = skipsLeft.textContent;
+    if(skipsAmount <= 0) {
+        noSkipsLeftMessage.style.display = 'block';
+        skipPuzzleButton.disabled = true;
+    } else {
+        skipsAmount -= 1;
+        skipsLeft.textContent = skipsAmount;
+        puzzleSkippedMessage.style.display = 'block';
+        solvePuzzleMessage.style.display = 'none';
+        showMissionFactForSolveCount(gameState.solvedPuzzles);
+        nextPuzzleButton.disabled = false;
+        solvePuzzleButton.disabled = true;
+        puzzleHelpButton.disabled = true;
+        updateProgress();
+        window.holdRunTimer?.();
+        if (detectWin()) {
+            updateHeader();
+        }
+    }
 }
 
 export function solvePuzzle() {
@@ -199,9 +231,6 @@ export function solvePuzzle() {
     solvePuzzleMessage.style.display = 'none';
     showMissionFactForSolveCount(gameState.solvedPuzzles);
     nextPuzzleButton.disabled = false;
-    //Remove for testing
-    // solvePuzzleButton.style.visibility = 'hidden';
-    //
     solvePuzzleButton.disabled = true;
     puzzleHelpButton.disabled = true;
     updateProgress();
@@ -222,9 +251,6 @@ function updateHeader() {
     
     if (newGameButton) newGameButton.style.display = 'inline';
     if (winMessage) winMessage.style.display = 'block';
-    //Remove for testing
-    // solvePuzzleButton.style.visibility = 'hidden';
-    //
     solvePuzzleButton.disabled = true;
     puzzleSolvedMessage.style.display = 'none';
     nextPuzzleButton.style.display = 'none';
@@ -244,17 +270,19 @@ function updateHeader() {
 
 function displayNextPuzzle() {
     window.releaseRunTimerHold?.();
+    puzzleSkippedMessage.style.display = 'none';
     solvePuzzleMessage.style.display = 'block';
     puzzleSolvedMessage.style.display = 'none';
     clearMissionFact();
     nextPuzzleButton.disabled = true;
-    //Remove for testing
-    // solvePuzzleButton.style.visibilty = 'hidden';
-    //
     startPuzzleTimer();
     solvePuzzleButton.disabled = false;
     puzzleHelpButton.disabled = !settingHints.checked;
-    loadPuzzle(gameState.puzzleOrder[gameState.solvedPuzzles]);
+    if(puzzleSkipped === false) {
+        loadPuzzle(gameState.puzzleOrder[gameState.solvedPuzzles]);
+    } else {
+        loadPuzzle(gameState.puzzleOrder[gameState.skippedPuzzles]);
+    }
 }
 
 
@@ -293,6 +321,7 @@ function closePuzzleHelp() {
     window.resumeRunTimer?.();
 }
 
+skipPuzzleButton.addEventListener("click", skipPuzzle);
 solvePuzzleButton.addEventListener("click", solvePuzzle);
 if (newGameButton) newGameButton.addEventListener("click", startGame);
 nextPuzzleButton.addEventListener("click", startPuzzleBreak);
