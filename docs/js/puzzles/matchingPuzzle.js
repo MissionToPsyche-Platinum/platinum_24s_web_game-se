@@ -116,7 +116,9 @@ export function startMatchingPuzzle({ containerID }) {
             }
             else {
                 const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
+                if (j !== 12) {
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                }
             }
         }
         return arr;
@@ -134,7 +136,11 @@ export function startMatchingPuzzle({ containerID }) {
             clickedElement2 = this;
             let element2Index = +clickedElement2.dataset.id;
             clickedElement2.textContent = numberArray[element2Index];
-            if (clickedElement1.textContent === clickedElement2.textContent && clickedElement1 !== clickedElement2) {
+            if (clickedElement1 === clickedElement2) {
+                clickedElement2 = null;
+                return;
+            }
+            if (clickedElement1.textContent === clickedElement2.textContent) {
                 clickedElement1.style.backgroundColor = '#301934';
                 clickedElement2.style.backgroundColor = '#301934';
                 clickedElement1.style.border = '2px solid rgba(249, 160, 0, 0.35)';
