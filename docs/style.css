@@ -2319,7 +2319,7 @@ button.tube-cell::-moz-focus-inner {
     font-size: 22;
     color: #702963;
     display: grid;
-    position: sticky;
+    
     top: 0;
     z-index: 1000;
     text-align: center;
