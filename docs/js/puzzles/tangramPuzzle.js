@@ -3,11 +3,19 @@ import { solvePuzzle } from "../gameController.js";
 export function startTangramPuzzle({ containerID }) {
     const settings = typeof window !== "undefined" ? window.getPyscheSettings?.() : undefined;
     const difficulty = settings?.difficulty === "challenge" ? "challenge" : "normal";
+    const instructions = difficulty === "challenge"
+    ? "Drag pieces into the outline. Double-click a piece to rotate it 90°. Correctly placed pieces will lock into position."
+    : "Drag pieces into the outline to complete the shape. Correctly placed pieces will lock into position.";
 
     containerID.innerHTML = `
         <div class="tangram-container">
-            <h3>Tangram Puzzle</h3>
-            
+            <h3>Drag the Pieces into the Blue Outline Shape</h3>
+
+<p class="tangram-instructions" aria-live="polite">${instructions}</p>
+
+<svg id="tangram-svg" viewBox="0 0 1000 650"></svg>
+
+
             <svg id="tangram-svg" viewBox="0 0 1000 650"></svg>
         </div>
     `;
@@ -26,49 +34,49 @@ export function startTangramPuzzle({ containerID }) {
             { id: "piece4", type: "triangle", points: "200,400 300,200 400,400", color: "#ffff00", inPlace: false, x: 0, y: 0, rotation: 0}
             ],
             solution: [
-                { 
-                    id: "spot1", 
-                    type: "triangle", 
+                {
+                    id: "spot1",
+                    type: "triangle",
                     occupied: false,
                     possiblePlacements: {
                         piece1: { x: 550, y: 200, rotation: 0 },
                         piece2: { x: 350, y: 133.33, rotation: 180 },
                         piece3: { x: 600, y: -66.67, rotation: 180 },
                         piece4: { x: 400, y: -66.67, rotation: 180 }
-                    }   
+                    }
                 },
-                { 
-                    id: "spot2", 
-                    type: "triangle", 
+                {
+                    id: "spot2",
+                    type: "triangle",
                     occupied: false,
                     possiblePlacements: {
                         piece1: { x: 550, y: 66.67, rotation: 180 },
                         piece2: { x: 350, y: 0, rotation: 0 },
                         piece3: { x: 600, y: -200, rotation: 0 },
                         piece4: { x: 400, y: -200, rotation: 0 }
-                    }   
+                    }
                 },
-                { 
-                    id: "spot3", 
-                    type: "triangle", 
+                {
+                    id: "spot3",
+                    type: "triangle",
                     occupied: false,
                     possiblePlacements: {
                         piece1: { x: 450, y: 266.67, rotation: 180 },
                         piece2: { x: 250, y: 200, rotation: 0 },
                         piece3: { x: 500, y: 0, rotation: 0 },
                         piece4: { x: 300, y: 0, rotation: 0 }
-                    }   
+                    }
                 },
-                { 
-                    id: "spot4", 
-                    type: "triangle", 
+                {
+                    id: "spot4",
+                    type: "triangle",
                     occupied: false,
                     possiblePlacements: {
                         piece1: { x: 650, y: 266.67, rotation: 180 },
                         piece2: { x: 450, y: 200, rotation: 0 },
                         piece3: { x: 700, y: 0, rotation: 0 },
                         piece4: { x: 500, y: 0, rotation: 0 }
-                    }   
+                    }
                 },
             ]
         },
@@ -84,8 +92,8 @@ export function startTangramPuzzle({ containerID }) {
             { id: "piece6", type: "largeTriangle", points: "700,0 900,400 900,0", color: "#ff00ff", inPlace: false, x: -450, y: 0, rotation: 0}
             ],
             solution: [
-                { 
-                    id: "spot1", 
+                {
+                    id: "spot1",
                     type: "triangle",
                     occupied: false,
                     possiblePlacements: {
@@ -95,7 +103,7 @@ export function startTangramPuzzle({ containerID }) {
                         piece5: { x: -100, y: -450, rotation: 0 }
                     }
                 },
-                { 
+                {
                     id: "spot2",
                     type: "triangle",
                     occupied: false,
@@ -161,31 +169,31 @@ export function startTangramPuzzle({ containerID }) {
             { id: "piece5", type: "square" , points: "400,300 400,400 500,400 500,300", color: "#00ffff", inPlace: false, x: 75, y: 150, rotation: 0}
             ],
             solution: [
-                { 
+                {
                     id: "spot1",
                     type: "lgTriangle",
                     occupied: false,
                     possiblePlacements: {piece1: { x: 0, y: 0, rotation: 0 }}
                 },
-                { 
+                {
                     id: "spot2",
                     type: "lgPent",
                     occupied: false,
                     possiblePlacements: {piece2: { x: 0, y: 0, rotation: 0 }}
                 },
-                { 
+                {
                     id: "spot3",
                     type: "smTriangle",
                     occupied: false,
                     possiblePlacements: {piece3: { x: 0, y: 0, rotation: 0 }}
                 },
-                { 
+                {
                     id: "spot4",
                     type: "smPent",
                     occupied: false,
                     possiblePlacements: {piece4: { x: 0, y: 0, rotation: 0 }}
                 },
-                { 
+                {
                     id: "spot5",
                     type: "square",
                     occupied: false,
@@ -198,9 +206,9 @@ export function startTangramPuzzle({ containerID }) {
         }
 
     ];
-    
+
     const randomConfig = puzzleCombos[Math.floor(Math.random() * puzzleCombos.length)];
-    
+
 
     if (difficulty === "challenge") {
         randomConfig.pieces.forEach(piece => {
@@ -241,7 +249,7 @@ function checkPosition(piece , solution) {
 
         if (spot.occupied) {
             continue;
-        }   
+        }
 
         const checkedPlacement = spot.possiblePlacements[piece.id];
         if (!checkedPlacement) {
@@ -281,7 +289,7 @@ function constrainPosition(svg, piece, x, y) {
     const viewBox = svg.viewBox.baseVal;
     const { cx, cy } = calculateCetner(piece.points);
     const angle = piece.rotation * Math.PI / 180;
-    
+
     const points = piece.points.split(" ").map(point => {
         const [pointX, pointY] = point.split(",").map(Number);
         const rotatedX = cx + (pointX - cx) * Math.cos(angle) - (pointY - cy) * Math.sin(angle);
