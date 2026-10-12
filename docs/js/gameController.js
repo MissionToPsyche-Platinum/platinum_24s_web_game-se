@@ -1,5 +1,5 @@
 import { puzzles } from "./puzzles/puzzleList.js";
-import { missionFacts } from "./factList.js";
+import { nextMissionFact, resetMissionFactQueue } from "./missionFactQueue.js";
 import { startTangramPuzzle } from "./puzzles/tangramPuzzle.js";
 
 
@@ -42,10 +42,9 @@ function clearMissionFact() {
     missionFactTitle.textContent = "Mission Intel";
 }
 
-function showMissionFactForSolveCount(solvedCount) {
+function showRandomMissionFact() {
     if (!displayFactMessage) return;
-    const idx = Math.min(Math.max(solvedCount - 1, 0), missionFacts.length - 1);
-    displayFactMessage.textContent = missionFacts[idx] ?? "";
+    displayFactMessage.textContent = nextMissionFact();
     displayFactMessage.hidden = false;
     displayFactMessage.style.display = "block";
     missionFactTitle.textContent = "Intel Unlocked!";
@@ -141,6 +140,7 @@ function startGame() {
     clearMissionFact();
     solvePuzzleMessage.style.display = 'none';
     gameState.puzzleOrder = shufflePuzzles(puzzles);
+    resetMissionFactQueue();
     updateProgress();
     gameIsOver(false);
     displayNextPuzzle();
@@ -207,7 +207,7 @@ function skipPuzzle() {
         skipsLeft.textContent = skipsAmount;
         puzzleSkippedMessage.style.display = 'block';
         solvePuzzleMessage.style.display = 'none';
-        showMissionFactForSolveCount(gameState.solvedPuzzles);
+        showRandomMissionFact();
         nextPuzzleButton.disabled = false;
         solvePuzzleButton.disabled = true;
         puzzleHelpButton.disabled = true;
@@ -229,7 +229,7 @@ export function solvePuzzle() {
     puzzleNotSolvedMessage.style.display = 'none';
     puzzleSolvedMessage.style.display = 'block';
     solvePuzzleMessage.style.display = 'none';
-    showMissionFactForSolveCount(gameState.solvedPuzzles);
+    showRandomMissionFact();
     nextPuzzleButton.disabled = false;
     solvePuzzleButton.disabled = true;
     puzzleHelpButton.disabled = true;
