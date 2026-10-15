@@ -17,6 +17,7 @@ const leaderBoardPopUp = document.getElementById("leaderBoardPopUp");
 const gameScreen = document.getElementById("puzzle-screen");
 const startButton = document.getElementById("start");
 const backToMenuButtons = document.querySelectorAll(".back-to-menu");
+const clearLeaderboardButton = document.getElementById("clearLeaderboard");
 const nameCreationScreen = document.getElementById("nameCreationScreen");
 const overlays = document.querySelectorAll(".overlay");
 let firstName = "";
@@ -43,7 +44,6 @@ const settingSound = document.getElementById("settingSound");
 const settingMusic = document.getElementById("settingMusic");
 const settingDisplayName = document.getElementById("settingDisplayName");
 const settingShowTimer = document.getElementById("settingShowTimer");
-const playerScorePanel = document.getElementById("playerScorePanel");
 const currentScore = document.getElementById("currentScore");
 const settingHints = document.getElementById("settingHints");
 const puzzleHelpButton = document.getElementById("puzzle-help");
@@ -117,6 +117,7 @@ beginGameButton.addEventListener("click", function() {
 leaderBoardButton.addEventListener("click", startLeaderBoard);
 instructionsButton.addEventListener("click", startInstructions);
 creditsButton.addEventListener("click", startCredits);
+clearLeaderboardButton.addEventListener("click", clearLeaderboard);
 
 let runTimerInterval = null;
 let runActive = false;
@@ -150,6 +151,16 @@ function applyDisabledHints() {
   } else {
     puzzleHelpButton.disabled = false;
   }
+}
+
+function clearLeaderboard() {
+  localStorage.removeItem(LEADERBOARD_KEY);
+  LEADERBOARD_PLACE_IDS.forEach((id, index) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.textContent = `${index + 1}.`;
+    }
+  });
 }
 
 function loadGameplaySettings() {
