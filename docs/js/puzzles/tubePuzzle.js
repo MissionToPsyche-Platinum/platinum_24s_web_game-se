@@ -121,7 +121,8 @@ function renderGrid(level, metaLabel) {
 	const { rows, cols, cells } = level;
 	const colorBlind = isColorBlindMode();
 	let html = `<div class="tube-puzzle" role="application" aria-label="Tube puzzle board">
-  	<p class="tube-puzzle-caption"><strong>Tube puzzle</strong> — ${level.name}</p>
+    <h2 class="puzzle-title">Tube Puzzle</h2>
+    <p class="tube-puzzle-caption">${level.name}</p>
     <p class="tube-puzzle-mode">${metaLabel}</p>
   	<div class="tube-puzzle-grid" role="group" aria-label="Pipe tiles" aria-describedby="tube-puzzle-hint" style="--tube-rows:${rows};--tube-cols:${cols};">`;
 
