@@ -81,7 +81,7 @@ export function startMazePuzzle({ containerID }) {
         containerID.innerHTML = `
             <div id="maze-puzzle-layout">
                 <header>
-                    <h3 id="maze-puzzle-header">Maze Puzzle</h3>
+                    <h2 class="puzzle-title" id="maze-puzzle-header">Maze Puzzle</h2>
                 </header>
                 <div class="maze-container" id="gridContainer">
                     <div data-id="0" class="maze-item" tabIndex = "-1", id="start-tile"></div>
@@ -208,7 +208,7 @@ export function startMazePuzzle({ containerID }) {
             <div id="maze-puzzle-layout">
                 <button id="maze-toggle-auto">Auto run</button>
                 <header>
-                    <h3 id="maze-puzzle-header">Maze Puzzle</h3>
+                    <h2 class="puzzle-title" id="maze-puzzle-header">Maze Puzzle</h2>
                 </header>
                 <div class="maze-challenge-container" id="gridContainer">
                     <div data-id="0" class="maze-challenge-item" tabIndex = "-1", id="start-tile"></div>
