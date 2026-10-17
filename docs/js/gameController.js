@@ -42,6 +42,21 @@ function clearMissionFact() {
     missionFactTitle.textContent = "Mission Intel";
 }
 
+const MISSION_INTEL_TRIGGER = {
+    solve: "solve",
+    skip: "skip",
+};
+
+function shouldShowMissionIntel(trigger) {
+    if (trigger === MISSION_INTEL_TRIGGER.skip) {
+        return false;
+    }
+    if (trigger !== MISSION_INTEL_TRIGGER.solve) {
+        return false;
+    }
+    return true;
+}
+
 function showRandomMissionFact() {
     if (!displayFactMessage) return;
     displayFactMessage.textContent = nextMissionFact();
@@ -51,6 +66,13 @@ function showRandomMissionFact() {
     missionFactSection.classList.remove("is-reward");
     void missionFactSection.offsetWidth;
     missionFactSection.classList.add("is-reward");
+}
+
+function tryShowMissionIntel(trigger) {
+    if (!shouldShowMissionIntel(trigger)) {
+        return;
+    }
+    showRandomMissionFact();
 }
 
 export function updateScore(wrongAnswer) {
@@ -207,7 +229,7 @@ function skipPuzzle() {
         skipsLeft.textContent = skipsAmount;
         puzzleSkippedMessage.style.display = 'block';
         solvePuzzleMessage.style.display = 'none';
-        showRandomMissionFact();
+        tryShowMissionIntel(MISSION_INTEL_TRIGGER.skip);
         nextPuzzleButton.disabled = false;
         solvePuzzleButton.disabled = true;
         puzzleHelpButton.disabled = true;
@@ -229,7 +251,7 @@ export function solvePuzzle() {
     puzzleNotSolvedMessage.style.display = 'none';
     puzzleSolvedMessage.style.display = 'block';
     solvePuzzleMessage.style.display = 'none';
-    showRandomMissionFact();
+    tryShowMissionIntel(MISSION_INTEL_TRIGGER.solve);
     nextPuzzleButton.disabled = false;
     solvePuzzleButton.disabled = true;
     puzzleHelpButton.disabled = true;
