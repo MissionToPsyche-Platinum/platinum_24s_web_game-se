@@ -26,10 +26,10 @@ export function startMazePuzzle({ containerID }) {
     const icon_right = document.createElement('img');
 
 
-    icon_top.src = './images/psyche_spacex_falcon9_transparent_resized.png';
-    icon_bottom.src = './images/psyche_spacex_falcon9_transparent_resized_bottom.png';
-    icon_left.src = './images/psyche_spacex_falcon9_transparent_resized_left.png';
-    icon_right.src = './images/psyche_spacex_falcon9_transparent_resized_right.png';
+    icon_top.src = './images/maze/psyche_spacex_falcon9_transparent_resized.png';
+    icon_bottom.src = './images/maze/psyche_spacex_falcon9_transparent_resized_bottom.png';
+    icon_left.src = './images/maze/psyche_spacex_falcon9_transparent_resized_left.png';
+    icon_right.src = './images/maze/psyche_spacex_falcon9_transparent_resized_right.png';
 
     const rocket_icon_width = difficulty === 'normal' ? 40 : 28;
     const rocket_icon_height = difficulty === 'normal' ? 45 : 30;
@@ -50,7 +50,7 @@ export function startMazePuzzle({ containerID }) {
     const end_height = difficulty === 'normal' ? 45 : 30;
     const end_width = difficulty === 'normal' ? 60 : 40;
 
-    end_maze_icon.src = './images/Psyche_Asteroid_Image_No_Background_Resized.png';
+    end_maze_icon.src = './images/maze/Psyche_Asteroid_Image_No_Background_Resized.png';
     end_maze_icon.width = end_width;
     end_maze_icon.height = end_height;
 
