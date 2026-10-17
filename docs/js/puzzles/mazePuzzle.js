@@ -688,15 +688,13 @@ export function startMazePuzzle({ containerID }) {
 
     function populateMazePuzzle () {
 
-        if (difficulty === "normal") {
-            generateMaze();
-            // createNormalMaze();
-            // endTile = location.length - 1;
-        }
-        else {
-            // createChallengeMaze();
-            generateMaze();
-        }
+        // if (difficulty === "normal") {
+        //     generateMaze();
+        // }
+        // else {
+        //     generateMaze();
+        // }
+        generateMaze();
         
         setBorderStyle();
         isBackwards = false;
