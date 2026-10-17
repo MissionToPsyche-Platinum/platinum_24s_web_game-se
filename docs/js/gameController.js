@@ -85,6 +85,7 @@ export function updateScore(wrongAnswer) {
 
 const PUZZLES_TO_WIN = 5;
 const PUZZLE_BREAK_SECONDS = 3;
+const MAX_SKIPS = 3;
 let isGameOver;
 let puzzleBreakTimer = null;
 
@@ -124,6 +125,7 @@ function startPuzzleBreak() {
 
     hidePuzzleBreak();
     nextPuzzleButton.disabled = true;
+    updateSkipButtonState(false);
     let remaining = PUZZLE_BREAK_SECONDS;
     countEl.textContent = remaining;
     overlay.style.display = "flex";
@@ -161,6 +163,7 @@ function startGame() {
     puzzleNotSolvedMessage.style.display = 'none';
     clearMissionFact();
     solvePuzzleMessage.style.display = 'none';
+    resetSkipState();
     gameState.puzzleOrder = shufflePuzzles(puzzles);
     resetMissionFactQueue();
     updateProgress();
@@ -214,16 +217,42 @@ function gameIsOver(x) {
     isGameOver = x;
 }
 
+function getSkipsRemaining() {
+    const remaining = Number.parseInt(skipsLeft?.textContent, 10);
+    return Number.isFinite(remaining) ? remaining : 0;
+}
+
+function resetSkipState() {
+    puzzleSkipped = false;
+    gameState.skippedPuzzles = 0;
+    if (skipsLeft) {
+        skipsLeft.textContent = String(MAX_SKIPS);
+    }
+    if (noSkipsLeftMessage) {
+        noSkipsLeftMessage.style.display = "none";
+    }
+}
+
+function updateSkipButtonState(allowSkip) {
+    if (!skipPuzzleButton) return;
+    const canSkip = Boolean(allowSkip) && !isGameOver && getSkipsRemaining() > 0;
+    skipPuzzleButton.disabled = !canSkip;
+}
+
 function skipPuzzle() {
+    if (skipPuzzleButton?.disabled) {
+        return;
+    }
+
     puzzleSkipped = true;
     playerScore -= skippedScore;
     updateScore(0);
     gameState.skippedPuzzles += 1;
     puzzleNotSolvedMessage.style.display = 'none';
-    let skipsAmount = skipsLeft.textContent;
+    let skipsAmount = getSkipsRemaining();
     if(skipsAmount <= 0) {
         noSkipsLeftMessage.style.display = 'block';
-        skipPuzzleButton.disabled = true;
+        updateSkipButtonState(false);
     } else {
         skipsAmount -= 1;
         skipsLeft.textContent = skipsAmount;
@@ -233,6 +262,7 @@ function skipPuzzle() {
         nextPuzzleButton.disabled = false;
         solvePuzzleButton.disabled = true;
         puzzleHelpButton.disabled = true;
+        updateSkipButtonState(false);
         updateProgress();
         window.holdRunTimer?.();
         if (detectWin()) {
@@ -255,6 +285,7 @@ export function solvePuzzle() {
     nextPuzzleButton.disabled = false;
     solvePuzzleButton.disabled = true;
     puzzleHelpButton.disabled = true;
+    updateSkipButtonState(false);
     updateProgress();
     window.holdRunTimer?.();
     if (detectWin()) {
@@ -277,6 +308,7 @@ function updateHeader() {
     puzzleSolvedMessage.style.display = 'none';
     nextPuzzleButton.style.display = 'none';
     gameIsOver(true);
+    updateSkipButtonState(false);
     if (newGameButton) newGameButton.addEventListener("click", startGame);
 
     const playerName =
@@ -300,6 +332,7 @@ function displayNextPuzzle() {
     startPuzzleTimer();
     solvePuzzleButton.disabled = false;
     puzzleHelpButton.disabled = !settingHints.checked;
+    updateSkipButtonState(true);
     if(puzzleSkipped === false) {
         loadPuzzle(gameState.puzzleOrder[gameState.solvedPuzzles]);
     } else {
