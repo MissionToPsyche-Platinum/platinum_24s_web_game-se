@@ -1,6 +1,6 @@
 
 import { puzzles } from "./puzzles/puzzleList.js";
-import { missionFacts } from "./factList.js";
+import { nextMissionFact, resetMissionFactQueue } from "./missionFactQueue.js";
 import { startTangramPuzzle } from "./puzzles/tangramPuzzle.js";
 
 const solvePuzzleButton = document.getElementById("solve-puzzle");
@@ -41,16 +41,37 @@ function clearMissionFact() {
     missionFactTitle.textContent = "Mission Intel";
 }
 
-function showMissionFactForSolveCount(solvedCount) {
+const MISSION_INTEL_TRIGGER = {
+    solve: "solve",
+    skip: "skip",
+};
+
+function shouldShowMissionIntel(trigger) {
+    if (trigger === MISSION_INTEL_TRIGGER.skip) {
+        return false;
+    }
+    if (trigger !== MISSION_INTEL_TRIGGER.solve) {
+        return false;
+    }
+    return true;
+}
+
+function showRandomMissionFact() {
     if (!displayFactMessage) return;
-    const idx = Math.min(Math.max(solvedCount - 1, 0), missionFacts.length - 1);
-    displayFactMessage.textContent = missionFacts[idx] ?? "";
+    displayFactMessage.textContent = nextMissionFact();
     displayFactMessage.hidden = false;
     displayFactMessage.style.display = "block";
     missionFactTitle.textContent = "Intel Unlocked!";
     missionFactSection.classList.remove("is-reward");
     void missionFactSection.offsetWidth;
     missionFactSection.classList.add("is-reward");
+}
+
+function tryShowMissionIntel(trigger) {
+    if (!shouldShowMissionIntel(trigger)) {
+        return;
+    }
+    showRandomMissionFact();
 }
 
 export function updateScore(wrongAnswer) {
@@ -64,6 +85,7 @@ export function updateScore(wrongAnswer) {
 const PUZZLES_TO_WIN = 5;
 const MAX_SKIPS = 3;
 const PUZZLE_BREAK_SECONDS = 3;
+const MAX_SKIPS = 3;
 let isGameOver;
 let puzzleBreakTimer = null;
 
@@ -108,6 +130,7 @@ function startPuzzleBreak() {
 
     hidePuzzleBreak();
     nextPuzzleButton.disabled = true;
+    updateSkipButtonState(false);
     let remaining = PUZZLE_BREAK_SECONDS;
     countEl.textContent = remaining;
     overlay.style.display = "flex";
@@ -143,7 +166,9 @@ function startGame() {
     puzzleNotSolvedMessage.style.display = 'none';
     clearMissionFact();
     solvePuzzleMessage.style.display = 'none';
+    resetSkipState();
     gameState.puzzleOrder = shufflePuzzles(puzzles);
+    resetMissionFactQueue();
     updateProgress();
     gameIsOver(false);
     displayNextPuzzle();
@@ -178,6 +203,28 @@ function calculateTimeScore(seconds) {
 
 function gameIsOver(value) {
     isGameOver = value;
+}
+
+function getSkipsRemaining() {
+    const remaining = Number.parseInt(skipsLeft?.textContent, 10);
+    return Number.isFinite(remaining) ? remaining : 0;
+}
+
+function resetSkipState() {
+    puzzleSkipped = false;
+    gameState.skippedPuzzles = 0;
+    if (skipsLeft) {
+        skipsLeft.textContent = String(MAX_SKIPS);
+    }
+    if (noSkipsLeftMessage) {
+        noSkipsLeftMessage.style.display = "none";
+    }
+}
+
+function updateSkipButtonState(allowSkip) {
+    if (!skipPuzzleButton) return;
+    const canSkip = Boolean(allowSkip) && !isGameOver && getSkipsRemaining() > 0;
+    skipPuzzleButton.disabled = !canSkip;
 }
 
 function skipPuzzle() {
@@ -218,11 +265,12 @@ export function solvePuzzle() {
     puzzleNotSolvedMessage.style.display = 'none';
     puzzleSolvedMessage.style.display = 'block';
     solvePuzzleMessage.style.display = 'none';
-    showMissionFactForSolveCount(gameState.solvedPuzzles);
+    tryShowMissionIntel(MISSION_INTEL_TRIGGER.solve);
     nextPuzzleButton.disabled = false;
     solvePuzzleButton.disabled = true;
     skipPuzzleButton.disabled = true;
     puzzleHelpButton.disabled = true;
+    updateSkipButtonState(false);
     updateProgress();
     window.holdRunTimer?.();
 

@@ -54,7 +54,7 @@ export function startPatternPuzzle({ containerID }) {
    containerID.innerHTML = `
        <div id="pattern-puzzle-layout">
            <header>
-               <h3 id="puzzle-header">Pattern Puzzle</h3>
+               <h2 class="puzzle-title">Pattern Puzzle</h2>
                <p id="pattern-status" role="status" aria-live="polite" aria-atomic="true">Watch the pattern, then repeat it.</p>
                <p id="pattern-mode">Mode: ${difficultyLabel}. Change this in Settings → Difficulty for timed runs.</p>
            </header>
