@@ -4,25 +4,15 @@ const COLORS = ["red", "blue", "green", "yellow"];
 const COLOR_TONES_HZ = [329.63, 392.0, 261.63, 440.0]; // E4, G4, C4, A4
 
 const TILE_DEFS = [
-   { color: "red", shape: "circle", number: 1 },
-   { color: "blue", shape: "square", number: 2 },
-   { color: "green", shape: "triangle", number: 3 },
-   { color: "yellow", shape: "star", number: 4 },
+   { color: "red", icon: "asteroid.png", label: "asteroid", number: 1 },
+   { color: "blue", icon: "spacecraft.png", label: "spacecraft", number: 2 },
+   { color: "green", icon: "falcon.png", label: "Falcon launch vehicle", number: 3 },
+   { color: "yellow", icon: "Psyche-ion-thruster.png", label: "ion thruster", number: 4 },
 ];
 
-function tileShapeMarkup({ shape, number }) {
-   const shapes = {
-       circle: '<circle class="pattern-tile-icon-shape" cx="50" cy="50" r="34" />',
-       square: '<rect class="pattern-tile-icon-shape" x="18" y="18" width="64" height="64" rx="4" />',
-       triangle: '<polygon class="pattern-tile-icon-shape" points="50,14 86,86 14,86" />',
-       star: '<polygon class="pattern-tile-icon-shape" points="50,8 61,36 92,36 67,54 76,86 50,68 24,86 33,54 8,36 39,36" />',
-   };
-
+function tileShapeMarkup({ icon }) {
    return `<span class="pattern-tile-icon" aria-hidden="true">
-       <svg viewBox="0 0 100 100" focusable="false">
-           ${shapes[shape] ?? ""}
-           <text class="pattern-tile-icon-number" x="50" y="54" text-anchor="middle" dominant-baseline="middle">${number}</text>
-       </svg>
+       <img class="pattern-tile-icon-img" src="./images/pattern/${icon}" alt="">
    </span>`;
 }
 
@@ -67,7 +57,7 @@ export function startPatternPuzzle({ containerID }) {
                        type="button"
                        class="pattern-tile pattern-tile--${tile.color}"
                        data-index="${index}"
-                       aria-label="${tile.color} tile, ${tile.shape}, number ${tile.number}"
+                       aria-label="${tile.color} tile, ${tile.label}, number ${tile.number}"
                        aria-keyshortcuts="${tile.number}"
                    >${tileShapeMarkup(tile)}</button>
                `).join("")}
