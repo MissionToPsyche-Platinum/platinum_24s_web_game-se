@@ -15,27 +15,27 @@ export function startMatchingPuzzle({ containerID }) {
     psyche_image_1.width = 80;
     psyche_image_1.length = 80;
 
-    psyche_image_2.src = './images/Psyche_at_sunset.jpg';
+    psyche_image_2.src = './images/matching/Psyche_at_sunset.jpg';
     psyche_image_2.width = 80;
     psyche_image_2.length = 80;
 
-    psyche_image_3.src = './images/Psyche_closeup.jpg';
+    psyche_image_3.src = './images/matching/Psyche_closeup.jpg';
     psyche_image_3.width = 80;
     psyche_image_3.length = 80;
 
-    psyche_image_4.src = './images/Psyche_countdown.jpg';
+    psyche_image_4.src = './images/matching/Psyche_countdown.jpg';
     psyche_image_4.width = 80;
     psyche_image_4.length = 80;
 
-    psyche_image_5.src = './images/Psyche_Launch_2.jpg';
+    psyche_image_5.src = './images/matching/Psyche_Launch_2.jpg';
     psyche_image_5.width = 80;
     psyche_image_5.length = 80;
 
-    psyche_image_6.src = './images/Psyche_ring_of_firepower.jpg';
+    psyche_image_6.src = './images/matching/Psyche_ring_of_firepower.jpg';
     psyche_image_6.width = 80;
     psyche_image_6.length = 80;
 
-    psyche_image_7.src = './images/Psyche_spacecraft.jpg';
+    psyche_image_7.src = './images/matching/Psyche_spacecraft.jpg';
     psyche_image_7.width = 80;
     psyche_image_7.length = 80;
 
