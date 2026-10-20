@@ -10,6 +10,8 @@ const LS = {
   motion: "pysche_settings_reduced_motion",
   colorBlind: "pysche_settings_color_blind",
   diff: "pysche_settings_difficulty",
+  sound: "pysche_settings_sound",
+  music: "pysche_settings_music",
 };
 
 const mainMenu = document.getElementById("main-menu");
@@ -42,6 +44,11 @@ const backgroundMusicToggle = document.getElementById("backgroundMusicToggle");
 const resetSettingsButton = document.getElementById("resetSettings");
 const settingSound = document.getElementById("settingSound");
 const settingMusic = document.getElementById("settingMusic");
+const backgroundMusic = document.getElementById("background-music");
+if (backgroundMusic) {
+  backgroundMusic.loop = true;
+  backgroundMusic.volume = 0.35;
+}
 const settingDisplayName = document.getElementById("settingDisplayName");
 const settingShowTimer = document.getElementById("settingShowTimer");
 const currentScore = document.getElementById("currentScore");
@@ -87,6 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
 startButton.addEventListener("click", function() {
   startNameCreation();
   showOverlay();
+  updateAudioSettings();
 });
 firstNameButton.addEventListener("click", function(event) {
   event.stopPropagation();
@@ -112,6 +120,7 @@ beginGameButton.addEventListener("click", function() {
     displayEmptyNameSelection();
   } else {
     startPuzzle();
+    updateAudioSettings();
   }
 });
 leaderBoardButton.addEventListener("click", startLeaderBoard);
@@ -168,6 +177,10 @@ function loadGameplaySettings() {
     const name = localStorage.getItem(LS.displayName);
     settingDisplayName.value = name === null ? "" : name;
   }
+  if (settingSound)
+    settingSound.checked = localStorage.getItem(LS.sound) !== "false";
+  if (settingMusic)
+    settingMusic.checked = localStorage.getItem(LS.music) !== "false";
   if (settingShowTimer)
     settingShowTimer.checked = localStorage.getItem(LS.timer) !== "false";
   if (settingHints)
@@ -376,8 +389,11 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
   }
   settingsPopUp.addEventListener("change", (e) => {
     const t = e.target;
-    if (t === settingSound || t === settingMusic) updateAudioSettings();
-    else if (t === settingShowTimer) {
+    if (t === settingSound || t === settingMusic) {
+      if (t === settingSound) localStorage.setItem(LS.sound, String(t.checked));
+      if (t === settingMusic) localStorage.setItem(LS.music, String(t.checked));
+      updateAudioSettings();
+    } else if (t === settingShowTimer) {
       localStorage.setItem(LS.timer, String(t.checked));
       applyTimerVisibility();
     } else if (t === settingHints) {
@@ -407,8 +423,11 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
   }
   settingsPopUp.addEventListener("change", (e) => {
     const t = e.target;
-    if (t === settingSound || t === settingMusic) updateAudioSettings();
-    else if (t === settingShowTimer) {
+    if (t === settingSound || t === settingMusic) {
+      if (t === settingSound) localStorage.setItem(LS.sound, String(t.checked));
+      if (t === settingMusic) localStorage.setItem(LS.music, String(t.checked));
+      updateAudioSettings();
+    } else if (t === settingShowTimer) {
       localStorage.setItem(LS.timer, String(t.checked));
       applyTimerVisibility();
     } else if (t === settingHints) {
@@ -424,6 +443,7 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
       localStorage.setItem(LS.diff, t.value);
   });
 
+loadGameplaySettings();
 updateAudioSettings();
 
 if (exitButton && exitPopUp && cancelExitButton && confirmExitButton) {
@@ -593,12 +613,20 @@ function closeSettings() {
 }
 
 function updateAudioSettings() {
+  const musicOn = !!settingMusic?.checked;
   window.gameAudioSettings = {
     soundEffectsEnabled: !!settingSound?.checked,
-    backgroundMusicEnabled: !!settingMusic?.checked,
-    soundEffectsEnabled: !!settingSound?.checked,
-    backgroundMusicEnabled: !!settingMusic?.checked,
+    backgroundMusicEnabled: musicOn,
   };
+  if (!backgroundMusic) return;
+  if (musicOn) {
+    const playPromise = backgroundMusic.play();
+    if (playPromise && typeof playPromise.catch === "function") {
+      playPromise.catch(() => {});
+    }
+  } else {
+    backgroundMusic.pause();
+  }
 }
 
 function openExitConfirm() {
@@ -676,7 +704,12 @@ window.isRunTimerRunning = () => runTimerIsRunning;
 window.getRunTimerMs = getRunTimerMs;
 
 document.addEventListener("visibilitychange", () => {
-  if (document.hidden) pauseRunTimer();
-  else resumeRunTimer();
+  if (document.hidden) {
+    pauseRunTimer();
+    backgroundMusic?.pause();
+  } else {
+    resumeRunTimer();
+    updateAudioSettings();
+  }
 });
 });
