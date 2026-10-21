@@ -20,7 +20,7 @@ export function startMatchingPuzzle({ containerID }) {
     const psyche_image_6_2 = document.createElement('img');
     const psyche_image_7_2 = document.createElement('img');
 
-    psyche_image_1.src = './images/Psyche_Asteroid_Image_No_Background_Resized.png';
+    psyche_image_1.src = './images/maze/Psyche_Asteroid_Image_No_Background_Resized.png';
     psyche_image_1.width = imageSize;
     psyche_image_1.height = imageSize;
 
@@ -48,7 +48,7 @@ export function startMatchingPuzzle({ containerID }) {
     psyche_image_7.width = imageSize;
     psyche_image_7.height = imageSize;
 
-    psyche_image_1_2.src = './images/Psyche_Asteroid_Image_No_Background_Resized.png';
+    psyche_image_1_2.src = './images/maze/Psyche_Asteroid_Image_No_Background_Resized.png';
     psyche_image_1_2.width = imageSize;
     psyche_image_1_2.height = imageSize;
 
