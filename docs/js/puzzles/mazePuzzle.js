@@ -3,21 +3,33 @@ export function startMazePuzzle({ containerID }) {
     const settings = typeof window !== "undefined" ? window.getPyscheSettings?.() : undefined;
     const difficulty = settings?.difficulty === "challenge" ? "challenge" : "normal";
 
-    // const NUM_TILES = 100;
-    const NUM_ROWS = 10;
-    // const NUM_COLS = 10;
     let location = [];
     let index = 0;
+
+    let isValidMove = false;
+    let isProgress = false;
+    let isJunction = false;
+    let isBackwards = false;
+    let randomMove = 0;
+    let lastMove = randomMove;
+    const junctionsQueue = [];
+    const moveHistory = [];
+    let endTile = 0;
+    let isWon = false;
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+
+
     const icon_top = document.createElement('img');
     const icon_bottom = document.createElement('img');
     const icon_left = document.createElement('img');
     const icon_right = document.createElement('img');
 
 
-    icon_top.src = './images/psyche_spacex_falcon9_transparent_resized.png';
-    icon_bottom.src = './images/psyche_spacex_falcon9_transparent_resized_bottom.png';
-    icon_left.src = './images/psyche_spacex_falcon9_transparent_resized_left.png';
-    icon_right.src = './images/psyche_spacex_falcon9_transparent_resized_right.png';
+    icon_top.src = './images/maze/psyche_spacex_falcon9_transparent_resized.png';
+    icon_bottom.src = './images/maze/psyche_spacex_falcon9_transparent_resized_bottom.png';
+    icon_left.src = './images/maze/psyche_spacex_falcon9_transparent_resized_left.png';
+    icon_right.src = './images/maze/psyche_spacex_falcon9_transparent_resized_right.png';
 
     const rocket_icon_width = difficulty === 'normal' ? 40 : 28;
     const rocket_icon_height = difficulty === 'normal' ? 45 : 30;
@@ -38,12 +50,22 @@ export function startMazePuzzle({ containerID }) {
     const end_height = difficulty === 'normal' ? 45 : 30;
     const end_width = difficulty === 'normal' ? 60 : 40;
 
-    end_maze_icon.src = './images/Psyche_Asteroid_Image_No_Background_Resized.png';
+    end_maze_icon.src = './images/maze/Psyche_Asteroid_Image_No_Background_Resized.png';
     end_maze_icon.width = end_width;
     end_maze_icon.height = end_height;
 
     const NUM_TILES = difficulty === "normal" ? 100 : 400;
     const NUM_COLS = difficulty === "normal" ? 10 : 20;
+    const NUM_ROWS = difficulty === "normal" ? 10 : 20;
+
+    class junction {
+        constructor(index, pathsTaken, possibleMoves) {
+            this.index = index;
+            this. pathsTaken = pathsTaken;
+            this.possibleMoves = possibleMoves;
+        }
+    }
+
     class mazeTile {
         constructor(top, bottom, left, right, text) {
             this.top = top;
@@ -51,7 +73,6 @@ export function startMazePuzzle({ containerID }) {
             this.left = left;
             this.right = right;
             this.text = text;
-            // this.position = position;
         }
     }
 
@@ -59,7 +80,7 @@ export function startMazePuzzle({ containerID }) {
         containerID.innerHTML = `
             <div id="maze-puzzle-layout">
                 <header>
-                    <h3 id="maze-puzzle-header">Maze Puzzle</h3>
+                    <h2 class="puzzle-title" id="maze-puzzle-header">Maze Puzzle</h2>
                 </header>
                 <div class="maze-container" id="gridContainer">
                     <div data-id="0" class="maze-item" tabIndex = "-1", id="start-tile"></div>
@@ -184,8 +205,9 @@ export function startMazePuzzle({ containerID }) {
     else {
         containerID.innerHTML = `
             <div id="maze-puzzle-layout">
+                <button id="maze-toggle-auto">Auto run</button>
                 <header>
-                    <h3 id="maze-puzzle-header">Maze Puzzle</h3>
+                    <h2 class="puzzle-title" id="maze-puzzle-header">Maze Puzzle</h2>
                 </header>
                 <div class="maze-challenge-container" id="gridContainer">
                     <div data-id="0" class="maze-challenge-item" tabIndex = "-1", id="start-tile"></div>
@@ -623,8 +645,14 @@ export function startMazePuzzle({ containerID }) {
     const mazeItems = document.querySelectorAll(tileClass);
     populateMazePuzzle();
 
-  
-    const startTile = document.querySelector("#start-tile");
+    let isAutorun = false;
+
+    if (difficulty === 'challenge') {
+        const autorunButton = document.getElementById("maze-toggle-auto");
+        autorunButton.addEventListener('click', toggleAutorun);
+    }
+
+    const startTile = document.getElementById("start-tile");
     startTile.focus();
 
     mazeItems.forEach(item => {
@@ -641,21 +669,33 @@ export function startMazePuzzle({ containerID }) {
     rightButton.addEventListener("click", moveRight);
     leftButton.addEventListener("click", moveLeft);
 
-    function populateMazePuzzle () {
-
-        if (difficulty === "normal") {
-            createNormalMaze();
+    function toggleAutorun () {
+        if (isAutorun) {
+            console.log("end auto");
+            endrunMaze();
         }
         else {
-            createChallengeMaze();
+            console.log("start atuo");
+            isValidMove = false;
+            isProgress = false;
+            isWon = false;
+            runMaze();
         }
+        isAutorun = !isAutorun;
+    }
+
+    function populateMazePuzzle () {
+        generateMaze();
         
         setBorderStyle();
+        isBackwards = false;
+        isWon = false;
 
         const mazeItems = document.querySelectorAll(tileClass);
 
         mazeItems.forEach((item, i) => {
-            if (i === NUM_TILES - 1) {
+            if (i === endTile) {
+                item.textContent = location[i].text;
                 item.appendChild(end_maze_icon);
             }
             else if (i === 0) {
@@ -664,27 +704,197 @@ export function startMazePuzzle({ containerID }) {
             else {
                 item.textContent = location[i].text;
             }
-            // if (i === NUM_TILES - 1) {
-            //         // item.textContent = location[i].text;
-            //         item.appendChild(end_maze_icon);
-            //     }
-            //     else {
-            //         item.textContent = location[i].text;
-            //     }
         });
     }
 
-    function moveUp () {
+    function generateMaze () {
+        let furthestLength = 0;
+        const hasBeen = new Array(NUM_TILES).fill(false);
+        for (let i = 0; i < NUM_TILES; i++) {
+            location[i] = new mazeTile(false, false, false, false, "");
+        }
+
+        const getIndex = (x, y) => (x < 0 || x >= NUM_COLS || y < 0 || y >= NUM_ROWS) ? -1 : y * NUM_COLS + x;
+
+        index = 0;
+        location[index].text = "1";
+        hasBeen[index] = true;
+
+        while (true) {
+            const x = index % NUM_COLS;
+            const y = Math.floor(index / NUM_COLS);
+
+            const possibleMoves = [];
+
+            const topIndex = getIndex(x, y - 1);
+            if (topIndex !== -1 && !hasBeen[topIndex]) {
+                possibleMoves.push({index: topIndex, direction: "top"});
+            }
+
+            const bottomIndex = getIndex(x, y + 1);
+            if(bottomIndex !== -1 && !hasBeen[bottomIndex]) {
+                possibleMoves.push({index: bottomIndex, direction: "bottom"});
+            }
+
+            const leftIndex = getIndex(x - 1, y);
+            if (leftIndex !== -1 && !hasBeen[leftIndex]) {
+                possibleMoves.push({index: leftIndex, direction: "left"})
+            }
+
+            const rightIndex = getIndex(x + 1, y);
+            if (rightIndex !== -1 && !hasBeen[rightIndex]) {
+                possibleMoves.push({index: rightIndex, direction: "right"})
+            }
+
+            if (possibleMoves.length > 0) {
+                const nextTile = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+                const nextIndex = nextTile.index;
+
+                if (nextTile.direction === "top") {
+                    location[index].top = true;
+                    location[nextIndex].bottom = true;
+                }
+                else if (nextTile.direction === "bottom") {
+                    location[index].bottom = true;
+                    location[nextIndex].top = true;
+                }
+                else if (nextTile.direction === "left") {
+                    location[index].left = true;
+                    location[nextIndex].right = true;
+                }
+                else if (nextTile.direction === "right") {
+                    location[index].right = true;
+                    location[nextIndex].left = true;
+                }
+
+                moveHistory.push(index);
+                let depth = moveHistory.length;
+                if (depth > furthestLength) {
+                    furthestLength = depth;
+                    endTile = nextIndex;
+                }
+                hasBeen[nextIndex] = true;
+                index = nextIndex;
+            }
+            else if (moveHistory.length > 0) {
+                index = moveHistory.pop();
+            }
+            else {
+                break;
+            }
+        }
+    }
+
+    function detectJunction() {
+        const moves = findPossibleMoves();
+        
+        if (moves.length >= 3) {
+            const move = getMoveFromPreviousMove(randomMove);
+            if (junctionsQueue.length === 0) {
+                junctionsQueue.push(new junction(index, [move], moves));
+                isJunction = true;
+                return;
+            }
+            for (let i = 0; i < junctionsQueue.length; i++) {
+                if (junctionsQueue[i].index === index) {
+                    return;
+                }
+            }
+            junctionsQueue.push(new junction(index, [move], moves));
+            isJunction = true;
+            return;
+        }
+        isJunction = false;
+    }
+
+    function findPossibleMoves () {
+        let arr = [];
+        if (location[index].top) {
+            arr.push(1)
+        }
+        if (location[index].bottom) {
+            arr.push(2)
+        }
+        if (location[index].left) {
+            arr.push(3)
+        }
+        if (location[index].right) {
+            arr.push(4)
+        }
+        return arr;
+    }
+
+    function getMoveFromPreviousMove (move) {
+        if (move === 1) {
+            return 2;
+        }
+        if (move === 2) {
+            return 1;
+        }
+        if (move === 3) {
+            return 4;
+        }
+        if (move === 4) {
+            return 3;
+        }
+        return -1;
+    }
+
+    async function reverseToJunction() {
+        await delay(125);
+        const junction = junctionsQueue[junctionsQueue.length - 1];
+
+        if (junction !== undefined) {
+        
+            while (index !== junctionsQueue[junctionsQueue.length - 1].index) {
+                if (moveHistory[moveHistory.length - 1] === 1) {
+                    isBackwards = true;
+                    await moveDown();
+                }
+                else if (moveHistory[moveHistory.length - 1] === 2) {
+                    isBackwards = true;
+                    await moveUp();
+                }
+                else if (moveHistory[moveHistory.length - 1] === 3) {
+                    isBackwards = true;
+                    await moveRight();
+                }
+                else if (moveHistory[moveHistory.length - 1] === 4) {
+                    isBackwards = true;
+                    await moveLeft();
+                }
+                moveHistory.pop();
+
+                await delay(125);
+            }
+            isBackwards = false;
+            lastMove = 6;
+            isJunction = true;
+            if (junction.pathsTaken.length >= junction.possibleMoves.length) {
+                junctionsQueue.pop();
+                if (junctionsQueue.length > 0) {
+                    isBackwards = true;
+                    await reverseToJunction();
+                }
+            }
+        }
+    }
+
+    async function moveUp () {
         if (index - NUM_COLS < 0) {
             return;
         }
         if (location[index].top && location[index - NUM_COLS].bottom) {
+            isValidMove = true;
             location[index].text = "";
             index  = index - NUM_COLS;
-            // location[index].text = 1;
+            detectWin();
+            if (!isBackwards) {
+                detectJunction();
+            }
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
-                if (i === NUM_TILES - 1) {
+                if (i === endTile) {
                     item.appendChild(end_maze_icon);
                 }
                 else if (i === index) {
@@ -694,21 +904,30 @@ export function startMazePuzzle({ containerID }) {
                     item.textContent = location[i].text;
                 }
             });
-            detectWin();
+            if (!isBackwards) {
+                moveHistory.push(randomMove);
+            }
+            if ((!location[index].top && !location[index].left && !location[index].right) && index < NUM_TILES) {
+                await reverseToJunction();
+            }
         }
     }
 
-    function moveDown () {
+    async function moveDown () {
         if (index + NUM_COLS >= location.length) {
             return;
         }
         if (location[index].bottom && location[index + NUM_COLS].top) {
+            isValidMove = true;
             location[index].text = "";
             index  = index + NUM_COLS;
-            // location[index].text = 1;
+            detectWin();
+            if (!isBackwards) {
+                detectJunction();
+            }
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
-                if (i === NUM_TILES - 1) {
+                if (i === endTile) {
                     item.appendChild(end_maze_icon);
                 }
                 else if (i === index) {
@@ -718,21 +937,30 @@ export function startMazePuzzle({ containerID }) {
                     item.textContent = location[i].text;
                 }
             });
-            detectWin();
+            if (!isBackwards) {
+                moveHistory.push(randomMove);
+            }
+            if ((!location[index].bottom && !location[index].right && !location[index].left) && index < NUM_TILES) {
+                await reverseToJunction();
+            }
         }
     }
 
-    function moveRight () {
+    async function moveRight () {
         if (index >= 19 && (index - 19) % 20 === 0 && index < location.length) {
             return
         }
         if (location[index].right && location[index + 1].left) {
+            isValidMove = true;
             location[index].text = "";
             index++;
-            // location[index].text = 1;
+            detectWin();
+            if (!isBackwards) {
+                detectJunction();
+            }
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
-                if (i === NUM_TILES - 1) {
+                if (i === endTile) {
                     item.appendChild(end_maze_icon);
                 }
                 else if (i === index) {
@@ -742,21 +970,30 @@ export function startMazePuzzle({ containerID }) {
                     item.textContent = location[i].text;
                 }
             });
-            detectWin();
+            if (!isBackwards) {
+                moveHistory.push(randomMove);
+            }
+            if ((!location[index].bottom && !location[index].right && !location[index].top) && index < NUM_TILES) {
+                await reverseToJunction();
+            }
         }
     }
 
-    function moveLeft () {
+    async function moveLeft () {
         if (index % 20 === 0) {
             return;
         }
         if (location[index].left && location[index - 1].right) {
+            isValidMove = true;
             location[index].text = "";
             index--;
-        
+            detectWin();
+            if (!isBackwards) {
+                detectJunction();
+            }
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
-                if (i === NUM_TILES - 1) {
+                if (i === endTile) {
                     item.appendChild(end_maze_icon);
                 }
                 else if (i === index) {
@@ -766,15 +1003,25 @@ export function startMazePuzzle({ containerID }) {
                     item.textContent = location[i].text;
                 }
             });
-            detectWin();
+            if (!isBackwards) {
+                moveHistory.push(randomMove);
+            }
+            if ((!location[index].bottom && !location[index].top && !location[index].left) && index < NUM_TILES) {
+                await reverseToJunction();
+            }
         }
     }
 
     function detectWin () {
-        if (index === NUM_TILES - 1) {
+        if (index === endTile) {
+            isWon = true;
+            endrunMaze();
+
             solvePuzzle();
             index = 0;
             const mazeItems = document.querySelectorAll(tileClass);
+            const autorunButton = document.getElementById("maze-toggle-auto");
+            autorunButton.removeEventListener('click', toggleAutorun);
             mazeItems.forEach(item => {
                 item.removeEventListener('keydown', handleKeyDown);
             });
@@ -827,540 +1074,130 @@ export function startMazePuzzle({ containerID }) {
         }
     }
 
-
-    function createNormalMaze() {
-        location[0] = new mazeTile(false, true, false, false, 1);
-        location[1] = new mazeTile(false, true, false, true, "");
-        location[2] = new mazeTile(false, false, true, false, "");
-        location[3] = new mazeTile(false, true, false, true, "");
-        location[4] = new mazeTile(false, false, true, true, "");
-        location[5] = new mazeTile(false, true, true, false, "");
-        location[6] = new mazeTile(false, true, false, true, "");
-        location[7] = new mazeTile(false, false, true, false, "");
-        location[8] = new mazeTile(false, true, false, true, "");
-        location[9] = new mazeTile(false, true, true, false, "");
-
-        location[10] = new mazeTile(true, true, false, false, "");
-        location[11] = new mazeTile(true, false, false, false, "");
-        location[12] = new mazeTile(false, true, false, true, "");
-        location[13] = new mazeTile(true, false, true, false, "");
-        location[14] = new mazeTile(false, false, false, false, "");
-        location[15] = new mazeTile(true, true, false, false, "");
-        location[16] = new mazeTile(true, false, false, false, "");
-        location[17] = new mazeTile(false, true, false, true, "");
-        location[18] = new mazeTile(true, false, true, false, "");
-        location[19] = new mazeTile(true, true, false, false, "");
-
-        location[20] = new mazeTile(true, false, false, true, "");
-        location[21] = new mazeTile(false, false, true, true, "");
-        location[22] = new mazeTile(true, false, true, false, "");
-        location[23] = new mazeTile(false, true, false, false, "");
-        location[24] = new mazeTile(false, true, false, true, "");
-        location[25] = new mazeTile(true, false, true, false, "");
-        location[26] = new mazeTile(false, true, false, true, "");
-        location[27] = new mazeTile(true, false, true, false, "");
-        location[28] = new mazeTile(false, false, false, false, "");
-        location[29] = new mazeTile(true, true, false, false, "");
-
-        location[30] = new mazeTile(false, false, false, false, "");
-        location[31] = new mazeTile(false, true, false, true, "");
-        location[32] = new mazeTile(false, true, true, false, "");
-        location[33] = new mazeTile(true, false, false, false, "");
-        location[34] = new mazeTile(true, true, false, false, "");
-        location[35] = new mazeTile(false, true, false, true, "");
-        location[36] = new mazeTile(true, false, true, false, "");
-        location[37] = new mazeTile(false, true, false, false, "");
-        location[38] = new mazeTile(false, true, false, true, "");
-        location[39] = new mazeTile(true, false, true, false, "");
-
-        location[40] = new mazeTile(false, true, false, true, "");
-        location[41] = new mazeTile(true, false, true, false, "");
-        location[42] = new mazeTile(true, false, false, true, "");
-        location[43] = new mazeTile(false, false, true, true, "");
-        location[44] = new mazeTile(true, false, true, false, "");
-        location[45] = new mazeTile(true, false, false, true, "");
-        location[46] = new mazeTile(false, true, true, false, "");
-        location[47] = new mazeTile(true, false, false, false, "");
-        location[48] = new mazeTile(true, false, false, true, "");
-        location[49] = new mazeTile(false, true, true, false, "");
-
-        location[50] = new mazeTile(true, true, false, false, "");
-        location[51] = new mazeTile(false, false, false, true, "");
-        location[52] = new mazeTile(false, false, true, true, "");
-        location[53] = new mazeTile(false, true, true, true, "");
-        location[54] = new mazeTile(false, false, true, true, "");
-        location[55] = new mazeTile(false, false, true, false, "");
-        location[56] = new mazeTile(true, false, false, true, "");
-        location[57] = new mazeTile(false, true, true, false, "");
-        location[58] = new mazeTile(false, true, false, true, "");
-        location[59] = new mazeTile(true, false, true, false, "");
-
-        location[60] = new mazeTile(true, false, false, true, "");
-        location[61] = new mazeTile(false, false, true, true, "");
-        location[62] = new mazeTile(false, true, true, false, "");
-        location[63] = new mazeTile(true, true, false, false, "");
-        location[64] = new mazeTile(false, true, false, true, "");
-        location[65] = new mazeTile(false, true, true, false, "");
-        location[66] = new mazeTile(false, true, false, false, "");
-        location[67] = new mazeTile(true, true, false, false, "");
-        location[68] = new mazeTile(true, false, false, true, "");
-        location[69] = new mazeTile(false, true, true, false, "");
-
-        location[70] = new mazeTile(false, true, false, true, "");
-        location[71] = new mazeTile(false, true, true, false, "");
-        location[72] = new mazeTile(true, true, false, false, "");
-        location[73] = new mazeTile(true, true, false, false, "");
-        location[74] = new mazeTile(true, true, false, false, "");
-        location[75] = new mazeTile(true, true, false, false, "");
-        location[76] = new mazeTile(true, false, false, false, "");
-        location[77] = new mazeTile(true, false, false, true, "");
-        location[78] = new mazeTile(false, true, true, false, "");
-        location[79] = new mazeTile(true, true, false, false, "");
-
-        location[80] = new mazeTile(true, true, false, false, "");
-        location[81] = new mazeTile(true, false, false, true, "");
-        location[82] = new mazeTile(true, false, true, false, "");
-        location[83] = new mazeTile(true, false, false, false, "");
-        location[84] = new mazeTile(true, true, false, false, "");
-        location[85] = new mazeTile(true, false, false, true, "");
-        location[86] = new mazeTile(false, true, true, false, "");
-        location[87] = new mazeTile(false, false, false, false, "");
-        location[88] = new mazeTile(true, true, false, false, "");
-        location[89] = new mazeTile(true, true, false, false, "");
-
-        location[90] = new mazeTile(true, false, false, true, "");
-        location[91] = new mazeTile(false, false, true, true, "");
-        location[92] = new mazeTile(false, false, true, true, "");
-        location[93] = new mazeTile(false, false, true, true, "");
-        location[94] = new mazeTile(true, false, true, false, "");
-        location[95] = new mazeTile(false, false, false, false, "");
-        location[96] = new mazeTile(true, false, false, true, "");
-        location[97] = new mazeTile(false, false, true, true, "");
-        location[98] = new mazeTile(true, false, true, false, "");
-        location[99] = new mazeTile(true, false, false, false, "");
-        
+    function endrunMaze () {
+        isValidMove = true;
+        isProgress = true;
+        isWon = true;
     }
 
-    function createChallengeMaze () {
-        location[0] = new mazeTile(false, false, false, true, 1);
-        location[1] = new mazeTile(false, true, true, false, "");
-        location[2] = new mazeTile(false, true, false, false, "");
-        location[3] = new mazeTile(false, true, false, true, "");
-        location[4] = new mazeTile(false, false, true, true, "");
-        location[5] = new mazeTile(false, false, true, true, "");
-        location[6] = new mazeTile(false, true, true, false, "");
-        location[7] = new mazeTile(false, false, false, true, "");
-        location[8] = new mazeTile(false, false, true, false, "");
-        location[9] = new mazeTile(false, true, false, true, "");
-        location[10] = new mazeTile(false, true, true, false, "");
-        location[11] = new mazeTile(false, true, false, true, "");
-        location[12] = new mazeTile(false, true, true, false, "");
-        location[13] = new mazeTile(false, true, false, true, "");
-        location[14] = new mazeTile(false, false, true, true, "");
-        location[15] = new mazeTile(false, false, true, true, "");
-        location[16] = new mazeTile(false, true, true, false, "");
-        location[17] = new mazeTile(false, false, false, true, "");
-        location[18] = new mazeTile(false, true, true, true, "");
-        location[19] = new mazeTile(false, true, true, false, "");
+    async function runMaze() {
+        while (!isWon) {
+            isProgress = false;
+            isValidMove = false;
+            if (!isBackwards) {
+                while (!isProgress && !isValidMove) {
+                    randomMove = Math.floor(Math.random() * 4) + 1;
+                    if (randomMove === 1 && validateMove(randomMove)) {
+                        if (lastMove !== 2) {
+                            lastMove = randomMove;
+                            await moveUp();
+                            isProgress = true;
+                        }
+                    }
+                    if (randomMove === 2 && validateMove(randomMove)) {
+                        if (lastMove !== 1) {
+                            lastMove = randomMove;
+                            await moveDown();
+                            isProgress = true;
+                        }
+                    }
+                    if (randomMove === 3 && validateMove(randomMove)) {
+                        if (lastMove !== 4) {
+                            lastMove = randomMove;
+                            await moveLeft();
+                            isProgress = true;
+                        }
+                    }
+                    if (randomMove === 4 && validateMove(randomMove)) {
+                        if (lastMove !== 3) {
+                            lastMove = randomMove;
+                            await moveRight();
+                            isProgress = true;
+                        }
+                    }
+                }
+            }
+            await delay(125);
+        }
+    }
 
-        location[20] = new mazeTile(false, true, false, false, "");
-        location[21] = new mazeTile(true, true, false, false, "");
-        location[22] = new mazeTile(true, false, false, false, "");
-        location[23] = new mazeTile(true, true, false, false, "");
-        location[24] = new mazeTile(false, true, false, true, "");
-        location[25] = new mazeTile(false, true, true, false, "");
-        location[26] = new mazeTile(true, false, false, true, "");
-        location[27] = new mazeTile(false, true, true, true, "");
-        location[28] = new mazeTile(false, false, true, true, "");
-        location[29] = new mazeTile(true, false, true, false, "");
-        location[30] = new mazeTile(true, true, false, false, "");
-        location[31] = new mazeTile(true, true, false, true, "");
-        location[32] = new mazeTile(true, true, true, false, "");
-        location[33] = new mazeTile(true, true, false, false, "");
-        location[34] = new mazeTile(false, false, false, true, "");
-        location[35] = new mazeTile(false, false, true, false, "");
-        location[36] = new mazeTile(true, false, false, true, "");
-        location[37] = new mazeTile(false, true, true, false, "");
-        location[38] = new mazeTile(true, true, false, true, "");
-        location[39] = new mazeTile(true, true, true, false, "");
+    function newJunctionMove (move) {
+        const junction = junctionsQueue[junctionsQueue.length - 1];
+        if (junction !== undefined) {
+            const direction = isBackwards ? "backwards" : "forwards";
+            console.log(`checking for new move at junction ${junction.index}. Prev moves: ${junction.pathsTaken} out of ${junction.possibleMoves} while heading ${direction}`);
+            if ((!junction.pathsTaken.includes(move) && junction.possibleMoves.includes(move)) && 
+            (junction.possibleMoves.length !== junction.pathsTaken.length)) {
+                junction.pathsTaken.push(move);
+                console.log(`move ${move} added from njm @ junction ${junction.index}`);
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
 
-        location[40] = new mazeTile(true, false, false, false, "");
-        location[41] = new mazeTile(true, true, false, true, "");
-        location[42] = new mazeTile(false, false, true, true, "");
-        location[43] = new mazeTile(true, true, true, false, "");
-        location[44] = new mazeTile(true, true, false, true, "");
-        location[45] = new mazeTile(true, true, true, true, "");
-        location[46] = new mazeTile(false, true, true, false, "");
-        location[47] = new mazeTile(true, false, false, false, "");
-        location[48] = new mazeTile(false, true, false, false, "");
-        location[49] = new mazeTile(false, true, false, true, "");
-        location[50] = new mazeTile(true, false, true, false, "");
-        location[51] = new mazeTile(true, false, false, true, "");
-        location[52] = new mazeTile(true, true, true, false, "");
-        location[53] = new mazeTile(true, false, false, true, "");
-        location[54] = new mazeTile(false, false, true, true, "");
-        location[55] = new mazeTile(false, true, true, false, "");
-        location[56] = new mazeTile(false, true, false, false, "");
-        location[57] = new mazeTile(true, true, false, false, "");
-        location[58] = new mazeTile(true, false, false, true, "");
-        location[59] = new mazeTile(true, true, true, false, "");
-
-        location[60] = new mazeTile(false, true, false, true, "");
-        location[61] = new mazeTile(true, false, true, false, "");
-        location[62] = new mazeTile(false, true, false, false, "");
-        location[63] = new mazeTile(true, true, false, false, "");
-        location[64] = new mazeTile(true, false, false, true, "");
-        location[65] = new mazeTile(true, false, true, true, "");
-        location[66] = new mazeTile(true, true, true, true, "");
-        location[67] = new mazeTile(false, false, true, true, "");
-        location[68] = new mazeTile(true, false, true, false, "");
-        location[69] = new mazeTile(true, true, false, false, "");
-        location[70] = new mazeTile(false, true, false, false, "");
-        location[71] = new mazeTile(false, true, false, false, "");
-        location[72] = new mazeTile(true, false, false, true, "");
-        location[73] = new mazeTile(false, true, true, true, "");
-        location[74] = new mazeTile(false, false, true, false, "");
-        location[75] = new mazeTile(true, true, false, false, "");
-        location[76] = new mazeTile(true, true, false, false, "");
-        location[77] = new mazeTile(true, false, false, true, "");
-        location[78] = new mazeTile(false, true, true, false, "");
-        location[79] = new mazeTile(true, true, false, false, "");
-
-        location[80] = new mazeTile(true, true, false, false, "");
-        location[81] = new mazeTile(false, false, false, false, "");
-        location[82] = new mazeTile(true, true, false, false, "");
-        location[83] = new mazeTile(true, false, false, true, "");
-        location[84] = new mazeTile(false, false, true, true, "");
-        location[85] = new mazeTile(false, true, true, false, "");
-        location[86] = new mazeTile(true, false, false, false, "");
-        location[87] = new mazeTile(false, true, false, false, "");
-        location[88] = new mazeTile(false, true, false, true, "");
-        location[89] = new mazeTile(true, false, true, false, "");
-        location[90] = new mazeTile(true, true, false, false, "");
-        location[91] = new mazeTile(true, false, false, true, "");
-        location[92] = new mazeTile(false, true, true, false, "");
-        location[93] = new mazeTile(true, true, false, false, "");
-        location[94] = new mazeTile(false, true, false, true, "");
-        location[95] = new mazeTile(true, false, true, false, "");
-        location[96] = new mazeTile(true, true, false, false, "");
-        location[97] = new mazeTile(false, true, false, true, "");
-        location[98] = new mazeTile(true, false, true, false, "");
-        location[99] = new mazeTile(true, true, false, false, "");
-
-        location[100] = new mazeTile(true, false, false, true, "");
-        location[101] = new mazeTile(false, false, true, true, "");
-        location[102] = new mazeTile(true, false, true, false, "");
-        location[103] = new mazeTile(false, false, false, true, "");
-        location[104] = new mazeTile(false, false, true, false, "");
-        location[105] = new mazeTile(true, true, false, true, "");
-        location[106] = new mazeTile(false, false, true, true, "");
-        location[107] = new mazeTile(true, true, true, false, "");
-        location[108] = new mazeTile(true, true, false, false, "");
-        location[109] = new mazeTile(false, false, false, true, "");
-        location[110] = new mazeTile(true, false, true, true, "");
-        location[111] = new mazeTile(false, false, true, false, "");
-        location[112] = new mazeTile(true, true, false, false, "");
-        location[113] = new mazeTile(true, false, false, false, "");
-        location[114] = new mazeTile(true, true, false, false, "");
-        location[115] = new mazeTile(false, false, false, true, "");
-        location[116] = new mazeTile(true, true, true, false, "");
-        location[117] = new mazeTile(true, true, false, false, "");
-        location[118] = new mazeTile(false, false, false, true, "");
-        location[119] = new mazeTile(true, true, true, false, "");
-
-        location[120] = new mazeTile(false, false, false, true, "");
-        location[121] = new mazeTile(false, false, true, false, "");
-        location[122] = new mazeTile(false, true, false, true, "");
-        location[123] = new mazeTile(false, false, true, true, "");
-        location[124] = new mazeTile(false, false, true, true, "");
-        location[125] = new mazeTile(true, false, true, false, "");
-        location[126] = new mazeTile(false, false, false, false, "");
-        location[127] = new mazeTile(true, true, false, false, "");
-        location[128] = new mazeTile(true, false, false, true, "");
-        location[129] = new mazeTile(false, false, true, true, "");
-        location[130] = new mazeTile(false, true, true, true, "");
-        location[131] = new mazeTile(false, false, true, true, "");
-        location[132] = new mazeTile(true, false, true, false, "");
-        location[133] = new mazeTile(false, true, false, true, "");
-        location[134] = new mazeTile(true, false, true, true, "");
-        location[135] = new mazeTile(false, false, true, false, "");
-        location[136] = new mazeTile(true, false, false, false, "");
-        location[137] = new mazeTile(true, false, false, true, "");
-        location[138] = new mazeTile(false, true, true, false, "");
-        location[139] = new mazeTile(true, true, false, false, "");
-
-        location[140] = new mazeTile(false, false, false, true, "");
-        location[141] = new mazeTile(false, false, true, true, "");
-        location[142] = new mazeTile(true, true, true, false, "");
-        location[143] = new mazeTile(false, true, false, true, "");
-        location[144] = new mazeTile(false, false, true, true, "");
-        location[145] = new mazeTile(false, true, true, false, "");
-        location[146] = new mazeTile(false, false, false, true, "");
-        location[147] = new mazeTile(true, true, true, false, "");
-        location[148] = new mazeTile(false, true, false, false, "");
-        location[149] = new mazeTile(false, true, false, true, "");
-        location[150] = new mazeTile(true, false, true, false, "");
-        location[151] = new mazeTile(false, true, false, true, "");
-        location[152] = new mazeTile(false, true, true, false, "");
-        location[153] = new mazeTile(true, true, false, false, "");
-        location[154] = new mazeTile(false, true, false, false, "");
-        location[155] = new mazeTile(false, true, false, true, "");
-        location[156] = new mazeTile(false, true, true, false, "");
-        location[157] = new mazeTile(false, false, false, false, "");
-        location[158] = new mazeTile(true, true, false, false, "");
-        location[159] = new mazeTile(true, true, false, false, "");
-
-        location[160] = new mazeTile(false, true, false, true, "");
-        location[161] = new mazeTile(false, true, true, false, "");
-        location[162] = new mazeTile(true, true, false, false, "");
-        location[163] = new mazeTile(true, false, false, false, "");
-        location[164] = new mazeTile(false, true, false, false, "");
-        location[165] = new mazeTile(true, false, false, true, "");
-        location[166] = new mazeTile(false, true, true, false, "");
-        location[167] = new mazeTile(true, false, false, false, "");
-        location[168] = new mazeTile(true, false, false, false, "");
-        location[169] = new mazeTile(true, true, false, false, "");
-        location[170] = new mazeTile(false, true, false, true, "");
-        location[171] = new mazeTile(true, false, true, true, "");
-        location[172] = new mazeTile(true, false, true, false, "");
-        location[173] = new mazeTile(true, true, false, false, "");
-        location[174] = new mazeTile(true, true, false, false, "");
-        location[175] = new mazeTile(true, true, false, false, "");
-        location[176] = new mazeTile(true, false, false, true, "");
-        location[177] = new mazeTile(false, false, true, true, "");
-        location[178] = new mazeTile(true, false, true, false, "");
-        location[179] = new mazeTile(true, true, false, false, "");
-
-        location[180] = new mazeTile(true, true, false, true, "");
-        location[181] = new mazeTile(true, true, true, false, "");
-        location[182] = new mazeTile(true, false, false, true, "");
-        location[183] = new mazeTile(false, true, true, true, "");
-        location[184] = new mazeTile(true, false, true, true, "");
-        location[185] = new mazeTile(false, false, true, false, "");
-        location[186] = new mazeTile(true, true, false, false, "");
-        location[187] = new mazeTile(false, true, false, true, "");
-        location[188] = new mazeTile(false, false, true, true, "");
-        location[189] = new mazeTile(true, false, true, false, "");
-        location[190] = new mazeTile(true, true, false, false, "");
-        location[191] = new mazeTile(false, true, false, true, "");
-        location[192] = new mazeTile(false, false, true, true, "");
-        location[193] = new mazeTile(true, false, true, false, "");
-        location[194] = new mazeTile(true, false, false, false, "");
-        location[195] = new mazeTile(true, true, false, false, "");
-        location[196] = new mazeTile(false, false, false, true, "");
-        location[197] = new mazeTile(false, true, true, true, "");
-        location[198] = new mazeTile(false, false, true, true, "");
-        location[199] = new mazeTile(true, false, true, false, "");
-
-        location[200] = new mazeTile(true, true, false, true, "");
-        location[201] = new mazeTile(true, false, true, true, "");
-        location[202] = new mazeTile(false, false, true, false, "");
-        location[203] = new mazeTile(true, true, false, false, "");
-        location[204] = new mazeTile(false, false, false, true, "");
-        location[205] = new mazeTile(false, false, true, true, "");
-        location[206] = new mazeTile(true, false, true, false, "");
-        location[207] = new mazeTile(true, true, false, false, "");
-        location[208] = new mazeTile(false, true, false, true, "");
-        location[209] = new mazeTile(false, false, true, true, "");
-        location[210] = new mazeTile(true, true, true, false, "");
-        location[211] = new mazeTile(true, true, false, false, "");
-        location[212] = new mazeTile(false, false, false, true, "");
-        location[213] = new mazeTile(false, false, true, false, "");
-        location[214] = new mazeTile(false, true, false, true, "");
-        location[215] = new mazeTile(true, false, true, true, "");
-        location[216] = new mazeTile(false, true, true, false, "");
-        location[217] = new mazeTile(true, false, false, false, "");
-        location[218] = new mazeTile(false, true, false, true, "");
-        location[219] = new mazeTile(false, false, true, false, "");
-
-        location[220] = new mazeTile(true, true, false, false, "");
-        location[221] = new mazeTile(false, true, false, false, "");
-        location[222] = new mazeTile(false, false, false, true, "");
-        location[223] = new mazeTile(true, false, true, false, "");
-        location[224] = new mazeTile(false, true, false, true, "");
-        location[225] = new mazeTile(false, false, true, true, "");
-        location[226] = new mazeTile(false, false, true, true, "");
-        location[227] = new mazeTile(true, false, true, false, "");
-        location[228] = new mazeTile(true, false, false, false, "");
-        location[229] = new mazeTile(false, true, false, false, "");
-        location[230] = new mazeTile(true, false, false, false, "");
-        location[231] = new mazeTile(true, false, false, true, "");
-        location[232] = new mazeTile(false, true, true, false, "");
-        location[233] = new mazeTile(false, true, false, true, "");
-        location[234] = new mazeTile(true, false, true, false, "");
-        location[235] = new mazeTile(false, true, false, false, "");
-        location[236] = new mazeTile(true, false, false, true, "");
-        location[237] = new mazeTile(false, false, true, true, "");
-        location[238] = new mazeTile(true, false, true, false, "");
-        location[239] = new mazeTile(false, true, false, false, "");
-
-        location[240] = new mazeTile(true, true, false, false, "");
-        location[241] = new mazeTile(true, true, false, true, "");
-        location[242] = new mazeTile(false, false, true, true, "");
-        location[243] = new mazeTile(false, true, true, false, "");
-        location[244] = new mazeTile(true, false, false, true, "");
-        location[245] = new mazeTile(false, true, true, false, "");
-        location[246] = new mazeTile(false, true, false, false, "");
-        location[247] = new mazeTile(false, true, false, true, "");
-        location[248] = new mazeTile(false, false, true, true, "");
-        location[249] = new mazeTile(true, false, true, true, "");
-        location[250] = new mazeTile(false, true, true, false, "");
-        location[251] = new mazeTile(false, false, false, false, "");
-        location[252] = new mazeTile(true, true, false, false, "");
-        location[253] = new mazeTile(true, false, false, true, "");
-        location[254] = new mazeTile(false, true, true, false, "");
-        location[255] = new mazeTile(true, true, false, true, "");
-        location[256] = new mazeTile(false, true, true, false, "");
-        location[257] = new mazeTile(false, true, false, true, "");
-        location[258] = new mazeTile(false, true, true, false, "");
-        location[259] = new mazeTile(true, false, false, false, "");
-
-        location[260] = new mazeTile(true, false, false, false, "");
-        location[261] = new mazeTile(true, true, false, false, "");
-        location[262] = new mazeTile(false, true, false, false, "");
-        location[263] = new mazeTile(true, true, false, false, "");
-        location[264] = new mazeTile(false, false, false, false, "");
-        location[265] = new mazeTile(true, true, false, false, "");
-        location[266] = new mazeTile(true, true, false, false, "");
-        location[267] = new mazeTile(true, true, false, false, "");
-        location[268] = new mazeTile(false, false, false, true, "");
-        location[269] = new mazeTile(false, true, true, false, "");
-        location[270] = new mazeTile(true, false, false, true, "");
-        location[271] = new mazeTile(false, false, true, true, "");
-        location[272] = new mazeTile(true, false, true, false, "");
-        location[273] = new mazeTile(false, false, false, false, "");
-        location[274] = new mazeTile(true, true, false, false, "");
-        location[275] = new mazeTile(true, true, false, true, "");
-        location[276] = new mazeTile(true, false, true, false, "");
-        location[277] = new mazeTile(true, true, false, false, "");
-        location[278] = new mazeTile(true, false, false, true, "");
-        location[279] = new mazeTile(false, true, true, false, "");
-
-        location[280] = new mazeTile(false, true, false, true, "");
-        location[281] = new mazeTile(true, false, true, false, "");
-        location[282] = new mazeTile(true, true, false, false, "");
-        location[283] = new mazeTile(true, false, false, true, "");
-        location[284] = new mazeTile(false, true, true, true, "");
-        location[285] = new mazeTile(true, false, true, false, "");
-        location[286] = new mazeTile(true, true, false, false, "");
-        location[287] = new mazeTile(true, false, false, true, "");
-        location[288] = new mazeTile(false, true, true, false, "");
-        location[289] = new mazeTile(true, false, false, true, "");
-        location[290] = new mazeTile(false, false, true, true, "");
-        location[291] = new mazeTile(false, false, true, false, "");
-        location[292] = new mazeTile(false, true, false, true, "");
-        location[293] = new mazeTile(false, false, true, true, "");
-        location[294] = new mazeTile(true, false, true, false, "");
-        location[295] = new mazeTile(true, true, false, false, "");
-        location[296] = new mazeTile(false, true, false, true, "");
-        location[297] = new mazeTile(true, false, true, true, "");
-        location[298] = new mazeTile(false, false, true, false, "");
-        location[299] = new mazeTile(true, true, false, false, "");
-
-        location[300] = new mazeTile(true, false, false, false, "");
-        location[301] = new mazeTile(false, true, false, true, "");
-        location[302] = new mazeTile(true, false, true, true, "");
-        location[303] = new mazeTile(false, false, true, false, "");
-        location[304] = new mazeTile(true, true, false, false, "");
-        location[305] = new mazeTile(false, true, false, true, "");
-        location[306] = new mazeTile(true, true, true, true, "");
-        location[307] = new mazeTile(false, true, true, false, "");
-        location[308] = new mazeTile(true, true, false, false, "");
-        location[309] = new mazeTile(false, false, false, true, "");
-        location[310] = new mazeTile(false, true, true, false, "");
-        location[311] = new mazeTile(false, true, false, true, "");
-        location[312] = new mazeTile(true, false, true, false, "");
-        location[313] = new mazeTile(false, true, false, true, "");
-        location[314] = new mazeTile(false, false, true, true, "");
-        location[315] = new mazeTile(true, false, true, false, "");
-        location[316] = new mazeTile(true, true, false, false, "");
-        location[317] = new mazeTile(false, true, false, false, "");
-        location[318] = new mazeTile(false, true, false, true, "");
-        location[319] = new mazeTile(true, false, true, false, "");
-
-        location[320] = new mazeTile(false, true, false, true, "");
-        location[321] = new mazeTile(true, true, true, false, "");
-        location[322] = new mazeTile(false, true, false, true, "");
-        location[323] = new mazeTile(false, false, true, true, "");
-        location[324] = new mazeTile(true, false, true, false, "");
-        location[325] = new mazeTile(true, true, false, true, "");
-        location[326] = new mazeTile(true, true, true, true, "");
-        location[327] = new mazeTile(true, false, true, false, "");
-        location[328] = new mazeTile(true, false, false, true, "");
-        location[329] = new mazeTile(false, true, true, false, "");
-        location[330] = new mazeTile(true, true, false, false, "");
-        location[331] = new mazeTile(true, true, false, false, "");
-        location[332] = new mazeTile(false, false, false, true, "");
-        location[333] = new mazeTile(true, true, true, false, "");
-        location[334] = new mazeTile(false, true, false, true, "");
-        location[335] = new mazeTile(false, false, true, true, "");
-        location[336] = new mazeTile(true, false, true, false, "");
-        location[337] = new mazeTile(true, false, false, false, "");
-        location[338] = new mazeTile(true, true, false, false, "");
-        location[339] = new mazeTile(false, true, false, false, "");
-
-        location[340] = new mazeTile(true, true, false, true, "");
-        location[341] = new mazeTile(true, true, true, false, "");
-        location[342] = new mazeTile(true, true, false, false, "");
-        location[343] = new mazeTile(false, false, false, true, "");
-        location[344] = new mazeTile(false, false, true, true, "");
-        location[345] = new mazeTile(true, false, true, true, "");
-        location[346] = new mazeTile(true, false, true, false, "");
-        location[347] = new mazeTile(false, true, false, true, "");
-        location[348] = new mazeTile(false, false, true, true, "");
-        location[349] = new mazeTile(true, true, true, false, "");
-        location[350] = new mazeTile(true, true, false, false, "");
-        location[351] = new mazeTile(true, false, false, true, "");
-        location[352] = new mazeTile(false, true, true, false, "");
-        location[353] = new mazeTile(true, false, false, false, "");
-        location[354] = new mazeTile(true, true, false, false, "");
-        location[355] = new mazeTile(false, false, false, true, "");
-        location[356] = new mazeTile(false, false, true, false, "");
-        location[357] = new mazeTile(false, true, false, true, "");
-        location[358] = new mazeTile(true, false, true, false, "");
-        location[359] = new mazeTile(true, false, false, false, "");
-
-        location[360] = new mazeTile(true, true, false, true, "");
-        location[361] = new mazeTile(true, true, true, false, "");
-        location[362] = new mazeTile(true, false, false, true, "");
-        location[363] = new mazeTile(false, false, true, true, "");
-        location[364] = new mazeTile(false, false, true, true, "");
-        location[365] = new mazeTile(false, false, true, true, "");
-        location[366] = new mazeTile(false, true, true, false, "");
-        location[367] = new mazeTile(true, true, false, false, "");
-        location[368] = new mazeTile(false, true, false, false, "");
-        location[369] = new mazeTile(true, false, false, true, "");
-        location[370] = new mazeTile(true, false, true, false, "");
-        location[371] = new mazeTile(false, true, false, false, "");
-        location[372] = new mazeTile(true, false, false, true, "");
-        location[373] = new mazeTile(false, false, true, true, "");
-        location[374] = new mazeTile(true, false, true, true, "");
-        location[375] = new mazeTile(false, false, true, true, "");
-        location[376] = new mazeTile(false, true, true, false, "");
-        location[377] = new mazeTile(true, false, false, true, "");
-        location[378] = new mazeTile(false, false, true, true, "");
-        location[379] = new mazeTile(false, true, true, false, "");
-
-        location[380] = new mazeTile(true, false, false, true, "");
-        location[381] = new mazeTile(true, false, true, true, "");
-        location[382] = new mazeTile(false, false, true, true, "");
-        location[383] = new mazeTile(false, false, true, true, "");
-        location[384] = new mazeTile(false, false, true, true, "");
-        location[385] = new mazeTile(false, false, true, false, "");
-        location[386] = new mazeTile(true, false, false, true, "");
-        location[387] = new mazeTile(true, false, true, false, "");
-        location[388] = new mazeTile(true, false, false, true, "");
-        location[389] = new mazeTile(false, false, true, true, "");
-        location[390] = new mazeTile(false, false, true, true, "");
-        location[391] = new mazeTile(true, false, true, true, "");
-        location[392] = new mazeTile(false, false, true, true, "");
-        location[393] = new mazeTile(false, false, true, true, "");
-        location[394] = new mazeTile(false, false, true, true, "");
-        location[395] = new mazeTile(false, false, true, false, "");
-        location[396] = new mazeTile(true, false, false, true, "");
-        location[397] = new mazeTile(false, false, true, true, "");
-        location[398] = new mazeTile(false, false, true, false, "");
-        location[399] = new mazeTile(true, false, false, false, "End");
-        console.log(location);
+    function validateMove(move) {
+        let isNewMove = false;;
+        if(isJunction) {
+            isNewMove = newJunctionMove(move);
+        }
+        if (move === 1) {
+            if (isJunction) {
+                if (index - NUM_COLS >= 0 && isNewMove) {
+                    if (location[index].top && location[index - NUM_COLS].bottom) {
+                        return true;
+                    }
+                }
+            }
+            else if (index - NUM_COLS >= 0) {
+                if (location[index].top && location[index - NUM_COLS].bottom) {
+                    return true;
+                }
+            }
+        }
+        else if (move === 2) {
+            if (isJunction) {
+                if (index + NUM_COLS < location.length && isNewMove) {
+                    if (location[index].bottom && location[index + NUM_COLS].top) {
+                        return true;
+                    }
+                }
+            }
+            else if (index + NUM_COLS < location.length) {
+                if (location[index].bottom && location[index + NUM_COLS].top) {
+                    return true;
+                }
+            }
+        }
+        else if (move === 3) {
+            if (isJunction) {
+                if (index % 20 !== 0 && isNewMove) {
+                    if (location[index].left && location[index - 1].right) {
+                        return true;
+                    }
+                }
+            }
+            else if (index % 20 !== 0) {
+                if (location[index].left && location[index - 1].right) {
+                    return true;
+                }
+            }
+        }
+        else if (move === 4) {
+            if (isJunction) {
+                if ((index < 19 || (index - 19) % 20 !== 0 || index >= location.length) && isNewMove) {
+                    if (location[index].right && location[index + 1].left) {
+                        return true;
+                    }
+                }
+            }
+            else if (index < 19 || (index - 19) % 20 !== 0 || index >= location.length) {
+                if (location[index].right && location[index + 1].left) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

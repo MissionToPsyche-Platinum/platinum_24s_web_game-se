@@ -23,7 +23,8 @@ export const puzzles = [
         start: startNumberLogicPuzzle,
         helpText: "Use logic to solve the sudoku puzzle with numbers. Each column, row, and grid can " +
         "have exactly 1 of each number 1 through 9. When you think you have the answer, press the " +
-        "submit button at the bottom of the puzzle. Incorrect answers will be highlighted in red.",
+        "submit button at the bottom of the puzzle. Incorrect answers will be highlighted in the darker color" + 
+        "upon submitting the puzzle.",
     },
     {
         name: "Maze Puzzle",
@@ -39,10 +40,11 @@ export const puzzles = [
     {
         name: "Tube Puzzle",
         start: startTubePuzzle,
-        helpText: "Rotate pipes so open ends meet and a path runs from the source to the goal. Filled diamonds mark joined ports; hollow circles mark open ends that are not connected. Color-blind mode is in Settings.",    },
+        helpText: "Click pipes to rotate them until a path links the meteor to the spacecraft. Filled diamonds are joined; hollow circles are still open. Use the on-screen arrows or keyboard arrow keys to move between pipes. Color-blind mode is in Settings.",
+    },
     {
        name: "Pattern Puzzle",
        start: startPatternPuzzle,
-       helpText: "Watch the color sequence and repeat it from memory.",
+       helpText: "Watch the flashing tiles, then click them in the same order. Each round is longer. Replay Pattern shows the sequence again. Tiles: circle 1, square 2, triangle 3, star 4. Keyboard: 1–4 to press a tile, arrows to move, Enter or Space to press, R to replay.",
    }
 ];

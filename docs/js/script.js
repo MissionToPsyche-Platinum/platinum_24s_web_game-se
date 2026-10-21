@@ -17,6 +17,7 @@ const leaderBoardPopUp = document.getElementById("leaderBoardPopUp");
 const gameScreen = document.getElementById("puzzle-screen");
 const startButton = document.getElementById("start");
 const backToMenuButtons = document.querySelectorAll(".back-to-menu");
+const clearLeaderboardButton = document.getElementById("clearLeaderboard");
 const nameCreationScreen = document.getElementById("nameCreationScreen");
 const overlays = document.querySelectorAll(".overlay");
 let firstName = "";
@@ -43,6 +44,7 @@ const settingSound = document.getElementById("settingSound");
 const settingMusic = document.getElementById("settingMusic");
 const settingDisplayName = document.getElementById("settingDisplayName");
 const settingShowTimer = document.getElementById("settingShowTimer");
+const currentScore = document.getElementById("currentScore");
 const settingHints = document.getElementById("settingHints");
 const puzzleHelpButton = document.getElementById("puzzle-help");
 const settingReducedMotion = document.getElementById("settingReducedMotion");
@@ -115,6 +117,7 @@ beginGameButton.addEventListener("click", function() {
 leaderBoardButton.addEventListener("click", startLeaderBoard);
 instructionsButton.addEventListener("click", startInstructions);
 creditsButton.addEventListener("click", startCredits);
+clearLeaderboardButton.addEventListener("click", clearLeaderboard);
 
 let runTimerInterval = null;
 let runActive = false;
@@ -148,6 +151,16 @@ function applyDisabledHints() {
   } else {
     puzzleHelpButton.disabled = false;
   }
+}
+
+function clearLeaderboard() {
+  localStorage.removeItem(LEADERBOARD_KEY);
+  LEADERBOARD_PLACE_IDS.forEach((id, index) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.textContent = `${index + 1}.`;
+    }
+  });
 }
 
 function loadGameplaySettings() {
@@ -290,9 +303,9 @@ function loadLeaderboard() {
   }
 }
 
-function saveLeaderboardEntry(name, timeMs) {
+function saveLeaderboardEntry(name, timeMs, score) {
   const scores = loadLeaderboard();
-  scores.push({ name, timeMs });
+  scores.push({ name, timeMs, score });
   scores.sort((a, b) => a.timeMs - b.timeMs);
   localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(scores.slice(0, 5)));
 }
@@ -304,7 +317,7 @@ function renderLeaderboard() {
     if (!el) return;
     const entry = scores[i];
     el.textContent = entry
-      ? `${i + 1}. ${entry.name} — ${formatRunTime(entry.timeMs)}`
+      ? `${i + 1}. ${entry.name} — ${formatRunTime(entry.timeMs)} - ${entry.score}`
       : `${i + 1}.`;
   });
 }
@@ -324,10 +337,11 @@ function showWinScreen({ playerName, puzzlesSolved } = {}) {
 
   const name = playerName?.trim() || "Astronaut";
   const timeMs = getRunTimerMs();
+  const score = currentScore.textContent;
   if (winPlayerName) winPlayerName.textContent = name;
   if (winPuzzlesSolved) winPuzzlesSolved.textContent = String(puzzlesSolved ?? 0);
   if (winMissionTime) winMissionTime.textContent = formatRunTime(timeMs);
-  saveLeaderboardEntry(name, timeMs);
+  saveLeaderboardEntry(name, timeMs, score);
   if (winScreen) winScreen.style.display = "flex";
 }
 
@@ -444,6 +458,7 @@ loadGameplaySettings();
 //Resets the screen back to the main menu
 function backToMenu() {
   stopRunTimer();
+  window.cancelPuzzleBreak?.();
   closeExitConfirm();
   closeMenuConfirm();
   if (puzzleHelpPopUp) puzzleHelpPopUp.style.display = "none";

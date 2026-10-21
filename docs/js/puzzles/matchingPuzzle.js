@@ -89,7 +89,7 @@ export function startMatchingPuzzle({ containerID }) {
         containerID.innerHTML = `
             <div id="puzzle-layout">
                 <header>
-                    <h3 id="matching-puzzle-header">Matching Puzzle</h3>
+                    <h2 class="puzzle-title" id="matching-puzzle-header">Matching Puzzle</h2>
                 </header>
                 <div class="matching-grid-container" id="gridContainer">
                     <div data-id="0" class="matching-grid-item">Tile 0</div>
@@ -116,7 +116,7 @@ export function startMatchingPuzzle({ containerID }) {
         containerID.innerHTML = `
             <div id="puzzle-layout">
                 <header>
-                    <h3 id="matching-puzzle-header">Matching Puzzle</h3>
+                    <h2 class="puzzle-title" id="matching-puzzle-header">Matching Puzzle</h2>
                 </header>
                 <div class="matching-challenge-grid-container" id="gridContainer">
                     <div data-id="0" class="matching-challenge-grid-item">Tile 0</div>
@@ -192,7 +192,9 @@ export function startMatchingPuzzle({ containerID }) {
         for (let i = arr.length - 1; i > 0; i--) {
             if (i !== 12 || difficulty !== 'challenge') {
                 const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
+                if (j !== 12) {
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                }
             }
         }
         return arr;

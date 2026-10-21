@@ -6,9 +6,8 @@ export function startTangramPuzzle({ containerID }) {
 
     containerID.innerHTML = `
         <div class="tangram-container">
-            <h3>Tangram Puzzle</h3>
-            
-            <svg id="tangram-svg" width="950" height="650""></svg>
+            <h2 class="puzzle-title">Tangram Puzzle</h2>
+            <svg id="tangram-svg" viewBox="0 0 1000 650"></svg>
         </div>
     `;
 
@@ -277,6 +276,30 @@ function checkWin(pieces) {
     }
 }
 
+function constrainPosition(svg, piece, x, y) {
+    const viewBox = svg.viewBox.baseVal;
+    const { cx, cy } = calculateCetner(piece.points);
+    const angle = piece.rotation * Math.PI / 180;
+    
+    const points = piece.points.split(" ").map(point => {
+        const [pointX, pointY] = point.split(",").map(Number);
+        const rotatedX = cx + (pointX - cx) * Math.cos(angle) - (pointY - cy) * Math.sin(angle);
+        const rotatedY = cy + (pointX - cx) * Math.sin(angle) + (pointY - cy) * Math.cos(angle);
+        return { x: rotatedX, y: rotatedY };
+    });
+
+
+    const minX = Math.min(...points.map(point => point.x));
+    const maxX = Math.max(...points.map(point => point.x));
+    const minY = Math.min(...points.map(point => point.y));
+    const maxY = Math.max(...points.map(point => point.y));
+
+    return {
+        x: Math.min(Math.max(x, -minX), viewBox.width - maxX),
+        y: Math.min(Math.max(y, -minY), viewBox.height - maxY)
+    };
+}
+
 
 
 function renderTangram(svg, puzzle) {
@@ -286,6 +309,9 @@ function renderTangram(svg, puzzle) {
     `;
 
     puzzle.pieces.forEach(piece => {
+        const position = constrainPosition(svg, piece, piece.x, piece.y);
+        piece.x = position.x;
+        piece.y = position.y;
         const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
 
         const { cx, cy } = calculateCetner(piece.points);
@@ -333,8 +359,9 @@ function enableDragAndDrop(svg, pieces, solution, difficulty) {
         if (!selectedPiece) return;
 
         const point = getSvgPoint(e);
-        selectedPiece.x = point.x - offsetX;
-        selectedPiece.y = point.y - offsetY;
+        const position = constrainPosition(svg, selectedPiece, point.x - offsetX, point.y - offsetY);
+        selectedPiece.x = position.x;
+        selectedPiece.y = position.y;
         const target = document.getElementById(selectedPiece.id);
         const { cx, cy } = calculateCetner(selectedPiece.points);
         target.setAttribute("transform", `translate(${selectedPiece.x}, ${selectedPiece.y}) rotate(${selectedPiece.rotation}, ${cx}, ${cy})`);
@@ -363,6 +390,9 @@ function enableDragAndDrop(svg, pieces, solution, difficulty) {
         }
         const { cx, cy } = calculateCetner(piece.points);
         piece.rotation = (piece.rotation + 90) % 360;
+        const position = constrainPosition(svg, piece, piece.x, piece.y);
+        piece.x = position.x;
+        piece.y = position.y;
         target.setAttribute("transform", `translate(${piece.x}, ${piece.y}) rotate(${piece.rotation}, ${cx}, ${cy})`);
         });
     }

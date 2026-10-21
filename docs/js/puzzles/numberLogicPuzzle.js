@@ -1,6 +1,8 @@
 import { solvePuzzle } from "../gameController.js";
 import { puzzleNotSolvedMessage } from "../gameController.js";
 import { puzzleSolvedMessage } from "../gameController.js";
+import { updateScore } from "../gameController.js";
+
 //9 x 9 sudoku puzzle implementation
 export function startNumberLogicPuzzle({ containerID }) {
     let board = Array.from({ length: 9 }, () => Array(9).fill(0));
@@ -16,7 +18,7 @@ export function startNumberLogicPuzzle({ containerID }) {
     containerID.innerHTML = `
         <div class = "number-logic-container" id = "numberLogicContainer">
             <header>
-                <h3 id = "number-logic-header">Number Logic Puzzle</h3>
+                <h2 class="puzzle-title" id="puzzle-title">Number Logic Puzzle</h2>
             </header>
             <div class = "logic-grid" id = "logicGrid">
                 <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
@@ -117,6 +119,8 @@ export function startNumberLogicPuzzle({ containerID }) {
         if(checked === true) {
             solvePuzzle();
         } else {
+            let wrongAnswer = 50;
+            updateScore(wrongAnswer);
             highlightIncorrectCells(checkBoard);
             incorrectSolvePuzzle();
         }
@@ -148,6 +152,10 @@ export function startNumberLogicPuzzle({ containerID }) {
             }
         }
         return true;
+    }
+
+    function isColorBlindMode() {
+        return !!window.getPyscheSettings?.()?.colorBlind;
     }
 
     //Allows numbers to loop through scrolling
@@ -280,14 +288,26 @@ export function startNumberLogicPuzzle({ containerID }) {
             const col = i % 9;
             const userAnswer = parseInt(input.value);;
             const correctAnswer = checkBoard[row][col];
-            input.classList.remove("correct");
-            input.classList.remove("incorrect");
-            if (userAnswer !== correctAnswer) {
-                input.classList.add("incorrect");
+            if(isColorBlindMode() === false) { 
+                input.classList.remove("correct");
+                input.classList.remove("incorrect");
+                if (userAnswer !== correctAnswer) {
+                    input.classList.add("incorrect");
+                } else {
+                    input.classList.add("correct");
+                    input.disabled = true;
+                    input.removeEventListener("wheel", enableScrolling);
+                }
             } else {
-                input.classList.add("correct");
-                input.disabled = true;
-                input.removeEventListener("wheel", enableScrolling);
+                input.classList.remove("correctColorBlind");
+                input.classList.remove("incorrectColorBlind");
+                if(userAnswer !== correctAnswer) {
+                    input.classList.add("incorrectColorBlind");
+                } else {
+                    input.classList.add("correctColorBlind");
+                    input.disabled = true;
+                    input.removeEventListener("wheel", enableScrolling);
+                }
             }
         });
     }
