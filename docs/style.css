@@ -1148,7 +1148,7 @@ body {
 .matching-grid-item {
     border: 2px solid rgba(249, 160, 0, 0.35);
     background-clip: border-box;
-    padding-top: 65px;
+    /* padding-top: 65px; */
     height: 180px;
     width: 180px;
     text-align: center;
@@ -1158,6 +1158,18 @@ body {
 }
 
 .matching-challenge-grid-item {
+    border: 2px solid rgba(249, 160, 0, 0.35);
+    background-clip: border-box;
+    /* padding-top: 45px; */
+    height: 140px;
+    width: 140px;
+    text-align: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 28;
+}
+
+#free-tile {
     border: 2px solid rgba(249, 160, 0, 0.35);
     background-clip: border-box;
     padding-top: 45px;
