@@ -41,37 +41,16 @@ function clearMissionFact() {
     missionFactTitle.textContent = "Mission Intel";
 }
 
-const MISSION_INTEL_TRIGGER = {
-    solve: "solve",
-    skip: "skip",
-};
-
-function shouldShowMissionIntel(trigger) {
-    if (trigger === MISSION_INTEL_TRIGGER.skip) {
-        return false;
-    }
-    if (trigger !== MISSION_INTEL_TRIGGER.solve) {
-        return false;
-    }
-    return true;
-}
-
-function showRandomMissionFact() {
+function showMissionFactForSolveCount(solvedCount) {
     if (!displayFactMessage) return;
-    displayFactMessage.textContent = nextMissionFact();
+    const idx = Math.min(Math.max(solvedCount - 1, 0), missionFacts.length - 1);
+    displayFactMessage.textContent = missionFacts[idx] ?? "";
     displayFactMessage.hidden = false;
     displayFactMessage.style.display = "block";
     missionFactTitle.textContent = "Intel Unlocked!";
     missionFactSection.classList.remove("is-reward");
     void missionFactSection.offsetWidth;
     missionFactSection.classList.add("is-reward");
-}
-
-function tryShowMissionIntel(trigger) {
-    if (!shouldShowMissionIntel(trigger)) {
-        return;
-    }
-    showRandomMissionFact();
 }
 
 export function updateScore(wrongAnswer) {
@@ -85,7 +64,6 @@ export function updateScore(wrongAnswer) {
 const PUZZLES_TO_WIN = 5;
 const MAX_SKIPS = 3;
 const PUZZLE_BREAK_SECONDS = 3;
-const MAX_SKIPS = 3;
 let isGameOver;
 let puzzleBreakTimer = null;
 
@@ -123,6 +101,7 @@ function startPuzzleBreak() {
     if (isGameOver || detectWin()) return;
     const overlay = document.getElementById("puzzle-break-overlay");
     const countEl = document.getElementById("puzzle-break-count");
+
     if (!overlay || !countEl) {
         displayNextPuzzle();
         return;
@@ -130,45 +109,60 @@ function startPuzzleBreak() {
 
     hidePuzzleBreak();
     nextPuzzleButton.disabled = true;
-    updateSkipButtonState(false);
+    solvePuzzleButton.disabled = true;
+    skipPuzzleButton.disabled = true;
+    puzzleHelpButton.disabled = true;
+
     let remaining = PUZZLE_BREAK_SECONDS;
     countEl.textContent = remaining;
     overlay.style.display = "flex";
 
     puzzleBreakTimer = setInterval(() => {
         remaining -= 1;
+
         if (remaining <= 0) {
             hidePuzzleBreak();
             displayNextPuzzle();
             return;
         }
+
         countEl.textContent = remaining;
     }, 1000);
 }
 
 function startGame() {
     hidePuzzleBreak();
+
+    // Reset all puzzle progress for a new game.
     gameState.currentPuzzleIndex = 0;
     gameState.solvedPuzzles = 0;
     gameState.skippedPuzzles = 0;
+
     playerScore = 0;
     updateScore(0);
+
+    // Restore all three available skips.
     skipsLeft.textContent = String(MAX_SKIPS);
     skipPuzzleButton.disabled = false;
+
     nextPuzzleButton.style.display = 'inline';
     solvePuzzleButton.disabled = false;
     nextPuzzleButton.disabled = true;
+
     if (newGameButton) newGameButton.style.display = 'none';
     if (winMessage) winMessage.style.display = 'none';
+
     noSkipsLeftMessage.style.display = 'none';
     puzzleSkippedMessage.style.display = 'none';
     puzzleSolvedMessage.style.display = 'none';
     puzzleNotSolvedMessage.style.display = 'none';
+
     clearMissionFact();
     solvePuzzleMessage.style.display = 'none';
-    resetSkipState();
+
+    // Generate a new randomized puzzle order for each game.
     gameState.puzzleOrder = shufflePuzzles(puzzles);
-    resetMissionFactQueue();
+
     updateProgress();
     gameIsOver(false);
     displayNextPuzzle();
@@ -205,38 +199,24 @@ function gameIsOver(value) {
     isGameOver = value;
 }
 
-function getSkipsRemaining() {
-    const remaining = Number.parseInt(skipsLeft?.textContent, 10);
-    return Number.isFinite(remaining) ? remaining : 0;
-}
-
-function resetSkipState() {
-    puzzleSkipped = false;
-    gameState.skippedPuzzles = 0;
-    if (skipsLeft) {
-        skipsLeft.textContent = String(MAX_SKIPS);
-    }
-    if (noSkipsLeftMessage) {
-        noSkipsLeftMessage.style.display = "none";
-    }
-}
-
-function updateSkipButtonState(allowSkip) {
-    if (!skipPuzzleButton) return;
-    const canSkip = Boolean(allowSkip) && !isGameOver && getSkipsRemaining() > 0;
-    skipPuzzleButton.disabled = !canSkip;
-}
-
 function skipPuzzle() {
-    // Ignore duplicate clicks and never consume a skip after the puzzle is complete.
-    if (isGameOver || skipPuzzleButton.disabled || gameState.skippedPuzzles >= MAX_SKIPS) return;
+    // Prevent duplicate skips and enforce the maximum.
+    if (
+        isGameOver ||
+        skipPuzzleButton.disabled ||
+        gameState.skippedPuzzles >= MAX_SKIPS
+    ) {
+        return;
+    }
 
     gameState.skippedPuzzles += 1;
     gameState.currentPuzzleIndex += 1;
+
     playerScore -= skippedScore;
     updateScore(0);
 
     skipsLeft.textContent = String(MAX_SKIPS - gameState.skippedPuzzles);
+
     skipPuzzleButton.disabled = true;
     puzzleNotSolvedMessage.style.display = 'none';
     puzzleSkippedMessage.style.display = 'block';
@@ -244,6 +224,7 @@ function skipPuzzle() {
     solvePuzzleButton.disabled = true;
     puzzleHelpButton.disabled = true;
     nextPuzzleButton.disabled = false;
+
     updateProgress();
     window.holdRunTimer?.();
 
@@ -253,24 +234,29 @@ function skipPuzzle() {
 }
 
 export function solvePuzzle() {
-    // A puzzle may report success more than once; only score its first completion.
+    // Prevent the same puzzle from being scored more than once.
     if (isGameOver || solvePuzzleButton.disabled) return;
+
     const timeTaken = stopPuzzleTimer();
     const timeScore = calculateTimeScore(timeTaken);
+
     playerScore += correctScore + timeScore;
     gameState.solvedPuzzles += 1;
     gameState.currentPuzzleIndex += 1;
+
     updateScore(0);
 
     puzzleNotSolvedMessage.style.display = 'none';
     puzzleSolvedMessage.style.display = 'block';
     solvePuzzleMessage.style.display = 'none';
-    tryShowMissionIntel(MISSION_INTEL_TRIGGER.solve);
+
+    showMissionFactForSolveCount(gameState.solvedPuzzles);
+
     nextPuzzleButton.disabled = false;
     solvePuzzleButton.disabled = true;
     skipPuzzleButton.disabled = true;
     puzzleHelpButton.disabled = true;
-    updateSkipButtonState(false);
+
     updateProgress();
     window.holdRunTimer?.();
 
@@ -280,17 +266,20 @@ export function solvePuzzle() {
 }
 
 function detectWin() {
-    // Completing five rounds counts, whether a round was solved or skipped.
+    // A mission ends after five completed rounds.
+    // Both solved and skipped puzzles count toward this total.
     return completedPuzzles() >= PUZZLES_TO_WIN;
 }
 
 function updateHeader() {
     if (newGameButton) newGameButton.style.display = 'inline';
     if (winMessage) winMessage.style.display = 'block';
+
     solvePuzzleButton.disabled = true;
     skipPuzzleButton.disabled = true;
     puzzleSolvedMessage.style.display = 'none';
     nextPuzzleButton.style.display = 'none';
+
     gameIsOver(true);
 
     const playerName =
@@ -298,32 +287,46 @@ function updateHeader() {
         document.getElementById("playerNameDisplay")?.textContent?.trim() ||
         "Astronaut";
 
+    // Pass both solved and skipped counts to the win screen.
     window.showWinScreen?.({
         playerName,
         puzzlesSolved: gameState.solvedPuzzles,
+        puzzlesSkipped: gameState.skippedPuzzles,
     });
 }
 
 function displayNextPuzzle() {
     if (isGameOver || detectWin()) return;
+
     window.releaseRunTimerHold?.();
+
     puzzleSkippedMessage.style.display = 'none';
     solvePuzzleMessage.style.display = 'block';
     puzzleSolvedMessage.style.display = 'none';
     noSkipsLeftMessage.style.display = 'none';
+
     clearMissionFact();
+
     nextPuzzleButton.disabled = true;
     startPuzzleTimer();
     solvePuzzleButton.disabled = false;
+
+    // Re-enable skipping only if the player has skips remaining.
     skipPuzzleButton.disabled = gameState.skippedPuzzles >= MAX_SKIPS;
+
     puzzleHelpButton.disabled = !settingHints.checked;
 
     const puzzle = gameState.puzzleOrder[gameState.currentPuzzleIndex];
+
     if (puzzle) {
         loadPuzzle(puzzle);
     } else {
-        // Guard against exhausting the randomized puzzle list unexpectedly.
-        console.error("No puzzle available at index", gameState.currentPuzzleIndex);
+        // Avoid loading an undefined puzzle if the list is exhausted.
+        console.error(
+            "No puzzle available at index",
+            gameState.currentPuzzleIndex
+        );
+
         solvePuzzleButton.disabled = true;
         skipPuzzleButton.disabled = true;
         puzzleHelpButton.disabled = true;
@@ -337,7 +340,10 @@ function loadPuzzle(puzzle) {
 
 function updateProgress() {
     const completed = completedPuzzles();
-    progressElement.textContent = `Puzzles completed: ${completed} / ${PUZZLES_TO_WIN}`;
+
+    progressElement.textContent =
+        `Puzzles completed: ${completed} / ${PUZZLES_TO_WIN}`;
+
     if (progressBar) {
         progressBar.max = PUZZLES_TO_WIN;
         progressBar.value = completed;
@@ -349,28 +355,55 @@ function showPuzzleHelp() {
         puzzleHelpButton.disabled = true;
         return;
     }
-    const help = gameState.puzzleOrder[gameState.currentPuzzleIndex]?.helpText ?? "";
+
+    const help =
+        gameState.puzzleOrder[gameState.currentPuzzleIndex]?.helpText ?? "";
+
     const puzzleHelpText = document.getElementById("puzzleHelpText");
     const puzzleHelpPopUp = document.getElementById("puzzleHelpPopUp");
-    if (puzzleHelpText) puzzleHelpText.textContent = help;
+
+    if (puzzleHelpText) {
+        puzzleHelpText.textContent = help;
+    }
+
     window.pauseRunTimer?.();
-    if (puzzleHelpPopUp) puzzleHelpPopUp.style.display = "block";
+
+    if (puzzleHelpPopUp) {
+        puzzleHelpPopUp.style.display = "block";
+    }
 }
 
 function closePuzzleHelp() {
     const puzzleHelpPopUp = document.getElementById("puzzleHelpPopUp");
-    if (puzzleHelpPopUp) puzzleHelpPopUp.style.display = "none";
+
+    if (puzzleHelpPopUp) {
+        puzzleHelpPopUp.style.display = "none";
+    }
+
     window.resumeRunTimer?.();
 }
 
+// Register event listeners.
 skipPuzzleButton.addEventListener("click", skipPuzzle);
 solvePuzzleButton.addEventListener("click", solvePuzzle);
-if (newGameButton) newGameButton.addEventListener("click", startGame);
-nextPuzzleButton.addEventListener("click", startPuzzleBreak);
-window.cancelPuzzleBreak = hidePuzzleBreak;
-puzzleHelpButton.addEventListener("click", showPuzzleHelp);
-document.getElementById("closePuzzleHelp")?.addEventListener("click", closePuzzleHelp);
 
+if (newGameButton) {
+    newGameButton.addEventListener("click", startGame);
+}
+
+nextPuzzleButton.addEventListener("click", startPuzzleBreak);
+
+window.cancelPuzzleBreak = hidePuzzleBreak;
+
+puzzleHelpButton.addEventListener("click", showPuzzleHelp);
+
+document.getElementById("closePuzzleHelp")?.addEventListener(
+    "click",
+    closePuzzleHelp
+);
+
+// Allow script.js to reset the controller when Play Again is clicked.
 window.onWinPlayAgain = startGame;
 
+// Initialize the puzzle controller.
 startGame();
