@@ -2,6 +2,7 @@ import { solvePuzzle } from '../gameController.js';
 export function startMatchingPuzzle({ containerID }) {
     const settings = typeof window !== "undefined" ? window.getPyscheSettings?.() : undefined;
     const difficulty = settings?.difficulty === "challenge" ? "challenge" : "normal";
+    const imageSize = difficulty === "normal" ? 180 : 140;
 
     const psyche_image_1 = document.createElement('img');
     const psyche_image_2 = document.createElement('img');
@@ -11,38 +12,78 @@ export function startMatchingPuzzle({ containerID }) {
     const psyche_image_6 = document.createElement('img');
     const psyche_image_7 = document.createElement('img');
 
+    const psyche_image_1_2 = document.createElement('img');
+    const psyche_image_2_2 = document.createElement('img');
+    const psyche_image_3_2 = document.createElement('img');
+    const psyche_image_4_2 = document.createElement('img');
+    const psyche_image_5_2 = document.createElement('img');
+    const psyche_image_6_2 = document.createElement('img');
+    const psyche_image_7_2 = document.createElement('img');
+
     psyche_image_1.src = './images/Psyche_Asteroid_Image_No_Background_Resized.png';
-    psyche_image_1.width = 80;
-    psyche_image_1.length = 80;
+    psyche_image_1.width = imageSize;
+    psyche_image_1.height = imageSize;
 
     psyche_image_2.src = './images/matching/Psyche_at_sunset.jpg';
-    psyche_image_2.width = 80;
-    psyche_image_2.length = 80;
+    psyche_image_2.width = imageSize;
+    psyche_image_2.height = imageSize;
 
     psyche_image_3.src = './images/matching/Psyche_closeup.jpg';
-    psyche_image_3.width = 80;
-    psyche_image_3.length = 80;
+    psyche_image_3.width = imageSize;
+    psyche_image_3.height = imageSize;
 
     psyche_image_4.src = './images/matching/Psyche_countdown.jpg';
-    psyche_image_4.width = 80;
-    psyche_image_4.length = 80;
+    psyche_image_4.width = imageSize;
+    psyche_image_4.height = imageSize;
 
     psyche_image_5.src = './images/matching/Psyche_Launch_2.jpg';
-    psyche_image_5.width = 80;
-    psyche_image_5.length = 80;
+    psyche_image_5.width = imageSize;
+    psyche_image_5.height = imageSize;
 
     psyche_image_6.src = './images/matching/Psyche_ring_of_firepower.jpg';
-    psyche_image_6.width = 80;
-    psyche_image_6.length = 80;
+    psyche_image_6.width = imageSize;
+    psyche_image_6.height = imageSize;
 
     psyche_image_7.src = './images/matching/Psyche_spacecraft.jpg';
-    psyche_image_7.width = 80;
-    psyche_image_7.length = 80;
+    psyche_image_7.width = imageSize;
+    psyche_image_7.height = imageSize;
+
+    psyche_image_1_2.src = './images/Psyche_Asteroid_Image_No_Background_Resized.png';
+    psyche_image_1_2.width = imageSize;
+    psyche_image_1_2.height = imageSize;
+
+    psyche_image_2_2.src = './images/matching/Psyche_at_sunset.jpg';
+    psyche_image_2_2.width = imageSize;
+    psyche_image_2_2.height = imageSize;
+
+    psyche_image_3_2.src = './images/matching/Psyche_closeup.jpg';
+    psyche_image_3_2.width = imageSize;
+    psyche_image_3_2.height = imageSize;
+
+    psyche_image_4_2.src = './images/matching/Psyche_countdown.jpg';
+    psyche_image_4_2.width = imageSize;
+    psyche_image_4_2.height = imageSize;
+
+    psyche_image_5_2.src = './images/matching/Psyche_Launch_2.jpg';
+    psyche_image_5_2.width = imageSize;
+    psyche_image_5_2.height = imageSize;
+
+    psyche_image_6_2.src = './images/matching/Psyche_ring_of_firepower.jpg';
+    psyche_image_6_2.width = imageSize;
+    psyche_image_6_2.height = imageSize;
+
+    psyche_image_7_2.src = './images/matching/Psyche_spacecraft.jpg';
+    psyche_image_7_2.width = imageSize;
+    psyche_image_7_2.height = imageSize;
 
     let clickedElement1;
     let clickedElement2;
+    let element1Index;
+    let element2Index;
     let pairsFound = 0;
     let numberArray = [];
+    let imagesArray1 = [psyche_image_1, psyche_image_2, psyche_image_3, psyche_image_4, psyche_image_5, psyche_image_6, psyche_image_7];
+    let imagesArray2 = [psyche_image_1_2, psyche_image_2_2, psyche_image_3_2, psyche_image_4_2, psyche_image_5_2, psyche_image_6_2, psyche_image_7_2];
 
     if (difficulty === "normal") {
         containerID.innerHTML = `
@@ -90,7 +131,7 @@ export function startMatchingPuzzle({ containerID }) {
                     <div data-id="9" class="matching-challenge-grid-item">Tile 9</div>
                     <div data-id="10" class="matching-challenge-grid-item">Tile 10</div>
                     <div data-id="11" class="matching-challenge-grid-item">Tile 11</div>
-                    <div data-id="12" class="matching-challenge-grid-item">Free!</div>
+                    <div data-id="12" id="free-tile" class="matching-challenge-grid-item">Free!</div>
                     <div data-id="13" class="matching-challenge-grid-item">Tile 13</div>
                     <div data-id="14" class="matching-challenge-grid-item">Tile 14</div>
                     <div data-id="15" class="matching-challenge-grid-item">Tile 15</div>
@@ -132,7 +173,7 @@ export function startMatchingPuzzle({ containerID }) {
             }
         }
         numberArray = shuffleArray(numberArray);
-
+        console.log(numberArray);
         const gridItems = document.querySelectorAll(tileClass);
 
         gridItems.forEach((item, index) => {
@@ -140,9 +181,9 @@ export function startMatchingPuzzle({ containerID }) {
                 item.textContent = "";
             }
             item.style.color = "rgba(249, 160, 0, 1)";
-            if (numberArray[index] === 1) {
-                item.appendChild(psyche_image_1);
-            }
+            // if (numberArray[index] === 1) {
+            //     item.appendChild(psyche_image_2);
+            // }
         });
     }
 
@@ -161,15 +202,31 @@ export function startMatchingPuzzle({ containerID }) {
     function clickTile() {
         if (clickedElement1 == null) {
             clickedElement1 = this;
-            let element1Index = +clickedElement1.dataset.id;
-            clickedElement1.textContent = numberArray[element1Index];
+            element1Index = +clickedElement1.dataset.id;
+            if (numberArray[element1Index] <= 6) {
+                console.log(numberArray[element1Index]);
+                console.log(imagesArray1[numberArray[element1Index]]);
+                clickedElement1.appendChild(imagesArray1[numberArray[element1Index]]);
+            }
+            else {
+                clickedElement1.textContent = numberArray[element1Index];
+            }
+            // clickedElement1.appendChild(imagesArray[element1Index])
             clickedElement1.style.border = '4px solid #702963'
         }
         else if (clickedElement2 == null) {
             clickedElement2 = this;
-            let element2Index = +clickedElement2.dataset.id;
-            clickedElement2.textContent = numberArray[element2Index];
-            if (clickedElement1.textContent === clickedElement2.textContent && clickedElement1 !== clickedElement2) {
+            element2Index = +clickedElement2.dataset.id;
+            if (numberArray[element2Index] <= 6) {
+                console.log(numberArray[element2Index]);
+                console.log(imagesArray2[numberArray[element2Index]]);
+                clickedElement2.appendChild(imagesArray2[numberArray[element2Index]])
+            }
+            else {
+                clickedElement2.textContent = numberArray[element2Index];
+            }
+            // clickedElement2.textContent = numberArray[element2Index];
+            if (numberArray[element1Index] === numberArray[element2Index] && clickedElement1 !== clickedElement2) {
                 clickedElement1.style.backgroundColor = '#301934';
                 clickedElement2.style.backgroundColor = '#301934';
                 clickedElement1.style.border = '2px solid rgba(249, 160, 0, 0.35)';
