@@ -1353,7 +1353,7 @@ body {
 
 #puzzle-layout {
     display: grid;
-    place-items: center;
+    align-self: flex-start;
     grid-template-rows: auto 1fr;
     grid-template-areas: 
     "header"
@@ -2255,6 +2255,19 @@ button.tube-cell::-moz-focus-inner {
         height: 145px;
         width: 145px;
     }
+    .matching-challenge-grid-item {
+        padding-top: 45px;
+        height: 130px;
+        width: 130px;
+    }
+}
+
+@media (max-width: 750px) {
+    .matching-challenge-grid-item {
+        padding-top: 35px;
+        height: 110px;
+        width: 110px;
+    } 
 }
 
 @media (max-width: 660px) {
@@ -2262,6 +2275,11 @@ button.tube-cell::-moz-focus-inner {
         padding-top: 40px;
         height: 120px;
         width: 120px;
+    }
+    .matching-challenge-grid-item {
+        padding-top: 25px;
+        height: 90px;
+        width: 90px;
     }
 }
 
@@ -2271,13 +2289,31 @@ button.tube-cell::-moz-focus-inner {
         height: 90px;
         width: 90px;
     }
+    .matching-challenge-grid-item {
+        padding-top: 15px;
+        height: 70px;
+        width: 70px;
+    }
+    #free-tile {
+        font-size: 16;
+    }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 400px) {
     .matching-grid-item {
-        padding-top: 15px;
+        padding-top: 10px;
         height: 60px;
         width: 60px;
+    }
+    .matching-challenge-grid-item {
+        padding-top: 5px;
+        height: 45px;
+        width: 45px;
+        font-size: 20;
+    }
+    #free-tile {
+        font-size: 14;
+        padding-top: 10px;
     }
 }
 
