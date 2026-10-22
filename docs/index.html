@@ -34,11 +34,11 @@
                 </label>
                 <p><strong>Audio</strong></p>
                 <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; cursor: pointer;">
-                    <input type="checkbox" id="settingSound">
+                    <input type="checkbox" id="settingSound" checked>
                     <span>Sound effects</span>
                 </label>
                 <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px; cursor: pointer;">
-                    <input type="checkbox" id="settingMusic">
+                    <input type="checkbox" id="settingMusic" checked>
                     <span>Background music</span>
                 </label>
                 <p><strong>Gameplay</strong></p>
@@ -379,6 +379,7 @@
 
     </div>
 
+    <audio id="background-music" src="audio/Nasa-background-music.m4a" loop preload="auto"></audio>
     <script type = "module" src="js/script.js"></script>
     <script type = "module" src="js/gameController.js"></script>
 
