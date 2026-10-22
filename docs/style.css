@@ -1353,7 +1353,7 @@ body {
 
 #puzzle-layout {
     display: grid;
-    place-items: center;
+    align-self: flex-start;
     grid-template-rows: auto 1fr;
     grid-template-areas: 
     "header"
