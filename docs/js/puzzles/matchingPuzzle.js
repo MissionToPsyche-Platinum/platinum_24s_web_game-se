@@ -5,7 +5,9 @@ export function startMatchingPuzzle({ containerID }) {
 
 
     let clickedElement1;
+    let clickedElement1Parent;
     let clickedElement2;
+    let clickedElement2Parent;
     let pairsFound = 0;
     let numberArray = [];
 
@@ -16,22 +18,133 @@ export function startMatchingPuzzle({ containerID }) {
                     <h2 class="puzzle-title" id="matching-puzzle-header">Matching Puzzle</h2>
                 </header>
                 <div class="matching-grid-container" id="gridContainer">
-                    <div data-id="0" class="matching-grid-item">Tile 0</div>
-                    <div data-id="1" class="matching-grid-item">Tile 1</div>
-                    <div data-id="2" class="matching-grid-item">Tile 2</div>
-                    <div data-id="3" class="matching-grid-item">Tile 3</div>
-                    <div data-id="4" class="matching-grid-item">Tile 4</div>
-                    <div data-id="5" class="matching-grid-item">Tile 5</div>
-                    <div data-id="6" class="matching-grid-item">Tile 6</div>
-                    <div data-id="7" class="matching-grid-item">Tile 7</div>
-                    <div data-id="8" class="matching-grid-item">Tile 8</div>
-                    <div data-id="9" class="matching-grid-item">Tile 9</div>
-                    <div data-id="10" class="matching-grid-item">Tile 10</div>
-                    <div data-id="11" class="matching-grid-item">Tile 11</div>
-                    <div data-id="12" class="matching-grid-item">Tile 12</div>
-                    <div data-id="13" class="matching-grid-item">Tile 13</div>
-                    <div data-id="14" class="matching-grid-item">Tile 14</div>
-                    <div data-id="15" class="matching-grid-item">Tile 15</div>
+                    <div class="clicked-tile" data-id="0">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="0" class="matching-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="1">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="1" class="matching-grid-item">
+                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="2">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="2" class="matching-grid-item">
+                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="3">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="3" class="matching-grid-item">
+                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="4">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="4" class="matching-grid-item">
+                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="5">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="5" class="matching-grid-item">
+                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="6">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="6" class="matching-grid-item">
+                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="7">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="7" class="matching-grid-item">
+                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="8">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="8" class="matching-grid-item">
+                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="9">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="9" class="matching-grid-item">
+                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="10">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="10" class="matching-grid-item">
+                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="11">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="11" class="matching-grid-item">
+                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="12">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="12" class="matching-grid-item">
+                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="13">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="13" class="matching-grid-item">
+                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="14">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="14" class="matching-grid-item">
+                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="15">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="15" class="matching-grid-item">
+                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         `;
@@ -72,18 +185,26 @@ export function startMatchingPuzzle({ containerID }) {
             </div>
         `;
     }
-    const tileClass = difficulty === "normal" ? ".matching-grid-item" : ".matching-challenge-grid-item";
+    const tileClass = difficulty === "normal" ? ".clicked-tile" : ".matching-challenge-grid-item";
     const NUM_TILES = difficulty === "normal" ? 16 : 25;
     const gridItems = document.querySelectorAll(tileClass);
     populateMatchingPuzzle();
 
     gridItems.forEach(item => {
-        if (item.textContent !== "Free!") {
-            item.addEventListener('click', clickTile);
-        }
-        else {
-            item.style.backgroundColor = '#301934';
-        }
+
+        item.addEventListener('click', () =>{
+            item.classList.toggle('clicked');
+            const itemId = item.getAttribute('data-id');
+            const itemBack = item.querySelector('.matching-grid-item');
+            itemBack.textContent = numberArray[itemId];
+            clickTile(item, itemId, itemBack);
+        });
+        // if (item.textContent !== "Free!") {
+        //     item.addEventListener('click', clickTile);
+        // }
+        // else {
+        //     item.style.backgroundColor = '#301934';
+        // }
     });
 
     function populateMatchingPuzzle () {
@@ -101,9 +222,9 @@ export function startMatchingPuzzle({ containerID }) {
         const gridItems = document.querySelectorAll(tileClass);
 
         gridItems.forEach((item, index) => {
-            if (item.textContent !== "Free!") {
-                item.textContent = "";
-            }
+            // if (item.textContent !== "Free!") {
+            //     item.textContent = "";
+            // }
             item.style.color = "rgba(249, 160, 0, 1)";
         });
     }
@@ -124,16 +245,25 @@ export function startMatchingPuzzle({ containerID }) {
         return arr;
     }
 
+    function clickAnimatedTile() {
 
-    function clickTile() {
+    }
+
+
+    function clickTile(item, itemId, itemBack) {
         if (clickedElement1 == null) {
-            clickedElement1 = this;
+            clickedElement1 = itemBack;
+            clickedElement1Parent = item;
+            // clickedElement1Parent.
+            // clickedElement1 = this;
+            // clickedElement1.classList.toggle("clicked");
             let element1Index = +clickedElement1.dataset.id;
-            clickedElement1.textContent = numberArray[element1Index];
+            itemBack.textContent = numberArray[element1Index];
             clickedElement1.style.border = '4px solid #702963'
         }
         else if (clickedElement2 == null) {
-            clickedElement2 = this;
+            clickedElement2 = itemBack;
+            clickedElement2Parent = item;
             let element2Index = +clickedElement2.dataset.id;
             clickedElement2.textContent = numberArray[element2Index];
             if (clickedElement1 === clickedElement2) {
@@ -145,8 +275,8 @@ export function startMatchingPuzzle({ containerID }) {
                 clickedElement2.style.backgroundColor = '#301934';
                 clickedElement1.style.border = '2px solid rgba(249, 160, 0, 0.35)';
                 clickedElement2.style.border = '2px solid rgba(249, 160, 0, 0.35)';
-                clickedElement1.removeEventListener('click', clickTile);
-                clickedElement2.removeEventListener('click', clickTile);
+                // clickedElement1.removeEventListener('click', clickTile);
+                // clickedElement2.removeEventListener('click', clickTile);
                 clickedElement1 = null;
                 clickedElement2 = null;
                 pairsFound++;
@@ -164,14 +294,18 @@ export function startMatchingPuzzle({ containerID }) {
         }
 
         function rehideNumber () {
-            clickedElement1.style.background = 'transparent';
-            clickedElement2.style.background = 'transparent';
+            // clickedElement1.style.background = 'transparent';
+            // clickedElement2.style.background = 'transparent';
+            clickedElement1Parent.classList.toggle("clicked");
+            clickedElement2Parent.classList.toggle('clicked');
             clickedElement1.style.border = '2px solid rgba(249, 160, 0, 0.35)';
             clickedElement2.style.border = '2px solid rgba(249, 160, 0, 0.35)';
-            clickedElement1.textContent = "";
-            clickedElement2.textContent = "";
+            // clickedElement1.textContent = "";
+            // clickedElement2.textContent = "";
             clickedElement1 = null;
             clickedElement2 = null;
+            clickedElement1Parent = null;
+            clickedElement2Parent = null;
         }
     }
 
