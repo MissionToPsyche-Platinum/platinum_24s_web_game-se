@@ -10,7 +10,8 @@ export const puzzles = [
     {
         name: "Tangram Puzzle",
         start: startTangramPuzzle,
-        helpText: "Arrange pieces to match the target shape. Double click pieces to rotate.",
+        helpText: "Arrange pieces to match the target shape. When in challenge mode, double click pieces" +
+        " to rotate.",
     },
     {
         name: "Matching Puzzle",
@@ -20,7 +21,10 @@ export const puzzles = [
     {
         name: "Number Logic Puzzle",
         start: startNumberLogicPuzzle,
-        helpText: "Use logic to solve the puzzle with numbers",
+        helpText: "Use logic to solve the sudoku puzzle with numbers. Each column, row, and grid can " +
+        "have exactly 1 of each number 1 through 9. When you think you have the answer, press the " +
+        "submit button at the bottom of the puzzle. Incorrect answers will be highlighted in the darker color" + 
+        "upon submitting the puzzle.",
     },
     {
         name: "Maze Puzzle",
@@ -30,16 +34,17 @@ export const puzzles = [
     {
         name: "Sliding Puzzle",
         start: startSlidingPuzzle,
-        helpText: "Slide pieces to form the correct picture",
+        helpText: "Slide pieces to form the correct picture. You can move pieces by clicking on" +
+         " them or using the arrow keys. The empty space is represented by a blank tile.",
     },
     {
         name: "Tube Puzzle",
         start: startTubePuzzle,
-        helpText: "Turn the tubes to make the water flow!",
+        helpText: "Click pipes to rotate them until a path links the meteor to the spacecraft. Filled diamonds are joined; hollow circles are still open. Use the on-screen arrows or keyboard arrow keys to move between pipes. Color-blind mode is in Settings.",
     },
     {
        name: "Pattern Puzzle",
        start: startPatternPuzzle,
-       helpText: "Watch the color sequence and repeat it from memory.",
+        helpText: "Watch the flashing tiles, then click them in the same order. Each round is longer. Replay Pattern shows the sequence again. Tiles: asteroid 1, spacecraft 2, Falcon 3, ion thruster 4. Keyboard: 1–4 to press a tile, arrows to move, Enter or Space to press, R to replay.",
    }
 ];

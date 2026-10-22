@@ -3,6 +3,19 @@ import { solvePuzzle } from "../gameController.js";
 const COLORS = ["red", "blue", "green", "yellow"];
 const COLOR_TONES_HZ = [329.63, 392.0, 261.63, 440.0]; // E4, G4, C4, A4
 
+const TILE_DEFS = [
+   { color: "red", icon: "asteroid.png", label: "asteroid", number: 1 },
+   { color: "blue", icon: "spacecraft.png", label: "spacecraft", number: 2 },
+   { color: "green", icon: "falcon.png", label: "Falcon launch vehicle", number: 3 },
+   { color: "yellow", icon: "Psyche-ion-thruster.png", label: "ion thruster", number: 4 },
+];
+
+function tileShapeMarkup({ icon }) {
+   return `<span class="pattern-tile-icon" aria-hidden="true">
+       <img class="pattern-tile-icon-img" src="./images/pattern/${icon}" alt="">
+   </span>`;
+}
+
 const DIFFICULTY_CONFIG = {
    normal: {
        startLength: 3,
@@ -31,25 +44,25 @@ export function startPatternPuzzle({ containerID }) {
    containerID.innerHTML = `
        <div id="pattern-puzzle-layout">
            <header>
-               <h3 id="puzzle-header">Pattern Puzzle</h3>
-               <p id="pattern-status" role="status" aria-live="polite" aria-atomic="true">Watch the color pattern, then repeat it.</p>               <p id="pattern-mode">Mode: ${difficultyLabel}. Change this in Settings -> Difficulty for timed runs.</p>
+               <h2 class="puzzle-title">Pattern Puzzle</h2>
+               <p id="pattern-status" role="status" aria-live="polite" aria-atomic="true">Watch the pattern, then repeat it.</p>
+               <p id="pattern-mode">Mode: ${difficultyLabel}. Change this in Settings → Difficulty for timed runs.</p>
            </header>
            <p id="pattern-a11y-hint" class="pattern-hint">
-               Keyboard: use <strong>1–4</strong> to press tiles, or <strong>arrow keys</strong> to move, then <strong>Enter/Space</strong> to press. Press <strong>R</strong> to replay.
+               Watch the tiles light up, then click them in the same order.
            </p>
-           <div id="pattern-pad" role="group" aria-label="Pattern tiles" aria-describedby="pattern-a11y-hint" style="display:grid;grid-template-columns:repeat(2,80px);gap:10px;justify-content:center;margin:15px 0;">
-               ${COLORS.map((color, index) => `
+           <div id="pattern-pad" role="group" aria-label="Pattern tiles" aria-describedby="pattern-a11y-hint">
+               ${TILE_DEFS.map((tile, index) => `
                    <button
                        type="button"
-                       class="pattern-tile"
+                       class="pattern-tile pattern-tile--${tile.color}"
                        data-index="${index}"
-                       style="height:80px;border:2px solid #222;border-radius:8px;background:${color};opacity:0.65;cursor:pointer;"
-                       aria-label="${color} tile"
-                       aria-keyshortcuts="${index + 1}"
-                   ></button>
+                       aria-label="${tile.color} tile, ${tile.label}, number ${tile.number}"
+                       aria-keyshortcuts="${tile.number}"
+                   >${tileShapeMarkup(tile)}</button>
                `).join("")}
            </div>
-           <button id="pattern-replay" type="button">Replay Pattern</button>
+           <button id="pattern-replay" class="pattern-replay" type="button">Replay Pattern</button>
        </div>
    `;
 
@@ -108,7 +121,12 @@ export function startPatternPuzzle({ containerID }) {
 
 
    function clearFeedbackClasses(tile) {
-       tile.classList.remove("pattern-tile--pressed", "pattern-tile--correct", "pattern-tile--wrong");
+       tile.classList.remove(
+           "pattern-tile--pressed",
+           "pattern-tile--correct",
+           "pattern-tile--wrong",
+           "pattern-tile--playback",
+       );
    }
 
    function showTileFeedback(tile, kind) {
@@ -149,7 +167,7 @@ export function startPatternPuzzle({ containerID }) {
        for (const index of pattern) {
            await flashTile(index);
        }
-       setStatus("Your turn: click colors in order.");
+       setStatus("Your turn — repeat the pattern.");
        acceptingInput = true;
        setTilesDisabled(false);
        focusTile(focusedIndex);
@@ -171,9 +189,9 @@ export function startPatternPuzzle({ containerID }) {
                return;
            }
 
-           tile.style.opacity = "1";
+           tile.classList.add("pattern-tile--playback");
            setTimeout(() => {
-               tile.style.opacity = "0.65";
+               tile.classList.remove("pattern-tile--playback");
                setTimeout(resolve, config.gapMs);
            }, config.flashMs);
        });

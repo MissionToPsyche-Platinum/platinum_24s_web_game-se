@@ -1,6 +1,8 @@
 import { solvePuzzle } from "../gameController.js";
 import { puzzleNotSolvedMessage } from "../gameController.js";
 import { puzzleSolvedMessage } from "../gameController.js";
+import { updateScore } from "../gameController.js";
+
 //9 x 9 sudoku puzzle implementation
 export function startNumberLogicPuzzle({ containerID }) {
     let board = Array.from({ length: 9 }, () => Array(9).fill(0));
@@ -16,90 +18,90 @@ export function startNumberLogicPuzzle({ containerID }) {
     containerID.innerHTML = `
         <div class = "number-logic-container" id = "numberLogicContainer">
             <header>
-                <h3 id = "number-logic-header">Number Logic Puzzle</h3>
+                <h2 class="puzzle-title" id="puzzle-title">Number Logic Puzzle</h2>
             </header>
             <div class = "logic-grid" id = "logicGrid">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
-                <input type = "number" min = "1" max = "9">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
+                <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
             </div>
             <button id = "submit">Submit</button>
         </div>
@@ -110,14 +112,24 @@ export function startNumberLogicPuzzle({ containerID }) {
         removeCells(board, difficulty.EASY);
     }
     renderSudokuUI(board);
+    loopScrolling();
     const submitButton = document.getElementById("submit");
     submitButton.addEventListener("click", function() {
         let checked = checkWin(checkBoard);
         if(checked === true) {
             solvePuzzle();
         } else {
+            let wrongAnswer = 50;
+            updateScore(wrongAnswer);
+            highlightIncorrectCells(checkBoard);
             incorrectSolvePuzzle();
         }
+    });
+    const inputs = document.querySelectorAll(".sudoku-input");
+    inputs.forEach(input => {
+        input.addEventListener("input", function() {
+            this.value = this.value.replace(/[^1-9]/g, "");
+        });
     });
 
     //Fills the sudoku puzzle with random numbers (Checked by isValid)
@@ -140,6 +152,48 @@ export function startNumberLogicPuzzle({ containerID }) {
             }
         }
         return true;
+    }
+
+    function isColorBlindMode() {
+        return !!window.getPyscheSettings?.()?.colorBlind;
+    }
+
+    //Allows numbers to loop through scrolling
+    function loopScrolling() {
+        const inputs = document.querySelectorAll(".logic-grid input");
+        inputs.forEach(input => {
+            //Don't allow scrolling for pre-filled numbers
+            if(input.disabled) {
+                return;
+            }
+            //Scrolling with mousepad
+            input.addEventListener("wheel", enableScrolling);
+        });
+    }
+
+    //Function that enables scrolling 
+    function enableScrolling(event) {
+        event.preventDefault();
+        const input = event.target;
+        const min = 1;
+        const max = 9;
+        let value = parseInt(this.value) || min;
+        if(event.deltaY > 0) {
+            //Scrolling down
+            value--;
+            //If you're scrolling below 1
+            if(value < min) {
+                value = max;
+            }
+        } else {
+            //Scrolling up
+            value++;
+            //If you're scrolling above 9
+            if(value > max) {
+                value = min;
+            }
+        }
+        input.value = value;
     }
 
     //Renders the numbers to the screen
@@ -223,8 +277,43 @@ export function startNumberLogicPuzzle({ containerID }) {
         return true;
     }
 
+    //Highlights incorrect answers for user
+    function highlightIncorrectCells(checkBoard) {
+        const userInputs = document.querySelectorAll(".logic-grid input");
+        userInputs.forEach((input, i) => {
+            if (input.disabled) {
+                return;
+            }
+            const row = Math.floor(i / 9);
+            const col = i % 9;
+            const userAnswer = parseInt(input.value);;
+            const correctAnswer = checkBoard[row][col];
+            if(isColorBlindMode() === false) { 
+                input.classList.remove("correct");
+                input.classList.remove("incorrect");
+                if (userAnswer !== correctAnswer) {
+                    input.classList.add("incorrect");
+                } else {
+                    input.classList.add("correct");
+                    input.disabled = true;
+                    input.removeEventListener("wheel", enableScrolling);
+                }
+            } else {
+                input.classList.remove("correctColorBlind");
+                input.classList.remove("incorrectColorBlind");
+                if(userAnswer !== correctAnswer) {
+                    input.classList.add("incorrectColorBlind");
+                } else {
+                    input.classList.add("correctColorBlind");
+                    input.disabled = true;
+                    input.removeEventListener("wheel", enableScrolling);
+                }
+            }
+        });
+    }
+
     function incorrectSolvePuzzle() {
         puzzleNotSolvedMessage.style.display = 'block';
-        solvePuzzleMessage.style.display = 'none';
+        puzzleSolvedMessage.style.display = 'none';
     }
 }

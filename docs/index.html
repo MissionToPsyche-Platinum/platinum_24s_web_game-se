@@ -2,7 +2,7 @@
 <head>
     <meta charset = "UTF-8">
     <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
-    <title>Mission to Pysche</title>
+    <title>Mission to Psyche</title>
     <link rel = "stylesheet" href = "style.css">
 </head>
 
@@ -11,7 +11,7 @@
         
         <section id="main-menu" class="screen">
             <img src = "images/Psyche Asteroid Image.jpg" alt = "Psyche Asteroid" class = "psyche-asteroid">
-            <h1 class = "main-title1">PYSCHE</h1>
+            <h1 class = "main-title1">PSYCHE</h1>
             <h2 class = "main-title2">JOURNEY TO A METAL WORLD</h2>
             <button id="start" class="button">Start Game</button>
 
@@ -54,6 +54,11 @@
                     <input type="checkbox" id="settingReducedMotion" style="margin-top: 3px;">
                     <span>Reduce motion (less animation)</span>
                 </label>
+                <p><strong>Accessibility</strong></p>
+                <label style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; cursor: pointer;">
+                    <input type="checkbox" id="settingColorBlind" style="margin-top: 3px;">
+                    <span>Color-blind friendly (patterns and shapes, not color alone)</span>
+                </label>
                 <p>Difficulty for timed runs:</p>
                 <label style="display: block; margin-bottom: 20px;">
                     <select id="settingDifficulty" style="width: 100%; padding: 6px 8px; border: 1px solid #333;">
@@ -90,17 +95,88 @@
                 <button type="button" id="confirmExit">Exit Game</button>
             </div>
         </div>
+
+        <!-- Return-to-menu confirm popup (puzzle screen) -->
+        <div id="menuConfirmPopUp">
+            <div class="exit-icon-row">
+                <img
+                    src="images/Psyche_LogoAssets/Badge_Solid/Color/Psyche_BadgeSolid_Color-JPG.jpg"
+                    alt="Psyche mission badge"
+                    class="exit-logo"
+                >
+            </div>
+            <h2 class="exit-title">Return to Menu?</h2>
+            <p class="exit-subtitle">
+                You are about to leave this puzzle and go back to
+                <span class="exit-highlight">Mission to Psyche</span>.
+            </p>
+            <p class="exit-warning">
+                Your current run will end. Progress on this mission will not be saved.
+            </p>
+            <div class="exit-actions">
+                <button type="button" id="cancelMenuReturn">Keep Playing</button>
+                <button type="button" id="confirmMenuReturn">Return to Main Menu</button>
+            </div>
+        </div>
+
+        <!-- Puzzle help popup -->
+        <div id="puzzleHelpPopUp">
+            <div class="exit-icon-row">
+                <img
+                    src="images/Psyche_LogoAssets/Badge_Solid/Color/Psyche_BadgeSolid_Color-JPG.jpg"
+                    alt="Psyche mission badge"
+                    class="exit-logo"
+                >
+            </div>
+            <h2 class="exit-title">Puzzle Help</h2>
+            <p class="exit-subtitle">
+                Mission hint for this puzzle:
+            </p>
+            <p id="puzzleHelpText" class="exit-warning"></p>
+            <div class="exit-actions">
+                <button type="button" id="closePuzzleHelp">Got It</button>
+            </div>
+        </div>
         
         <!-- Exit page -->
         <section id="exit-screen" class="screen" style="display: none;">
             <div class="exit-stars" aria-hidden="true"></div>
             <div class="exit-card">
                 <p class="exit-kicker">Mission Status</p>
-                <h1>You Have Exited Mission to Pysche</h1>
+                <h1>You Have Exited Mission to Psyche</h1>
                 <p class="exit-lead">Thanks for playing. Your current run has ended.</p>
                 <p class="exit-copy">You can return to the main menu to start a new mission, or close this browser tab.</p>
                 <div class="exit-actions">
                     <button id="exit-return-menu" class="button">Return to Main Menu</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Win / mission complete page -->
+        <section id="win-screen" class="screen" style="display: none;" aria-labelledby="win-screen-title">
+            <div class="win-stars" aria-hidden="true"></div>
+            <div class="win-card">
+                <p class="win-kicker">Mission Complete</p>
+                <h1 id="win-screen-title">You Reached Psyche!</h1>
+                <p class="win-lead">
+                    Outstanding work, <span id="win-player-name">Astronaut</span>.
+                    All required puzzles are solved.
+                </p>
+                <dl class="win-stats">
+                    <div class="win-stat">
+                        <dt>Puzzles Solved</dt>
+                        <dd id="win-puzzles-solved">0</dd>
+                    </div>
+                    <div class="win-stat">
+                        <dt>Mission Time</dt>
+                        <dd id="win-mission-time">0:00</dd>
+                    </div>
+                </dl>
+                <p class="win-copy">Start another run, check the leaderboard, or return to the main menu.</p>
+                <div class="win-actions">
+                    <button id="win-play-again" class="button" type="button">Play Again</button>
+                    <button id="win-leaderboard" class="button" type="button">View Leaderboard</button>
+                    <button id="win-return-menu" class="button" type="button">Return to Main Menu</button>
                 </div>
             </div>
         </section>
@@ -139,27 +215,36 @@
         <section id="leaderBoardPopUp" class="screen" style="display: none;">
             <header id="leaderBoardHeader">
                 <h1>Leaderboard Screen</h1>
-                <header id = "leaderBoardRankings">
-                <br>
-                <div id = "firstPlace">1. Placeholder<br><br></div>
-                <div id = "secondPlace">2. Placeholder<br><br></div>
-                <div id = "thirdPlace">3. Placeholder<br><br></div>
-                <div id = "fourthPlace">4. Placeholder<br><br></div>
-                <div id = "fifthPlace">5. Placeholder<br><br></div>
-                <header>
             </header>
-            <button class="back-to-menu" id = "leaderboardBackButton">Back to Main Menu</button>
+                <div id = "leaderBoardRankings">
+                    <br>
+                    <div id = "firstPlace">1. <br><br></div>
+                    <div id = "secondPlace">2. <br><br></div>
+                    <div id = "thirdPlace">3. <br><br></div>
+                    <div id = "fourthPlace">4. <br><br></div>
+                    <div id = "fifthPlace">5. <br><br></div>
+                </div>
+            <button class = "back-to-menu" id = "leaderboardBackButton">Back to Main Menu</button>
+            <button id = "clearLeaderboard">Clear Leaderboard</button>
         </section>
 
         <!-- How to play screen -->
         <section id="instructionsPopUp" class="screen" style="display: none;">
-            Welcome to Mission to Pysche! 
+            Welcome to Mission to Psyche! 
             <br><br>
             Objective: Navigate Psyche to its asteroid destination by solving challenging puzzles!<br><br>
             Each level will present you with a different puzzle. Solve each one to move Psyche closer to its destination.<br><br>
             After completing each puzzle, you will be presented with a fact about the real Psyche mission!<br><br>
-            Each run will be timed, so try to complete the game as quickly as possible to earn the top score for the leaderboard!<br><br>
-            Good luck astronaut! How much can you learn about the Psyche mission? <br><br>
+            Good luck astronaut! How much can you learn about the Psyche mission?
+            <div class="scoring-box">
+                <h3>Scoring</h3>
+                <p>Your leaderboard score is your total mission time. Finish all 5 puzzles as quickly as you can — the fastest complete runs rank highest.</p>
+                <ul>
+                    <li>The timer runs while you are solving a puzzle.</li>
+                    <li>The timer pauses after each solve (mission fact) and while Puzzle Help is open.</li>
+                    <li>Challenge mode uses harder puzzles. Ranking is still by fastest time.</li>
+                </ul>
+            </div>
             <button class="back-to-menu" id = "instructionsBackButton">Back to Main Menu</button>
         </section>
 
@@ -186,39 +271,106 @@
         <section id="puzzle-screen" class="screen" style="display: none;">
             <div class="game-header">
                 <h1 id="game-title">Puzzle Screen</h1>
+                <div id = "playerScorePanel">
+                    <p>Score: <span id = "currentScore">0</span></p>
+                </div>
                 <div class="timer">
                     <p id="run-timer-display" style="margin: 0; font-size: 1.1rem; display: none;">
                         Run time: <span id="run-timer">0:00</span>
                     </p>
                 </div>
             </div>
-            <header id="win-message">Congratulations, you win!</header>
-
             <div class="puzzle-content">
                 <aside class="left-panel">
-                    <header id="solve-puzzle-message">Please solve puzzle to advance</header>
-                    <header id="puzzle-solved-message">Puzzle successfully solved!</header>
-                    <header id = "puzzle-not-solved-message">Puzzle incorrect, please try again!</header>
+                    <div class="game-status-messages" aria-live="polite" aria-atomic="true">
+                        <p id="solve-puzzle-message">Solve this puzzle to continue.</p>
+                        <p id="puzzle-solved-message">Puzzle solved!</p>
+                        <p id="puzzle-not-solved-message">That is not the solution. Try again.</p>
+                        <p id="puzzle-skipped-message">Puzzle skipped. You have <span id="skipsLeft">3</span> more skips.</p>
+                        <p id="no-skips-left-message">You have no skips left.</p>
+                    </div>
                     <button class="back-to-menu">Back to Main Menu</button>
+                    <button id="skip-puzzle">Skip Puzzle</button>
                     <button id="solve-puzzle">Solve Puzzle</button>
-                    <button id="new-game">New Game</button>
                     <button id="next-puzzle">Next Puzzle</button>
                     <button id="puzzle-help">Show Puzzle Help</button>
 
                     <section id="mission-fact">
-                        <h1>Mission Facts</h1>
+                        <div class="psyche-flight" aria-hidden="true">
+                            <span class="psyche-star psyche-star-1"></span>
+                            <span class="psyche-star psyche-star-2"></span>
+                            <span class="psyche-star psyche-star-3"></span>
+                            <span class="psyche-star psyche-star-4"></span>
+                            <svg class="psyche-flight-asteroid" viewBox="0 0 48 48">
+                                <defs>
+                                    <radialGradient id="psycheMetal" cx="35%" cy="30%" r="70%">
+                                        <stop offset="0%" stop-color="#f4d08a"/>
+                                        <stop offset="45%" stop-color="#c47a3a"/>
+                                        <stop offset="100%" stop-color="#5a2a28"/>
+                                    </radialGradient>
+                                </defs>
+                                <circle cx="24" cy="24" r="18" fill="url(#psycheMetal)"/>
+                                <ellipse cx="18" cy="16" rx="6" ry="3" fill="#f9e0a8" opacity="0.45"/>
+                                <path d="M12 26 Q20 22 28 28 T40 30" fill="none" stroke="#7a3a30" stroke-width="1.4"/>
+                            </svg>
+                            <svg class="psyche-craft" viewBox="0 0 200 80">
+                                <defs>
+                                    <linearGradient id="psycheGold" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="#ffd56a"/>
+                                        <stop offset="55%" stop-color="#f9a000"/>
+                                        <stop offset="100%" stop-color="#a85a12"/>
+                                    </linearGradient>
+                                    <radialGradient id="ionGlow" cx="50%" cy="50%" r="50%">
+                                        <stop offset="0%" stop-color="#d8fbff"/>
+                                        <stop offset="40%" stop-color="#7ad7ff"/>
+                                        <stop offset="100%" stop-color="rgba(80,180,255,0)"/>
+                                    </radialGradient>
+                                </defs>
+                                <g class="ion-plume">
+                                    <ellipse cx="22" cy="40" rx="20" ry="7" fill="url(#ionGlow)"/>
+                                    <ellipse cx="14" cy="40" rx="12" ry="4" fill="#bff3ff" opacity="0.7"/>
+                                </g>
+                                <g class="solar-array solar-array-left">
+                                    <circle cx="58" cy="40" r="22" fill="#1b1433" stroke="#f9a000" stroke-width="2"/>
+                                    <circle cx="58" cy="40" r="16" fill="none" stroke="#c9a24a" stroke-width="1"/>
+                                    <circle cx="58" cy="40" r="9" fill="none" stroke="#f9a000" stroke-width="1"/>
+                                    <circle cx="58" cy="40" r="3" fill="#f9a000"/>
+                                    <line x1="58" y1="18" x2="58" y2="62" stroke="#f9a000" stroke-width="0.8" opacity="0.7"/>
+                                    <line x1="36" y1="40" x2="80" y2="40" stroke="#f9a000" stroke-width="0.8" opacity="0.7"/>
+                                </g>
+                                <polygon class="craft-body" points="86,22 128,18 142,40 128,62 86,58 78,40" fill="url(#psycheGold)" stroke="#5a2a12" stroke-width="1.2"/>
+                                <rect x="96" y="30" width="22" height="10" rx="1" fill="#2a1840" opacity="0.55"/>
+                                <circle cx="134" cy="28" r="5" fill="#d8e8ff" stroke="#8aa0b8" stroke-width="1"/>
+                                <g class="solar-array solar-array-right">
+                                    <circle cx="164" cy="40" r="22" fill="#1b1433" stroke="#f9a000" stroke-width="2"/>
+                                    <circle cx="164" cy="40" r="16" fill="none" stroke="#c9a24a" stroke-width="1"/>
+                                    <circle cx="164" cy="40" r="9" fill="none" stroke="#f9a000" stroke-width="1"/>
+                                    <circle cx="164" cy="40" r="3" fill="#f9a000"/>
+                                    <line x1="164" y1="18" x2="164" y2="62" stroke="#f9a000" stroke-width="0.8" opacity="0.7"/>
+                                    <line x1="142" y1="40" x2="186" y2="40" stroke="#f9a000" stroke-width="0.8" opacity="0.7"/>
+                                </g>
+                            </svg>
+                        </div>
+                        <p class="mission-fact-kicker">Reward unlocked</p>
+                        <h1 id="mission-fact-title">Mission Intel</h1>
                         <p id="display-fact-message" class="mission-fact-body" hidden></p>
                     </section>
                 </aside>
 
                 <main id="puzzle-container">
+                    <div id="puzzle-break-overlay" aria-live="polite">
+                        <p class="puzzle-break-label">Short break</p>
+                        <p id="puzzle-break-count">3</p>
+                        <p class="puzzle-break-hint">Next puzzle incoming</p>
+                    </div>
                     <header id = "welcome">Welcome <span id = "playerNameDisplay"></span></header>
                     <section id="puzzle-window">
                         <header id="puzzle-header">Puzzle Header</header>
                     </section>
-                    <section class ="bottom-panel">
+                    <section class="bottom-panel">
                         <div class="game-status">
-                            <p id = "puzzles-completed">Puzzles Completed: 0</p>
+                            <p id="puzzles-completed">Puzzles completed: 0 / 5</p>
+                            <progress id="puzzle-progress-bar" max="5" value="0" aria-labelledby="puzzles-completed"></progress>
                         </div>
                     </section>
                 </main>
