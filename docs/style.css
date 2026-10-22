@@ -723,9 +723,40 @@ body {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    background: rgba(18, 8, 40, 0.88);
+    overflow: hidden;
+    background: #120828;
     color: #f9a000;
     text-align: center;
+}
+
+.puzzle-break-transmission {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+#puzzle-break-overlay::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+        to bottom,
+        rgba(18, 8, 40, 0.28) 0%,
+        rgba(18, 8, 40, 0.55) 55%,
+        rgba(18, 8, 40, 0.78) 100%
+    );
+}
+
+.puzzle-break-label,
+.puzzle-break-hint,
+#puzzle-break-count {
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9);
 }
 
 .puzzle-break-label,
@@ -740,6 +771,10 @@ body {
     font-size: 5rem;
     font-weight: bold;
     line-height: 1;
+}
+
+.pysche-reduced-motion .puzzle-break-transmission {
+    display: none;
 }
 
 /* Exit / return-to-menu confirmation popups */

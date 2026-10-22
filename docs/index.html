@@ -34,11 +34,11 @@
                 </label>
                 <p><strong>Audio</strong></p>
                 <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; cursor: pointer;">
-                    <input type="checkbox" id="settingSound">
+                    <input type="checkbox" id="settingSound" checked>
                     <span>Sound effects</span>
                 </label>
                 <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px; cursor: pointer;">
-                    <input type="checkbox" id="settingMusic">
+                    <input type="checkbox" id="settingMusic" checked>
                     <span>Background music</span>
                 </label>
                 <p><strong>Gameplay</strong></p>
@@ -359,6 +359,7 @@
 
                 <main id="puzzle-container">
                     <div id="puzzle-break-overlay" aria-live="polite">
+                        <img class="puzzle-break-transmission" src="images/data-transmission-break.gif" alt="">
                         <p class="puzzle-break-label">Short break</p>
                         <p id="puzzle-break-count">3</p>
                         <p class="puzzle-break-hint">Next puzzle incoming</p>
@@ -379,6 +380,7 @@
 
     </div>
 
+    <audio id="background-music" src="audio/Nasa-background-music.m4a" loop preload="auto"></audio>
     <script type = "module" src="js/script.js"></script>
     <script type = "module" src="js/gameController.js"></script>
 
