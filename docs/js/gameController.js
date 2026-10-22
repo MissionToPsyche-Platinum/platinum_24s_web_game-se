@@ -31,8 +31,8 @@ let puzzleElapsedTime = 0;
 let skipsLeft = document.getElementById("skipsLeft");
 let puzzleSkippedMessage = document.getElementById("puzzle-skipped-message");
 let noSkipsLeftMessage = document.getElementById("no-skips-left-message");
-let puzzleSkipped = false;
 let puzzlesShown = [];
+let puzzleSkipped = false;
 
 function clearMissionFact() {
     if (!displayFactMessage) return;
