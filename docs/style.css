@@ -2273,9 +2273,9 @@ button.tube-cell::-moz-focus-inner {
     }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 400px) {
     .matching-grid-item {
-        padding-top: 15px;
+        padding-top: 10px;
         height: 60px;
         width: 60px;
     }
