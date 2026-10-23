@@ -2324,7 +2324,7 @@ button.tube-cell::-moz-focus-inner {
     }
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1080px), (max-height: 1080px){
     .matching-grid-item {
         padding-top: 50px;
         height: 145px;
@@ -2354,7 +2354,7 @@ button.tube-cell::-moz-focus-inner {
     }
 }
 
-@media (max-width: 750px) {
+@media (max-width: 750px), (max-height: 750px){
     .matching-challenge-grid-item {
         padding-top: 35px;
         height: 110px;
@@ -2380,7 +2380,7 @@ button.tube-cell::-moz-focus-inner {
     } 
 }
 
-@media (max-width: 660px) {
+@media (max-width: 660px), (max-height: 660px) {
     .matching-grid-item {
         padding-top: 40px;
         height: 120px;
@@ -2411,7 +2411,7 @@ button.tube-cell::-moz-focus-inner {
     }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 560px), (max-height: 560px) {
     .matching-grid-item {
         padding-top: 25px;
         height: 90px;
@@ -2442,7 +2442,7 @@ button.tube-cell::-moz-focus-inner {
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 400px), (max-height: 400px) {
     .matching-grid-item {
         padding-top: 10px;
         height: 60px;
