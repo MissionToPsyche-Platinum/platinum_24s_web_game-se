@@ -1332,6 +1332,7 @@ body {
     /* width: 700px; */
     /* height: 700px; */
     /* border: 2px solid rgba(249, 160, 0, 0.35); */
+    /* border-radius: 8px; */
 }
 
 .clicked-tile {
@@ -1345,6 +1346,7 @@ body {
     align-items: center;
     font-weight: 700;
     font-size: 28;
+    /* border-radius: 8px; */
     perspective: 1000px;
     aspect-ratio: 1 / 1;
 }
@@ -1423,6 +1425,11 @@ body {
     font-weight: 700;
     font-size: 28;
     transform: rotateY(180deg);
+}
+
+#free-tile {
+    border: 2px solid rgba(249, 160, 0, 0.35);
+    border-radius: 8px;;
 }
 
 #puzzle-layout {
