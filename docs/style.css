@@ -1316,7 +1316,7 @@ body {
     grid-template-rows: repeat(4, 1fr);
     grid-template-columns: repeat(4, 1fr);
     /* max-width: 800px; */
-    max-height: 720;
+    /* max-height: 720; */
     width: 720px;
     height: 720px;
     /* margin: 0 auto; */
@@ -1329,7 +1329,9 @@ body {
     background-clip: padding-box;
     grid-template-rows: repeat(5, 1fr);
     grid-template-columns: repeat(5, 1fr);
-    border: 2px solid rgba(249, 160, 0, 0.35);
+    /* width: 700px; */
+    /* height: 700px; */
+    /* border: 2px solid rgba(249, 160, 0, 0.35); */
 }
 
 .clicked-tile {
@@ -1338,10 +1340,11 @@ body {
     /* padding-top: 65px; */
     height: 180px;
     width: 180px;
-    /* text-align: center; */
-    /* align-items: center; */
-    /* font-weight: 700; */
-    /* font-size: 28; */
+    color: rgba(249, 160, 0, 1);
+    text-align: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 28;
     perspective: 1000px;
     aspect-ratio: 1 / 1;
 }
@@ -1358,7 +1361,7 @@ body {
     transform: rotateY(180deg);
 }
 
-.matching-grid-item-front, .matching-grid-item {
+.matching-grid-item-front, .matching-grid-item, .matching-challenge-grid-item {
     position: absolute;
     top: 0;
     left: 0;
@@ -1413,12 +1416,13 @@ body {
     border: 2px solid rgba(249, 160, 0, 0.35);
     background-clip: border-box;
     padding-top: 45px;
-    height: 140px;
-    width: 140px;
+    /* height: 140px; */
+    /* width: 140px; */
     text-align: center;
     align-items: center;
     font-weight: 700;
     font-size: 28;
+    transform: rotateY(180deg);
 }
 
 #puzzle-layout {

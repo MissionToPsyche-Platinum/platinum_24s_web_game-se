@@ -141,6 +141,184 @@ export function startMatchingPuzzle({ containerID }) {
                     <h2 class="puzzle-title" id="matching-puzzle-header">Matching Puzzle</h2>
                 </header>
                 <div class="matching-challenge-grid-container" id="gridContainer">
+                    <div class="clicked-tile" data-id="0">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="0" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="1">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="1" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="2">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="2" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="3">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="3" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="4">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="4" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="5">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="5" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="6">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="6" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="7">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="7" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="8">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="8" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="9">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="9" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="10">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="10" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="11">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="11" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="12">Free!</div>
+                    <div class="clicked-tile" data-id="13">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="13" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="14">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="14" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="15">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="15" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="16">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="16" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="17">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="17" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="18">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="18" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="19">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="19" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="20">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="20" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="21">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="21" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="22">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="22" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="23">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="23" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clicked-tile" data-id="24">
+                        <div class="matching-grid-item-tile">
+                            <div class="matching-grid-item-front"></div>
+                            <div data-id="24" class="matching-challenge-grid-item">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        /*containerID.innerHTML = `
+            <div id="puzzle-layout">
+                <header>
+                    <h2 class="puzzle-title" id="matching-puzzle-header">Matching Puzzle</h2>
+                </header>
+                <div class="matching-challenge-grid-container" id="gridContainer">
                     <div data-id="0" class="matching-challenge-grid-item">Tile 0</div>
                     <div data-id="1" class="matching-challenge-grid-item">Tile 1</div>
                     <div data-id="2" class="matching-challenge-grid-item">Tile 2</div>
@@ -168,22 +346,32 @@ export function startMatchingPuzzle({ containerID }) {
                     <div data-id="24" class="matching-challenge-grid-item">Tile 24</div>
                 </div>
             </div>
-        `;
+        `;*/
     }
-    const tileClass = difficulty === "normal" ? ".clicked-tile" : ".matching-challenge-grid-item";
+    const tileClass = difficulty === "normal" ? ".clicked-tile" : ".clicked-tile";
+    const displayTile = difficulty === "normal" ? ".matching-grid-item" : ".matching-challenge-grid-item";
     const NUM_TILES = difficulty === "normal" ? 16 : 25;
+    const tileSize = difficulty === "normal" ? "180px" : "140px";
     const gridItems = document.querySelectorAll(tileClass);
     populateMatchingPuzzle();
 
     gridItems.forEach(item => {
+        item.style.width = tileSize;
+        item.style.height = tileSize;
+        if (item.textContent !== 'Free!') {
+            item._clickWrapper = (event) => {
+                const backId = item.getAttribute('data-id');
+                const backItem = item.querySelector(displayTile);
+                clickTile(item, backId, backItem);
+            }
+        
 
-        item._clickWrapper = (event) => {
-            const backId = item.getAttribute('data-id');
-            const backItem = item.querySelector('.matching-grid-item');
-            clickTile(item, backId, backItem);
+            item.addEventListener('click', item._clickWrapper);
         }
-
-        item.addEventListener('click', item._clickWrapper);
+        else {
+            item.style.paddingTop = "45px";
+            item.style.backgroundColor = '#301934';
+        }
 
         // if (item.textContent !== "Free!") {
         //     item.addEventListener('click', clickTile);
