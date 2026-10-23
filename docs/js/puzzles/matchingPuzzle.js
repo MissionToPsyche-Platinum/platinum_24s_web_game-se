@@ -313,40 +313,6 @@ export function startMatchingPuzzle({ containerID }) {
                 </div>
             </div>
         `;
-        /*containerID.innerHTML = `
-            <div id="puzzle-layout">
-                <header>
-                    <h2 class="puzzle-title" id="matching-puzzle-header">Matching Puzzle</h2>
-                </header>
-                <div class="matching-challenge-grid-container" id="gridContainer">
-                    <div data-id="0" class="matching-challenge-grid-item">Tile 0</div>
-                    <div data-id="1" class="matching-challenge-grid-item">Tile 1</div>
-                    <div data-id="2" class="matching-challenge-grid-item">Tile 2</div>
-                    <div data-id="3" class="matching-challenge-grid-item">Tile 3</div>
-                    <div data-id="4" class="matching-challenge-grid-item">Tile 4</div>
-                    <div data-id="5" class="matching-challenge-grid-item">Tile 5</div>
-                    <div data-id="6" class="matching-challenge-grid-item">Tile 6</div>
-                    <div data-id="7" class="matching-challenge-grid-item">Tile 7</div>
-                    <div data-id="8" class="matching-challenge-grid-item">Tile 8</div>
-                    <div data-id="9" class="matching-challenge-grid-item">Tile 9</div>
-                    <div data-id="10" class="matching-challenge-grid-item">Tile 10</div>
-                    <div data-id="11" class="matching-challenge-grid-item">Tile 11</div>
-                    <div data-id="12" class="matching-challenge-grid-item">Free!</div>
-                    <div data-id="13" class="matching-challenge-grid-item">Tile 13</div>
-                    <div data-id="14" class="matching-challenge-grid-item">Tile 14</div>
-                    <div data-id="15" class="matching-challenge-grid-item">Tile 15</div>
-                    <div data-id="16" class="matching-challenge-grid-item">Tile 16</div>
-                    <div data-id="17" class="matching-challenge-grid-item">Tile 17</div>
-                    <div data-id="18" class="matching-challenge-grid-item">Tile 18</div>
-                    <div data-id="19" class="matching-challenge-grid-item">Tile 19</div>
-                    <div data-id="20" class="matching-challenge-grid-item">Tile 20</div>
-                    <div data-id="21" class="matching-challenge-grid-item">Tile 21</div>
-                    <div data-id="22" class="matching-challenge-grid-item">Tile 22</div>
-                    <div data-id="23" class="matching-challenge-grid-item">Tile 23</div>
-                    <div data-id="24" class="matching-challenge-grid-item">Tile 24</div>
-                </div>
-            </div>
-        `;*/
     }
     const tileClass = difficulty === "normal" ? ".clicked-tile" : ".clicked-tile";
     const displayTile = difficulty === "normal" ? ".matching-grid-item" : ".matching-challenge-grid-item";
@@ -364,7 +330,6 @@ export function startMatchingPuzzle({ containerID }) {
                 const backItem = item.querySelector(displayTile);
                 clickTile(item, backId, backItem);
             }
-        
 
             item.addEventListener('click', item._clickWrapper);
         }
@@ -372,13 +337,6 @@ export function startMatchingPuzzle({ containerID }) {
             item.style.paddingTop = "45px";
             item.style.backgroundColor = '#301934';
         }
-
-        // if (item.textContent !== "Free!") {
-        //     item.addEventListener('click', clickTile);
-        // }
-        // else {
-        //     item.style.backgroundColor = '#301934';
-        // }
     });
 
     function populateMatchingPuzzle () {
@@ -396,9 +354,6 @@ export function startMatchingPuzzle({ containerID }) {
         const gridItems = document.querySelectorAll(tileClass);
 
         gridItems.forEach((item, index) => {
-            // if (item.textContent !== "Free!") {
-            //     item.textContent = "";
-            // }
             item.style.color = "rgba(249, 160, 0, 1)";
         });
     }
@@ -425,14 +380,10 @@ export function startMatchingPuzzle({ containerID }) {
 
 
     function clickTile(item, itemId, itemBack) {
-        // item.classList.toggle("clicked");
         if (clickedElement1 == null) {
             clickedElement1 = itemBack;
             clickedElement1Parent = item;
             item.classList.toggle("clicked");
-            // clickedElement1Parent.
-            // clickedElement1 = this;
-            // clickedElement1.classList.toggle("clicked");
             let element1Index = +clickedElement1.dataset.id;
             itemBack.textContent = numberArray[element1Index];
             clickedElement1.style.border = '4px solid #702963'
@@ -455,16 +406,11 @@ export function startMatchingPuzzle({ containerID }) {
                 if (clickedElement1Parent._clickWrapper) {
                     clickedElement1Parent.removeEventListener('click', clickedElement1Parent._clickWrapper);
                     delete clickedElement1Parent._clickWrapper;
-                    console.log("listener removed");
                 }
                 if (clickedElement2Parent._clickWrapper) {
                     clickedElement2Parent.removeEventListener('click', clickedElement2Parent._clickWrapper);
                     delete clickedElement2Parent._clickWrapper;
-                    console.log("listener removed");
                 }
-                // clickedElement2Parent.removeEventListner('click', handleTileClick);
-                // clickedElement1.removeEventListener('click', clickTile);
-                // clickedElement2.removeEventListener('click', clickTile);
                 clickedElement1 = null;
                 clickedElement2 = null;
                 pairsFound++;
@@ -482,14 +428,10 @@ export function startMatchingPuzzle({ containerID }) {
         }
 
         function rehideNumber () {
-            // clickedElement1.style.background = 'transparent';
-            // clickedElement2.style.background = 'transparent';
             clickedElement1Parent.classList.toggle("clicked");
             clickedElement2Parent.classList.toggle('clicked');
             clickedElement1.style.border = '2px solid rgba(249, 160, 0, 0.35)';
             clickedElement2.style.border = '2px solid rgba(249, 160, 0, 0.35)';
-            // clickedElement1.textContent = "";
-            // clickedElement2.textContent = "";
             clickedElement1 = null;
             clickedElement2 = null;
             clickedElement1Parent = null;
