@@ -29,7 +29,6 @@ export function startMatchingPuzzle({ containerID }) {
                         <div class="matching-grid-item-tile">
                             <div class="matching-grid-item-front"></div>
                             <div data-id="1" class="matching-grid-item">
-                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
                             </div>
                         </div>
                     </div>
@@ -37,7 +36,6 @@ export function startMatchingPuzzle({ containerID }) {
                         <div class="matching-grid-item-tile">
                             <div class="matching-grid-item-front"></div>
                             <div data-id="2" class="matching-grid-item">
-                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
                             </div>
                         </div>
                     </div>
@@ -45,7 +43,6 @@ export function startMatchingPuzzle({ containerID }) {
                         <div class="matching-grid-item-tile">
                             <div class="matching-grid-item-front"></div>
                             <div data-id="3" class="matching-grid-item">
-                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
                             </div>
                         </div>
                     </div>
@@ -53,7 +50,6 @@ export function startMatchingPuzzle({ containerID }) {
                         <div class="matching-grid-item-tile">
                             <div class="matching-grid-item-front"></div>
                             <div data-id="4" class="matching-grid-item">
-                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
                             </div>
                         </div>
                     </div>
@@ -61,7 +57,6 @@ export function startMatchingPuzzle({ containerID }) {
                         <div class="matching-grid-item-tile">
                             <div class="matching-grid-item-front"></div>
                             <div data-id="5" class="matching-grid-item">
-                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
                             </div>
                         </div>
                     </div>
@@ -69,7 +64,6 @@ export function startMatchingPuzzle({ containerID }) {
                         <div class="matching-grid-item-tile">
                             <div class="matching-grid-item-front"></div>
                             <div data-id="6" class="matching-grid-item">
-                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
                             </div>
                         </div>
                     </div>
@@ -77,7 +71,6 @@ export function startMatchingPuzzle({ containerID }) {
                         <div class="matching-grid-item-tile">
                             <div class="matching-grid-item-front"></div>
                             <div data-id="7" class="matching-grid-item">
-                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
                             </div>
                         </div>
                     </div>
@@ -85,7 +78,6 @@ export function startMatchingPuzzle({ containerID }) {
                         <div class="matching-grid-item-tile">
                             <div class="matching-grid-item-front"></div>
                             <div data-id="8" class="matching-grid-item">
-                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
                             </div>
                         </div>
                     </div>
@@ -93,7 +85,6 @@ export function startMatchingPuzzle({ containerID }) {
                         <div class="matching-grid-item-tile">
                             <div class="matching-grid-item-front"></div>
                             <div data-id="9" class="matching-grid-item">
-                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
                             </div>
                         </div>
                     </div>
@@ -101,7 +92,6 @@ export function startMatchingPuzzle({ containerID }) {
                         <div class="matching-grid-item-tile">
                             <div class="matching-grid-item-front"></div>
                             <div data-id="10" class="matching-grid-item">
-                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
                             </div>
                         </div>
                     </div>
@@ -109,7 +99,6 @@ export function startMatchingPuzzle({ containerID }) {
                         <div class="matching-grid-item-tile">
                             <div class="matching-grid-item-front"></div>
                             <div data-id="11" class="matching-grid-item">
-                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
                             </div>
                         </div>
                     </div>
@@ -117,7 +106,6 @@ export function startMatchingPuzzle({ containerID }) {
                         <div class="matching-grid-item-tile">
                             <div class="matching-grid-item-front"></div>
                             <div data-id="12" class="matching-grid-item">
-                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
                             </div>
                         </div>
                     </div>
@@ -125,7 +113,6 @@ export function startMatchingPuzzle({ containerID }) {
                         <div class="matching-grid-item-tile">
                             <div class="matching-grid-item-front"></div>
                             <div data-id="13" class="matching-grid-item">
-                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
                             </div>
                         </div>
                     </div>
@@ -133,7 +120,6 @@ export function startMatchingPuzzle({ containerID }) {
                         <div class="matching-grid-item-tile">
                             <div class="matching-grid-item-front"></div>
                             <div data-id="14" class="matching-grid-item">
-                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
                             </div>
                         </div>
                     </div>
@@ -141,7 +127,6 @@ export function startMatchingPuzzle({ containerID }) {
                         <div class="matching-grid-item-tile">
                             <div class="matching-grid-item-front"></div>
                             <div data-id="15" class="matching-grid-item">
-                                <img src="./images/Psyche_Asteroid_Image_No_Background_Resized.png" alt="Flipped Image">
                             </div>
                         </div>
                     </div>
@@ -192,13 +177,14 @@ export function startMatchingPuzzle({ containerID }) {
 
     gridItems.forEach(item => {
 
-        item.addEventListener('click', () =>{
-            item.classList.toggle('clicked');
-            const itemId = item.getAttribute('data-id');
-            const itemBack = item.querySelector('.matching-grid-item');
-            itemBack.textContent = numberArray[itemId];
-            clickTile(item, itemId, itemBack);
-        });
+        item._clickWrapper = (event) => {
+            const backId = item.getAttribute('data-id');
+            const backItem = item.querySelector('.matching-grid-item');
+            clickTile(item, backId, backItem);
+        }
+
+        item.addEventListener('click', item._clickWrapper);
+
         // if (item.textContent !== "Free!") {
         //     item.addEventListener('click', clickTile);
         // }
@@ -251,9 +237,11 @@ export function startMatchingPuzzle({ containerID }) {
 
 
     function clickTile(item, itemId, itemBack) {
+        // item.classList.toggle("clicked");
         if (clickedElement1 == null) {
             clickedElement1 = itemBack;
             clickedElement1Parent = item;
+            item.classList.toggle("clicked");
             // clickedElement1Parent.
             // clickedElement1 = this;
             // clickedElement1.classList.toggle("clicked");
@@ -266,15 +254,27 @@ export function startMatchingPuzzle({ containerID }) {
             clickedElement2Parent = item;
             let element2Index = +clickedElement2.dataset.id;
             clickedElement2.textContent = numberArray[element2Index];
-            if (clickedElement1 === clickedElement2) {
+            if (clickedElement1Parent === clickedElement2Parent) {
                 clickedElement2 = null;
                 return;
             }
+            item.classList.toggle("clicked");
             if (clickedElement1.textContent === clickedElement2.textContent) {
                 clickedElement1.style.backgroundColor = '#301934';
                 clickedElement2.style.backgroundColor = '#301934';
                 clickedElement1.style.border = '2px solid rgba(249, 160, 0, 0.35)';
                 clickedElement2.style.border = '2px solid rgba(249, 160, 0, 0.35)';
+                if (clickedElement1Parent._clickWrapper) {
+                    clickedElement1Parent.removeEventListener('click', clickedElement1Parent._clickWrapper);
+                    delete clickedElement1Parent._clickWrapper;
+                    console.log("listener removed");
+                }
+                if (clickedElement2Parent._clickWrapper) {
+                    clickedElement2Parent.removeEventListener('click', clickedElement2Parent._clickWrapper);
+                    delete clickedElement2Parent._clickWrapper;
+                    console.log("listener removed");
+                }
+                // clickedElement2Parent.removeEventListner('click', handleTileClick);
                 // clickedElement1.removeEventListener('click', clickTile);
                 // clickedElement2.removeEventListener('click', clickTile);
                 clickedElement1 = null;
