@@ -1346,11 +1346,10 @@ body {
 
 .matching-grid-container {
     display: grid;
-    place-items: center;
-    background-clip: padding-box;
     grid-template-rows: repeat(4, 1fr);
     grid-template-columns: repeat(4, 1fr);
-    border: 2px solid rgba(249, 160, 0, 0.35);
+    width: 720px;
+    height: 720px;
 }
 
 .matching-challenge-grid-container {
@@ -1359,31 +1358,82 @@ body {
     background-clip: padding-box;
     grid-template-rows: repeat(5, 1fr);
     grid-template-columns: repeat(5, 1fr);
-    border: 2px solid rgba(249, 160, 0, 0.35);
 }
 
-.matching-grid-item {
-    border: 2px solid rgba(249, 160, 0, 0.35);
+.clicked-tile {
     background-clip: border-box;
-    padding-top: 65px;
     height: 180px;
     width: 180px;
+    color: rgba(249, 160, 0, 1);
     text-align: center;
     align-items: center;
     font-weight: 700;
     font-size: 28;
+    perspective: 1000px;
+    aspect-ratio: 1 / 1;
+}
+
+.matching-grid-item-tile {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.clicked-tile.clicked .matching-grid-item-tile {
+    transform: rotateY(180deg);
+}
+
+.matching-grid-item-front, .matching-grid-item, .matching-challenge-grid-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    backface-visibility: hidden;
+}
+
+.matching-grid-item-front {
+    border: 2px solid rgba(249, 160, 0, 0.35);
+    width: 100%;
+    height: 100%;
+}
+
+.matching-grid-item {
+    border: 2px solid rgba(249, 160, 0, 0.35);
+    padding-top: 65px;
+    text-align: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 28;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    transform: rotateY(180deg);
+}
+
+.matching-grid-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .matching-challenge-grid-item {
     border: 2px solid rgba(249, 160, 0, 0.35);
     background-clip: border-box;
     padding-top: 45px;
-    height: 140px;
-    width: 140px;
     text-align: center;
     align-items: center;
     font-weight: 700;
     font-size: 28;
+    transform: rotateY(180deg);
+}
+
+#free-tile {
+    border: 2px solid rgba(249, 160, 0, 0.35);
+    border-radius: 8px;;
 }
 
 #puzzle-layout {
