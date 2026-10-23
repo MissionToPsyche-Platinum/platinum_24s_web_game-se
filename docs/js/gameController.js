@@ -41,10 +41,11 @@ function clearMissionFact() {
     missionFactTitle.textContent = "Mission Intel";
 }
 
-function showMissionFactForSolveCount(solvedCount) {
+// Fixed: Use the same randomized Mission Intel queue as main.
+function showRandomMissionFact() {
     if (!displayFactMessage) return;
-    const idx = Math.min(Math.max(solvedCount - 1, 0), missionFacts.length - 1);
-    displayFactMessage.textContent = missionFacts[idx] ?? "";
+
+    displayFactMessage.textContent = nextMissionFact();
     displayFactMessage.hidden = false;
     displayFactMessage.style.display = "block";
     missionFactTitle.textContent = "Intel Unlocked!";
@@ -163,6 +164,9 @@ function startGame() {
     // Generate a new randomized puzzle order for each game.
     gameState.puzzleOrder = shufflePuzzles(puzzles);
 
+    // Fixed: Reset Mission Intel queue for each new game.
+    resetMissionFactQueue();
+
     updateProgress();
     gameIsOver(false);
     displayNextPuzzle();
@@ -250,7 +254,8 @@ export function solvePuzzle() {
     puzzleSolvedMessage.style.display = 'block';
     solvePuzzleMessage.style.display = 'none';
 
-    showMissionFactForSolveCount(gameState.solvedPuzzles);
+    // Fixed: Display Mission Intel without undefined missionFacts.
+    showRandomMissionFact();
 
     nextPuzzleButton.disabled = false;
     solvePuzzleButton.disabled = true;
