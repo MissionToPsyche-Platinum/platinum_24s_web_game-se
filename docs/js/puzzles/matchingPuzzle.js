@@ -225,7 +225,7 @@ export function startMatchingPuzzle({ containerID }) {
                             </div>
                         </div>
                     </div>
-                    <div class="clicked-tile" data-id="12">Free!</div>
+                    <div class="clicked-tile" id="free-tile" data-id="12">Free!</div>
                     <div class="clicked-tile" data-id="13">
                         <div class="matching-grid-item-tile">
                             <div class="matching-grid-item-front"></div>
