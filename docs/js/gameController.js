@@ -98,7 +98,8 @@ const gameState = {
     puzzleOrder: [],
     nextPuzzleIndex: 0,
     solvedPuzzles: 0,
-    skippedPuzzles: 0
+    skippedPuzzles: 0,
+    currentPuzzle: null
 };
 
 function shufflePuzzles(puzzles) {
@@ -334,6 +335,7 @@ function displayNextPuzzle() {
     puzzleHelpButton.disabled = !settingHints.checked;
     updateSkipButtonState(true);
     const puzzle = gameState.puzzleOrder[gameState.nextPuzzleIndex];
+    gameState.currentPuzzle = puzzle;
     gameState.nextPuzzleIndex++;
     puzzlesShown.push(puzzle);
     loadPuzzle(puzzle);
@@ -362,7 +364,7 @@ function showPuzzleHelp() {
         puzzleHelpButton.disabled = true;
         return;
     }
-    const help = gameState.puzzleOrder[gameState.solvedPuzzles]?.helpText ?? "";
+    const help = gameState.currentPuzzle?.helpText ?? "";
     const puzzleHelpText = document.getElementById("puzzleHelpText");
     const puzzleHelpPopUp = document.getElementById("puzzleHelpPopUp");
     if (puzzleHelpText) puzzleHelpText.textContent = help;
