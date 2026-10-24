@@ -723,9 +723,40 @@ body {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    background: rgba(18, 8, 40, 0.88);
+    overflow: hidden;
+    background: #120828;
     color: #f9a000;
     text-align: center;
+}
+
+.puzzle-break-transmission {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+#puzzle-break-overlay::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+        to bottom,
+        rgba(18, 8, 40, 0.28) 0%,
+        rgba(18, 8, 40, 0.55) 55%,
+        rgba(18, 8, 40, 0.78) 100%
+    );
+}
+
+.puzzle-break-label,
+.puzzle-break-hint,
+#puzzle-break-count {
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9);
 }
 
 .puzzle-break-label,
@@ -740,6 +771,10 @@ body {
     font-size: 5rem;
     font-weight: bold;
     line-height: 1;
+}
+
+.pysche-reduced-motion .puzzle-break-transmission {
+    display: none;
 }
 
 /* Exit / return-to-menu confirmation popups */
@@ -1312,11 +1347,10 @@ body {
 
 .matching-grid-container {
     display: grid;
-    place-items: center;
-    background-clip: padding-box;
     grid-template-rows: repeat(4, 1fr);
     grid-template-columns: repeat(4, 1fr);
-    border: 2px solid rgba(249, 160, 0, 0.35);
+    width: 720px;
+    height: 720px;
 }
 
 .matching-challenge-grid-container {
@@ -1325,36 +1359,87 @@ body {
     background-clip: padding-box;
     grid-template-rows: repeat(5, 1fr);
     grid-template-columns: repeat(5, 1fr);
-    border: 2px solid rgba(249, 160, 0, 0.35);
 }
 
-.matching-grid-item {
-    border: 2px solid rgba(249, 160, 0, 0.35);
+.clicked-tile {
     background-clip: border-box;
-    padding-top: 65px;
     height: 180px;
     width: 180px;
+    color: rgba(249, 160, 0, 1);
     text-align: center;
     align-items: center;
     font-weight: 700;
     font-size: 28;
+    perspective: 1000px;
+    aspect-ratio: 1 / 1;
+}
+
+.matching-grid-item-tile {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.clicked-tile.clicked .matching-grid-item-tile {
+    transform: rotateY(180deg);
+}
+
+.matching-grid-item-front, .matching-grid-item, .matching-challenge-grid-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    backface-visibility: hidden;
+}
+
+.matching-grid-item-front {
+    border: 2px solid rgba(249, 160, 0, 0.35);
+    width: 100%;
+    height: 100%;
+}
+
+.matching-grid-item {
+    border: 2px solid rgba(249, 160, 0, 0.35);
+    padding-top: 65px;
+    text-align: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 28;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    transform: rotateY(180deg);
+}
+
+.matching-grid-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .matching-challenge-grid-item {
     border: 2px solid rgba(249, 160, 0, 0.35);
     background-clip: border-box;
     padding-top: 45px;
-    height: 140px;
-    width: 140px;
     text-align: center;
     align-items: center;
     font-weight: 700;
     font-size: 28;
+    transform: rotateY(180deg);
+}
+
+#free-tile {
+    border: 2px solid rgba(249, 160, 0, 0.35);
+    border-radius: 8px;;
 }
 
 #puzzle-layout {
     display: grid;
-    place-items: center;
+    align-self: flex-start;
     grid-template-rows: auto 1fr;
     grid-template-areas: 
     "header"
@@ -1568,40 +1653,19 @@ body {
    display: flex;
    align-items: center;
    justify-content: center;
-   width: 58%;
-   height: 58%;
+   width: 72%;
+   height: 72%;
    pointer-events: none;
+   background: none;
    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
    transition: transform 120ms ease, filter 120ms ease;
 }
 
-.pattern-tile-icon svg {
+.pattern-tile-icon-img {
    width: 100%;
    height: 100%;
-   overflow: visible;
-}
-
-.pattern-tile-icon-shape {
-   fill: rgba(255, 255, 255, 0.95);
-   stroke: #111;
-   stroke-width: 4;
-   paint-order: stroke fill;
-}
-
-.pattern-tile-icon-number {
-   font-size: 26px;
-   font-weight: 800;
-   font-family: system-ui, -apple-system, sans-serif;
-   fill: #fff;
-   stroke: #111;
-   stroke-width: 3px;
-   paint-order: stroke fill;
-}
-
-.pattern-tile--yellow .pattern-tile-icon-shape,
-.pattern-tile--yellow .pattern-tile-icon-number {
-   fill: #111;
-   stroke: #fff;
+   object-fit: contain;
+   background: transparent;
 }
 
 .pattern-tile--pressed {
@@ -2277,6 +2341,19 @@ button.tube-cell::-moz-focus-inner {
         height: 145px;
         width: 145px;
     }
+    .matching-challenge-grid-item {
+        padding-top: 45px;
+        height: 130px;
+        width: 130px;
+    }
+}
+
+@media (max-width: 750px) {
+    .matching-challenge-grid-item {
+        padding-top: 35px;
+        height: 110px;
+        width: 110px;
+    } 
 }
 
 @media (max-width: 660px) {
@@ -2284,6 +2361,11 @@ button.tube-cell::-moz-focus-inner {
         padding-top: 40px;
         height: 120px;
         width: 120px;
+    }
+    .matching-challenge-grid-item {
+        padding-top: 25px;
+        height: 90px;
+        width: 90px;
     }
 }
 
@@ -2293,13 +2375,31 @@ button.tube-cell::-moz-focus-inner {
         height: 90px;
         width: 90px;
     }
+    .matching-challenge-grid-item {
+        padding-top: 15px;
+        height: 70px;
+        width: 70px;
+    }
+    #free-tile {
+        font-size: 16;
+    }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 400px) {
     .matching-grid-item {
-        padding-top: 15px;
+        padding-top: 10px;
         height: 60px;
         width: 60px;
+    }
+    .matching-challenge-grid-item {
+        padding-top: 5px;
+        height: 45px;
+        width: 45px;
+        font-size: 20;
+    }
+    #free-tile {
+        font-size: 14;
+        padding-top: 10px;
     }
 }
 

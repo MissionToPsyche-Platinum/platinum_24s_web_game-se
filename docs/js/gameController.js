@@ -63,8 +63,8 @@ export function updateScore(wrongAnswer) {
 }
 
 const PUZZLES_TO_WIN = 5;
-const MAX_SKIPS = 3;
 const PUZZLE_BREAK_SECONDS = 3;
+const MAX_SKIPS = 2;
 let isGameOver;
 let puzzleBreakTimer = null;
 
@@ -313,7 +313,6 @@ function displayNextPuzzle() {
     clearMissionFact();
 
     nextPuzzleButton.disabled = true;
-    startPuzzleTimer();
     solvePuzzleButton.disabled = false;
 
     // Re-enable skipping only if the player has skips remaining.

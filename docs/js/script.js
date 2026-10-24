@@ -10,6 +10,8 @@ const LS = {
   motion: "pysche_settings_reduced_motion",
   colorBlind: "pysche_settings_color_blind",
   diff: "pysche_settings_difficulty",
+  sound: "pysche_settings_sound",
+  music: "pysche_settings_music",
 };
 
 const mainMenu = document.getElementById("main-menu");
@@ -42,6 +44,11 @@ const backgroundMusicToggle = document.getElementById("backgroundMusicToggle");
 const resetSettingsButton = document.getElementById("resetSettings");
 const settingSound = document.getElementById("settingSound");
 const settingMusic = document.getElementById("settingMusic");
+const backgroundMusic = document.getElementById("background-music");
+if (backgroundMusic) {
+  backgroundMusic.loop = true;
+  backgroundMusic.volume = 0.35;
+}
 const settingDisplayName = document.getElementById("settingDisplayName");
 const settingShowTimer = document.getElementById("settingShowTimer");
 const currentScore = document.getElementById("currentScore");
@@ -353,6 +360,28 @@ document.addEventListener("DOMContentLoaded", () => {
         : `${i + 1}.`;
     });
   }
+  settingsPopUp.addEventListener("change", (e) => {
+    const t = e.target;
+    if (t === settingSound || t === settingMusic) {
+      if (t === settingSound) localStorage.setItem(LS.sound, String(t.checked));
+      if (t === settingMusic) localStorage.setItem(LS.music, String(t.checked));
+      updateAudioSettings();
+    } else if (t === settingShowTimer) {
+      localStorage.setItem(LS.timer, String(t.checked));
+      applyTimerVisibility();
+    } else if (t === settingHints) {
+      localStorage.setItem(LS.hints, String(t.checked));
+      applyDisabledHints();
+    } else if (t === settingReducedMotion) {
+      localStorage.setItem(LS.motion, String(t.checked));
+      applyReducedMotion();
+    } else if (t === settingColorBlind) {
+      localStorage.setItem(LS.colorBlind, String(t.checked));
+      applyColorBlindMode();
+    } else if (t === settingDifficulty)
+      localStorage.setItem(LS.diff, t.value);
+  });
+}
 
   // Updated: display solved and skipped puzzle counts.
   // Existing leaderboard eligibility is unchanged.
