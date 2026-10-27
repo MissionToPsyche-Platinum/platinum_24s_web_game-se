@@ -980,7 +980,8 @@ body {
 
 #solve-puzzle-message,
 #puzzle-solved-message,
-#puzzle-not-solved-message {
+#puzzle-not-solved-message,
+#puzzle-skipped-message {
    width: 100%;
    margin: 0;
    text-align: center;
@@ -1003,6 +1004,11 @@ body {
 #puzzle-not-solved-message {
    background: rgba(239, 89, 102, 0.22);
    border: 1px solid rgba(239, 89, 102, 0.5);
+}
+
+#puzzle-skipped-message {
+   background: rgba(249, 160, 0, 0.16);
+   border: 1px solid rgba(249, 160, 0, 0.35);
 }
 
 .timer {
