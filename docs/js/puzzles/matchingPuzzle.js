@@ -437,14 +437,18 @@ export function startMatchingPuzzle({ containerID }) {
             clickedElement1Parent = item;
             item.classList.toggle("clicked");
             element1Index = +clickedElement1.dataset.id;
-            clickedElement1.appendChild(imagesArray1[numberArray[element1Index]]);
+            if (!clickedElement1.querySelector('img')) {
+                clickedElement1.appendChild(imagesArray1[numberArray[element1Index]]);
+            }
             clickedElement1.style.border = '4px solid #702963'
         }
         else if (clickedElement2 == null) {
             clickedElement2 = itemBack;
             clickedElement2Parent = item;
             element2Index = +clickedElement2.dataset.id;
-            clickedElement2.appendChild(imagesArray2[numberArray[element2Index]]);
+            if (!clickedElement2.querySelector('img')) {
+                clickedElement2.appendChild(imagesArray2[numberArray[element2Index]]);
+            }
             if (clickedElement1Parent === clickedElement2Parent) {
                 clickedElement2 = null;
                 return;
