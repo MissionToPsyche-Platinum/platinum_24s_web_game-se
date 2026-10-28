@@ -31,79 +31,29 @@ export function startMatchingPuzzle({ containerID }) {
     const psyche_image_12_2 = document.createElement('img');
 
     psyche_image_1.src = './images/matching/Psyche_asteroid_illustration.jpg';
-    // psyche_image_1.width = imageSize;
-    // psyche_image_1.height = imageSize;
-
     psyche_image_2.src = './images/matching/Psyche_at_sunset.jpg';
-    // psyche_image_2.width = imageSize;
-    // psyche_image_2.height = imageSize;
-
     psyche_image_3.src = './images/matching/Psyche_closeup.jpg';
-    // psyche_image_3.width = imageSize;
-    // psyche_image_3.height = imageSize;
-
     psyche_image_4.src = './images/matching/Psyche_countdown.jpg';
-    // psyche_image_4.width = imageSize;
-    // psyche_image_4.height = imageSize;
-
     psyche_image_5.src = './images/matching/Psyche_Launch_2.jpg';
-    // psyche_image_5.width = imageSize;
-    // psyche_image_5.height = imageSize;
-
     psyche_image_6.src = './images/matching/Psyche_ring_of_firepower.jpg';
-    // psyche_image_6.width = imageSize;
-    // psyche_image_6.height = imageSize;
-
     psyche_image_7.src = './images/matching/Psyche_spacecraft.jpg';
-    // psyche_image_7.width = imageSize;
-    // psyche_image_7.height = imageSize;
-
     psyche_image_8.src = './images/matching/Psyche_at_sunset_2.jpg';
-
     psyche_image_9.src = './images/matching/Psyche_craft_panel_array.jpg';
-
     psyche_image_10.src = './images/matching/Psyche_Launch_3.jpg';
-
     psyche_image_11.src = './images/matching/Psyche_liftoff.jpg';
-
     psyche_image_12.src = './images/matching/Psyche_media_day.jpg';
 
     psyche_image_1_2.src = './images/matching/Psyche_asteroid_illustration.jpg';
-    // psyche_image_1_2.width = imageSize;
-    // psyche_image_1_2.height = imageSize;
-
     psyche_image_2_2.src = './images/matching/Psyche_at_sunset.jpg';
-    // psyche_image_2_2.width = imageSize;
-    // psyche_image_2_2.height = imageSize;
-
     psyche_image_3_2.src = './images/matching/Psyche_closeup.jpg';
-    // psyche_image_3_2.width = imageSize;
-    // psyche_image_3_2.height = imageSize;
-
     psyche_image_4_2.src = './images/matching/Psyche_countdown.jpg';
-    // psyche_image_4_2.width = imageSize;
-    // psyche_image_4_2.height = imageSize;
-
     psyche_image_5_2.src = './images/matching/Psyche_Launch_2.jpg';
-    // psyche_image_5_2.width = imageSize;
-    // psyche_image_5_2.height = imageSize;
-
     psyche_image_6_2.src = './images/matching/Psyche_ring_of_firepower.jpg';
-    // psyche_image_6_2.width = imageSize;
-    // psyche_image_6_2.height = imageSize;
-
     psyche_image_7_2.src = './images/matching/Psyche_spacecraft.jpg';
-    // psyche_image_7_2.width = imageSize;
-    // psyche_image_7_2.height = imageSize;
-
     psyche_image_8_2.src = './images/matching/Psyche_at_sunset_2.jpg';
-
     psyche_image_9_2.src = './images/matching/Psyche_craft_panel_array.jpg';
-
     psyche_image_10_2.src = './images/matching/Psyche_Launch_3.jpg';
-
     psyche_image_11_2.src = './images/matching/Psyche_liftoff.jpg';
-
     psyche_image_12_2.src = './images/matching/Psyche_media_day.jpg';
 
     let clickedElement1;
