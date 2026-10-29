@@ -184,45 +184,104 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    overflow-y: auto;
+    box-sizing: border-box;
     background: linear-gradient(to right,#a53f5b, #302144);
-    padding: 20px;
     z-index: 1000;
-    width: 400px;
     text-align: center;
     font-family: Helvetica;
-    z-index: 1000;
     font-weight: bold;
-    height: 250px;
-    width: 500px;
     color: white;
+    width: min(500px, calc(100vw - 24px));
+    max-height: calc(100dvh - 24px);
+    padding: 20px;
+}
+
+#nameCreationScreen h1,
+#nameCreationScreen h2 {
+    margin-top: 0;
+    position: relative;
+    z-index: 1;
 }
 
 #firstNameDisplay {
     display: inline-block;
-    width: 200px;
-    height: 30px;
+    width: min(200px, 100%);
+    min-height: 30px;
+    box-sizing: border-box;
     background-color: white;
     color: #302144;
+    overflow-wrap: anywhere;
 }
 
-#firstNameDropdownButton {
-    background-color: #302144;
-    border-color: #302144;
-    color: #ef5966;
-    font-weight: bold;
-    padding: 10px 10px;
-    border-radius: 5px;
-    font-family: Helvetica;
+#firstNameDropdown {
+    top: calc(100% + 4px);
+    bottom: auto;
+    max-height: 160px;
 }
 
+#lastNameDropdown {
+    bottom: calc(100% + 4px);
+    top: auto;
+    max-height: 130px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#firstNameDropdownButton,
 #lastNameDropdownButton {
     background-color: #302144;
-    border-color: #302144;
+    border: 1px solid #302144;
     color: #ef5966;
     font-weight: bold;
-    padding: 10px 10px;
+    padding: 10px;
     border-radius: 5px;
     font-family: Helvetica;
+    max-width: 100%;
+    cursor: pointer;
+}
+
+/**Mobile-specific adjustments**/
+@media (max-width: 600px) {
+    #nameCreationScreen {
+        padding: 16px;
+    }
+
+    #nameCreationHeader {
+        font-size: 1.1rem;
+    }
+
+    .name-row {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 8px;
+    }
+
+    #firstNameDropdownButton,
+    #lastNameDropdownButton {
+        width: 100%;
+        min-width: 0;
+        padding: 10px 6px;
+        font-size: 0.9rem;
+    }
+
+    #firstNameDisplay,
+    #lastNameDisplay {
+        width: 100%;
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .dropdown-content {
+        width: calc(50% - 4px);
+        max-height: 180px;
+    }
+
+    #nameBackButton,
+    #beginGame {
+        max-width: 100%;
+        padding: 10px;
+        font-size: 0.9rem;
+    }
 }
 
 #beginGame {
@@ -276,12 +335,21 @@ body {
     color: white;
 }
 
-#firstNameDisplay {
-    display: inline-block;
-    width: 200px;
-    height: 30px;
+#firstNameDisplay,
+#lastNameDisplay {
     background-color: white;
     color: #302144;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    min-height: 40px;
+    padding: 6px 10px;
+    box-sizing: border-box;
+    border: 1px solid black;
+    overflow-wrap: anywhere;
+    text-align: center;
 }
 
 #firstNameDropdownButton {
@@ -312,14 +380,6 @@ body {
     padding: 10px 10px;
     border-radius: 5px;
     font-family: Helvetica;
-}
-
-#lastNameDisplay {
-    display: inline-block;
-    width: 200px;
-    height: 30px;
-    background-color: white;
-    color: #302144;
 }
 
 .overlay {
@@ -357,14 +417,36 @@ body {
     min-width: 160px;
     font-size: 16px;
     font-family: Helvetica;
+    overflow-y: auto;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    z-index: 1002;
+    text-align: left;
+    font-weight: normal;
+    color: #111;
+    border-radius: 4px;
+    width: calc(50% - 4px);
+    max-width: 260px;
+    bottom: calc(100% - 8px);
+    top: auto;
+    left: 12px;
+    margin: 0;
+    max-height: 160px;
 }
 
 .dropdown-content button {
     color: black;
     width: 100%;
     text-align: left;
-    padding: 8px;
     cursor: pointer;
+    padding: 10px 12px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    display: block;
+    border: 1px solid #888;
+    border-radius: 0;
+    background-color: #f1f1f1;
+    font-weight: normal;
 }
 
 .dropdown.show {
@@ -382,10 +464,13 @@ body {
 }
 
 .name-row {
-    display: flex;
     align-items: center;
     padding: 8px 12px;
-    gap: 15px;
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
 }
 
 .name-row span {
