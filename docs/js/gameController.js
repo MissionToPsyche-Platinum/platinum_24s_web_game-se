@@ -75,13 +75,22 @@ function tryShowMissionIntel(trigger) {
     }
     showRandomMissionFact();
 }
-
+/*
 export function updateScore(wrongAnswer) {
     if(wrongAnswer === 0) {
         currentScore.textContent = playerScore;
     } else {
         currentScore.textContent = currentScore.textContent - wrongAnswer;
     }
+}
+*/ 
+//updated score penalty function
+export function updateScore(wrongAnswer) {
+    if (wrongAnswer > 0) {
+        playerScore -= wrongAnswer;
+    }
+
+    currentScore.textContent = playerScore;
 }
 
 const PUZZLES_TO_WIN = 5;
