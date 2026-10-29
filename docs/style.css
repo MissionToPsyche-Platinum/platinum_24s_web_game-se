@@ -1433,7 +1433,7 @@ body {
 
 .matching-grid-item {
     border: 2px solid rgba(249, 160, 0, 0.35);
-    padding-top: 65px;
+    /* padding-top: 65px; */
     text-align: center;
     align-items: center;
     font-weight: 700;
@@ -1444,7 +1444,7 @@ body {
     transform: rotateY(180deg);
 }
 
-.matching-grid-item img {
+.matching-grid-item img, .matching-challenge-grid-item img{
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -1453,7 +1453,7 @@ body {
 .matching-challenge-grid-item {
     border: 2px solid rgba(249, 160, 0, 0.35);
     background-clip: border-box;
-    padding-top: 45px;
+    /* padding-top: 45px; */
     text-align: center;
     align-items: center;
     font-weight: 700;
@@ -2367,12 +2367,12 @@ button.tube-cell::-moz-focus-inner {
 
 @media (max-width: 1080px), (max-height: 1080px){
     .matching-grid-item {
-        padding-top: 50px;
+        /* padding-top: 50px; */
         height: 145px;
         width: 145px;
     }
     .matching-challenge-grid-item {
-        padding-top: 45px;
+        /* padding-top: 45px; */
         height: 100%;
         width: 100%;
     }
@@ -2397,7 +2397,7 @@ button.tube-cell::-moz-focus-inner {
 
 @media (max-width: 750px), (max-height: 750px){
     .matching-challenge-grid-item {
-        padding-top: 35px;
+        /* padding-top: 35px; */
         height: 110px;
         width: 110px;
     }
@@ -2423,12 +2423,12 @@ button.tube-cell::-moz-focus-inner {
 
 @media (max-width: 660px), (max-height: 660px) {
     .matching-grid-item {
-        padding-top: 40px;
+        /* padding-top: 40px; */
         height: 120px;
         width: 120px;
     }
     .matching-challenge-grid-item {
-        padding-top: 25px;
+        /* padding-top: 25px; */
         height: 90px;
         width: 90px;
     }
@@ -2454,12 +2454,12 @@ button.tube-cell::-moz-focus-inner {
 
 @media (max-width: 560px), (max-height: 560px) {
     .matching-grid-item {
-        padding-top: 25px;
+        /* padding-top: 25px; */
         height: 90px;
         width: 90px;
     }
     .matching-challenge-grid-item {
-        padding-top: 15px;
+        /* padding-top: 15px; */
         height: 70px;
         width: 70px;
     }
@@ -2485,12 +2485,12 @@ button.tube-cell::-moz-focus-inner {
 
 @media (max-width: 400px), (max-height: 400px) {
     .matching-grid-item {
-        padding-top: 10px;
+        /* padding-top: 10px; */
         height: 60px;
         width: 60px;
     }
     .matching-challenge-grid-item {
-        padding-top: 5px;
+        /* padding-top: 5px; */
         height: 45px;
         width: 45px;
         font-size: 20;
