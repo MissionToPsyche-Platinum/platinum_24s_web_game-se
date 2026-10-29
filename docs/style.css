@@ -177,23 +177,10 @@ body {
     z-index: 999;
 }
 
-#emptyNameScreen {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: linear-gradient(to right,#a53f5b, #302144);
-    padding: 20px;
-    z-index: 1000;
-    width: 400px;
-    text-align: center;
-    font-family: Helvetica;
-    z-index: 1000;
-    font-weight: bold;
-    height: 250px;
-    width: 500px;
-    color: white;
+#emptyNameHeader {
+    margin: 0 0 18px;
+    font-size: 1rem;
+    line-height: 1.5;
 }
 
 #firstNameDisplay {
@@ -256,19 +243,6 @@ body {
     z-index: 999;
 }
 
-#emptyNameScreen {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    border: 2px solid black;
-    z-index: 1000;
-    width: 400px;
-    text-align: center;
-}
 
 .dropdown-content {
     display: none;
@@ -780,7 +754,8 @@ body {
 /* Exit / return-to-menu confirmation popups */
 #exitPopUp,
 #menuConfirmPopUp,
-#puzzleHelpPopUp {
+#puzzleHelpPopUp,
+#emptyNameScreen {
     display: none;
     position: fixed;
     top: 50%;
@@ -847,7 +822,8 @@ body {
 #confirmExit,
 #cancelMenuReturn,
 #confirmMenuReturn,
-#closePuzzleHelp {
+#closePuzzleHelp,
+#okayButton {
     min-width: 130px;
     padding: 10px 14px;
     font-weight: bold;
@@ -866,7 +842,8 @@ body {
 
 #confirmExit,
 #confirmMenuReturn,
-#closePuzzleHelp {
+#closePuzzleHelp,
+#okayButton {
     background-color: #f9a000;
     border-color: #f9a000;
     color: #302144;
@@ -879,7 +856,8 @@ body {
 
 #confirmExit:hover,
 #confirmMenuReturn:hover,
-#closePuzzleHelp:hover {
+#closePuzzleHelp:hover,
+#okayButton:hover {
     filter: brightness(1.05);
 }
 
