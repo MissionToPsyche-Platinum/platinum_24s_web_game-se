@@ -890,6 +890,22 @@ body {
     margin-bottom: 12px;
 }
 
+.settings-volume {
+    display: grid;
+    grid-template-columns: 1fr minmax(90px, 1fr) 32px;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 12px;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.settings-volume input[type="range"] {
+    width: 100%;
+    accent-color: #f9a000;
+    cursor: pointer;
+}
+
 #closeSettings,
 #resetSettings {
     margin-top: 8px;

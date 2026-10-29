@@ -12,6 +12,8 @@ const LS = {
   diff: "pysche_settings_difficulty",
   sound: "pysche_settings_sound",
   music: "pysche_settings_music",
+  soundVolume: "pysche_settings_sound_volume",
+  musicVolume: "pysche_settings_music_volume",
 };
 
 const mainMenu = document.getElementById("main-menu");
@@ -44,10 +46,80 @@ const backgroundMusicToggle = document.getElementById("backgroundMusicToggle");
 const resetSettingsButton = document.getElementById("resetSettings");
 const settingSound = document.getElementById("settingSound");
 const settingMusic = document.getElementById("settingMusic");
+const settingSoundVolume = document.getElementById("settingSoundVolume");
+const settingMusicVolume = document.getElementById("settingMusicVolume");
+const settingSoundVolumeValue = document.getElementById("settingSoundVolumeValue");
+const settingMusicVolumeValue = document.getElementById("settingMusicVolumeValue");
+const DEFAULT_SOUND_VOLUME = 100;
+const DEFAULT_MUSIC_VOLUME = 35;
 const backgroundMusic = document.getElementById("background-music");
 if (backgroundMusic) {
   backgroundMusic.loop = true;
-  backgroundMusic.volume = 0.35;
+  backgroundMusic.volume = DEFAULT_MUSIC_VOLUME / 100;
+}
+
+function clampPercent(value, fallback) {
+  if (value === null || value === undefined || value === "") return fallback;
+  const n = Number(value);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.min(100, Math.max(0, Math.round(n)));
+}
+
+function sliderPercent(el, fallback) {
+  return clampPercent(el?.value, fallback);
+}
+
+function sliderVolume(el, fallbackPercent) {
+  return sliderPercent(el, fallbackPercent) / 100;
+}
+
+function syncVolumeLabels() {
+  if (settingSoundVolumeValue) {
+    settingSoundVolumeValue.textContent = String(sliderPercent(settingSoundVolume, DEFAULT_SOUND_VOLUME));
+  }
+  if (settingMusicVolumeValue) {
+    settingMusicVolumeValue.textContent = String(sliderPercent(settingMusicVolume, DEFAULT_MUSIC_VOLUME));
+  }
+}
+
+function persistAudioControls() {
+  if (settingSound) localStorage.setItem(LS.sound, String(settingSound.checked));
+  if (settingMusic) localStorage.setItem(LS.music, String(settingMusic.checked));
+  if (settingSoundVolume) {
+    localStorage.setItem(
+      LS.soundVolume,
+      String(sliderPercent(settingSoundVolume, DEFAULT_SOUND_VOLUME)),
+    );
+  }
+  if (settingMusicVolume) {
+    localStorage.setItem(
+      LS.musicVolume,
+      String(sliderPercent(settingMusicVolume, DEFAULT_MUSIC_VOLUME)),
+    );
+  }
+  updateAudioSettings();
+}
+
+function updateAudioSettings() {
+  const musicOn = !!settingMusic?.checked;
+  const musicVolume = sliderVolume(settingMusicVolume, DEFAULT_MUSIC_VOLUME);
+  syncVolumeLabels();
+  window.gameAudioSettings = {
+    soundEffectsEnabled: !!settingSound?.checked,
+    backgroundMusicEnabled: musicOn,
+    soundVolume: sliderVolume(settingSoundVolume, DEFAULT_SOUND_VOLUME),
+    musicVolume,
+  };
+  if (!backgroundMusic) return;
+  backgroundMusic.volume = musicVolume;
+  if (musicOn) {
+    const playPromise = backgroundMusic.play();
+    if (playPromise && typeof playPromise.catch === "function") {
+      playPromise.catch(() => {});
+    }
+  } else {
+    backgroundMusic.pause();
+  }
 }
 const settingDisplayName = document.getElementById("settingDisplayName");
 const settingShowTimer = document.getElementById("settingShowTimer");
@@ -181,6 +253,17 @@ function loadGameplaySettings() {
     settingSound.checked = localStorage.getItem(LS.sound) !== "false";
   if (settingMusic)
     settingMusic.checked = localStorage.getItem(LS.music) !== "false";
+  if (settingSoundVolume) {
+    settingSoundVolume.value = String(
+      clampPercent(localStorage.getItem(LS.soundVolume), DEFAULT_SOUND_VOLUME),
+    );
+  }
+  if (settingMusicVolume) {
+    settingMusicVolume.value = String(
+      clampPercent(localStorage.getItem(LS.musicVolume), DEFAULT_MUSIC_VOLUME),
+    );
+  }
+  syncVolumeLabels();
   if (settingShowTimer)
     settingShowTimer.checked = localStorage.getItem(LS.timer) !== "false";
   if (settingHints)
@@ -209,6 +292,8 @@ function resetSettingsToDefaults() {
   Object.values(LS).forEach((k) => localStorage.removeItem(k));
   if (settingSound) settingSound.checked = true;
   if (settingMusic) settingMusic.checked = true;
+  if (settingSoundVolume) settingSoundVolume.value = String(DEFAULT_SOUND_VOLUME);
+  if (settingMusicVolume) settingMusicVolume.value = String(DEFAULT_MUSIC_VOLUME);
   loadGameplaySettings();
   updateAudioSettings();
 }
@@ -389,10 +474,8 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
   }
   settingsPopUp.addEventListener("change", (e) => {
     const t = e.target;
-    if (t === settingSound || t === settingMusic) {
-      if (t === settingSound) localStorage.setItem(LS.sound, String(t.checked));
-      if (t === settingMusic) localStorage.setItem(LS.music, String(t.checked));
-      updateAudioSettings();
+    if (t === settingSound || t === settingMusic || t === settingSoundVolume || t === settingMusicVolume) {
+      persistAudioControls();
     } else if (t === settingShowTimer) {
       localStorage.setItem(LS.timer, String(t.checked));
       applyTimerVisibility();
@@ -423,10 +506,8 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
   }
   settingsPopUp.addEventListener("change", (e) => {
     const t = e.target;
-    if (t === settingSound || t === settingMusic) {
-      if (t === settingSound) localStorage.setItem(LS.sound, String(t.checked));
-      if (t === settingMusic) localStorage.setItem(LS.music, String(t.checked));
-      updateAudioSettings();
+    if (t === settingSound || t === settingMusic || t === settingSoundVolume || t === settingMusicVolume) {
+      persistAudioControls();
     } else if (t === settingShowTimer) {
       localStorage.setItem(LS.timer, String(t.checked));
       applyTimerVisibility();
@@ -442,6 +523,9 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
     } else if (t === settingDifficulty)
       localStorage.setItem(LS.diff, t.value);
   });
+
+settingSoundVolume?.addEventListener("input", persistAudioControls);
+settingMusicVolume?.addEventListener("input", persistAudioControls);
 
 loadGameplaySettings();
 updateAudioSettings();
@@ -612,23 +696,6 @@ function closeSettings() {
   resumeRunTimer();
 }
 
-function updateAudioSettings() {
-  const musicOn = !!settingMusic?.checked;
-  window.gameAudioSettings = {
-    soundEffectsEnabled: !!settingSound?.checked,
-    backgroundMusicEnabled: musicOn,
-  };
-  if (!backgroundMusic) return;
-  if (musicOn) {
-    const playPromise = backgroundMusic.play();
-    if (playPromise && typeof playPromise.catch === "function") {
-      playPromise.catch(() => {});
-    }
-  } else {
-    backgroundMusic.pause();
-  }
-}
-
 function openExitConfirm() {
   if (!exitPopUp) return;
   pauseRunTimer();
@@ -682,6 +749,8 @@ function getPyscheSettings() {
     displayName: settingDisplayName?.value.trim() ?? "",
     soundEnabled: !!settingSound?.checked,
     musicEnabled: !!settingMusic?.checked,
+    soundVolume: sliderVolume(settingSoundVolume, DEFAULT_SOUND_VOLUME),
+    musicVolume: sliderVolume(settingMusicVolume, DEFAULT_MUSIC_VOLUME),
     showTimer: settingShowTimer?.checked ?? true,
     hintsEnabled: settingHints?.checked ?? true,
     reducedMotion: !!settingReducedMotion?.checked,
