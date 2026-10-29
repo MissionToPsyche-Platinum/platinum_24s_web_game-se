@@ -37,13 +37,23 @@
                     <p>Display name (for leaderboard):<span id = "settingDisplayName" style="display: block; margin-bottom: 4px;">Astronaut</span></p>
                 </label>
                 <p><strong>Audio</strong></p>
-                <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; cursor: pointer;">
+                <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; cursor: pointer;">
                     <input type="checkbox" id="settingSound" checked>
                     <span>Sound effects</span>
                 </label>
-                <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px; cursor: pointer;">
+                <label class="settings-volume">
+                    <span>Sound volume</span>
+                    <input type="range" id="settingSoundVolume" min="0" max="100" value="100" aria-valuemin="0" aria-valuemax="100">
+                    <span id="settingSoundVolumeValue">100</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; cursor: pointer;">
                     <input type="checkbox" id="settingMusic" checked>
                     <span>Background music</span>
+                </label>
+                <label class="settings-volume" style="margin-bottom: 20px;">
+                    <span>Music volume</span>
+                    <input type="range" id="settingMusicVolume" min="0" max="100" value="35" aria-valuemin="0" aria-valuemax="100">
+                    <span id="settingMusicVolumeValue">35</span>
                 </label>
                 <p><strong>Gameplay</strong></p>
                 <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; cursor: pointer;">
