@@ -1717,7 +1717,7 @@ body {
     border: 2px solid rgba(249, 160, 0, 0.35);
     padding-top: 7.5px;
     height: 60px;
-    width: 75px;
+    width: 60px;
     text-align: center;
     align-items: center;
     font-size: 24;
@@ -1753,11 +1753,12 @@ body {
 
 .movement-button {
     border: 2px solid rgba(249, 160, 0, 0.35);
-    height: 2vw;
+    height: 100%;
     width: 10vh;
     margin-top: 5px;
-    margin-left: 2.5px;
-    margin-right: 2.5px;
+    /* margin-left: 2.5px;
+    margin-right: 2.5px; */
+    margin-bottom: 5px;
     font-size: 20;
     background-color: transparent;
     color: #702963;
@@ -1766,11 +1767,24 @@ body {
 #maze-puzzle-layout {
     display: grid;
     place-items: center;
+    align-self: flex-start;
     grid-template-rows: auto 1fr;
     grid-template-areas: 
     "header"
     "main",
     "buttons";
+}
+
+.end-maze-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.maze-rocket-icon {
+    width: 75%;
+    height: 75%;
+    object-fit: cover;
 }
 
 #maze-buttons {
@@ -2475,7 +2489,7 @@ button.tube-cell::-moz-focus-inner {
 
 @media (max-width: 1445px) {
     .maze-item {
-        padding-top: 25px;
+        /* padding-top: 25px; */
         width: 80px;
         height: 75px;
     }
@@ -2483,7 +2497,7 @@ button.tube-cell::-moz-focus-inner {
 
 @media (max-width: 1200px) {
     .maze-item {
-        padding-top: 20x;
+        /* padding-top: 20x; */
         width: 70px;
         height: 70px;
     }
@@ -2491,7 +2505,7 @@ button.tube-cell::-moz-focus-inner {
 
 @media (max-width: 1045px) {
     .maze-item {
-        padding-top: 15px;
+        /* padding-top: 15px; */
         width: 65px;
         height: 65px;
         font-size: 24;
@@ -2500,7 +2514,7 @@ button.tube-cell::-moz-focus-inner {
 
 @media (max-width: 975px) {
     .maze-item {
-        padding-top: 10px;
+        /* padding-top: 10px; */
         width: 55px;
         height: 60px;
     }
@@ -2508,7 +2522,7 @@ button.tube-cell::-moz-focus-inner {
 
 @media (max-width: 630px) {
     .maze-item {
-        padding-top: 5px;
+        /* padding-top: 5px; */
         width: 45px;
         height: 50px;
         font-size: 20;
@@ -2517,9 +2531,18 @@ button.tube-cell::-moz-focus-inner {
 
 @media (max-width: 530px) {
     .maze-item {
-        padding-top: 2px;
+        /* padding-top: 2px; */
         width: 40px;
         height: 45px;
+        font-size: 18;
+    }
+}
+
+@media (max-width: 400px) {
+    .maze-item {
+        /* padding-top: 1px; */
+        width: 30px;
+        height: 30px;
         font-size: 18;
     }
 }

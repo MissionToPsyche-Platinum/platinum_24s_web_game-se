@@ -33,17 +33,22 @@ export function startMazePuzzle({ containerID }) {
 
     const rocket_icon_width = difficulty === 'normal' ? 40 : 28;
     const rocket_icon_height = difficulty === 'normal' ? 45 : 30;
-    icon_top.width = rocket_icon_width;
-    icon_top.height = rocket_icon_height;
 
-    icon_bottom.width = rocket_icon_width;
-    icon_bottom.height = rocket_icon_height;
+    icon_top.classList.add('maze-rocket-icon');
+    icon_bottom.classList.add('maze-rocket-icon');
+    icon_left.classList.add('maze-rocket-icon');
+    icon_right.classList.add('maze-rocket-icon');
+    // icon_top.width = rocket_icon_width;
+    // icon_top.height = rocket_icon_height;
 
-    icon_left.width = rocket_icon_width;
-    icon_left.height = rocket_icon_height;
+    // icon_bottom.width = rocket_icon_width;
+    // icon_bottom.height = rocket_icon_height;
 
-    icon_right.width = rocket_icon_width;
-    icon_right.height = rocket_icon_height;
+    // icon_left.width = rocket_icon_width;
+    // icon_left.height = rocket_icon_height;
+
+    // icon_right.width = rocket_icon_width;
+    // icon_right.height = rocket_icon_height;
 
 
     const end_maze_icon = document.createElement('img');
@@ -51,8 +56,9 @@ export function startMazePuzzle({ containerID }) {
     const end_width = difficulty === 'normal' ? 60 : 40;
 
     end_maze_icon.src = './images/maze/Psyche_Asteroid_Image_No_Background_Resized.png';
-    end_maze_icon.width = end_width;
-    end_maze_icon.height = end_height;
+    end_maze_icon.classList.add('end-maze-icon');
+    // end_maze_icon.width = end_width;
+    // end_maze_icon.height = end_height;
 
     const NUM_TILES = difficulty === "normal" ? 100 : 400;
     const NUM_COLS = difficulty === "normal" ? 10 : 20;
