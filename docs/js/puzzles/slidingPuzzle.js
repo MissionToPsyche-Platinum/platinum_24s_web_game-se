@@ -66,7 +66,7 @@ function setupHelpButton() {
     });
 }
 
-function shufflePieces (state, gridSize) {
+export function shufflePieces (state, gridSize) {
     let lastIndex = null;
 
     for(let i = 0; i < 50; i++) {
