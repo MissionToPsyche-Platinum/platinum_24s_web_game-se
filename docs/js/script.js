@@ -244,10 +244,16 @@ function clearLeaderboard() {
   });
 }
 
+function setProfileNameDisplay(name) {
+  if (settingDisplayName) settingDisplayName.textContent = name;
+}
+
 function loadGameplaySettings() {
   if (settingDisplayName) {
-    const name = localStorage.getItem(LS.displayName);
-    settingDisplayName.value = name === null ? "" : name;
+    const stored = localStorage.getItem(LS.displayName);
+    setProfileNameDisplay(
+      stored === null ? `${firstName} ${lastName}`.trim() : stored,
+    );
   }
   if (settingSound)
     settingSound.checked = localStorage.getItem(LS.sound) !== "false";
@@ -290,6 +296,15 @@ function resetSettingsToDefaults() {
   )
     return;
   Object.values(LS).forEach((k) => localStorage.removeItem(k));
+  firstName = "";
+  lastName = "";
+  sessionStorage.removeItem("firstName");
+  sessionStorage.removeItem("lastName");
+  if (firstNameDisplay) firstNameDisplay.textContent = "";
+  if (lastNameDisplay) lastNameDisplay.textContent = "";
+  const playerNameDisplay = document.getElementById("playerNameDisplay");
+  if (playerNameDisplay) playerNameDisplay.textContent = "";
+  setProfileNameDisplay("");
   if (settingSound) settingSound.checked = true;
   if (settingMusic) settingMusic.checked = true;
   if (settingSoundVolume) settingSoundVolume.value = String(DEFAULT_SOUND_VOLUME);
@@ -681,10 +696,7 @@ function openSettings() {
   if (!settingsPopUp) return;
   closeExitConfirm();
   loadGameplaySettings();
-  loadGameplaySettings();
-  if(!(firstName == null || lastName == null)) {
-    document.getElementById("settingDisplayName").textContent = firstName + " " + lastName;
-  }
+  setProfileNameDisplay(`${firstName} ${lastName}`.trim());
   pauseRunTimer();
   settingsPopUp.style.display = "block";
 }
@@ -746,7 +758,7 @@ function tryCloseTabFromExitScreen() {
 
 function getPyscheSettings() {
   return {
-    displayName: settingDisplayName?.value.trim() ?? "",
+    displayName: settingDisplayName?.textContent.trim() ?? "",
     soundEnabled: !!settingSound?.checked,
     musicEnabled: !!settingMusic?.checked,
     soundVolume: sliderVolume(settingSoundVolume, DEFAULT_SOUND_VOLUME),
