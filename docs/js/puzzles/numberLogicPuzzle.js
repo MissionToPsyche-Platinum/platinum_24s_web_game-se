@@ -212,6 +212,7 @@ export function startNumberLogicPuzzle({ containerID }) {
             }
         }
         input.value = value;
+		input.dispatchEvent(new Event("input", { bubbles: true }));
     }
 
     //Renders the numbers to the screen
