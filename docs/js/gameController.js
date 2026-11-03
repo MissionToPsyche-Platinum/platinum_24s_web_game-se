@@ -160,7 +160,8 @@ function startGame() {
     playerScore = 0;
     updateScore(0);
     nextPuzzleButton.style.display = 'inline';
-    solvePuzzleButton.disabled = false;
+    solvePuzzleButton.disabled = true;
+    solvePuzzleButton.style.display = 'none';
     nextPuzzleButton.disabled = true;
     if (newGameButton) newGameButton.style.display = 'none';
     if (winMessage) winMessage.style.display= 'none';
@@ -268,6 +269,7 @@ function skipPuzzle() {
         tryShowMissionIntel(MISSION_INTEL_TRIGGER.skip);
         nextPuzzleButton.disabled = false;
         solvePuzzleButton.disabled = true;
+        solvePuzzleButton.style.display = 'none';
         puzzleHelpButton.disabled = true;
         updateSkipButtonState(false);
         updateProgress();
@@ -291,6 +293,7 @@ export function solvePuzzle() {
     tryShowMissionIntel(MISSION_INTEL_TRIGGER.solve);
     nextPuzzleButton.disabled = false;
     solvePuzzleButton.disabled = true;
+    solvePuzzleButton.style.display = 'none';
     puzzleHelpButton.disabled = true;
     updateSkipButtonState(false);
     updateProgress();
@@ -312,6 +315,7 @@ function updateHeader() {
     if (newGameButton) newGameButton.style.display = 'inline';
     if (winMessage) winMessage.style.display = 'block';
     solvePuzzleButton.disabled = true;
+    solvePuzzleButton.style.display = 'none';
     puzzleSolvedMessage.style.display = 'none';
     nextPuzzleButton.style.display = 'none';
     gameIsOver(true);
@@ -340,7 +344,8 @@ function displayNextPuzzle() {
     puzzleSolvedMessage.style.display = 'none';
     clearMissionFact();
     nextPuzzleButton.disabled = true;
-    solvePuzzleButton.disabled = false;
+    solvePuzzleButton.disabled = true;
+    solvePuzzleButton.style.display = 'none';
     puzzleHelpButton.disabled = !settingHints.checked;
     updateSkipButtonState(true);
     const puzzle = gameState.puzzleOrder[gameState.nextPuzzleIndex];
