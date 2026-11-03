@@ -10,6 +10,10 @@ const LS = {
   motion: "pysche_settings_reduced_motion",
   colorBlind: "pysche_settings_color_blind",
   diff: "pysche_settings_difficulty",
+  sound: "pysche_settings_sound",
+  music: "pysche_settings_music",
+  soundVolume: "pysche_settings_sound_volume",
+  musicVolume: "pysche_settings_music_volume",
 };
 
 const mainMenu = document.getElementById("main-menu");
@@ -42,6 +46,81 @@ const backgroundMusicToggle = document.getElementById("backgroundMusicToggle");
 const resetSettingsButton = document.getElementById("resetSettings");
 const settingSound = document.getElementById("settingSound");
 const settingMusic = document.getElementById("settingMusic");
+const settingSoundVolume = document.getElementById("settingSoundVolume");
+const settingMusicVolume = document.getElementById("settingMusicVolume");
+const settingSoundVolumeValue = document.getElementById("settingSoundVolumeValue");
+const settingMusicVolumeValue = document.getElementById("settingMusicVolumeValue");
+const DEFAULT_SOUND_VOLUME = 100;
+const DEFAULT_MUSIC_VOLUME = 35;
+const backgroundMusic = document.getElementById("background-music");
+if (backgroundMusic) {
+  backgroundMusic.loop = true;
+  backgroundMusic.volume = DEFAULT_MUSIC_VOLUME / 100;
+}
+
+function clampPercent(value, fallback) {
+  if (value === null || value === undefined || value === "") return fallback;
+  const n = Number(value);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.min(100, Math.max(0, Math.round(n)));
+}
+
+function sliderPercent(el, fallback) {
+  return clampPercent(el?.value, fallback);
+}
+
+function sliderVolume(el, fallbackPercent) {
+  return sliderPercent(el, fallbackPercent) / 100;
+}
+
+function syncVolumeLabels() {
+  if (settingSoundVolumeValue) {
+    settingSoundVolumeValue.textContent = String(sliderPercent(settingSoundVolume, DEFAULT_SOUND_VOLUME));
+  }
+  if (settingMusicVolumeValue) {
+    settingMusicVolumeValue.textContent = String(sliderPercent(settingMusicVolume, DEFAULT_MUSIC_VOLUME));
+  }
+}
+
+function persistAudioControls() {
+  if (settingSound) localStorage.setItem(LS.sound, String(settingSound.checked));
+  if (settingMusic) localStorage.setItem(LS.music, String(settingMusic.checked));
+  if (settingSoundVolume) {
+    localStorage.setItem(
+      LS.soundVolume,
+      String(sliderPercent(settingSoundVolume, DEFAULT_SOUND_VOLUME)),
+    );
+  }
+  if (settingMusicVolume) {
+    localStorage.setItem(
+      LS.musicVolume,
+      String(sliderPercent(settingMusicVolume, DEFAULT_MUSIC_VOLUME)),
+    );
+  }
+  updateAudioSettings();
+}
+
+function updateAudioSettings() {
+  const musicOn = !!settingMusic?.checked;
+  const musicVolume = sliderVolume(settingMusicVolume, DEFAULT_MUSIC_VOLUME);
+  syncVolumeLabels();
+  window.gameAudioSettings = {
+    soundEffectsEnabled: !!settingSound?.checked,
+    backgroundMusicEnabled: musicOn,
+    soundVolume: sliderVolume(settingSoundVolume, DEFAULT_SOUND_VOLUME),
+    musicVolume,
+  };
+  if (!backgroundMusic) return;
+  backgroundMusic.volume = musicVolume;
+  if (musicOn) {
+    const playPromise = backgroundMusic.play();
+    if (playPromise && typeof playPromise.catch === "function") {
+      playPromise.catch(() => {});
+    }
+  } else {
+    backgroundMusic.pause();
+  }
+}
 const settingDisplayName = document.getElementById("settingDisplayName");
 const settingShowTimer = document.getElementById("settingShowTimer");
 const currentScore = document.getElementById("currentScore");
@@ -87,6 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
 startButton.addEventListener("click", function() {
   startNameCreation();
   showOverlay();
+  updateAudioSettings();
 });
 firstNameButton.addEventListener("click", function(event) {
   event.stopPropagation();
@@ -112,6 +192,7 @@ beginGameButton.addEventListener("click", function() {
     displayEmptyNameSelection();
   } else {
     startPuzzle();
+    updateAudioSettings();
   }
 });
 leaderBoardButton.addEventListener("click", startLeaderBoard);
@@ -163,11 +244,32 @@ function clearLeaderboard() {
   });
 }
 
+function setProfileNameDisplay(name) {
+  if (settingDisplayName) settingDisplayName.textContent = name;
+}
+
 function loadGameplaySettings() {
   if (settingDisplayName) {
-    const name = localStorage.getItem(LS.displayName);
-    settingDisplayName.value = name === null ? "" : name;
+    const stored = localStorage.getItem(LS.displayName);
+    setProfileNameDisplay(
+      stored === null ? `${firstName} ${lastName}`.trim() : stored,
+    );
   }
+  if (settingSound)
+    settingSound.checked = localStorage.getItem(LS.sound) !== "false";
+  if (settingMusic)
+    settingMusic.checked = localStorage.getItem(LS.music) !== "false";
+  if (settingSoundVolume) {
+    settingSoundVolume.value = String(
+      clampPercent(localStorage.getItem(LS.soundVolume), DEFAULT_SOUND_VOLUME),
+    );
+  }
+  if (settingMusicVolume) {
+    settingMusicVolume.value = String(
+      clampPercent(localStorage.getItem(LS.musicVolume), DEFAULT_MUSIC_VOLUME),
+    );
+  }
+  syncVolumeLabels();
   if (settingShowTimer)
     settingShowTimer.checked = localStorage.getItem(LS.timer) !== "false";
   if (settingHints)
@@ -194,8 +296,19 @@ function resetSettingsToDefaults() {
   )
     return;
   Object.values(LS).forEach((k) => localStorage.removeItem(k));
+  firstName = "";
+  lastName = "";
+  sessionStorage.removeItem("firstName");
+  sessionStorage.removeItem("lastName");
+  if (firstNameDisplay) firstNameDisplay.textContent = "";
+  if (lastNameDisplay) lastNameDisplay.textContent = "";
+  const playerNameDisplay = document.getElementById("playerNameDisplay");
+  if (playerNameDisplay) playerNameDisplay.textContent = "";
+  setProfileNameDisplay("");
   if (settingSound) settingSound.checked = true;
   if (settingMusic) settingMusic.checked = true;
+  if (settingSoundVolume) settingSoundVolume.value = String(DEFAULT_SOUND_VOLUME);
+  if (settingMusicVolume) settingMusicVolume.value = String(DEFAULT_MUSIC_VOLUME);
   loadGameplaySettings();
   updateAudioSettings();
 }
@@ -376,8 +489,9 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
   }
   settingsPopUp.addEventListener("change", (e) => {
     const t = e.target;
-    if (t === settingSound || t === settingMusic) updateAudioSettings();
-    else if (t === settingShowTimer) {
+    if (t === settingSound || t === settingMusic || t === settingSoundVolume || t === settingMusicVolume) {
+      persistAudioControls();
+    } else if (t === settingShowTimer) {
       localStorage.setItem(LS.timer, String(t.checked));
       applyTimerVisibility();
     } else if (t === settingHints) {
@@ -407,8 +521,9 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
   }
   settingsPopUp.addEventListener("change", (e) => {
     const t = e.target;
-    if (t === settingSound || t === settingMusic) updateAudioSettings();
-    else if (t === settingShowTimer) {
+    if (t === settingSound || t === settingMusic || t === settingSoundVolume || t === settingMusicVolume) {
+      persistAudioControls();
+    } else if (t === settingShowTimer) {
       localStorage.setItem(LS.timer, String(t.checked));
       applyTimerVisibility();
     } else if (t === settingHints) {
@@ -424,6 +539,10 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
       localStorage.setItem(LS.diff, t.value);
   });
 
+settingSoundVolume?.addEventListener("input", persistAudioControls);
+settingMusicVolume?.addEventListener("input", persistAudioControls);
+
+loadGameplaySettings();
 updateAudioSettings();
 
 if (exitButton && exitPopUp && cancelExitButton && confirmExitButton) {
@@ -577,10 +696,7 @@ function openSettings() {
   if (!settingsPopUp) return;
   closeExitConfirm();
   loadGameplaySettings();
-  loadGameplaySettings();
-  if(!(firstName == null || lastName == null)) {
-    document.getElementById("settingDisplayName").textContent = firstName + " " + lastName;
-  }
+  setProfileNameDisplay(`${firstName} ${lastName}`.trim());
   pauseRunTimer();
   settingsPopUp.style.display = "block";
 }
@@ -590,15 +706,6 @@ function closeSettings() {
   if (!settingsPopUp) return;
   settingsPopUp.style.display = "none";
   resumeRunTimer();
-}
-
-function updateAudioSettings() {
-  window.gameAudioSettings = {
-    soundEffectsEnabled: !!settingSound?.checked,
-    backgroundMusicEnabled: !!settingMusic?.checked,
-    soundEffectsEnabled: !!settingSound?.checked,
-    backgroundMusicEnabled: !!settingMusic?.checked,
-  };
 }
 
 function openExitConfirm() {
@@ -651,9 +758,11 @@ function tryCloseTabFromExitScreen() {
 
 function getPyscheSettings() {
   return {
-    displayName: settingDisplayName?.value.trim() ?? "",
+    displayName: settingDisplayName?.textContent.trim() ?? "",
     soundEnabled: !!settingSound?.checked,
     musicEnabled: !!settingMusic?.checked,
+    soundVolume: sliderVolume(settingSoundVolume, DEFAULT_SOUND_VOLUME),
+    musicVolume: sliderVolume(settingMusicVolume, DEFAULT_MUSIC_VOLUME),
     showTimer: settingShowTimer?.checked ?? true,
     hintsEnabled: settingHints?.checked ?? true,
     reducedMotion: !!settingReducedMotion?.checked,
@@ -676,7 +785,12 @@ window.isRunTimerRunning = () => runTimerIsRunning;
 window.getRunTimerMs = getRunTimerMs;
 
 document.addEventListener("visibilitychange", () => {
-  if (document.hidden) pauseRunTimer();
-  else resumeRunTimer();
+  if (document.hidden) {
+    pauseRunTimer();
+    backgroundMusic?.pause();
+  } else {
+    resumeRunTimer();
+    updateAudioSettings();
+  }
 });
 });

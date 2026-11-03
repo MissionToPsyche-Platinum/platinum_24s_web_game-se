@@ -31,6 +31,7 @@ let puzzleElapsedTime = 0;
 let skipsLeft = document.getElementById("skipsLeft");
 let puzzleSkippedMessage = document.getElementById("puzzle-skipped-message");
 let noSkipsLeftMessage = document.getElementById("no-skips-left-message");
+let puzzlesShown = [];
 let puzzleSkipped = false;
 
 function clearMissionFact() {
@@ -74,7 +75,7 @@ function tryShowMissionIntel(trigger) {
     }
     showRandomMissionFact();
 }
-
+/*
 export function updateScore(wrongAnswer) {
     if(wrongAnswer === 0) {
         currentScore.textContent = playerScore;
@@ -82,10 +83,19 @@ export function updateScore(wrongAnswer) {
         currentScore.textContent = currentScore.textContent - wrongAnswer;
     }
 }
+*/ 
+//updated score penalty function
+export function updateScore(wrongAnswer) {
+    if (wrongAnswer > 0) {
+        playerScore -= wrongAnswer;
+    }
+
+    currentScore.textContent = playerScore;
+}
 
 const PUZZLES_TO_WIN = 5;
 const PUZZLE_BREAK_SECONDS = 3;
-const MAX_SKIPS = 3;
+const MAX_SKIPS = 2;
 let isGameOver;
 let puzzleBreakTimer = null;
 
@@ -95,8 +105,10 @@ const gamePageContent = gameScreen.innerHTML;
 
 const gameState = {
     puzzleOrder: [],
+    nextPuzzleIndex: 0,
     solvedPuzzles: 0,
-    skippedPuzzles: 0
+    skippedPuzzles: 0,
+    currentPuzzle: null
 };
 
 function shufflePuzzles(puzzles) {
@@ -143,16 +155,11 @@ function startPuzzleBreak() {
 
 function startGame() {
     hidePuzzleBreak();
+    puzzlesShown = [];
     gameState.solvedPuzzles = 0;
     playerScore = 0;
     updateScore(0);
     nextPuzzleButton.style.display = 'inline';
-    // gridContainer.style.display = 'none';
-    // matchingHeader.style.display = 'none';
-
-    //Remove for testing
-    // solvePuzzleButton.style.visibility = 'hidden';
-    //
     solvePuzzleButton.disabled = false;
     nextPuzzleButton.disabled = true;
     if (newGameButton) newGameButton.style.display = 'none';
@@ -324,20 +331,24 @@ function updateHeader() {
 
 function displayNextPuzzle() {
     window.releaseRunTimerHold?.();
+    //Check to make sure there are more puzzles available, otherwise reset
+    if(gameState.nextPuzzleIndex >= gameState.puzzleOrder.length) {
+        gameState.nextPuzzleIndex = 0;
+    }
     puzzleSkippedMessage.style.display = 'none';
     solvePuzzleMessage.style.display = 'block';
     puzzleSolvedMessage.style.display = 'none';
     clearMissionFact();
     nextPuzzleButton.disabled = true;
-    startPuzzleTimer();
     solvePuzzleButton.disabled = false;
     puzzleHelpButton.disabled = !settingHints.checked;
     updateSkipButtonState(true);
-    if(puzzleSkipped === false) {
-        loadPuzzle(gameState.puzzleOrder[gameState.solvedPuzzles]);
-    } else {
-        loadPuzzle(gameState.puzzleOrder[gameState.skippedPuzzles]);
-    }
+    const puzzle = gameState.puzzleOrder[gameState.nextPuzzleIndex];
+    gameState.currentPuzzle = puzzle;
+    gameState.nextPuzzleIndex++;
+    puzzlesShown.push(puzzle);
+    loadPuzzle(puzzle);
+    startPuzzleTimer();
 }
 
 
@@ -362,7 +373,7 @@ function showPuzzleHelp() {
         puzzleHelpButton.disabled = true;
         return;
     }
-    const help = gameState.puzzleOrder[gameState.solvedPuzzles]?.helpText ?? "";
+    const help = gameState.currentPuzzle?.helpText ?? "";
     const puzzleHelpText = document.getElementById("puzzleHelpText");
     const puzzleHelpPopUp = document.getElementById("puzzleHelpPopUp");
     if (puzzleHelpText) puzzleHelpText.textContent = help;

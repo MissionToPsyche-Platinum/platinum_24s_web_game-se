@@ -192,17 +192,23 @@ function setupKeys (state, container, gridSize) {
         const emptyIndex = getEmptyTile(state);
         let targetIndex;
 
+        
+
         switch (event.key) {
             case "ArrowUp":
+                event.preventDefault();
                 targetIndex = emptyIndex + gridSize;
                 break;
             case "ArrowDown":
+                event.preventDefault();
                 targetIndex = emptyIndex - gridSize;
                 break;
             case "ArrowLeft":
+                event.preventDefault();
                 targetIndex = emptyIndex + 1;
                 break;
             case "ArrowRight":
+                event.preventDefault();
                 targetIndex = emptyIndex - 1;
                 break;
             default:
