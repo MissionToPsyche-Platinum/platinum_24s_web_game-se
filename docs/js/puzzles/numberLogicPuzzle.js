@@ -1,5 +1,6 @@
 
 import { solvePuzzle } from "../gameController.js";
+import { isNumberLogicSolved } from "./winConditions.js";
 import { puzzleNotSolvedMessage } from "../gameController.js";
 import { puzzleSolvedMessage } from "../gameController.js";
 import { updateScore } from "../gameController.js";
@@ -284,15 +285,7 @@ export function startNumberLogicPuzzle({ containerID }) {
     }
 
     function checkWin(checkBoard) {
-        const current = getCurrentBoard();
-        for (let i = 0; i < 9; i++) {
-            for (let j = 0; j < 9; j++) {
-                if (current[i][j] !== checkBoard[i][j]) {
-                    return false;
-                }
-            }
-        }
-        return true;
+      return isNumberLogicSolved(getCurrentBoard(), checkBoard);
     }
 
     //Highlights incorrect answers for user

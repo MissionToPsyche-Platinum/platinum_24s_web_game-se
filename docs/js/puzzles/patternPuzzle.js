@@ -1,4 +1,5 @@
 import { solvePuzzle } from "../gameController.js";
+import { isPatternPuzzleSolved } from "./winConditions.js";
 
 const COLORS = ["red", "blue", "green", "yellow"];
 const COLOR_TONES_HZ = [329.63, 392.0, 261.63, 440.0]; // E4, G4, C4, A4
@@ -231,7 +232,7 @@ export function startPatternPuzzle({ containerID }) {
         showTileFeedback(tile, "correct");
 
        if (userInput.length === pattern.length) {
-           if (currentLength >= config.maxLength) {
+           if (isPatternPuzzleSolved(userInput, pattern, config.maxLength)) {
                playToneForIndex(index, { type: "correct" });
                setStatus("Great memory! Pattern solved.");
                acceptingInput = false;

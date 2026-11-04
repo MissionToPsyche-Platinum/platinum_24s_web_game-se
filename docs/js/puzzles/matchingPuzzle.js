@@ -1,4 +1,5 @@
 import { solvePuzzle } from '../gameController.js';
+import { isMatchingPuzzleSolved } from './winConditions.js';
 export function startMatchingPuzzle({ containerID }) {
     const settings = typeof window !== "undefined" ? window.getPyscheSettings?.() : undefined;
     const difficulty = settings?.difficulty === "challenge" ? "challenge" : "normal";
@@ -477,7 +478,7 @@ export function startMatchingPuzzle({ containerID }) {
 
             }
             
-            if (pairsFound === Math.floor(NUM_TILES/2)) {
+            if (isMatchingPuzzleSolved(pairsFound, NUM_TILES)) {
                 pairsFound = 0;
                 solvePuzzle();
             }
