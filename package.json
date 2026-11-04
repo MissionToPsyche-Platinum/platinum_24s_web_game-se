@@ -1,0 +1,8 @@
+{
+  "name": "platinum-24s-web-game-se",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test docs/js/puzzles/winConditions.test.js docs/js/puzzles/slidingPuzzle.test.js"
+  }
+}
