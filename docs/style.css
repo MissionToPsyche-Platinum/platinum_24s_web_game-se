@@ -1735,8 +1735,8 @@ body {
 .maze-challenge-container {
     display: grid;
     place-items: center;
-    grid-template-rows: repeat(20, 1fr);
-    grid-template-columns: repeat(20, 1fr);
+    grid-template-rows: repeat(15, 1fr);
+    grid-template-columns: repeat(15, 1fr);
     border: 2px solid rgba(249, 160, 0, 0.35);
 }
 
