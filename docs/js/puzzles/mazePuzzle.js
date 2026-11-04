@@ -198,7 +198,6 @@ export function startMazePuzzle({ containerID }) {
     else {
         containerID.innerHTML = `
             <div id="maze-puzzle-layout">
-                <button id="maze-toggle-auto">Auto run</button>
                 <header>
                     <h2 class="puzzle-title" id="maze-puzzle-header">Maze Puzzle</h2>
                 </header>
@@ -457,10 +456,10 @@ export function startMazePuzzle({ containerID }) {
 
     let isAutorun = false;
 
-    if (difficulty === 'challenge') {
-        const autorunButton = document.getElementById("maze-toggle-auto");
-        autorunButton.addEventListener('click', toggleAutorun);
-    }
+    // if (difficulty === 'challenge') {
+    //     const autorunButton = document.getElementById("maze-toggle-auto");
+    //     autorunButton.addEventListener('click', toggleAutorun);
+    // }
 
     const startTile = document.getElementById("start-tile");
     startTile.focus();
