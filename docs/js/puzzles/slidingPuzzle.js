@@ -1,4 +1,5 @@
 import { solvePuzzle } from "../gameController.js";
+import { isSlidingPuzzleSolved } from "./winConditions.js";
 
 
 export function startSlidingPuzzle({ containerID }) {
@@ -116,11 +117,7 @@ function swapTiles (state , index , emptyIndex) {
 }
 
 function checkWin(state){
-    const puzzleSolved = state.every((tile, index) => {
-        return index === tile.finalPos;
-    });
-
-    return puzzleSolved;
+  return isSlidingPuzzleSolved(state);
 }
 
 function moveTile (index, state, container, gridSize){

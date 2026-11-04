@@ -1,4 +1,5 @@
 import { solvePuzzle } from '../gameController.js';
+import { isMazeSolved } from './winConditions.js';
 export function startMazePuzzle({ containerID }) {
     const settings = typeof window !== "undefined" ? window.getPyscheSettings?.() : undefined;
     const difficulty = settings?.difficulty === "challenge" ? "challenge" : "normal";
@@ -1013,7 +1014,7 @@ export function startMazePuzzle({ containerID }) {
     }
 
     function detectWin () {
-        if (index === endTile) {
+        if (isMazeSolved(index, endTile)) {
             isWon = true;
             endrunMaze();
 
