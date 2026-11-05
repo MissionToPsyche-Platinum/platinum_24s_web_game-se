@@ -1,4 +1,5 @@
-//Import files for name creation
+
+ //Import files for name creation
 import { firstNames } from "./leaderboardNames.js";
 import { lastNames } from "./leaderboardNames.js";
 
@@ -508,37 +509,7 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
   });
 }
 
-  if (resetSettingsButton) {
-    resetSettingsButton.addEventListener("click", resetSettingsToDefaults);
-  }
-  if (settingDisplayName) {
-    settingDisplayName.addEventListener("blur", () => {
-      localStorage.setItem(LS.displayName, settingDisplayName.value.trim());
-    });
-    settingDisplayName.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") settingDisplayName.blur();
-    });
-  }
-  settingsPopUp.addEventListener("change", (e) => {
-    const t = e.target;
-    if (t === settingSound || t === settingMusic || t === settingSoundVolume || t === settingMusicVolume) {
-      persistAudioControls();
-    } else if (t === settingShowTimer) {
-      localStorage.setItem(LS.timer, String(t.checked));
-      applyTimerVisibility();
-    } else if (t === settingHints) {
-      localStorage.setItem(LS.hints, String(t.checked));
-      applyDisabledHints();
-    } else if (t === settingReducedMotion) {
-      localStorage.setItem(LS.motion, String(t.checked));
-      applyReducedMotion();
-    } else if (t === settingColorBlind) {
-      localStorage.setItem(LS.colorBlind, String(t.checked));
-      applyColorBlindMode();
-    } else if (t === settingDifficulty)
-      localStorage.setItem(LS.diff, t.value);
-  });
-
+// Taiga Task #299: Duplicate settings listeners removed.
 settingSoundVolume?.addEventListener("input", persistAudioControls);
 settingMusicVolume?.addEventListener("input", persistAudioControls);
 
