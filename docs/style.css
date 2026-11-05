@@ -1715,9 +1715,9 @@ body {
 
 .maze-item {
     border: 2px solid rgba(249, 160, 0, 0.35);
-    padding-top: 7.5px;
-    height: 60px;
-    width: 60px;
+    padding-top: .5px;
+    height: 55px;
+    width: 50px;
     text-align: center;
     align-items: center;
     font-size: 24;
@@ -1762,6 +1762,7 @@ body {
     font-size: 20;
     background-color: transparent;
     color: #702963;
+    touch-action: manipulation;
 }
 
 #maze-puzzle-layout {
@@ -1773,6 +1774,12 @@ body {
     "header"
     "main",
     "buttons";
+}
+
+.maze-instructions {
+    text-align: center;
+    color: #702963;
+    font-size: 18;
 }
 
 .end-maze-icon {
@@ -2487,7 +2494,7 @@ button.tube-cell::-moz-focus-inner {
     display: none;
 }
 
-@media (max-width: 1445px) {
+@media (max-width: 1445px), (max-height: 1445px) {
     .maze-item {
         /* padding-top: 25px; */
         width: 80px;
@@ -2495,7 +2502,7 @@ button.tube-cell::-moz-focus-inner {
     }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1200px), (max-height: 1200px) {
     .maze-item {
         /* padding-top: 20x; */
         width: 70px;
@@ -2503,7 +2510,7 @@ button.tube-cell::-moz-focus-inner {
     }
 }
 
-@media (max-width: 1045px) {
+@media (max-width: 1045px), (max-height: 1045px) {
     .maze-item {
         /* padding-top: 15px; */
         width: 65px;
@@ -2512,7 +2519,7 @@ button.tube-cell::-moz-focus-inner {
     }
 }
 
-@media (max-width: 975px) {
+@media (max-width: 975px), (max-height: 975px) {
     .maze-item {
         /* padding-top: 10px; */
         width: 55px;
@@ -2520,16 +2527,28 @@ button.tube-cell::-moz-focus-inner {
     }
 }
 
-@media (max-width: 630px) {
+@media (max-width: 725px), (max-height: 725px) {
+    .maze-challenge-item {
+        /* padding-top: 10px; */
+        width: 35px;
+        height: 35px;
+    }
+}
+
+@media (max-width: 630px), (max-height: 630px) {
     .maze-item {
         /* padding-top: 5px; */
         width: 45px;
         height: 50px;
         font-size: 20;
     }
+    .maze-challenge-item {
+        width: 25px;
+        height: 25px;
+    }
 }
 
-@media (max-width: 530px) {
+@media (max-width: 530px), (max-height: 530px) {
     .maze-item {
         /* padding-top: 2px; */
         width: 40px;
@@ -2538,12 +2557,16 @@ button.tube-cell::-moz-focus-inner {
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 400px), (max-height: 400px) {
     .maze-item {
         /* padding-top: 1px; */
         width: 30px;
         height: 30px;
         font-size: 18;
+    }
+    .maze-challenge-item {
+        width: 20px;
+        height: 20px;
     }
 }
 

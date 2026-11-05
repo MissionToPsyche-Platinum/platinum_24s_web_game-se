@@ -74,7 +74,7 @@ export function startMazePuzzle({ containerID }) {
             <div id="maze-puzzle-layout">
                 <header>
                     <h2 class="puzzle-title" id="maze-puzzle-header">Maze Puzzle</h2>
-                    <p class='maze-instructions'>Use the arrow keys or the buttons to navigate to Psyche</p>
+                    <p class='maze-instructions'>Use the arrow keys or the movement buttons (below) to navigate to Psyche</p>
                 </header>
                 <div class="maze-container" id="gridContainer">
                     <div data-id="0" class="maze-item" tabIndex = "-1", id="start-tile"></div>
@@ -201,7 +201,7 @@ export function startMazePuzzle({ containerID }) {
             <div id="maze-puzzle-layout">
                 <header>
                     <h2 class="puzzle-title" id="maze-puzzle-header">Maze Puzzle</h2>
-                    <p class='maze-instructions'>Use the arrow keys or the buttons to navigate to Psyche</p>
+                    <p class='maze-instructions'>Use the arrow keys or the movement buttons (below) to navigate to Psyche</p>
                 </header>
                 <div class="maze-challenge-container" id="gridContainer">
                     <div data-id="0" class="maze-challenge-item" tabIndex = "-1", id="start-tile"></div>
