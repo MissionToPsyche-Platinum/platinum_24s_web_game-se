@@ -31,32 +31,25 @@ export function startMazePuzzle({ containerID }) {
     icon_left.src = './images/maze/psyche_spacex_falcon9_transparent_resized_left.png';
     icon_right.src = './images/maze/psyche_spacex_falcon9_transparent_resized_right.png';
 
-    const rocket_icon_width = difficulty === 'normal' ? 40 : 28;
-    const rocket_icon_height = difficulty === 'normal' ? 45 : 30;
-    icon_top.width = rocket_icon_width;
-    icon_top.height = rocket_icon_height;
+    // const rocket_icon_width = difficulty === 'normal' ? 40 : 28;
+    // const rocket_icon_height = difficulty === 'normal' ? 45 : 30;
 
-    icon_bottom.width = rocket_icon_width;
-    icon_bottom.height = rocket_icon_height;
-
-    icon_left.width = rocket_icon_width;
-    icon_left.height = rocket_icon_height;
-
-    icon_right.width = rocket_icon_width;
-    icon_right.height = rocket_icon_height;
-
+    icon_top.classList.add('maze-rocket-icon');
+    icon_bottom.classList.add('maze-rocket-icon');
+    icon_left.classList.add('maze-rocket-icon');
+    icon_right.classList.add('maze-rocket-icon');
+    
 
     const end_maze_icon = document.createElement('img');
-    const end_height = difficulty === 'normal' ? 45 : 30;
-    const end_width = difficulty === 'normal' ? 60 : 40;
+
 
     end_maze_icon.src = './images/maze/Psyche_Asteroid_Image_No_Background_Resized.png';
-    end_maze_icon.width = end_width;
-    end_maze_icon.height = end_height;
+    end_maze_icon.classList.add('end-maze-icon');
+    
 
-    const NUM_TILES = difficulty === "normal" ? 100 : 400;
-    const NUM_COLS = difficulty === "normal" ? 10 : 20;
-    const NUM_ROWS = difficulty === "normal" ? 10 : 20;
+    const NUM_TILES = difficulty === "normal" ? 100 : 225;
+    const NUM_COLS = difficulty === "normal" ? 10 : 15;
+    const NUM_ROWS = difficulty === "normal" ? 10 : 15;
 
     class junction {
         constructor(index, pathsTaken, possibleMoves) {
@@ -81,6 +74,7 @@ export function startMazePuzzle({ containerID }) {
             <div id="maze-puzzle-layout">
                 <header>
                     <h2 class="puzzle-title" id="maze-puzzle-header">Maze Puzzle</h2>
+                    <p class='maze-instructions'>Use the arrow keys or the movement buttons (below) to navigate to Psyche</p>
                 </header>
                 <div class="maze-container" id="gridContainer">
                     <div data-id="0" class="maze-item" tabIndex = "-1", id="start-tile"></div>
@@ -205,9 +199,9 @@ export function startMazePuzzle({ containerID }) {
     else {
         containerID.innerHTML = `
             <div id="maze-puzzle-layout">
-                <button id="maze-toggle-auto">Auto run</button>
                 <header>
                     <h2 class="puzzle-title" id="maze-puzzle-header">Maze Puzzle</h2>
+                    <p class='maze-instructions'>Use the arrow keys or the movement buttons (below) to navigate to Psyche</p>
                 </header>
                 <div class="maze-challenge-container" id="gridContainer">
                     <div data-id="0" class="maze-challenge-item" tabIndex = "-1", id="start-tile"></div>
@@ -446,189 +440,6 @@ export function startMazePuzzle({ containerID }) {
                     <div data-id="222" class="maze-challenge-item">Tile 22</div>
                     <div data-id="223" class="maze-challenge-item">Tile 23</div>
                     <div data-id="224" class="maze-challenge-item">Tile 24</div>
-                    <div data-id="225" class="maze-challenge-item">Tile 25</div>
-                    <div data-id="226" class="maze-challenge-item">Tile 26</div>
-                    <div data-id="227" class="maze-challenge-item">Tile 27</div>
-                    <div data-id="228" class="maze-challenge-item">Tile 28</div>
-                    <div data-id="229" class="maze-challenge-item">Tile 29</div>
-                    <div data-id="230" class="maze-challenge-item">Tile 30</div>
-                    <div data-id="231" class="maze-challenge-item">Tile 31</div>
-                    <div data-id="232" class="maze-challenge-item">Tile 32</div>
-                    <div data-id="233" class="maze-challenge-item">Tile 33</div>
-                    <div data-id="234" class="maze-challenge-item">Tile 34</div>
-                    <div data-id="235" class="maze-challenge-item">Tile 35</div>
-                    <div data-id="236" class="maze-challenge-item">Tile 36</div>
-                    <div data-id="237" class="maze-challenge-item">Tile 37</div>
-                    <div data-id="238" class="maze-challenge-item">Tile 38</div>
-                    <div data-id="239" class="maze-challenge-item">Tile 39</div>
-
-                    <div data-id="240" class="maze-challenge-item">Tile 40</div>
-                    <div data-id="241" class="maze-challenge-item">Tile 41</div>
-                    <div data-id="242" class="maze-challenge-item">Tile 42</div>
-                    <div data-id="243" class="maze-challenge-item">Tile 43</div>
-                    <div data-id="244" class="maze-challenge-item">Tile 44</div>
-                    <div data-id="245" class="maze-challenge-item">Tile 45</div>
-                    <div data-id="246" class="maze-challenge-item">Tile 46</div>
-                    <div data-id="247" class="maze-challenge-item">Tile 47</div>
-                    <div data-id="248" class="maze-challenge-item">Tile 48</div>
-                    <div data-id="249" class="maze-challenge-item">Tile 49</div>
-                    <div data-id="250" class="maze-challenge-item">Tile 50</div>
-                    <div data-id="251" class="maze-challenge-item">Tile 51</div>
-                    <div data-id="252" class="maze-challenge-item">Tile 52</div>
-                    <div data-id="253" class="maze-challenge-item">Tile 53</div>
-                    <div data-id="254" class="maze-challenge-item">Tile 54</div>
-                    <div data-id="255" class="maze-challenge-item">Tile 55</div>
-                    <div data-id="256" class="maze-challenge-item">Tile 56</div>
-                    <div data-id="257" class="maze-challenge-item">Tile 57</div>
-                    <div data-id="258" class="maze-challenge-item">Tile 58</div>
-                    <div data-id="259" class="maze-challenge-item">Tile 59</div>
-
-                    <div data-id="260" class="maze-challenge-item">Tile 60</div>
-                    <div data-id="261" class="maze-challenge-item">Tile 61</div>
-                    <div data-id="262" class="maze-challenge-item">Tile 62</div>
-                    <div data-id="263" class="maze-challenge-item">Tile 63</div>
-                    <div data-id="264" class="maze-challenge-item">Tile 64</div>
-                    <div data-id="265" class="maze-challenge-item">Tile 65</div>
-                    <div data-id="266" class="maze-challenge-item">Tile 66</div>
-                    <div data-id="267" class="maze-challenge-item">Tile 67</div>
-                    <div data-id="268" class="maze-challenge-item">Tile 68</div>
-                    <div data-id="269" class="maze-challenge-item">Tile 69</div>
-                    <div data-id="270" class="maze-challenge-item">Tile 70</div>
-                    <div data-id="271" class="maze-challenge-item">Tile 71</div>
-                    <div data-id="272" class="maze-challenge-item">Tile 72</div>
-                    <div data-id="273" class="maze-challenge-item">Tile 73</div>
-                    <div data-id="274" class="maze-challenge-item">Tile 74</div>
-                    <div data-id="275" class="maze-challenge-item">Tile 75</div>
-                    <div data-id="276" class="maze-challenge-item">Tile 76</div>
-                    <div data-id="277" class="maze-challenge-item">Tile 77</div>
-                    <div data-id="278" class="maze-challenge-item">Tile 78</div>
-                    <div data-id="279" class="maze-challenge-item">Tile 79</div>
-
-                    <div data-id="280" class="maze-challenge-item">Tile 80</div>
-                    <div data-id="281" class="maze-challenge-item">Tile 81</div>
-                    <div data-id="282" class="maze-challenge-item">Tile 82</div>
-                    <div data-id="283" class="maze-challenge-item">Tile 83</div>
-                    <div data-id="284" class="maze-challenge-item">Tile 84</div>
-                    <div data-id="285" class="maze-challenge-item">Tile 85</div>
-                    <div data-id="286" class="maze-challenge-item">Tile 86</div>
-                    <div data-id="287" class="maze-challenge-item">Tile 87</div>
-                    <div data-id="288" class="maze-challenge-item">Tile 88</div>
-                    <div data-id="289" class="maze-challenge-item">Tile 89</div>
-                    <div data-id="290" class="maze-challenge-item">Tile 90</div>
-                    <div data-id="291" class="maze-challenge-item">Tile 91</div>
-                    <div data-id="292" class="maze-challenge-item">Tile 92</div>
-                    <div data-id="293" class="maze-challenge-item">Tile 93</div>
-                    <div data-id="294" class="maze-challenge-item">Tile 94</div>
-                    <div data-id="295" class="maze-challenge-item">Tile 95</div>
-                    <div data-id="296" class="maze-challenge-item">Tile 96</div>
-                    <div data-id="297" class="maze-challenge-item">Tile 97</div>
-                    <div data-id="298" class="maze-challenge-item">Tile 98</div>
-                    <div data-id="299" class="maze-challenge-item">Tile 99</div>
-
-                    <div data-id="300" class="maze-challenge-item">Start</div>
-                    <div data-id="301" class="maze-challenge-item">Tile 1</div>
-                    <div data-id="302" class="maze-challenge-item">Tile 2</div>
-                    <div data-id="303" class="maze-challenge-item">Tile 3</div>
-                    <div data-id="304" class="maze-challenge-item">Tile 4</div>
-                    <div data-id="305" class="maze-challenge-item">Tile 5</div>
-                    <div data-id="306" class="maze-challenge-item">Tile 6</div>
-                    <div data-id="307" class="maze-challenge-item">Tile 7</div>
-                    <div data-id="308" class="maze-challenge-item">Tile 8</div>
-                    <div data-id="309" class="maze-challenge-item">Tile 9</div>
-                    <div data-id="310" class="maze-challenge-item">Tile 10</div>
-                    <div data-id="311" class="maze-challenge-item">Tile 11</div>
-                    <div data-id="312" class="maze-challenge-item">Tile 12</div>
-                    <div data-id="313" class="maze-challenge-item">Tile 13</div>
-                    <div data-id="314" class="maze-challenge-item">Tile 14</div>
-                    <div data-id="315" class="maze-challenge-item">Tile 15</div>
-                    <div data-id="316" class="maze-challenge-item">Tile 16</div>
-                    <div data-id="317" class="maze-challenge-item">Tile 17</div>
-                    <div data-id="318" class="maze-challenge-item">Tile 18</div>
-                    <div data-id="319" class="maze-challenge-item">Tile 19</div>
-
-                    <div data-id="320" class="maze-challenge-item">Tile 20</div>
-                    <div data-id="321" class="maze-challenge-item">Tile 21</div>
-                    <div data-id="322" class="maze-challenge-item">Tile 22</div>
-                    <div data-id="323" class="maze-challenge-item">Tile 23</div>
-                    <div data-id="324" class="maze-challenge-item">Tile 24</div>
-                    <div data-id="325" class="maze-challenge-item">Tile 25</div>
-                    <div data-id="326" class="maze-challenge-item">Tile 26</div>
-                    <div data-id="327" class="maze-challenge-item">Tile 27</div>
-                    <div data-id="328" class="maze-challenge-item">Tile 28</div>
-                    <div data-id="329" class="maze-challenge-item">Tile 29</div>
-                    <div data-id="330" class="maze-challenge-item">Tile 30</div>
-                    <div data-id="331" class="maze-challenge-item">Tile 31</div>
-                    <div data-id="332" class="maze-challenge-item">Tile 32</div>
-                    <div data-id="333" class="maze-challenge-item">Tile 33</div>
-                    <div data-id="334" class="maze-challenge-item">Tile 34</div>
-                    <div data-id="335" class="maze-challenge-item">Tile 35</div>
-                    <div data-id="336" class="maze-challenge-item">Tile 36</div>
-                    <div data-id="337" class="maze-challenge-item">Tile 37</div>
-                    <div data-id="338" class="maze-challenge-item">Tile 38</div>
-                    <div data-id="339" class="maze-challenge-item">Tile 39</div>
-
-                    <div data-id="340" class="maze-challenge-item">Tile 40</div>
-                    <div data-id="341" class="maze-challenge-item">Tile 41</div>
-                    <div data-id="342" class="maze-challenge-item">Tile 42</div>
-                    <div data-id="343" class="maze-challenge-item">Tile 43</div>
-                    <div data-id="344" class="maze-challenge-item">Tile 44</div>
-                    <div data-id="345" class="maze-challenge-item">Tile 45</div>
-                    <div data-id="346" class="maze-challenge-item">Tile 46</div>
-                    <div data-id="347" class="maze-challenge-item">Tile 47</div>
-                    <div data-id="348" class="maze-challenge-item">Tile 48</div>
-                    <div data-id="349" class="maze-challenge-item">Tile 49</div>
-                    <div data-id="350" class="maze-challenge-item">Tile 50</div>
-                    <div data-id="351" class="maze-challenge-item">Tile 51</div>
-                    <div data-id="352" class="maze-challenge-item">Tile 52</div>
-                    <div data-id="353" class="maze-challenge-item">Tile 53</div>
-                    <div data-id="354" class="maze-challenge-item">Tile 54</div>
-                    <div data-id="355" class="maze-challenge-item">Tile 55</div>
-                    <div data-id="356" class="maze-challenge-item">Tile 56</div>
-                    <div data-id="357" class="maze-challenge-item">Tile 57</div>
-                    <div data-id="358" class="maze-challenge-item">Tile 58</div>
-                    <div data-id="359" class="maze-challenge-item">Tile 59</div>
-
-                    <div data-id="360" class="maze-challenge-item">Tile 60</div>
-                    <div data-id="361" class="maze-challenge-item">Tile 61</div>
-                    <div data-id="362" class="maze-challenge-item">Tile 62</div>
-                    <div data-id="363" class="maze-challenge-item">Tile 63</div>
-                    <div data-id="364" class="maze-challenge-item">Tile 64</div>
-                    <div data-id="365" class="maze-challenge-item">Tile 65</div>
-                    <div data-id="366" class="maze-challenge-item">Tile 66</div>
-                    <div data-id="367" class="maze-challenge-item">Tile 67</div>
-                    <div data-id="368" class="maze-challenge-item">Tile 68</div>
-                    <div data-id="369" class="maze-challenge-item">Tile 69</div>
-                    <div data-id="370" class="maze-challenge-item">Tile 70</div>
-                    <div data-id="371" class="maze-challenge-item">Tile 71</div>
-                    <div data-id="372" class="maze-challenge-item">Tile 72</div>
-                    <div data-id="373" class="maze-challenge-item">Tile 73</div>
-                    <div data-id="374" class="maze-challenge-item">Tile 74</div>
-                    <div data-id="375" class="maze-challenge-item">Tile 75</div>
-                    <div data-id="376" class="maze-challenge-item">Tile 76</div>
-                    <div data-id="377" class="maze-challenge-item">Tile 77</div>
-                    <div data-id="378" class="maze-challenge-item">Tile 78</div>
-                    <div data-id="379" class="maze-challenge-item">Tile 79</div>
-
-                    <div data-id="380" class="maze-challenge-item">Tile 80</div>
-                    <div data-id="381" class="maze-challenge-item">Tile 81</div>
-                    <div data-id="382" class="maze-challenge-item">Tile 82</div>
-                    <div data-id="383" class="maze-challenge-item">Tile 83</div>
-                    <div data-id="384" class="maze-challenge-item">Tile 84</div>
-                    <div data-id="385" class="maze-challenge-item">Tile 85</div>
-                    <div data-id="386" class="maze-challenge-item">Tile 86</div>
-                    <div data-id="387" class="maze-challenge-item">Tile 87</div>
-                    <div data-id="388" class="maze-challenge-item">Tile 88</div>
-                    <div data-id="389" class="maze-challenge-item">Tile 89</div>
-                    <div data-id="390" class="maze-challenge-item">Tile 90</div>
-                    <div data-id="391" class="maze-challenge-item">Tile 91</div>
-                    <div data-id="392" class="maze-challenge-item">Tile 92</div>
-                    <div data-id="393" class="maze-challenge-item">Tile 93</div>
-                    <div data-id="394" class="maze-challenge-item">Tile 94</div>
-                    <div data-id="395" class="maze-challenge-item">Tile 95</div>
-                    <div data-id="396" class="maze-challenge-item">Tile 96</div>
-                    <div data-id="397" class="maze-challenge-item">Tile 97</div>
-                    <div data-id="398" class="maze-challenge-item">Tile 98</div>
-                    <div data-id="399" class="maze-challenge-item"></div>
                 </div>
                 <div id="maze-buttons">
                     <button id="maze-up-button" class="movement-button">up</button>
@@ -647,10 +458,10 @@ export function startMazePuzzle({ containerID }) {
 
     let isAutorun = false;
 
-    if (difficulty === 'challenge') {
-        const autorunButton = document.getElementById("maze-toggle-auto");
-        autorunButton.addEventListener('click', toggleAutorun);
-    }
+    // if (difficulty === 'challenge') {
+    //     const autorunButton = document.getElementById("maze-toggle-auto");
+    //     autorunButton.addEventListener('click', toggleAutorun);
+    // }
 
     const startTile = document.getElementById("start-tile");
     startTile.focus();
@@ -881,9 +692,10 @@ export function startMazePuzzle({ containerID }) {
     }
 
     async function moveUp () {
-        if (index - NUM_COLS < 0) {
-            return;
-        }
+        // if (index - NUM_COLS < 0) {
+        //     return;
+        // }
+        // console.log(location[index]);
         if (location[index].top && location[index - NUM_COLS].bottom) {
             isValidMove = true;
             location[index].text = "";
@@ -914,9 +726,10 @@ export function startMazePuzzle({ containerID }) {
     }
 
     async function moveDown () {
-        if (index + NUM_COLS >= location.length) {
-            return;
-        }
+        // if (index + NUM_COLS >= location.length) {
+        //     return;
+        // }
+        // console.log(location[index]);
         if (location[index].bottom && location[index + NUM_COLS].top) {
             isValidMove = true;
             location[index].text = "";
@@ -947,9 +760,9 @@ export function startMazePuzzle({ containerID }) {
     }
 
     async function moveRight () {
-        if (index >= 19 && (index - 19) % 20 === 0 && index < location.length) {
-            return
-        }
+        // if (index >= 19 && (index - 19) % 20 === 0 && index < location.length) {
+        //     return
+        // }
         if (location[index].right && location[index + 1].left) {
             isValidMove = true;
             location[index].text = "";
@@ -980,9 +793,9 @@ export function startMazePuzzle({ containerID }) {
     }
 
     async function moveLeft () {
-        if (index % 20 === 0) {
-            return;
-        }
+        // if (index % 20 === 0) {
+        //     return;
+        // }
         if (location[index].left && location[index - 1].right) {
             isValidMove = true;
             location[index].text = "";
@@ -1020,8 +833,8 @@ export function startMazePuzzle({ containerID }) {
             solvePuzzle();
             index = 0;
             const mazeItems = document.querySelectorAll(tileClass);
-            const autorunButton = document.getElementById("maze-toggle-auto");
-            autorunButton.removeEventListener('click', toggleAutorun);
+            // const autorunButton = document.getElementById("maze-toggle-auto");
+            // autorunButton.removeEventListener('click', toggleAutorun);
             mazeItems.forEach(item => {
                 item.removeEventListener('keydown', handleKeyDown);
             });
