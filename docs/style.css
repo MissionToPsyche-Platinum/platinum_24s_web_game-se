@@ -1150,6 +1150,7 @@ body {
 
 .game-header {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
     width: 100%;
@@ -1358,6 +1359,13 @@ body {
     background: rgba(255, 255, 255, 0.12);
     color: #f9a000;
     font-weight: bold;
+}
+
+#score-and-timer {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 5px;
 }
 
 #mission-fact {
