@@ -833,8 +833,8 @@ export function startMazePuzzle({ containerID }) {
             solvePuzzle();
             index = 0;
             const mazeItems = document.querySelectorAll(tileClass);
-            const autorunButton = document.getElementById("maze-toggle-auto");
-            autorunButton.removeEventListener('click', toggleAutorun);
+            // const autorunButton = document.getElementById("maze-toggle-auto");
+            // autorunButton.removeEventListener('click', toggleAutorun);
             mazeItems.forEach(item => {
                 item.removeEventListener('keydown', handleKeyDown);
             });
