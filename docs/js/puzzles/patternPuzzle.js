@@ -1,4 +1,5 @@
 import { solvePuzzle } from "../gameController.js";
+import { isPatternPuzzleSolved } from "./winConditions.js";
 
 const COLORS = ["red", "blue", "green", "yellow"];
 const COLOR_TONES_HZ = [329.63, 392.0, 261.63, 440.0]; // E4, G4, C4, A4
@@ -82,6 +83,11 @@ export function startPatternPuzzle({ containerID }) {
        return window.getPyscheSettings?.()?.soundEnabled ?? true;
    }
 
+   function soundVolume() {
+       const vol = window.getPyscheSettings?.()?.soundVolume;
+       return Number.isFinite(vol) ? Math.min(1, Math.max(0, vol)) : 1;
+   }
+
    function ensureAudio() {
        if (audioCtx || !soundEnabled()) return audioCtx;
        const Ctx = window.AudioContext || window.webkitAudioContext;
@@ -92,6 +98,8 @@ export function startPatternPuzzle({ containerID }) {
 
    function playToneForIndex(index, { type = "press" } = {}) {
        if (!soundEnabled()) return;
+       const vol = soundVolume();
+       if (vol <= 0) return;
        const ctx = ensureAudio();
        if (!ctx) return;
 
@@ -105,12 +113,13 @@ export function startPatternPuzzle({ containerID }) {
        const base = COLOR_TONES_HZ[index] ?? 440.0;
        const freq = type === "wrong" ? 140.0 : type === "correct" ? base * 1.25 : base;
        const dur = type === "wrong" ? 0.12 : 0.08;
+       const peak = (type === "wrong" ? 0.18 : 0.12) * vol;
 
        osc.type = type === "wrong" ? "sawtooth" : "sine";
        osc.frequency.setValueAtTime(freq, now);
 
        gain.gain.setValueAtTime(0.0001, now);
-       gain.gain.exponentialRampToValueAtTime(type === "wrong" ? 0.18 : 0.12, now + 0.01);
+       gain.gain.exponentialRampToValueAtTime(Math.max(0.0001, peak), now + 0.01);
        gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
 
        osc.connect(gain);
@@ -223,7 +232,7 @@ export function startPatternPuzzle({ containerID }) {
         showTileFeedback(tile, "correct");
 
        if (userInput.length === pattern.length) {
-           if (currentLength >= config.maxLength) {
+           if (isPatternPuzzleSolved(userInput, pattern, config.maxLength)) {
                playToneForIndex(index, { type: "correct" });
                setStatus("Great memory! Pattern solved.");
                acceptingInput = false;

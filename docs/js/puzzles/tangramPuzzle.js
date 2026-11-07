@@ -1,4 +1,5 @@
 import { solvePuzzle } from "../gameController.js";
+import { isTangramSolved } from "./winConditions.js";
 
 export function startTangramPuzzle({ containerID }) {
     const settings = typeof window !== "undefined" ? window.getPyscheSettings?.() : undefined;
@@ -271,7 +272,7 @@ function checkPosition(piece , solution) {
 }
 
 function checkWin(pieces) {
-    if(pieces.every(p => p.inPlace)) {
+    if(isTangramSolved(pieces)) {
         solvePuzzle();
     }
 }

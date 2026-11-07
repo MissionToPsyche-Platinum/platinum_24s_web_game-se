@@ -1,5 +1,6 @@
 import { solvePuzzle } from "../gameController.js";
 import { buildPuzzle, checkSwap , shufflePieces, swapTiles, getEmptyTile} from "./slidingPuzzleModel.js";
+import { isSlidingPuzzleSolved } from "./winConditions.js";
 
 
 export function startSlidingPuzzle({ containerID }) {
@@ -54,14 +55,17 @@ function setupHelpButton() {
 
 
 function checkWin(state){
-    const puzzleSolved = state.every((tile, index) => {
-        return index === tile.finalPos;
-    });
-
-    return puzzleSolved;
+  return isSlidingPuzzleSolved(state);
 }
 
 function moveTile (index, state, container, gridSize){
+    // Ignore keyboard events from a sliding puzzle
+    // that is no longer displayed.
+    if (!container.isConnected ||
+        !container.querySelector("#sliding-grid")) {
+        return;
+    }
+
     if (checkWin(state)) {
         return;
     }

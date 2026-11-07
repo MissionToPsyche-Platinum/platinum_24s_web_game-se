@@ -4,9 +4,17 @@
     box-sizing: border-box;
 }
 
+html, 
+body {
+    margin: 0;
+    min-height: 100%;
+    width: 100%;
+}
+
 body {
     height: 100vh;
     font-family: Arial, Helvetica, sans-serif;
+    overflow-x: hidden;
 }
 
 .container {
@@ -16,12 +24,13 @@ body {
 
 .button {
     background-color: #302144;
-    border-color: #302144;
+    border: 2px solid #68448e;
     color: #f9a000;
     font-weight: bold;
-    padding: 10px 10px;
+    padding: 10px;
     border-radius: 5px;
-    font-family: Helvetica;
+    font-family: Helvetica, sans-serif;
+    cursor: pointer;
 }
 
 #nameBackButton {
@@ -35,59 +44,130 @@ body {
 }
 
 #start {
-    margin-top: 120px;
+    margin-top: 40px;
     position: relative;
     z-index: 2;
 }
 
 #button-row {
-    margin-top: 50px;
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
     gap: 15px;
+    width: 100%;
+    margin-top: 0;
     position: relative;
     z-index: 2;
 }
 
+.title-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
 .main-title1 {
-    padding: 10px;
-    font-size: 70px;
-    font-family: Knockout;
+    font-size: clamp(2rem, 5vw, 4.5rem);
+    line-height: 1.1;
+    text-align: center;
+    margin: 0;
+    padding: 5px;
+    font-family: Knockout, serif;
     color: #f9a000;
-    position: relative;
-    z-index: 2;
-    top: 50px;
 }
 
 .psyche-asteroid {
     position: absolute;
-    top: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 80%;
-    height: 95%;
-    z-index: 1;
+    height: 200%;
+    object-fit: cover;
+    object-position: center;
+    z-index: -1;
+    pointer-events: none;
 }
 
 .main-title2 {
-    font-size: 50px;
+    font-size: clamp(1.4rem, 3.5vw, 3.5rem);
+    line-height: 1.15;
+    text-align: center;
+    max-width: 100%;
+    margin: 0;
     padding: 5px;
-    font-family: Knockout;
-    position: relative;
-    z-index: 2;
+    font-family: Knockout, serif;
     color: #f9a000;
-    top: 50px;
 }
 
 #main-menu {
-    height: 100%;
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    position: relative;
+    isolation: isolate;
+    background: linear-gradient(45deg, #f47c33, #302144);
+}
+
+.main-menu-content {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    position: relative;
-    z-index: 2;
     align-items: center;
-    text-align: center;
-    gap: 10px;
-    background: linear-gradient(45deg, #f47c33, #302144);
+    justify-content: center;
+    gap: clamp(24px, 4vh, 45px);
+    position: relative;
+    z-index: 1;
+}
+
+/**Mobile-specific adjustments**/
+@media (max-width: 600px) {
+    #main-menu {
+        padding: 16px 12px;
+    }
+
+    .main-menu-content {
+        gap: 24px;
+    }
+
+    .title-container {
+        gap: 8px;
+    }
+
+    .main-title1 {
+        font-size: clamp(2rem, 9vw, 3rem);
+    }
+
+    .main-title2 {
+        font-size: clamp(1.2rem, 5.5vw, 2rem);
+    }
+
+    #start {
+        margin-top: 0;
+    }
+
+    .psyche-asteroid {
+        width: 100%;
+        height: 105%;
+    }
+
+    #button-row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    #button-row .button {
+        width: 100%;
+        min-height: 44px;
+    }
 }
 
 .psyche-logo {
@@ -104,45 +184,104 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    overflow-y: auto;
+    box-sizing: border-box;
     background: linear-gradient(to right,#a53f5b, #302144);
-    padding: 20px;
     z-index: 1000;
-    width: 400px;
     text-align: center;
     font-family: Helvetica;
-    z-index: 1000;
     font-weight: bold;
-    height: 250px;
-    width: 500px;
     color: white;
+    width: min(500px, calc(100vw - 24px));
+    max-height: calc(100dvh - 24px);
+    padding: 20px;
+}
+
+#nameCreationScreen h1,
+#nameCreationScreen h2 {
+    margin-top: 0;
+    position: relative;
+    z-index: 1;
 }
 
 #firstNameDisplay {
     display: inline-block;
-    width: 200px;
-    height: 30px;
+    width: min(200px, 100%);
+    min-height: 30px;
+    box-sizing: border-box;
     background-color: white;
     color: #302144;
+    overflow-wrap: anywhere;
 }
 
-#firstNameDropdownButton {
-    background-color: #302144;
-    border-color: #302144;
-    color: #ef5966;
-    font-weight: bold;
-    padding: 10px 10px;
-    border-radius: 5px;
-    font-family: Helvetica;
+#firstNameDropdown {
+    top: calc(100% + 4px);
+    bottom: auto;
+    max-height: 160px;
 }
 
+#lastNameDropdown {
+    bottom: calc(100% + 4px);
+    top: auto;
+    max-height: 130px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#firstNameDropdownButton,
 #lastNameDropdownButton {
     background-color: #302144;
-    border-color: #302144;
+    border: 1px solid #302144;
     color: #ef5966;
     font-weight: bold;
-    padding: 10px 10px;
+    padding: 10px;
     border-radius: 5px;
     font-family: Helvetica;
+    max-width: 100%;
+    cursor: pointer;
+}
+
+/**Mobile-specific adjustments**/
+@media (max-width: 600px) {
+    #nameCreationScreen {
+        padding: 16px;
+    }
+
+    #nameCreationHeader {
+        font-size: 1.1rem;
+    }
+
+    .name-row {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 8px;
+    }
+
+    #firstNameDropdownButton,
+    #lastNameDropdownButton {
+        width: 100%;
+        min-width: 0;
+        padding: 10px 6px;
+        font-size: 0.9rem;
+    }
+
+    #firstNameDisplay,
+    #lastNameDisplay {
+        width: 100%;
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .dropdown-content {
+        width: calc(50% - 4px);
+        max-height: 180px;
+    }
+
+    #nameBackButton,
+    #beginGame {
+        max-width: 100%;
+        padding: 10px;
+        font-size: 0.9rem;
+    }
 }
 
 #beginGame {
@@ -177,31 +316,27 @@ body {
     z-index: 999;
 }
 
-#emptyNameScreen {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: linear-gradient(to right,#a53f5b, #302144);
-    padding: 20px;
-    z-index: 1000;
-    width: 400px;
-    text-align: center;
-    font-family: Helvetica;
-    z-index: 1000;
-    font-weight: bold;
-    height: 250px;
-    width: 500px;
-    color: white;
+#emptyNameHeader {
+    margin: 0 0 18px;
+    font-size: 1rem;
+    line-height: 1.5;
 }
 
-#firstNameDisplay {
-    display: inline-block;
-    width: 200px;
-    height: 30px;
+#firstNameDisplay,
+#lastNameDisplay {
     background-color: white;
     color: #302144;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    min-height: 40px;
+    padding: 6px 10px;
+    box-sizing: border-box;
+    border: 1px solid black;
+    overflow-wrap: anywhere;
+    text-align: center;
 }
 
 #firstNameDropdownButton {
@@ -234,14 +369,6 @@ body {
     font-family: Helvetica;
 }
 
-#lastNameDisplay {
-    display: inline-block;
-    width: 200px;
-    height: 30px;
-    background-color: white;
-    color: #302144;
-}
-
 .overlay {
     display: none;
     position: fixed;
@@ -256,19 +383,6 @@ body {
     z-index: 999;
 }
 
-#emptyNameScreen {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    border: 2px solid black;
-    z-index: 1000;
-    width: 400px;
-    text-align: center;
-}
 
 .dropdown-content {
     display: none;
@@ -277,14 +391,36 @@ body {
     min-width: 160px;
     font-size: 16px;
     font-family: Helvetica;
+    overflow-y: auto;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    z-index: 1002;
+    text-align: left;
+    font-weight: normal;
+    color: #111;
+    border-radius: 4px;
+    width: calc(50% - 4px);
+    max-width: 260px;
+    bottom: calc(100% - 8px);
+    top: auto;
+    left: 12px;
+    margin: 0;
+    max-height: 160px;
 }
 
 .dropdown-content button {
     color: black;
     width: 100%;
     text-align: left;
-    padding: 8px;
     cursor: pointer;
+    padding: 10px 12px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    display: block;
+    border: 1px solid #888;
+    border-radius: 0;
+    background-color: #f1f1f1;
+    font-weight: normal;
 }
 
 .dropdown.show {
@@ -302,10 +438,13 @@ body {
 }
 
 .name-row {
-    display: flex;
     align-items: center;
     padding: 8px 12px;
-    gap: 15px;
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
 }
 
 .name-row span {
@@ -477,6 +616,8 @@ body {
     z-index: 1000;
     width: 400px;
     max-width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
     text-align: center;
     border-radius: 10px;
     font-family: helvetica;
@@ -780,7 +921,9 @@ body {
 /* Exit / return-to-menu confirmation popups */
 #exitPopUp,
 #menuConfirmPopUp,
-#puzzleHelpPopUp {
+#puzzleHelpPopUp,
+#resetSettingsPopUp,
+#emptyNameScreen {
     display: none;
     position: fixed;
     top: 50%;
@@ -847,7 +990,10 @@ body {
 #confirmExit,
 #cancelMenuReturn,
 #confirmMenuReturn,
-#closePuzzleHelp {
+#cancelResetSettings,
+#confirmResetSettings,
+#closePuzzleHelp,
+#okayButton {
     min-width: 130px;
     padding: 10px 14px;
     font-weight: bold;
@@ -858,7 +1004,8 @@ body {
 }
 
 #cancelExit,
-#cancelMenuReturn {
+#cancelMenuReturn,
+#cancelResetSettings {
     background-color: transparent;
     border-color: #f9a000;
     color: #f9a000;
@@ -866,20 +1013,25 @@ body {
 
 #confirmExit,
 #confirmMenuReturn,
-#closePuzzleHelp {
+#confirmResetSettings,
+#closePuzzleHelp,
+#okayButton {
     background-color: #f9a000;
     border-color: #f9a000;
     color: #302144;
 }
 
 #cancelExit:hover,
-#cancelMenuReturn:hover {
+#cancelMenuReturn:hover,
+#cancelResetSettings:hover {
     background-color: rgba(249, 160, 0, 0.12);
 }
 
 #confirmExit:hover,
 #confirmMenuReturn:hover,
-#closePuzzleHelp:hover {
+#confirmResetSettings:hover,
+#closePuzzleHelp:hover,
+#okayButton:hover {
     filter: brightness(1.05);
 }
 
@@ -888,6 +1040,58 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 12px;
+}
+
+.settings-volume {
+    display: grid;
+    grid-template-columns: 1fr minmax(90px, 1fr) 32px;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 12px;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.settings-volume input[type="range"] {
+    width: 100%;
+    accent-color: #f9a000;
+    cursor: pointer;
+}
+
+.settings-difficulty {
+    display: block;
+    margin-bottom: 20px;
+}
+
+#settingDifficulty {
+    appearance: none;
+    width: 100%;
+    padding: 10px 38px 10px 12px;
+    background-color: #221533;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23f9a000' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    color: #f9a000;
+    border: 2px solid #f9a000;
+    border-radius: 6px;
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#settingDifficulty:hover,
+#settingDifficulty:focus-visible {
+    filter: brightness(1.08);
+}
+
+#settingDifficulty:focus-visible {
+    outline: 3px solid rgba(249, 160, 0, 0.55);
+    outline-offset: 2px;
+}
+
+#settingDifficulty option {
+    background-color: #302144;
+    color: #f9a000;
 }
 
 #closeSettings,
@@ -953,6 +1157,7 @@ body {
 
 .game-header {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
     width: 100%;
@@ -1161,6 +1366,13 @@ body {
     background: rgba(255, 255, 255, 0.12);
     color: #f9a000;
     font-weight: bold;
+}
+
+#score-and-timer {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 5px;
 }
 
 #mission-fact {
@@ -1433,7 +1645,7 @@ body {
 
 .matching-grid-item {
     border: 2px solid rgba(249, 160, 0, 0.35);
-    padding-top: 65px;
+    /* padding-top: 65px; */
     text-align: center;
     align-items: center;
     font-weight: 700;
@@ -1444,7 +1656,7 @@ body {
     transform: rotateY(180deg);
 }
 
-.matching-grid-item img {
+.matching-grid-item img, .matching-challenge-grid-item img{
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -1453,7 +1665,7 @@ body {
 .matching-challenge-grid-item {
     border: 2px solid rgba(249, 160, 0, 0.35);
     background-clip: border-box;
-    padding-top: 45px;
+    /* padding-top: 45px; */
     text-align: center;
     align-items: center;
     font-weight: 700;
@@ -1556,9 +1768,9 @@ body {
 
 .maze-item {
     border: 2px solid rgba(249, 160, 0, 0.35);
-    padding-top: 7.5px;
-    height: 60px;
-    width: 75px;
+    padding-top: .5px;
+    height: 55px;
+    width: 50px;
     text-align: center;
     align-items: center;
     font-size: 24;
@@ -1576,16 +1788,16 @@ body {
 .maze-challenge-container {
     display: grid;
     place-items: center;
-    grid-template-rows: repeat(20, 1fr);
-    grid-template-columns: repeat(20, 1fr);
+    grid-template-rows: repeat(15, 1fr);
+    grid-template-columns: repeat(15, 1fr);
     border: 2px solid rgba(249, 160, 0, 0.35);
 }
 
 .maze-challenge-item {
     border: 2px solid rgba(249, 160, 0, 0.35);
     /* padding-top: 5px; */
-    height: 30px;
-    width: 35px;
+    height: 35px;
+    width: 40px;
     text-align: center;
     align-items: center;
     font-size: 16;
@@ -1594,24 +1806,45 @@ body {
 
 .movement-button {
     border: 2px solid rgba(249, 160, 0, 0.35);
-    height: 2vw;
+    height: 100%;
     width: 10vh;
     margin-top: 5px;
-    margin-left: 2.5px;
-    margin-right: 2.5px;
+    /* margin-left: 2.5px;
+    margin-right: 2.5px; */
+    margin-bottom: 5px;
     font-size: 20;
     background-color: transparent;
     color: #702963;
+    touch-action: manipulation;
 }
 
 #maze-puzzle-layout {
     display: grid;
     place-items: center;
+    align-self: flex-start;
     grid-template-rows: auto 1fr;
     grid-template-areas: 
     "header"
     "main",
     "buttons";
+}
+
+.maze-instructions {
+    text-align: center;
+    color: #702963;
+    font-size: 18;
+}
+
+.end-maze-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.maze-rocket-icon {
+    width: 75%;
+    height: 75%;
+    object-fit: cover;
 }
 
 #maze-buttons {
@@ -2314,65 +2547,90 @@ button.tube-cell::-moz-focus-inner {
     display: none;
 }
 
-@media (max-width: 1445px) {
+@media (max-width: 1445px), (max-height: 1445px) {
     .maze-item {
-        padding-top: 25px;
+        /* padding-top: 25px; */
         width: 80px;
         height: 75px;
     }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1200px), (max-height: 1200px) {
     .maze-item {
-        padding-top: 20x;
+        /* padding-top: 20x; */
         width: 70px;
         height: 70px;
     }
 }
 
-@media (max-width: 1045px) {
+@media (max-width: 1045px), (max-height: 1045px) {
     .maze-item {
-        padding-top: 15px;
+        /* padding-top: 15px; */
         width: 65px;
         height: 65px;
         font-size: 24;
     }
 }
 
-@media (max-width: 975px) {
+@media (max-width: 975px), (max-height: 975px) {
     .maze-item {
-        padding-top: 10px;
+        /* padding-top: 10px; */
         width: 55px;
         height: 60px;
     }
 }
 
-@media (max-width: 630px) {
+@media (max-width: 725px), (max-height: 725px) {
+    .maze-challenge-item {
+        /* padding-top: 10px; */
+        width: 35px;
+        height: 35px;
+    }
+}
+
+@media (max-width: 630px), (max-height: 630px) {
     .maze-item {
-        padding-top: 5px;
+        /* padding-top: 5px; */
         width: 45px;
         height: 50px;
         font-size: 20;
     }
+    .maze-challenge-item {
+        width: 25px;
+        height: 25px;
+    }
 }
 
-@media (max-width: 530px) {
+@media (max-width: 530px), (max-height: 530px) {
     .maze-item {
-        padding-top: 2px;
+        /* padding-top: 2px; */
         width: 40px;
         height: 45px;
         font-size: 18;
     }
 }
 
+@media (max-width: 400px), (max-height: 400px) {
+    .maze-item {
+        /* padding-top: 1px; */
+        width: 30px;
+        height: 30px;
+        font-size: 18;
+    }
+    .maze-challenge-item {
+        width: 20px;
+        height: 20px;
+    }
+}
+
 @media (max-width: 1080px), (max-height: 1080px){
     .matching-grid-item {
-        padding-top: 50px;
+        /* padding-top: 50px; */
         height: 145px;
         width: 145px;
     }
     .matching-challenge-grid-item {
-        padding-top: 45px;
+        /* padding-top: 45px; */
         height: 100%;
         width: 100%;
     }
@@ -2397,7 +2655,7 @@ button.tube-cell::-moz-focus-inner {
 
 @media (max-width: 750px), (max-height: 750px){
     .matching-challenge-grid-item {
-        padding-top: 35px;
+        /* padding-top: 35px; */
         height: 110px;
         width: 110px;
     }
@@ -2423,12 +2681,12 @@ button.tube-cell::-moz-focus-inner {
 
 @media (max-width: 660px), (max-height: 660px) {
     .matching-grid-item {
-        padding-top: 40px;
+        /* padding-top: 40px; */
         height: 120px;
         width: 120px;
     }
     .matching-challenge-grid-item {
-        padding-top: 25px;
+        /* padding-top: 25px; */
         height: 90px;
         width: 90px;
     }
@@ -2454,12 +2712,12 @@ button.tube-cell::-moz-focus-inner {
 
 @media (max-width: 560px), (max-height: 560px) {
     .matching-grid-item {
-        padding-top: 25px;
+        /* padding-top: 25px; */
         height: 90px;
         width: 90px;
     }
     .matching-challenge-grid-item {
-        padding-top: 15px;
+        /* padding-top: 15px; */
         height: 70px;
         width: 70px;
     }
@@ -2485,12 +2743,12 @@ button.tube-cell::-moz-focus-inner {
 
 @media (max-width: 400px), (max-height: 400px) {
     .matching-grid-item {
-        padding-top: 10px;
+        /* padding-top: 10px; */
         height: 60px;
         width: 60px;
     }
     .matching-challenge-grid-item {
-        padding-top: 5px;
+        /* padding-top: 5px; */
         height: 45px;
         width: 45px;
         font-size: 20;

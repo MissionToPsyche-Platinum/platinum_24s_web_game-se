@@ -10,19 +10,23 @@
     <div class="container">
         
         <section id="main-menu" class="screen">
-            <img src = "images/Psyche Asteroid Image.jpg" alt = "Psyche Asteroid" class = "psyche-asteroid">
-            <h1 class = "main-title1">PSYCHE</h1>
-            <h2 class = "main-title2">JOURNEY TO A METAL WORLD</h2>
-            <button id="start" class="button">Start Game</button>
+            <div class = "main-menu-content">
+                <img src = "images/Psyche Asteroid Image.jpg" alt = "Psyche Asteroid" class = "psyche-asteroid">
+                <div class="title-container">
+                    <h1 class = "main-title1">PSYCHE</h1>
+                    <h2 class = "main-title2">JOURNEY TO A METAL WORLD</h2>
+                </div>
+                <button id="start" class="button">Start Game</button>
 
-            <!-- Main menu actions -->
-            <section id = "button-row">
-            <button id="instructions" class="button">How to Play</button>
-            <button id="settings" class="button">Settings</button>
-            <button id="leaderboard" class="button">Leaderboard</button>
-            <button id="credits" class="button">Credits</button>
-            <button id="exit" class="button">Exit Game</button>
-            </section>
+                <!-- Main menu actions -->
+                <section id = "button-row">
+                    <button id="instructions" class="button">How to Play</button>
+                    <button id="settings" class="button">Settings</button>
+                    <button id="leaderboard" class="button">Leaderboard</button>
+                    <button id="credits" class="button">Credits</button>
+                    <button id="exit" class="button">Exit Game</button>
+                </section>
+            </div>
 
             <img src = "images/Psyche_LogoAssets/Badge_Solid/Color/Psyche_BadgeSolid_Color-JPG.jpg" alt = "Psyche Logo" class = "psyche-logo">
 
@@ -33,13 +37,23 @@
                     <p>Display name (for leaderboard):<span id = "settingDisplayName" style="display: block; margin-bottom: 4px;">Astronaut</span></p>
                 </label>
                 <p><strong>Audio</strong></p>
-                <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; cursor: pointer;">
+                <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; cursor: pointer;">
                     <input type="checkbox" id="settingSound" checked>
                     <span>Sound effects</span>
                 </label>
-                <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px; cursor: pointer;">
+                <label class="settings-volume">
+                    <span>Sound volume</span>
+                    <input type="range" id="settingSoundVolume" min="0" max="100" value="100" aria-valuemin="0" aria-valuemax="100">
+                    <span id="settingSoundVolumeValue">100</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; cursor: pointer;">
                     <input type="checkbox" id="settingMusic" checked>
                     <span>Background music</span>
+                </label>
+                <label class="settings-volume" style="margin-bottom: 20px;">
+                    <span>Music volume</span>
+                    <input type="range" id="settingMusicVolume" min="0" max="100" value="35" aria-valuemin="0" aria-valuemax="100">
+                    <span id="settingMusicVolumeValue">35</span>
                 </label>
                 <p><strong>Gameplay</strong></p>
                 <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; cursor: pointer;">
@@ -60,8 +74,8 @@
                     <span>Color-blind friendly (patterns and shapes, not color alone)</span>
                 </label>
                 <p>Difficulty for timed runs:</p>
-                <label style="display: block; margin-bottom: 20px;">
-                    <select id="settingDifficulty" style="width: 100%; padding: 6px 8px; border: 1px solid #333;">
+                <label class="settings-difficulty">
+                    <select id="settingDifficulty">
                         <option value="normal">Normal</option>
                         <option value="challenge">Challenge (stricter timing later)</option>
                     </select>
@@ -72,6 +86,28 @@
                 </div>
             </div>
         </section>
+
+        <!-- Reset settings confirm popup -->
+        <div id="resetSettingsPopUp">
+            <div class="exit-icon-row">
+                <img
+                    src="images/Psyche_LogoAssets/Badge_Solid/Color/Psyche_BadgeSolid_Color-JPG.jpg"
+                    alt="Psyche mission badge"
+                    class="exit-logo"
+                >
+            </div>
+            <h2 class="exit-title">Reset Settings?</h2>
+            <p class="exit-subtitle">
+                You are about to restore <span class="exit-highlight">Mission to Psyche</span> to default settings.
+            </p>
+            <p class="exit-warning">
+                Audio, gameplay, and accessibility choices will reset. Your display name will be cleared.
+            </p>
+            <div class="exit-actions">
+                <button type="button" id="cancelResetSettings">Keep Settings</button>
+                <button type="button" id="confirmResetSettings">Reset to Defaults</button>
+            </div>
+        </div>
 
         <!-- Exit confirm popup -->
         <div id="exitPopUp">
@@ -208,7 +244,9 @@
             <header id = "emptyNameHeader">
                 Name fields cannot be empty, you must choose a name to begin!
             </header>
-            <button id = "okayButton">Okay</button>
+            <div class="exit-actions">
+                <button type="button" id="okayButton">Okay</button>
+            </div>
           </section>
 
         <!-- Leaderboard screen -->
@@ -271,20 +309,22 @@
         <section id="puzzle-screen" class="screen" style="display: none;">
             <div class="game-header">
                 <h1 id="game-title">Puzzle Screen</h1>
-                <div id = "playerScorePanel">
-                    <p>Score: <span id = "currentScore">0</span></p>
-                </div>
-                <div class="timer">
-                    <p id="run-timer-display" style="margin: 0; font-size: 1.1rem; display: none;">
-                        Run time: <span id="run-timer">0:00</span>
-                    </p>
+                <div id = "score-and-timer">
+                    <div id = "playerScorePanel">
+                        <p>Score: <span id = "currentScore">0</span></p>
+                    </div>
+                    <div class="timer">
+                        <p id="run-timer-display" style="margin: 0; font-size: 1.1rem; display: none;">
+                            Run time: <span id="run-timer">0:00</span>
+                        </p>
+                    </div>
                 </div>
             </div>
             <div class="puzzle-content">
                 <aside class="left-panel">
                     <div class="game-status-messages" aria-live="polite" aria-atomic="true">
                         <p id="solve-puzzle-message">Solve this puzzle to continue.</p>
-                        <p id="puzzle-solved-message">Puzzle solved!</p>
+                        <p id="puzzle-solved-message">Puzzle solved! Please select next puzzle to continue.</p>
                         <p id="puzzle-not-solved-message">That is not the solution. Try again.</p>
                         <p id="puzzle-skipped-message">Puzzle skipped. You have <span id="skipsLeft">2</span> more skips.</p>
                         <p id="no-skips-left-message">You have no skips left.</p>

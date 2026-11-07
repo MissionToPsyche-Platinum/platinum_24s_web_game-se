@@ -1,4 +1,6 @@
+
 import { solvePuzzle } from "../gameController.js";
+import { isNumberLogicSolved } from "./winConditions.js";
 import { puzzleNotSolvedMessage } from "../gameController.js";
 import { puzzleSolvedMessage } from "../gameController.js";
 import { updateScore } from "../gameController.js";
@@ -104,6 +106,9 @@ export function startNumberLogicPuzzle({ containerID }) {
                 <input type = "text" inputmode = "numeric" maxlength = "1" class = "sudoku-input">
             </div>
             <button id = "submit">Submit</button>
+            <p id="sudoku-empty-warning" role="alert" style="display: none;">
+                Please fill in all empty cells before submitting.
+            </p>
         </div>
     `;
     if(isChallenge) {
@@ -115,6 +120,19 @@ export function startNumberLogicPuzzle({ containerID }) {
     loopScrolling();
     const submitButton = document.getElementById("submit");
     submitButton.addEventListener("click", function() {
+        const emptyCell = Array.from(
+            containerID.querySelectorAll(".sudoku-input")
+        ).find(input => !input.value.trim());
+        const warning = containerID.querySelector("#sudoku-empty-warning");
+
+        if (emptyCell) {
+            warning.style.display = "block";
+            emptyCell.focus();
+            return;
+        }
+
+        warning.style.display = "none";
+
         let checked = checkWin(checkBoard);
         if(checked === true) {
             solvePuzzle();
@@ -129,6 +147,7 @@ export function startNumberLogicPuzzle({ containerID }) {
     inputs.forEach(input => {
         input.addEventListener("input", function() {
             this.value = this.value.replace(/[^1-9]/g, "");
+            containerID.querySelector("#sudoku-empty-warning").style.display = "none";
         });
     });
 
@@ -194,6 +213,7 @@ export function startNumberLogicPuzzle({ containerID }) {
             }
         }
         input.value = value;
+		input.dispatchEvent(new Event("input", { bubbles: true }));
     }
 
     //Renders the numbers to the screen
@@ -266,15 +286,7 @@ export function startNumberLogicPuzzle({ containerID }) {
     }
 
     function checkWin(checkBoard) {
-        const current = getCurrentBoard();
-        for (let i = 0; i < 9; i++) {
-            for (let j = 0; j < 9; j++) {
-                if (current[i][j] !== checkBoard[i][j]) {
-                    return false;
-                }
-            }
-        }
-        return true;
+      return isNumberLogicSolved(getCurrentBoard(), checkBoard);
     }
 
     //Highlights incorrect answers for user
