@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { buildPuzzle, checkSwap , shufflePieces} from "./slidingPuzzle.js";
+import { buildPuzzle, checkSwap , shufflePieces} from "./slidingPuzzleModel.js";
 
 test("buildPuzzle", () => {
     const puzzle = buildPuzzle(3);
