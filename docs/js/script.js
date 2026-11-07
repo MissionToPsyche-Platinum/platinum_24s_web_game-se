@@ -161,6 +161,9 @@ const menuConfirmPopUp = document.getElementById("menuConfirmPopUp");
 const cancelMenuReturnButton = document.getElementById("cancelMenuReturn");
 const confirmMenuReturnButton = document.getElementById("confirmMenuReturn");
 const puzzleHelpPopUp = document.getElementById("puzzleHelpPopUp");
+const resetSettingsPopUp = document.getElementById("resetSettingsPopUp");
+const cancelResetSettingsButton = document.getElementById("cancelResetSettings");
+const confirmResetSettingsButton = document.getElementById("confirmResetSettings");
 
 // Event listeners for buttons
 document.addEventListener("DOMContentLoaded", () => {
@@ -290,12 +293,6 @@ function loadGameplaySettings() {
 }
 
 function resetSettingsToDefaults() {
-  if (
-    !confirm(
-      "Reset all settings to defaults? Your display name will be cleared."
-    )
-  )
-    return;
   Object.values(LS).forEach((k) => localStorage.removeItem(k));
   firstName = "";
   lastName = "";
@@ -478,7 +475,7 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
   settingsButton.addEventListener("click", openSettings);
   closeSettingsButton.addEventListener("click", closeSettings);
   if (resetSettingsButton) {
-    resetSettingsButton.addEventListener("click", resetSettingsToDefaults);
+    resetSettingsButton.addEventListener("click", openResetSettingsConfirm);
   }
   if (settingDisplayName) {
     settingDisplayName.addEventListener("blur", () => {
@@ -520,6 +517,13 @@ if (exitButton && exitPopUp && cancelExitButton && confirmExitButton) {
   exitButton.addEventListener("click", openExitConfirm);
   cancelExitButton.addEventListener("click", closeExitConfirm);
   confirmExitButton.addEventListener("click", confirmExitGame);
+}
+if (resetSettingsPopUp && cancelResetSettingsButton && confirmResetSettingsButton) {
+  cancelResetSettingsButton.addEventListener("click", closeResetSettingsConfirm);
+  confirmResetSettingsButton.addEventListener("click", () => {
+    resetSettingsToDefaults();
+    closeResetSettingsConfirm();
+  });
 }
 if (menuConfirmPopUp && cancelMenuReturnButton && confirmMenuReturnButton) {
   cancelMenuReturnButton.addEventListener("click", closeMenuConfirm);
@@ -675,8 +679,19 @@ function openSettings() {
 //Closes the settings screen
 function closeSettings() {
   if (!settingsPopUp) return;
+  closeResetSettingsConfirm();
   settingsPopUp.style.display = "none";
   resumeRunTimer();
+}
+
+function openResetSettingsConfirm() {
+  if (!resetSettingsPopUp) return;
+  resetSettingsPopUp.style.display = "block";
+}
+
+function closeResetSettingsConfirm() {
+  if (!resetSettingsPopUp) return;
+  resetSettingsPopUp.style.display = "none";
 }
 
 function openExitConfirm() {

@@ -922,6 +922,7 @@ body {
 #exitPopUp,
 #menuConfirmPopUp,
 #puzzleHelpPopUp,
+#resetSettingsPopUp,
 #emptyNameScreen {
     display: none;
     position: fixed;
@@ -989,6 +990,8 @@ body {
 #confirmExit,
 #cancelMenuReturn,
 #confirmMenuReturn,
+#cancelResetSettings,
+#confirmResetSettings,
 #closePuzzleHelp,
 #okayButton {
     min-width: 130px;
@@ -1001,7 +1004,8 @@ body {
 }
 
 #cancelExit,
-#cancelMenuReturn {
+#cancelMenuReturn,
+#cancelResetSettings {
     background-color: transparent;
     border-color: #f9a000;
     color: #f9a000;
@@ -1009,6 +1013,7 @@ body {
 
 #confirmExit,
 #confirmMenuReturn,
+#confirmResetSettings,
 #closePuzzleHelp,
 #okayButton {
     background-color: #f9a000;
@@ -1017,12 +1022,14 @@ body {
 }
 
 #cancelExit:hover,
-#cancelMenuReturn:hover {
+#cancelMenuReturn:hover,
+#cancelResetSettings:hover {
     background-color: rgba(249, 160, 0, 0.12);
 }
 
 #confirmExit:hover,
 #confirmMenuReturn:hover,
+#confirmResetSettings:hover,
 #closePuzzleHelp:hover,
 #okayButton:hover {
     filter: brightness(1.05);
