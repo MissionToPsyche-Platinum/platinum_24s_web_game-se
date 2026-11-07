@@ -121,6 +121,13 @@ function checkWin(state){
 }
 
 function moveTile (index, state, container, gridSize){
+    // Ignore keyboard events from a sliding puzzle
+    // that is no longer displayed.
+    if (!container.isConnected ||
+        !container.querySelector("#sliding-grid")) {
+        return;
+    }
+
     if (checkWin(state)) {
         return;
     }
