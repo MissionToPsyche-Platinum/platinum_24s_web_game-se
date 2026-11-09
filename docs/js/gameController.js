@@ -94,7 +94,7 @@ export function updateScore(wrongAnswer) {
 }
 
 const PUZZLES_TO_WIN = 5;
-const PUZZLE_BREAK_SECONDS = 3;
+const PUZZLE_BREAK_SECONDS = 5;
 const MAX_SKIPS = 2;
 let isGameOver;
 let puzzleBreakTimer = null;
@@ -338,7 +338,7 @@ function displayNextPuzzle() {
     puzzleSkippedMessage.style.display = 'none';
     solvePuzzleMessage.style.display = 'block';
     puzzleSolvedMessage.style.display = 'none';
-    clearMissionFact();
+    //clearMissionFact();
     nextPuzzleButton.disabled = true;
     solvePuzzleButton.disabled = false;
     puzzleHelpButton.disabled = !settingHints.checked;
