@@ -159,7 +159,7 @@ function startGame() {
     gameState.solvedPuzzles = 0;
     playerScore = 0;
     updateScore(0);
-    nextPuzzleButton.style.display = 'inline';
+    nextPuzzleButton.style.display = 'none';
     solvePuzzleButton.disabled = false;
     nextPuzzleButton.disabled = true;
     if (newGameButton) newGameButton.style.display = 'none';
@@ -266,7 +266,6 @@ function skipPuzzle() {
         puzzleSkippedMessage.style.display = 'block';
         solvePuzzleMessage.style.display = 'none';
         tryShowMissionIntel(MISSION_INTEL_TRIGGER.skip);
-        nextPuzzleButton.disabled = false;
         solvePuzzleButton.disabled = true;
         puzzleHelpButton.disabled = true;
         updateSkipButtonState(false);
@@ -274,6 +273,8 @@ function skipPuzzle() {
         window.holdRunTimer?.();
         if (detectWin()) {
             updateHeader();
+        } else {
+            startPuzzleBreak();
         }
     }
 }
@@ -289,7 +290,6 @@ export function solvePuzzle() {
     puzzleSolvedMessage.style.display = 'block';
     solvePuzzleMessage.style.display = 'none';
     tryShowMissionIntel(MISSION_INTEL_TRIGGER.solve);
-    nextPuzzleButton.disabled = false;
     solvePuzzleButton.disabled = true;
     puzzleHelpButton.disabled = true;
     updateSkipButtonState(false);
@@ -297,6 +297,8 @@ export function solvePuzzle() {
     window.holdRunTimer?.();
     if (detectWin()) {
         updateHeader();
+    } else {
+        startPuzzleBreak();
     }
 }
 
