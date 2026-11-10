@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test docs/js/puzzles/winConditions.test.js"
+    "test": "node --test "
+
   }
 }
