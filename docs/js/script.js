@@ -2,6 +2,7 @@
  //Import files for name creation
 import { firstNames } from "./leaderboardNames.js";
 import { lastNames } from "./leaderboardNames.js";
+import "./uiSounds.js";
 
 //Constant values
 const LS = {
