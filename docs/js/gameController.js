@@ -156,8 +156,9 @@ function startPuzzleBreak() {
 function startGame() {
     hidePuzzleBreak();
     puzzlesShown = [];
-    gameState.solvedPuzzles = 0;
-    playerScore = 0;
+	gameState.solvedPuzzles = 0;
+	gameState.nextPuzzleIndex = 0;
+	playerScore = 0;
     updateScore(0);
     nextPuzzleButton.style.display = 'none';
     solvePuzzleButton.disabled = false;
