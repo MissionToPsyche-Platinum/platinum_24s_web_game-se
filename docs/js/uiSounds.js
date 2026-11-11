@@ -24,7 +24,7 @@ function ensureAudio() {
   return audioCtx;
 }
 
-function playTone({ freq, duration, peak, type = "sine" }) {
+export function playTone({ freq, duration, peak, type = "sine", delay = 0 }) {
   if (!soundEnabled()) return;
   const vol = soundVolume();
   if (vol <= 0) return;
@@ -32,7 +32,7 @@ function playTone({ freq, duration, peak, type = "sine" }) {
   if (!ctx) return;
   if (ctx.state === "suspended") ctx.resume().catch(() => {});
 
-  const now = ctx.currentTime;
+  const now = ctx.currentTime + delay;
   const osc = ctx.createOscillator();
   const gain = ctx.createGain();
   const amp = Math.max(0.0001, peak * vol);
@@ -57,6 +57,10 @@ function buttonFromEvent(event) {
   return button;
 }
 
+function isPuzzleTileButton(button) {
+  return button.classList.contains("tube-cell");
+}
+
 function playHover() {
   playTone({ freq: 920, duration: 0.045, peak: 0.045, type: "sine" });
 }
@@ -68,8 +72,9 @@ function playClick() {
 document.addEventListener("pointerover", (event) => {
   if (event.pointerType === "touch") return;
   const button = buttonFromEvent(event);
-  if (!button) return;
-  if (event.relatedTarget instanceof Node && button.contains(event.relatedTarget)) return;
+  if (!button || isPuzzleTileButton(button)) return;
+  const from = event.relatedTarget;
+  if (from instanceof Node && (button.contains(from) || !from.isConnected)) return;
   const now = performance.now();
   if (button === lastHoverButton && now - lastHoverAt < 80) return;
   lastHoverButton = button;
@@ -78,7 +83,8 @@ document.addEventListener("pointerover", (event) => {
 });
 
 document.addEventListener("click", (event) => {
-  if (!buttonFromEvent(event)) return;
+  const button = buttonFromEvent(event);
+  if (!button || isPuzzleTileButton(button)) return;
   playClick();
 });
 
