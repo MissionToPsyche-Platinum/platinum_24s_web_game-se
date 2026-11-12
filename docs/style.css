@@ -1583,7 +1583,9 @@ body {
     height: 180px;
     width: 180px;
     align-self: flex-start;
-    color: rgba(249, 160, 0, 1);
+    color: #8A4A12;
+    background-color: #F5DFC5;
+    border: 2px solid #F9B96B;
     text-align: center;
     align-items: center;
     font-weight: 700;
@@ -1596,7 +1598,9 @@ body {
     background-clip: border-box;
     height: 140px;
     width: 140px;
-    color: rgba(249, 160, 0, 1);
+    color: #8A4A12;
+    background-color: #F5DFC5;
+    border: 2px solid #F9B96B;
     text-align: center;
     align-items: center;
     font-weight: 700;
