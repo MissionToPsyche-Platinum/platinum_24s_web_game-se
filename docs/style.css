@@ -1673,6 +1673,12 @@ body {
     transform: rotateY(180deg);
 }
 
+.matching-instructions {
+    text-align: center;
+    color: #702963;
+    font-size: 18;
+}
+
 #free-tile {
     border: 2px solid rgba(249, 160, 0, 0.35);
     border-radius: 8px;
