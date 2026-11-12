@@ -456,15 +456,22 @@ export function startMatchingPuzzle({ containerID }) {
             }
             item.classList.toggle("clicked");
             if (numberArray[element1Index] === numberArray[element2Index]) {
+                console.log("pair found");
+                // console.log(clickedElement1Parent);
+                // console.log(clickedElement2Parent);
+                console.log(clickedElement1Parent.querySelector('img'));
+                console.log(clickedElement2Parent.querySelector('img'));
                 clickedElement1.style.backgroundColor = '#301934';
                 clickedElement2.style.backgroundColor = '#301934';
                 clickedElement1.style.border = '2px solid rgba(249, 160, 0, 0.35)';
                 clickedElement2.style.border = '2px solid rgba(249, 160, 0, 0.35)';
                 if (clickedElement1Parent._clickWrapper) {
+                    console.log(clickedElement1Parent.querySelector('img'));
                     clickedElement1Parent.removeEventListener('click', clickedElement1Parent._clickWrapper);
                     delete clickedElement1Parent._clickWrapper;
                 }
                 if (clickedElement2Parent._clickWrapper) {
+                    console.log(clickedElement2Parent.querySelector('img'));
                     clickedElement2Parent.removeEventListener('click', clickedElement2Parent._clickWrapper);
                     delete clickedElement2Parent._clickWrapper;
                 }
