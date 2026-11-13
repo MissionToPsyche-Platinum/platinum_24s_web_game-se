@@ -37,18 +37,24 @@ export function startSlidingPuzzle({ containerID }) {
 
 
 
+
 function setupHelpButton() {
     const btn = document.getElementById("solved-puzzle");
     const overlay = document.getElementById("solved-overlay");
 
-    btn.addEventListener("mousedown", () => {
+    btn.addEventListener("pointerdown", () => {
         overlay.style.display = "block";
     });
 
-    btn.addEventListener("mouseup", () => {
+    const hideOverlay = () => {
         overlay.style.display = "none";
-    });
+    };
+
+    btn.addEventListener("pointerup", hideOverlay);
+    btn.addEventListener("pointerleave", hideOverlay);
+    btn.addEventListener("pointercancel", hideOverlay);
 }
+
 
 
 
