@@ -29,7 +29,7 @@ export const puzzles = [
     {
         name: "Maze Puzzle",
         start: startMazePuzzle,
-        helpText: "Navigate through the maze to reach the exit",
+        helpText: "Navigate through the maze to reach Psyche using the arrow keys or movement buttons.",
     },
     {
         name: "Sliding Puzzle",
