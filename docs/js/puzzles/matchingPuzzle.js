@@ -74,6 +74,7 @@ export function startMatchingPuzzle({ containerID }) {
             <div id="puzzle-layout">
                 <header>
                     <h2 class="puzzle-title" id="matching-puzzle-header">Matching Puzzle</h2>
+                    <p class="matching-instructions">Click tiles to reveal and match images.</p>
                 </header>
                 <div class="matching-grid-container" id="gridContainer">
                     <div class="clicked-tile" data-id="0">
@@ -197,6 +198,7 @@ export function startMatchingPuzzle({ containerID }) {
             <div id="puzzle-layout">
                 <header>
                     <h2 class="puzzle-title" id="matching-puzzle-header">Matching Puzzle</h2>
+                    <p class="matching-instructions">Click tiles to reveal and match images.</p>
                 </header>
                 <div class="matching-challenge-grid-container" id="gridContainer">
                     <div class="clicked-challenge-tile" data-id="0">
