@@ -1,3 +1,6 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+
 import {checkPosition , calculateCetner} from "./tangramPuzzleModel.js";
 
 test("calculateCenter", () => {
@@ -7,6 +10,13 @@ test("calculateCenter", () => {
 
     assert.equal(center.cx, 450);
     assert.equal(center.cy, 350);
+});
+
+test("calculate triangle center", () => {
+     const center = calculateCetner("0,0 6,0 3,6");
+
+    assert.equal(center.cx, 3);
+    assert.equal(center.cy, 2);
 });
 
 test("checkPosition", () => {
@@ -31,4 +41,26 @@ test("checkPosition", () => {
 
     const isPositionValid = checkPosition(piece, solution);
     assert.equal(isPositionValid, true);
+});
+
+test("checkPosition returns false for invalid position", () => {
+    const piece = {
+        id: "piece2",
+        type: "triangle",
+        x: 100,
+        y: 100,
+        rotation: 0
+    };
+
+    const solution = [
+        {
+            type: "triangle",
+            occupied: false,
+            possiblePlacements: {
+                piece1: { x: 100, y: 100, rotation: 0 }
+            }
+        }
+    ];
+
+    assert.equal(checkPosition(piece, solution), false);
 });
