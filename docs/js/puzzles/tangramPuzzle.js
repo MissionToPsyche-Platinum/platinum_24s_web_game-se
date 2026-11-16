@@ -317,7 +317,15 @@ function enableDragAndDrop(svg, pieces, solution, difficulty) {
     svg.addEventListener("mouseup", (e) => {
         if (!selectedPiece) return;
         const target = document.getElementById(selectedPiece.id);
-        checkPosition(selectedPiece , solution);
+
+        const inPosition = checkPosition(selectedPiece , solution);
+
+        if (inPosition) {
+            const target = document.getElementById(selectedPiece.id);
+            const { cx, cy } = calculateCetner(selectedPiece.points);
+            target.setAttribute("transform", `translate(${selectedPiece.x}, ${selectedPiece.y}) rotate(${selectedPiece.rotation}, ${cx}, ${cy})`);
+            target.style.cursor = "default";
+        }
         checkWin(pieces);
         target.style.cursor = "grab";
         selectedPiece = null;

@@ -46,12 +46,10 @@ export function checkPosition(piece , solution) {
             piece.y = checkedPlacement.y;
             piece.rotation = checkedPlacement.rotation;
 
-            const target = document.getElementById(piece.id);
-            const { cx, cy } = calculateCetner(piece.points);
-            target.setAttribute("transform", `translate(${piece.x}, ${piece.y}) rotate(${piece.rotation}, ${cx}, ${cy})`);
-            target.style.cursor = "default";
+            
 
-            return;
+            return true;
         }
     }
+    return false;
 }
