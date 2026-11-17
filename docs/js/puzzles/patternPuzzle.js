@@ -245,7 +245,7 @@ export function startPatternPuzzle({ containerID }) {
            playToneForIndex(index, { type: "correct" });
            setStatus("Correct! Next pattern is longer.");
            setTilesDisabled(true);
-           setTimeout(showPattern, 700);
+           setTimeout(showPattern, 900);
        }
    }
 
