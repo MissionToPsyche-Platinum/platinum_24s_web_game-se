@@ -311,8 +311,8 @@ function detectWin() {
 }
 
 function updateHeader() {
-    
-    if (newGameButton) newGameButton.style.display = 'inline';
+    //Removing duplicate button listener
+    //if (newGameButton) newGameButton.style.display = 'inline';
     if (winMessage) winMessage.style.display = 'block';
     solvePuzzleButton.disabled = true;
     puzzleSolvedMessage.style.display = 'none';
