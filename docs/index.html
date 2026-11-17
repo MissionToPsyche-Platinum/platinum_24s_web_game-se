@@ -29,13 +29,19 @@
             </div>
 
             <img src = "images/Psyche_LogoAssets/Badge_Solid/Color/Psyche_BadgeSolid_Color-JPG.jpg" alt = "Psyche Logo" class = "psyche-logo">
+        </section>
 
     <div id="settingsPopUp">
                 <h3>Settings</h3>
+                <p id="inGameSettingsNote" class="settings-live-note">
+                    These options apply immediately. Difficulty, profile, and reset stay locked during this mission.
+                </p>
+                <div class="settings-run-locked">
                 <p><strong>Profile</strong></p>
                 <label style="display: block; margin-bottom: 20px;">
                     <p>Display name (for leaderboard):<span id = "settingDisplayName" style="display: block; margin-bottom: 4px;">Astronaut</span></p>
                 </label>
+                </div>
                 <p><strong>Audio</strong></p>
                 <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; cursor: pointer;">
                     <input type="checkbox" id="settingSound" checked>
@@ -73,6 +79,7 @@
                     <input type="checkbox" id="settingColorBlind" style="margin-top: 3px;">
                     <span>Color-blind friendly (patterns and shapes, not color alone)</span>
                 </label>
+                <div class="settings-run-locked">
                 <p>Difficulty for timed runs:</p>
                 <label class="settings-difficulty">
                     <select id="settingDifficulty">
@@ -80,12 +87,12 @@
                         <option value="challenge">Challenge (stricter timing later)</option>
                     </select>
                 </label>
+                </div>
                 <div style="text-align: center; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
-                    <button type="button" id="resetSettings">Reset to defaults</button>
+                    <button type="button" id="resetSettings" class="settings-run-locked">Reset to defaults</button>
                     <button type="button" id="closeSettings">Close</button>
                 </div>
             </div>
-        </section>
 
         <!-- Reset settings confirm popup -->
         <div id="resetSettingsPopUp">
@@ -319,6 +326,11 @@
                         </p>
                     </div>
                 </div>
+                <button type="button" id="in-game-settings" class="puzzle-settings-btn" aria-label="Open settings" title="Settings">
+                    <svg class="puzzle-settings-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path fill="currentColor" d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54A.49.49 0 0 0 13.9 2h-3.8a.5.5 0 0 0-.49.42l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96a.5.5 0 0 0-.6.22L2.72 8.84a.5.5 0 0 0 .12.64l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58a.5.5 0 0 0-.12.64l1.92 3.32c.13.23.4.34.6.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.26.42.49.42h3.8c.24 0 .44-.18.49-.42l.36-2.54c.59-.24 1.12-.56 1.62-.94l2.39.96c.22.12.47.01.6-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/>
+                    </svg>
+                </button>
             </div>
             <div class="puzzle-content">
                 <aside class="left-panel">
