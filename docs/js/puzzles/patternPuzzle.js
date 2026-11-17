@@ -226,7 +226,7 @@ export function startPatternPuzzle({ containerID }) {
            setStatus("Incorrect pattern. Try this round again.");
            acceptingInput = false;
            setTilesDisabled(true);
-           setTimeout(showPattern, 600);
+           setTimeout(showPattern, 1300);
            return;
        }
         showTileFeedback(tile, "correct");
