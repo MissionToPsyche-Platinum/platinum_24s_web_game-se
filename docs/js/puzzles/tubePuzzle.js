@@ -7,6 +7,21 @@ import {
    validateLevel,
 } from "./tubePuzzleModel.js";
 import { solvePuzzle } from "../gameController.js";
+import { playTone } from "../uiSounds.js";
+
+function playTubeRotate() {
+	playTone({ freq: 310, duration: 0.07, peak: 0.1, type: "triangle" });
+}
+
+function playTubeConnect() {
+	playTone({ freq: 620, duration: 0.09, peak: 0.1, type: "sine" });
+}
+
+function playTubeWin() {
+	playTone({ freq: 523, duration: 0.1, peak: 0.12, type: "sine" });
+	playTone({ freq: 659, duration: 0.11, peak: 0.12, type: "sine", delay: 0.09 });
+	playTone({ freq: 784, duration: 0.16, peak: 0.13, type: "sine", delay: 0.18 });
+}
 
 const STROKE = "#302144";
 const FLOW = "#1a8cff";
@@ -356,10 +371,20 @@ function wireRotation(gridEl, level, state, tracker, layoutEl) {
     	const r = Number(btn.dataset.r);
     	const c = Number(btn.dataset.c);
     	const cell = level.cells[r][c];
+    	const flowBefore = getCellsConnectedToSource(level).size;
     	cell.rotation = (cell.rotation + 1) % 4;
     	updateFlowPreview(level, gridEl, layoutEl);
     	btn.focus({ preventScroll: true });
+    	const flowAfter = getCellsConnectedToSource(level).size;
+    	const alreadyWon = state.won;
     	tryWin(level, gridEl, state);
+    	if (state.won && !alreadyWon) {
+        	playTubeWin();
+    	} else if (flowAfter > flowBefore) {
+        	playTubeConnect();
+    	} else {
+        	playTubeRotate();
+    	}
 	});
 }
 

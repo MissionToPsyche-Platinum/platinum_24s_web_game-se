@@ -226,7 +226,7 @@ export function startPatternPuzzle({ containerID }) {
            setStatus("Incorrect pattern. Try this round again.");
            acceptingInput = false;
            setTilesDisabled(true);
-           setTimeout(showPattern, 600);
+           setTimeout(showPattern, 1300);
            return;
        }
         showTileFeedback(tile, "correct");
@@ -245,7 +245,7 @@ export function startPatternPuzzle({ containerID }) {
            playToneForIndex(index, { type: "correct" });
            setStatus("Correct! Next pattern is longer.");
            setTilesDisabled(true);
-           setTimeout(showPattern, 700);
+           setTimeout(showPattern, 900);
        }
    }
 
