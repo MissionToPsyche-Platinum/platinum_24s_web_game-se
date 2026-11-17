@@ -361,7 +361,8 @@ function pauseRunTimer() {
 }
 
 function resumeRunTimer() {
-  if (!runActive || timerHold || runTimerIsRunning || document.hidden) return;
+    if (!runActive || timerHold || runTimerIsRunning || document.hidden ||
+      settingsPopUp?.style.display === "block") return;
   runTimerSegmentStart = Date.now();
   runTimerIsRunning = true;
   startRunTimerTick();
@@ -671,28 +672,43 @@ function displayEmptyNameSelection() {
 
 
 //Loads the settings screen. liveSafe hides run-locked options during a puzzle.
+
 function openSettings({ liveSafe = false } = {}) {
   if (!settingsPopUp) return;
   closeExitConfirm();
   loadGameplaySettings();
   setProfileNameDisplay(`${firstName} ${lastName}`.trim());
+
   settingsPopUp.classList.toggle("settings-live-safe", liveSafe);
   if (settingDifficulty) settingDifficulty.disabled = liveSafe;
   if (resetSettingsButton) resetSettingsButton.disabled = liveSafe;
+
+  // Disable gameplay interactions while in-game settings are open.
+  if (gameScreen) gameScreen.inert = liveSafe;
+
   pauseRunTimer();
   settingsPopUp.style.display = "block";
 }
 
+
 //Closes the settings screen
+
 function closeSettings() {
   if (!settingsPopUp) return;
   closeResetSettingsConfirm();
+
   settingsPopUp.classList.remove("settings-live-safe");
   if (settingDifficulty) settingDifficulty.disabled = false;
   if (resetSettingsButton) resetSettingsButton.disabled = false;
+
   settingsPopUp.style.display = "none";
+
+  // Restore gameplay interactions after settings close.
+  if (gameScreen) gameScreen.inert = false;
+
   resumeRunTimer();
 }
+
 
 function openResetSettingsConfirm() {
   if (!resetSettingsPopUp) return;
