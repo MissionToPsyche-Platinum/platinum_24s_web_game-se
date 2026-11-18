@@ -459,11 +459,6 @@ export function startMazePuzzle({ containerID }) {
 
     let isAutorun = false;
 
-    // if (difficulty === 'challenge') {
-    //     const autorunButton = document.getElementById("maze-toggle-auto");
-    //     autorunButton.addEventListener('click', toggleAutorun);
-    // }
-
     const startTile = document.getElementById("start-tile");
     startTile.focus();
 
