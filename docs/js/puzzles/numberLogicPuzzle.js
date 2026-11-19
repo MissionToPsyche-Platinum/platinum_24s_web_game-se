@@ -4,6 +4,7 @@ import { isNumberLogicSolved } from "./winConditions.js";
 import { puzzleNotSolvedMessage } from "../gameController.js";
 import { puzzleSolvedMessage } from "../gameController.js";
 import { updateScore } from "../gameController.js";
+import { fillSudokuPuzzle, isValid, shuffle } from "./numberLogicUtils.js";
 
 //9 x 9 sudoku puzzle implementation
 export function startNumberLogicPuzzle({ containerID }) {
@@ -125,7 +126,7 @@ export function startNumberLogicPuzzle({ containerID }) {
         ).find(input => !input.value.trim());
         const warning = containerID.querySelector("#sudoku-empty-warning");
 
-        if (emptyCell) {
+        if(emptyCell) {
             warning.style.display = "block";
             emptyCell.focus();
             return;
@@ -150,28 +151,6 @@ export function startNumberLogicPuzzle({ containerID }) {
             containerID.querySelector("#sudoku-empty-warning").style.display = "none";
         });
     });
-
-    //Fills the sudoku puzzle with random numbers (Checked by isValid)
-    function fillSudokuPuzzle(board) {
-        for(let row = 0; row < 9; row++) {
-            for(let col = 0; col < 9; col++) {
-                if(board[row][col] === 0) {
-                    const numbers = shuffle([1,2,3,4,5,6,7,8,9]);
-                    for(let num of numbers) {
-                        if(isValid(board, row, col, num)) {
-                            board[row][col] = num;
-                            if(fillSudokuPuzzle(board)) {
-                                return true;
-                            }
-                            board[row][col] = 0;
-                        }
-                    }
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
 
     function isColorBlindMode() {
         return !!window.getPyscheSettings?.()?.colorBlind;
@@ -223,7 +202,7 @@ export function startNumberLogicPuzzle({ containerID }) {
             const row = Math.floor(i / 9);
             const column = i % 9;
             const value = board[row][column];
-            if (value !== 0) {
+            if(value !== 0) {
                 input.value = value;
                 input.disabled = true;
             } else {
@@ -235,36 +214,31 @@ export function startNumberLogicPuzzle({ containerID }) {
     //Determines if the board is valid (Numbers are generated correctly)
     function isValid(board, row, col, num) {
         //Rows
-        for (let i = 0; i < 9; i++) {
+        for(let i = 0; i < 9; i++) {
             if (board[row][i] === num) return false;
         }
         //Columns
-        for (let i = 0; i < 9; i++) {
+        for(let i = 0; i < 9; i++) {
             if (board[i][col] === num) return false;
         }
 
         const boxRow = Math.floor(row / 3) * 3;
         const boxCol = Math.floor(col / 3) * 3;
-        for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 3; j++) {
-                if (board[boxRow + i][boxCol + j] === num) return false;
+        for(let i = 0; i < 3; i++) {
+            for(let j = 0; j < 3; j++) {
+                if(board[boxRow + i][boxCol + j] === num) return false;
             }
         }
         return true;
     }
 
-    //Shuffles the numbers for each run
-    function shuffle(arr) {
-        return arr.sort(() => Math.random() - 0.5);
-    }
-
     //Removes numbers for player input
     function removeCells(board, difficulty) {
         let count = difficulty;
-        while (count > 0) {
+        while(count > 0) {
             let row = Math.floor(Math.random() * 9);
             let col = Math.floor(Math.random() * 9);
-            if (board[row][col] !== 0) {
+            if(board[row][col] !== 0) {
                 board[row][col] = 0;
                 count--;
             }
@@ -275,9 +249,9 @@ export function startNumberLogicPuzzle({ containerID }) {
     function getCurrentBoard() {
         const inputs = document.querySelectorAll(".logic-grid input");
         let current = [];
-        for (let i = 0; i < 9; i++) {
+        for(let i = 0; i < 9; i++) {
             current[i] = [];
-            for (let j = 0; j < 9; j++) {
+            for(let j = 0; j < 9; j++) {
                 const val = inputs[i * 9 + j].value;
                 current[i][j] = val ? parseInt(val) : 0;
             }
@@ -293,7 +267,7 @@ export function startNumberLogicPuzzle({ containerID }) {
     function highlightIncorrectCells(checkBoard) {
         const userInputs = document.querySelectorAll(".logic-grid input");
         userInputs.forEach((input, i) => {
-            if (input.disabled) {
+            if(input.disabled) {
                 return;
             }
             const row = Math.floor(i / 9);
