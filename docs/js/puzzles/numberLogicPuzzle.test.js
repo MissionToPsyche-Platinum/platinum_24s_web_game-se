@@ -86,4 +86,34 @@ test("shuffle handles an array with one element", () => {
     assert.deepEqual(result, [5]);
 });
 
-//Test for isValid function
+//Checks that duplicate numbers in the same row are not allowed
+test("isValid rejects numbers already in the same row", () => {
+    let board = Array.from({ length: 9 }, () => Array(9).fill(0));
+    board[0][2] = 5;
+    let result = isValid(board, 0, 4, 5);
+    assert.equal(result, false);
+});
+
+//Checks that duplicate numbers in the same column are not allowed
+test("isValid rejects numbers already in the same column", () => {
+    let board = Array.from({ length: 9 }, () => Array(9).fill(0));
+    board[2][0] = 5;
+    let result = isValid(board, 4, 0, 5);
+    assert.equal(result, false);
+});
+
+//Checks that duplicate numbers in the same 3x3 square are not allowed
+test("isValid rejects numbers already in the same 3x3 box", () => {
+    let board = Array.from({ length: 9 }, () => Array(9).fill(0));
+    board[1][1] = 5;
+    let result = isValid(board, 2, 2, 5);
+    assert.equal(result, false);
+});
+
+//Checks that valid sudoku numbers are accepted
+test("isValid accepts numbers that don't violate Sudoku rules", () => {
+    let board = Array.from({ length: 9 }, () => Array(9).fill(0));
+    board[0][0] = 5;
+    let result = isValid(board, 4, 4, 5);
+    assert.equal(result, true);
+});
