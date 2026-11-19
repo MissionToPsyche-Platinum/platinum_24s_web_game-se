@@ -46,7 +46,21 @@ export function shufflePieces (state, gridSize) {
         swapTiles(state, randomIndex, emptyIndex);
         lastIndex = emptyIndex;
     }
+	
+	// Ensure the puzzle never starts already solved.
+	const isSolved = state.every(
+		(tile, index) => tile.finalPos === index
+	);
 
+	if (isSolved) {
+		const emptyIndex = getEmptyTile(state);
+		const nextMove = state.findIndex(
+			(_, index) => checkSwap(index, emptyIndex, gridSize)
+		);
+
+		swapTiles(state, nextMove, emptyIndex);
+	}
+	
     return state;
 }
 
