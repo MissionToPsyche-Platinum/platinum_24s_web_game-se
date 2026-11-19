@@ -58,6 +58,32 @@ test("fillSudokuPuzzle generates valid 3x3 boxes", () => {
     }
 });
 
-//Test for shuffle function
+//Checks that the array length stays the same when shuffling
+test("shuffle maintains the original array length", () => {
+    let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    let result = shuffle(numbers);
+    assert.equal(result.length, numbers.length);
+});
+
+//Checks that all array elements stay the same when shuffling
+test("shuffle preserves all original elements", () => {
+    let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    let result = shuffle(numbers);
+    assert.deepEqual([...result].sort(), [...numbers].sort());
+});
+
+//Checks that an empty array does not break the function
+test("shuffle handles an empty array", () => {
+    let numbers = [];
+    let result = shuffle(numbers);
+    assert.deepEqual(result, []);
+});
+
+//Checks that an array with one element does not break the function
+test("shuffle handles an array with one element", () => {
+    let numbers = [5];
+    let result = shuffle(numbers);
+    assert.deepEqual(result, [5]);
+});
 
 //Test for isValid function

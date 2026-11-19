@@ -4,7 +4,7 @@ import { isNumberLogicSolved } from "./winConditions.js";
 import { puzzleNotSolvedMessage } from "../gameController.js";
 import { puzzleSolvedMessage } from "../gameController.js";
 import { updateScore } from "../gameController.js";
-import { fillSudokuPuzzle, isValid, shuffle } from "./numberLogicUtils.js";
+import { fillSudokuPuzzle, isValid, shuffle } from "./numberLogicPuzzleHelpers.js";
 
 //9 x 9 sudoku puzzle implementation
 export function startNumberLogicPuzzle({ containerID }) {
