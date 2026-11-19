@@ -1,0 +1,119 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+
+import { fillSudokuPuzzle, isValid, shuffle } from "./numberLogicPuzzleHelpers.js";
+
+//Helper function that hecks whether an array contains numbers 1-9 without duplicates
+function containsNumbersOneToNine(arr) {
+    return arr.length === 9 &&
+        [...arr].sort().every((num, i) => num === i + 1);
+}
+
+//Checks that fillSudokuPuzzle generates a full board
+test("fillSudokuPuzzle generates a completed board", () => {
+    let board = Array.from({ length: 9 }, () => Array(9).fill(0));
+    let result = fillSudokuPuzzle(board);
+    assert.equal(result, true);
+    //Check that all cells contain numbers
+    for(let row of board) {
+        for(let cell of row) {
+            assert.ok(cell >= 1 && cell <= 9);
+        }
+    }
+});
+
+//Checks that fillSudokuPuzzle generates valid rows
+test("fillSudokuPuzzle generates valid rows", () => {
+    let board = Array.from({ length: 9 }, () => Array(9).fill(0));
+    fillSudokuPuzzle(board);
+    for (let row of board) {
+        assert.equal(containsNumbersOneToNine(row), true);
+    }
+});
+
+//Checks that fillSudokuPuzzle generates valid columns
+test("fillSudokuPuzzle generates valid columns", () => {
+    let board = Array.from({ length: 9 }, () => Array(9).fill(0));
+    fillSudokuPuzzle(board);
+    for(let col = 0; col < 9; col++) {
+        let column = board.map(row => row[col]);
+        assert.equal(containsNumbersOneToNine(column), true);
+    }
+});
+
+//Checks that fillSudokuPuzzle generates valid 3x3 squares
+test("fillSudokuPuzzle generates valid 3x3 boxes", () => {
+    let board = Array.from({ length: 9 }, () => Array(9).fill(0));
+    fillSudokuPuzzle(board);
+    for(let boxRow = 0; boxRow < 9; boxRow += 3) {
+        for(let boxCol = 0; boxCol < 9; boxCol += 3) {
+            let box = [];
+            for(let row = 0; row < 3; row++) {
+                for(let col = 0; col < 3; col++) {
+                    box.push(board[boxRow + row][boxCol + col]);
+                }
+            }
+            assert.equal(containsNumbersOneToNine(box), true);
+        }
+    }
+});
+
+//Checks that the array length stays the same when shuffling
+test("shuffle maintains the original array length", () => {
+    let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    let result = shuffle(numbers);
+    assert.equal(result.length, numbers.length);
+});
+
+//Checks that all array elements stay the same when shuffling
+test("shuffle preserves all original elements", () => {
+    let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    let result = shuffle(numbers);
+    assert.deepEqual([...result].sort(), [...numbers].sort());
+});
+
+//Checks that an empty array does not break the function
+test("shuffle handles an empty array", () => {
+    let numbers = [];
+    let result = shuffle(numbers);
+    assert.deepEqual(result, []);
+});
+
+//Checks that an array with one element does not break the function
+test("shuffle handles an array with one element", () => {
+    let numbers = [5];
+    let result = shuffle(numbers);
+    assert.deepEqual(result, [5]);
+});
+
+//Checks that duplicate numbers in the same row are not allowed
+test("isValid rejects numbers already in the same row", () => {
+    let board = Array.from({ length: 9 }, () => Array(9).fill(0));
+    board[0][2] = 5;
+    let result = isValid(board, 0, 4, 5);
+    assert.equal(result, false);
+});
+
+//Checks that duplicate numbers in the same column are not allowed
+test("isValid rejects numbers already in the same column", () => {
+    let board = Array.from({ length: 9 }, () => Array(9).fill(0));
+    board[2][0] = 5;
+    let result = isValid(board, 4, 0, 5);
+    assert.equal(result, false);
+});
+
+//Checks that duplicate numbers in the same 3x3 square are not allowed
+test("isValid rejects numbers already in the same 3x3 box", () => {
+    let board = Array.from({ length: 9 }, () => Array(9).fill(0));
+    board[1][1] = 5;
+    let result = isValid(board, 2, 2, 5);
+    assert.equal(result, false);
+});
+
+//Checks that valid sudoku numbers are accepted
+test("isValid accepts numbers that don't violate Sudoku rules", () => {
+    let board = Array.from({ length: 9 }, () => Array(9).fill(0));
+    board[0][0] = 5;
+    let result = isValid(board, 4, 4, 5);
+    assert.equal(result, true);
+});
