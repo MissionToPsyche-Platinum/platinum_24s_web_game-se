@@ -327,8 +327,8 @@ function enableDragAndDrop(svg, pieces, solution, difficulty) {
             target.style.cursor = "default";
         }
         checkWin(pieces);
-        target.style.cursor = "grab";
-        selectedPiece = null;
+		target.style.cursor = inPosition ? "default" : "grab";
+		selectedPiece = null;
     });
 
 
