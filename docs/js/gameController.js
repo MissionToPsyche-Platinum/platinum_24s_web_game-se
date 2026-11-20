@@ -12,6 +12,7 @@ const solvePuzzleMessage = document.getElementById("solve-puzzle-message");
 export const puzzleSolvedMessage = document.getElementById("puzzle-solved-message");
 export const puzzleNotSolvedMessage = document.getElementById("puzzle-not-solved-message");
 const nextPuzzleButton = document.getElementById("next-puzzle");
+const skipBreakButton = document.getElementById("puzzle-break-skip");
 const displayFactMessage = document.getElementById("display-fact-message");
 const missionFactSection = document.getElementById("mission-fact");
 const missionFactTitle = document.getElementById("mission-fact-title");
@@ -33,6 +34,15 @@ let puzzleSkippedMessage = document.getElementById("puzzle-skipped-message");
 let noSkipsLeftMessage = document.getElementById("no-skips-left-message");
 let puzzlesShown = [];
 let puzzleSkipped = false;
+
+function skipPuzzleBreak() {
+    if (puzzleBreakTimer === null) {
+        return;
+    }
+
+    hidePuzzleBreak();
+    displayNextPuzzle();
+}
 
 function clearMissionFact() {
     if (!displayFactMessage) return;
@@ -397,6 +407,7 @@ nextPuzzleButton.addEventListener("click", startPuzzleBreak);
 window.cancelPuzzleBreak = hidePuzzleBreak;
 puzzleHelpButton.addEventListener("click", showPuzzleHelp);
 document.getElementById("closePuzzleHelp")?.addEventListener("click", closePuzzleHelp);
+skipBreakButton.addEventListener("click", skipPuzzleBreak);
 
 window.onWinPlayAgain = startGame;
 

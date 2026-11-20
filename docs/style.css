@@ -934,6 +934,12 @@ body {
     line-height: 1;
 }
 
+#puzzle-break-skip {
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9);
+}
+
 .pysche-reduced-motion .puzzle-break-transmission {
     display: none;
 }
@@ -2951,3 +2957,4 @@ button.tube-cell::-moz-focus-inner {
     font-weight: 700;
     text-align: center;
 }
+
