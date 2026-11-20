@@ -33,6 +33,7 @@ let skipsLeft = document.getElementById("skipsLeft");
 let puzzleSkippedMessage = document.getElementById("puzzle-skipped-message");
 let noSkipsLeftMessage = document.getElementById("no-skips-left-message");
 let puzzlesShown = [];
+let puzzleOutcomes = [];
 let puzzleSkipped = false;
 
 function skipPuzzleBreak() {
@@ -166,6 +167,7 @@ function startPuzzleBreak() {
 function startGame() {
     hidePuzzleBreak();
     puzzlesShown = [];
+    puzzleOutcomes = [];
 	gameState.solvedPuzzles = 0;
 	gameState.nextPuzzleIndex = 0;
 	playerScore = 0;
@@ -280,6 +282,7 @@ function skipPuzzle() {
         solvePuzzleButton.disabled = true;
         puzzleHelpButton.disabled = true;
         updateSkipButtonState(false);
+        markLatestPuzzle("skipped");
         updateProgress();
         window.holdRunTimer?.();
         if (detectWin()) {
@@ -304,6 +307,7 @@ export function solvePuzzle() {
     solvePuzzleButton.disabled = true;
     puzzleHelpButton.disabled = true;
     updateSkipButtonState(false);
+    markLatestPuzzle("solved");
     updateProgress();
     window.holdRunTimer?.();
     if (detectWin()) {
@@ -360,7 +364,9 @@ function displayNextPuzzle() {
     gameState.currentPuzzle = puzzle;
     gameState.nextPuzzleIndex++;
     puzzlesShown.push(puzzle);
+    puzzleOutcomes.push("current");
     loadPuzzle(puzzle);
+    renderPuzzleStatus();
     startPuzzleTimer();
 }
 
@@ -379,6 +385,29 @@ function updateProgress() {
         progressBar.max = PUZZLES_TO_WIN;
         progressBar.value = solved;
     }
+    renderPuzzleStatus();
+}
+
+function puzzleShortName(puzzle) {
+    return (puzzle?.name || "Puzzle").replace(/ Puzzle$/i, "");
+}
+
+function markLatestPuzzle(status) {
+    if (!puzzleOutcomes.length) return;
+    puzzleOutcomes[puzzleOutcomes.length - 1] = status;
+}
+
+function renderPuzzleStatus() {
+    const track = document.getElementById("puzzle-status-track");
+    if (!track) return;
+    track.innerHTML = puzzlesShown.map((puzzle, i) => {
+        const status = puzzleOutcomes[i] || "current";
+        return `<li class="puzzle-status-chip is-${status}">
+            <span class="puzzle-status-index">${i + 1}</span>
+            <span class="puzzle-status-name">${puzzleShortName(puzzle)}</span>
+            <span class="puzzle-status-state">${status}</span>
+        </li>`;
+    }).join("");
 }
 
 function showPuzzleHelp() {
