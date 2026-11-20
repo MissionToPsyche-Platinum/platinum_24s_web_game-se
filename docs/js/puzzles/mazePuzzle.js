@@ -457,8 +457,6 @@ export function startMazePuzzle({ containerID }) {
     const mazeItems = document.querySelectorAll(tileClass);
     populateMazePuzzle();
 
-    let isAutorun = false;
-
     const startTile = document.getElementById("start-tile");
     startTile.focus();
 
@@ -476,20 +474,20 @@ export function startMazePuzzle({ containerID }) {
     rightButton.addEventListener("click", moveRight);
     leftButton.addEventListener("click", moveLeft);
 
-    function toggleAutorun () {
-        if (isAutorun) {
-            console.log("end auto");
-            endrunMaze();
-        }
-        else {
-            console.log("start atuo");
-            isValidMove = false;
-            isProgress = false;
-            isWon = false;
-            runMaze();
-        }
-        isAutorun = !isAutorun;
-    }
+    // function toggleAutorun () {
+    //     if (isAutorun) {
+    //         console.log("end auto");
+    //         endrunMaze();
+    //     }
+    //     else {
+    //         console.log("start atuo");
+    //         isValidMove = false;
+    //         isProgress = false;
+    //         isWon = false;
+    //         runMaze();
+    //     }
+    //     isAutorun = !isAutorun;
+    // }
 
     function populateMazePuzzle () {
         generateMaze();
