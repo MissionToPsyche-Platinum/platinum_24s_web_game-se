@@ -127,55 +127,127 @@ body {
     z-index: 1;
 }
 
-/**Mobile-specific adjustments**/
-@media (max-width: 600px) {
-    #main-menu {
-        padding: 16px 12px;
-    }
-
-    .main-menu-content {
-        gap: 24px;
-    }
-
-    .title-container {
-        gap: 8px;
-    }
-
-    .main-title1 {
-        font-size: clamp(2rem, 9vw, 3rem);
-    }
-
-    .main-title2 {
-        font-size: clamp(1.2rem, 5.5vw, 2rem);
-    }
-
-    #start {
-        margin-top: 0;
-    }
-
-    .psyche-asteroid {
-        width: 100%;
-        height: 105%;
-    }
-
-    #button-row {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
-    }
-
-    #button-row .button {
-        width: 100%;
-        min-height: 44px;
-    }
-}
-
 .psyche-logo {
     height: 120px;
     width: 120px;
     position: fixed;
     bottom: 0;
     left: 0;
+}
+
+/** Mobile-specific adjustments **/
+@media screen and (max-width: 600px) {
+
+    #main-menu {
+        width: 100%;
+        min-height: 100svh;
+        padding: 24px 16px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .main-menu-content {
+        position: relative;
+        isolation: isolate;
+        width: 100%;
+        max-width: 480px;
+        padding: 28px 18px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        overflow: hidden;
+    }
+
+    .main-menu-content::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: url("images/Psyche Asteroid Image.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        z-index: 0;
+    }
+
+    .main-menu-content::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(15, 10, 25, 0.25);
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    .psyche-asteroid {
+        display: none;
+    }
+
+    .title-container,
+    #start,
+    #button-row {
+        position: relative;
+        z-index: 1;
+    }
+
+    .title-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        text-align: center;
+    }
+
+    .main-title1 {
+        font-size: clamp(2.4rem, 10vw, 3.5rem);
+        margin: 0;
+        text-align: center;
+    }
+
+    .main-title2 {
+        font-size: clamp(1rem, 4.5vw, 1.4rem);
+        line-height: 1.3;
+        margin: 0;
+        text-align: center;
+    }
+
+    #start {
+        width: 75%;
+        min-height: 58px;
+        margin: 8px 0;
+        font-size: 1.2rem;
+    }
+
+    #button-row {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+
+    #button-row .button {
+        width: 100%;
+        min-height: 56px;
+        padding: 10px;
+        font-size: 1.1rem;
+        box-sizing: border-box;
+    }
+
+    #main-menu .psyche-logo {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        width: 85px;
+        height: 85px;
+        object-fit: contain;
+        align-self: center;
+    }
 }
 
 #nameCreationScreen {
