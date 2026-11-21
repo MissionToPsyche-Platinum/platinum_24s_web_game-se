@@ -97,8 +97,9 @@ function renderSlidingPuzzle(container, state, gridSize) {
 
     grid.innerHTML = "";
 
-    const puzzleSize = 600;
-    const tileSize = puzzleSize / gridSize;
+	//Commenting out 2 const variables as they appear unused
+    //const puzzleSize = 600;
+    //const tileSize = puzzleSize / gridSize;
 
     grid.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
     grid.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
