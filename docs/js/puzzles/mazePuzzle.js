@@ -6,20 +6,8 @@ export function startMazePuzzle({ containerID }) {
 
     let location = [];
     let index = 0;
-
-    let isValidMove = false;
-    let isProgress = false;
-    let isJunction = false;
-    let isBackwards = false;
-    let randomMove = 0;
-    let lastMove = randomMove;
-    const junctionsQueue = [];
     const moveHistory = [];
     let endTile = 0;
-    let isWon = false;
-    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-
 
     const icon_top = document.createElement('img');
     const icon_bottom = document.createElement('img');
@@ -31,9 +19,6 @@ export function startMazePuzzle({ containerID }) {
     icon_bottom.src = './images/maze/psyche_spacex_falcon9_transparent_resized_bottom.png';
     icon_left.src = './images/maze/psyche_spacex_falcon9_transparent_resized_left.png';
     icon_right.src = './images/maze/psyche_spacex_falcon9_transparent_resized_right.png';
-
-    // const rocket_icon_width = difficulty === 'normal' ? 40 : 28;
-    // const rocket_icon_height = difficulty === 'normal' ? 45 : 30;
 
     icon_top.classList.add('maze-rocket-icon');
     icon_bottom.classList.add('maze-rocket-icon');
@@ -51,14 +36,6 @@ export function startMazePuzzle({ containerID }) {
     const NUM_TILES = difficulty === "normal" ? 100 : 225;
     const NUM_COLS = difficulty === "normal" ? 10 : 15;
     const NUM_ROWS = difficulty === "normal" ? 10 : 15;
-
-    class junction {
-        constructor(index, pathsTaken, possibleMoves) {
-            this.index = index;
-            this. pathsTaken = pathsTaken;
-            this.possibleMoves = possibleMoves;
-        }
-    }
 
     class mazeTile {
         constructor(top, bottom, left, right, text) {
@@ -479,8 +456,6 @@ export function startMazePuzzle({ containerID }) {
         generateMaze();
         
         setBorderStyle();
-        isBackwards = false;
-        isWon = false;
 
         const mazeItems = document.querySelectorAll(tileClass);
 
@@ -576,114 +551,11 @@ export function startMazePuzzle({ containerID }) {
         }
     }
 
-    function detectJunction() {
-        const moves = findPossibleMoves();
-        
-        if (moves.length >= 3) {
-            const move = getMoveFromPreviousMove(randomMove);
-            if (junctionsQueue.length === 0) {
-                junctionsQueue.push(new junction(index, [move], moves));
-                isJunction = true;
-                return;
-            }
-            for (let i = 0; i < junctionsQueue.length; i++) {
-                if (junctionsQueue[i].index === index) {
-                    return;
-                }
-            }
-            junctionsQueue.push(new junction(index, [move], moves));
-            isJunction = true;
-            return;
-        }
-        isJunction = false;
-    }
-
-    function findPossibleMoves () {
-        let arr = [];
-        if (location[index].top) {
-            arr.push(1)
-        }
-        if (location[index].bottom) {
-            arr.push(2)
-        }
-        if (location[index].left) {
-            arr.push(3)
-        }
-        if (location[index].right) {
-            arr.push(4)
-        }
-        return arr;
-    }
-
-    function getMoveFromPreviousMove (move) {
-        if (move === 1) {
-            return 2;
-        }
-        if (move === 2) {
-            return 1;
-        }
-        if (move === 3) {
-            return 4;
-        }
-        if (move === 4) {
-            return 3;
-        }
-        return -1;
-    }
-
-    async function reverseToJunction() {
-        await delay(125);
-        const junction = junctionsQueue[junctionsQueue.length - 1];
-
-        if (junction !== undefined) {
-        
-            while (index !== junctionsQueue[junctionsQueue.length - 1].index) {
-                if (moveHistory[moveHistory.length - 1] === 1) {
-                    isBackwards = true;
-                    await moveDown();
-                }
-                else if (moveHistory[moveHistory.length - 1] === 2) {
-                    isBackwards = true;
-                    await moveUp();
-                }
-                else if (moveHistory[moveHistory.length - 1] === 3) {
-                    isBackwards = true;
-                    await moveRight();
-                }
-                else if (moveHistory[moveHistory.length - 1] === 4) {
-                    isBackwards = true;
-                    await moveLeft();
-                }
-                moveHistory.pop();
-
-                await delay(125);
-            }
-            isBackwards = false;
-            lastMove = 6;
-            isJunction = true;
-            if (junction.pathsTaken.length >= junction.possibleMoves.length) {
-                junctionsQueue.pop();
-                if (junctionsQueue.length > 0) {
-                    isBackwards = true;
-                    await reverseToJunction();
-                }
-            }
-        }
-    }
-
-    async function moveUp () {
-        // if (index - NUM_COLS < 0) {
-        //     return;
-        // }
-        // console.log(location[index]);
+    function moveUp () {
         if (location[index].top && location[index - NUM_COLS].bottom) {
-            isValidMove = true;
             location[index].text = "";
             index  = index - NUM_COLS;
             detectWin();
-            if (!isBackwards) {
-                detectJunction();
-            }
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
                 if (i === endTile) {
@@ -696,28 +568,14 @@ export function startMazePuzzle({ containerID }) {
                     item.textContent = location[i].text;
                 }
             });
-            if (!isBackwards) {
-                moveHistory.push(randomMove);
-            }
-            if ((!location[index].top && !location[index].left && !location[index].right) && index < NUM_TILES) {
-                await reverseToJunction();
-            }
         }
     }
 
-    async function moveDown () {
-        // if (index + NUM_COLS >= location.length) {
-        //     return;
-        // }
-        // console.log(location[index]);
+    function moveDown () {
         if (location[index].bottom && location[index + NUM_COLS].top) {
-            isValidMove = true;
             location[index].text = "";
             index  = index + NUM_COLS;
             detectWin();
-            if (!isBackwards) {
-                detectJunction();
-            }
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
                 if (i === endTile) {
@@ -730,27 +588,14 @@ export function startMazePuzzle({ containerID }) {
                     item.textContent = location[i].text;
                 }
             });
-            if (!isBackwards) {
-                moveHistory.push(randomMove);
-            }
-            if ((!location[index].bottom && !location[index].right && !location[index].left) && index < NUM_TILES) {
-                await reverseToJunction();
-            }
         }
     }
 
-    async function moveRight () {
-        // if (index >= 19 && (index - 19) % 20 === 0 && index < location.length) {
-        //     return
-        // }
+    function moveRight () {
         if (location[index].right && location[index + 1].left) {
-            isValidMove = true;
             location[index].text = "";
             index++;
             detectWin();
-            if (!isBackwards) {
-                detectJunction();
-            }
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
                 if (i === endTile) {
@@ -763,27 +608,14 @@ export function startMazePuzzle({ containerID }) {
                     item.textContent = location[i].text;
                 }
             });
-            if (!isBackwards) {
-                moveHistory.push(randomMove);
-            }
-            if ((!location[index].bottom && !location[index].right && !location[index].top) && index < NUM_TILES) {
-                await reverseToJunction();
-            }
         }
     }
 
-    async function moveLeft () {
-        // if (index % 20 === 0) {
-        //     return;
-        // }
+    function moveLeft () {
         if (location[index].left && location[index - 1].right) {
-            isValidMove = true;
             location[index].text = "";
             index--;
             detectWin();
-            if (!isBackwards) {
-                detectJunction();
-            }
             const mazeItems = document.querySelectorAll(tileClass);
             mazeItems.forEach((item, i) => {
                 if (i === endTile) {
@@ -796,25 +628,15 @@ export function startMazePuzzle({ containerID }) {
                     item.textContent = location[i].text;
                 }
             });
-            if (!isBackwards) {
-                moveHistory.push(randomMove);
-            }
-            if ((!location[index].bottom && !location[index].top && !location[index].left) && index < NUM_TILES) {
-                await reverseToJunction();
-            }
         }
     }
 
     function detectWin () {
         if (isMazeSolved(index, endTile)) {
-            isWon = true;
-            // endrunMaze();
 
             solvePuzzle();
             index = 0;
             const mazeItems = document.querySelectorAll(tileClass);
-            // const autorunButton = document.getElementById("maze-toggle-auto");
-            // autorunButton.removeEventListener('click', toggleAutorun);
             mazeItems.forEach(item => {
                 item.removeEventListener('keydown', handleKeyDown);
             });
