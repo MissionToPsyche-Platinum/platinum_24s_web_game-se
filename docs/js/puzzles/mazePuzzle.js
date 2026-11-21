@@ -474,20 +474,6 @@ export function startMazePuzzle({ containerID }) {
     rightButton.addEventListener("click", moveRight);
     leftButton.addEventListener("click", moveLeft);
 
-    // function toggleAutorun () {
-    //     if (isAutorun) {
-    //         console.log("end auto");
-    //         endrunMaze();
-    //     }
-    //     else {
-    //         console.log("start atuo");
-    //         isValidMove = false;
-    //         isProgress = false;
-    //         isWon = false;
-    //         runMaze();
-    //     }
-    //     isAutorun = !isAutorun;
-    // }
 
     function populateMazePuzzle () {
         generateMaze();
@@ -822,7 +808,7 @@ export function startMazePuzzle({ containerID }) {
     function detectWin () {
         if (isMazeSolved(index, endTile)) {
             isWon = true;
-            endrunMaze();
+            // endrunMaze();
 
             solvePuzzle();
             index = 0;
@@ -879,132 +865,5 @@ export function startMazePuzzle({ containerID }) {
                 moveRight();
                 break;
         }
-    }
-
-    function endrunMaze () {
-        isValidMove = true;
-        isProgress = true;
-        isWon = true;
-    }
-
-    async function runMaze() {
-        while (!isWon) {
-            isProgress = false;
-            isValidMove = false;
-            if (!isBackwards) {
-                while (!isProgress && !isValidMove) {
-                    randomMove = Math.floor(Math.random() * 4) + 1;
-                    if (randomMove === 1 && validateMove(randomMove)) {
-                        if (lastMove !== 2) {
-                            lastMove = randomMove;
-                            await moveUp();
-                            isProgress = true;
-                        }
-                    }
-                    if (randomMove === 2 && validateMove(randomMove)) {
-                        if (lastMove !== 1) {
-                            lastMove = randomMove;
-                            await moveDown();
-                            isProgress = true;
-                        }
-                    }
-                    if (randomMove === 3 && validateMove(randomMove)) {
-                        if (lastMove !== 4) {
-                            lastMove = randomMove;
-                            await moveLeft();
-                            isProgress = true;
-                        }
-                    }
-                    if (randomMove === 4 && validateMove(randomMove)) {
-                        if (lastMove !== 3) {
-                            lastMove = randomMove;
-                            await moveRight();
-                            isProgress = true;
-                        }
-                    }
-                }
-            }
-            await delay(125);
-        }
-    }
-
-    function newJunctionMove (move) {
-        const junction = junctionsQueue[junctionsQueue.length - 1];
-        if (junction !== undefined) {
-            const direction = isBackwards ? "backwards" : "forwards";
-            console.log(`checking for new move at junction ${junction.index}. Prev moves: ${junction.pathsTaken} out of ${junction.possibleMoves} while heading ${direction}`);
-            if ((!junction.pathsTaken.includes(move) && junction.possibleMoves.includes(move)) && 
-            (junction.possibleMoves.length !== junction.pathsTaken.length)) {
-                junction.pathsTaken.push(move);
-                console.log(`move ${move} added from njm @ junction ${junction.index}`);
-                return true;
-            }
-            return false;
-        }
-        return false;
-    }
-
-    function validateMove(move) {
-        let isNewMove = false;;
-        if(isJunction) {
-            isNewMove = newJunctionMove(move);
-        }
-        if (move === 1) {
-            if (isJunction) {
-                if (index - NUM_COLS >= 0 && isNewMove) {
-                    if (location[index].top && location[index - NUM_COLS].bottom) {
-                        return true;
-                    }
-                }
-            }
-            else if (index - NUM_COLS >= 0) {
-                if (location[index].top && location[index - NUM_COLS].bottom) {
-                    return true;
-                }
-            }
-        }
-        else if (move === 2) {
-            if (isJunction) {
-                if (index + NUM_COLS < location.length && isNewMove) {
-                    if (location[index].bottom && location[index + NUM_COLS].top) {
-                        return true;
-                    }
-                }
-            }
-            else if (index + NUM_COLS < location.length) {
-                if (location[index].bottom && location[index + NUM_COLS].top) {
-                    return true;
-                }
-            }
-        }
-        else if (move === 3) {
-            if (isJunction) {
-                if (index % 20 !== 0 && isNewMove) {
-                    if (location[index].left && location[index - 1].right) {
-                        return true;
-                    }
-                }
-            }
-            else if (index % 20 !== 0) {
-                if (location[index].left && location[index - 1].right) {
-                    return true;
-                }
-            }
-        }
-        else if (move === 4) {
-            if (isJunction) {
-                if ((index < 19 || (index - 19) % 20 !== 0 || index >= location.length) && isNewMove) {
-                    if (location[index].right && location[index + 1].left) {
-                        return true;
-                    }
-                }
-            }
-            else if (index < 19 || (index - 19) % 20 !== 0 || index >= location.length) {
-                if (location[index].right && location[index + 1].left) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 }
