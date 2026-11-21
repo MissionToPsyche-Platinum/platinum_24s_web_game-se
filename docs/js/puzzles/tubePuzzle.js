@@ -315,6 +315,8 @@ function movePipeFocus(gridEl, rows, cols, dr, dc, tracker) {
 	}
 }
 
+let activeKeyHandler = null;
+
 function wireKeyboardNav(gridEl, rows, cols, tracker) {
 	const arrows = {
     	ArrowUp: [-1, 0],
@@ -322,28 +324,37 @@ function wireKeyboardNav(gridEl, rows, cols, tracker) {
     	ArrowLeft: [0, -1],
     	ArrowRight: [0, 1],
 	};
-	gridEl.addEventListener(
-    	"keydown",
-    	(e) => {
-        	const delta = arrows[e.key];
-        	if (!delta) {
-            	return;
-        	}
-        	const el = document.activeElement;
-        	if (
-            	!el ||
-            	el.tagName !== "BUTTON" ||
-            	!el.classList.contains("tube-cell") ||
-            	!gridEl.contains(el) ||
-            	el.disabled
-        	) {
-            	return;
-        	}
-        	e.preventDefault();
-        	movePipeFocus(gridEl, rows, cols, delta[0], delta[1], tracker);
-    	},
-    	true,
-	);
+	if (activeKeyHandler) {
+    	document.removeEventListener("keydown", activeKeyHandler);
+    	activeKeyHandler = null;
+	}
+	activeKeyHandler = (e) => {
+    	const delta = arrows[e.key];
+    	if (!delta) {
+        	return;
+    	}
+    	if (!gridEl.isConnected) {
+        	return;
+    	}
+    	const target = e.target;
+    	if (
+        	target instanceof Element &&
+        	(target.closest("input, textarea, select") || target.isContentEditable)
+    	) {
+        	return;
+    	}
+    	if (
+        	["settingsPopUp", "puzzleHelpPopUp", "menuConfirmPopUp", "resetSettingsPopUp"].some((id) => {
+            	const el = document.getElementById(id);
+            	return el && el.style.display === "block";
+        	})
+    	) {
+        	return;
+    	}
+    	e.preventDefault();
+    	movePipeFocus(gridEl, rows, cols, delta[0], delta[1], tracker);
+	};
+	document.addEventListener("keydown", activeKeyHandler);
 }
 
 function wireDpad(container, gridEl, rows, cols, tracker) {
