@@ -137,7 +137,6 @@ body {
 
 /** Mobile-specific adjustments **/
 @media screen and (max-width: 600px) {
-
     #main-menu {
         width: 100%;
         min-height: 100svh;
@@ -1268,6 +1267,13 @@ body {
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
 }
 
+/** Mobile-specific adjustments **/
+@media screen and (max-width: 600px) {
+    .game-header {
+        height: 120px;
+    }
+}
+
 .puzzle-settings-btn {
     position: absolute;
     top: 50%;
@@ -1359,6 +1365,13 @@ body {
    color: #f9a000;
 }
 
+/** Mobile-specific adjustments **/
+@media screen and (max-width: 600px) {
+    #game-title {
+        font-size: 25px;
+        text-align: center;
+    }
+}
 
 .game-status-messages {
    width: 100%;
@@ -1407,6 +1420,13 @@ body {
     background: rgba(255, 255, 255, 0.12);
     color: #f9a000;
     font-weight: bold;
+}
+
+/** Mobile-specific adjustments **/
+@media screen and (max-width: 600px) {
+    .timer {
+        height: 90%;
+    }
 }
 
 #puzzle-screen .left-panel button {
@@ -1609,7 +1629,8 @@ body {
 
 #playerScorePanel {
     border: 1px solid rgba(249, 160, 0, 0.55);
-    border-radius: 10px;    padding: 5px 10px;
+    border-radius: 10px;    
+    padding: 5px 10px;
     height: 80%;
     min-width: 122px;
     text-align: center;
@@ -1624,6 +1645,16 @@ body {
     align-items: stretch;
     gap: 5px;
 }
+
+/** Mobile-specific adjustments **/
+@media screen and (max-width: 600px) {
+    #title-score-timer {
+        display: grid;
+        gap: 20px;
+        padding: 10px 10px;
+    }
+}
+
 
 #mission-fact {
     position: relative;
