@@ -1,5 +1,15 @@
 import { solvePuzzle } from "../gameController.js";
 import { isPatternPuzzleSolved } from "./winConditions.js";
+import {
+    DIFFICULTY_CONFIG,
+    clampIndex,
+    createPattern,
+    getDifficultyConfig,
+    isCorrectStep,
+    isRoundComplete,
+    nextPatternLength,
+    nextTileIndex,
+} from "./patternPuzzleModel.js";
 
 const COLORS = ["red", "blue", "green", "yellow"];
 const COLOR_TONES_HZ = [329.63, 392.0, 261.63, 440.0]; // E4, G4, C4, A4
@@ -17,29 +27,13 @@ function tileShapeMarkup({ icon }) {
    </span>`;
 }
 
-const DIFFICULTY_CONFIG = {
-   normal: {
-       startLength: 3,
-       maxLength: 6,
-       flashMs: 500,
-       gapMs: 250,
-   },
-   challenge: {
-       startLength: 4,
-       maxLength: 8,
-       flashMs: 350,
-       gapMs: 170,
-   },
-};
-
-function getDifficultyConfig() {
+function difficultyFromSettings() {
    const settings = window.getPyscheSettings?.();
-   const difficulty = settings?.difficulty === "challenge" ? "challenge" : "normal";
-   return DIFFICULTY_CONFIG[difficulty];
+   return getDifficultyConfig(settings?.difficulty);
 }
 
 export function startPatternPuzzle({ containerID }) {
-   const config = getDifficultyConfig();
+   const config = difficultyFromSettings();
    const difficultyLabel = config === DIFFICULTY_CONFIG.challenge ? "Challenge" : "Normal";
 
    containerID.innerHTML = `
@@ -155,15 +149,8 @@ export function startPatternPuzzle({ containerID }) {
    }
 
 
-   function clampIndex(i) {
-       if (i < 0) return 0;
-       if (i >= tiles.length) return tiles.length - 1;
-       return i;
-   }
-
-
    function focusTile(i) {
-       focusedIndex = clampIndex(i);
+       focusedIndex = clampIndex(i, tiles.length);
        const t = tiles[focusedIndex];
        if (t && !t.disabled) t.focus({ preventScroll: true });
    }
@@ -184,10 +171,6 @@ export function startPatternPuzzle({ containerID }) {
 
    function setStatus(message) {
        if (statusEl) statusEl.textContent = message;
-   }
-
-   function createPattern(length) {
-       return Array.from({ length }, () => Math.floor(Math.random() * COLORS.length));
    }
 
    function flashTile(index) {
@@ -219,8 +202,7 @@ export function startPatternPuzzle({ containerID }) {
        await flashTile(index);
        userInput.push(index);
 
-       const step = userInput.length - 1;
-       if (userInput[step] !== pattern[step]) {
+       if (!isCorrectStep(userInput, pattern)) {
            playToneForIndex(index, { type: "wrong" });
            showTileFeedback(tile, "wrong");
            setStatus("Incorrect pattern. Try this round again.");
@@ -231,7 +213,7 @@ export function startPatternPuzzle({ containerID }) {
        }
         showTileFeedback(tile, "correct");
 
-       if (userInput.length === pattern.length) {
+       if (isRoundComplete(userInput, pattern)) {
            if (isPatternPuzzleSolved(userInput, pattern, config.maxLength)) {
                playToneForIndex(index, { type: "correct" });
                setStatus("Great memory! Pattern solved.");
@@ -240,8 +222,8 @@ export function startPatternPuzzle({ containerID }) {
                return;
            }
 
-           currentLength += 1;
-           pattern = createPattern(currentLength);
+           currentLength = nextPatternLength(currentLength, config.maxLength);
+           pattern = createPattern(currentLength, COLORS.length);
            playToneForIndex(index, { type: "correct" });
            setStatus("Correct! Next pattern is longer.");
            setTilesDisabled(true);
@@ -268,16 +250,11 @@ export function startPatternPuzzle({ containerID }) {
            return;
        }
 
-       const move = (di) => {
+       if (e.key.startsWith("Arrow")) {
            e.preventDefault();
-           focusTile(focusedIndex + di);
-       };
-
-       // 2x2 grid: indices 0 1 / 2 3
-       if (e.key === "ArrowLeft") return move(focusedIndex % 2 === 1 ? -1 : 0);
-       if (e.key === "ArrowRight") return move(focusedIndex % 2 === 0 ? 1 : 0);
-       if (e.key === "ArrowUp") return move(focusedIndex >= 2 ? -2 : 0);
-       if (e.key === "ArrowDown") return move(focusedIndex <= 1 ? 2 : 0);
+           focusTile(nextTileIndex(focusedIndex, e.key, tiles.length));
+           return;
+       }
 
        if (e.key === "Enter" || e.key === " ") {
            // Space key is " " in key values.
