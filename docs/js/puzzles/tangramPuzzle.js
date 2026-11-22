@@ -1,6 +1,7 @@
 import { solvePuzzle } from "../gameController.js";
 import { isTangramSolved } from "./winConditions.js";
 import { calculateCetner , checkPosition} from "./tangramPuzzleModel.js";
+import { playTone } from "../uiSounds.js";
 
 export function startTangramPuzzle({ containerID }) {
     const settings = typeof window !== "undefined" ? window.getPyscheSettings?.() : undefined;
@@ -216,9 +217,19 @@ export function startTangramPuzzle({ containerID }) {
     enableDragAndDrop(svg, randomConfig.pieces, randomConfig.solution, difficulty);
 }
 
+function playCorrectPos() {
+    playTone({ freq: 620, duration: 0.09, peak: 0.1, type: "sine" });
+}
+
+function playPuzzleWin() {
+    playTone({ freq: 523, duration: 0.1, peak: 0.12, type: "sine" });
+    playTone({ freq: 659, duration: 0.11, peak: 0.12, type: "sine", delay: 0.09 });
+    playTone({ freq: 784, duration: 0.16, peak: 0.13, type: "sine", delay: 0.18 });
+}
 
 function checkWin(pieces) {
     if(isTangramSolved(pieces)) {
+        playPuzzleWin();
         solvePuzzle();
     }
 }
@@ -325,6 +336,7 @@ function enableDragAndDrop(svg, pieces, solution, difficulty) {
             const { cx, cy } = calculateCetner(selectedPiece.points);
             target.setAttribute("transform", `translate(${selectedPiece.x}, ${selectedPiece.y}) rotate(${selectedPiece.rotation}, ${cx}, ${cy})`);
             target.style.cursor = "default";
+            playCorrectPos();
         }
         checkWin(pieces);
 		target.style.cursor = inPosition ? "default" : "grab";
