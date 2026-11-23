@@ -328,11 +328,16 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" id="in-game-settings" class="puzzle-settings-btn" aria-label="Open settings" title="Settings">
+                <div class="puzzle-header-actions">
+                    <button type="button" id="in-game-pause" class="puzzle-settings-btn puzzle-pause-btn" aria-label="Pause" title="Pause">
+                        <span class="puzzle-pause-icon" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" id="in-game-settings" class="puzzle-settings-btn" aria-label="Open settings" title="Settings">
                     <svg class="puzzle-settings-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                         <path fill="currentColor" d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54A.49.49 0 0 0 13.9 2h-3.8a.5.5 0 0 0-.49.42l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96a.5.5 0 0 0-.6.22L2.72 8.84a.5.5 0 0 0 .12.64l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58a.5.5 0 0 0-.12.64l1.92 3.32c.13.23.4.34.6.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.26.42.49.42h3.8c.24 0 .44-.18.49-.42l.36-2.54c.59-.24 1.12-.56 1.62-.94l2.39.96c.22.12.47.01.6-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/>
                     </svg>
-                </button>
+                    </button>
+                </div>
             </div>
             <div class="puzzle-content">
                 <aside class="left-panel">
