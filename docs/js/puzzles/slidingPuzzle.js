@@ -154,7 +154,23 @@ function setupKeys(state, container, gridSize) {
             !container.querySelector("#sliding-grid")) {
             return;
         }
+		// Ignore arrow keys while a game popup is visible.
+        const popupIds = [
+            "settingsPopUp",
+            "puzzleHelpPopUp",
+            "menuConfirmPopUp",
+            "exitPopUp",
+            "resetSettingsPopUp"
+        ];
 
+        const popupOpen = popupIds.some((id) => {
+            const popup = document.getElementById(id);
+            return popup && getComputedStyle(popup).display !== "none";
+        });
+
+        if (popupOpen) {
+            return;
+        }
         // Allow normal typing and editing in form fields.
         const target = event.target;
         if (target instanceof Element &&
