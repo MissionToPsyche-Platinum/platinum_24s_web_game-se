@@ -1277,6 +1277,14 @@ body {
 @media screen and (max-width: 600px) {
     .game-header {
         height: 120px;
+        display: grid;
+        grid-template-columns: 1fr 100px;
+        grid-template-areas: "score and timer" "pause and settings";
+        gap: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 15px 20px;
+        
     }
 }
 
@@ -1289,6 +1297,14 @@ body {
     align-items: center;
     gap: 10px;
     transform: translateY(-50%);
+}
+
+/** Mobile-specific adjustments **/
+@media screen and (max-width: 600px) {
+    .puzzle-header-actions {
+        display: flex;
+        flex-direction: column;
+    }
 }
 
 .puzzle-settings-btn {
@@ -1669,15 +1685,6 @@ body {
     flex-direction: row;
     align-items: stretch;
     gap: 5px;
-}
-
-/** Mobile-specific adjustments **/
-@media screen and (max-width: 600px) {
-    #title-score-timer {
-        display: grid;
-        gap: 20px;
-        padding: 10px 10px;
-    }
 }
 
 
