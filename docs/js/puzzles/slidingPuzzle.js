@@ -161,6 +161,9 @@ function setupKeys(state, container, gridSize) {
             return;
         }
 		// Ignore arrow keys while a game popup is visible.
+        if (window.isGamePaused?.()) {
+            return;
+        }
         const popupIds = [
             "settingsPopUp",
             "puzzleHelpPopUp",

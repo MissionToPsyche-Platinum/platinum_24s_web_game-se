@@ -329,7 +329,7 @@
                     </div>
                 </div>
                 <div class="puzzle-header-actions">
-                    <button type="button" id="in-game-pause" class="puzzle-settings-btn puzzle-pause-btn" aria-label="Pause" title="Pause">
+                    <button type="button" id="in-game-pause" class="puzzle-settings-btn puzzle-pause-btn" aria-label="Pause" title="Pause" aria-pressed="false">
                         <span class="puzzle-pause-icon" aria-hidden="true"></span>
                     </button>
                     <button type="button" id="in-game-settings" class="puzzle-settings-btn" aria-label="Open settings" title="Settings">
@@ -436,6 +436,16 @@
                         </div>
                     </section>
                 </main>
+            </div>
+            <div id="game-paused-overlay" role="dialog" aria-modal="true" aria-labelledby="game-paused-title" aria-hidden="true">
+                <div class="game-paused-card">
+                    <p class="game-paused-kicker">Mission hold</p>
+                    <h2 id="game-paused-title" class="exit-title">Game Paused</h2>
+                    <p class="exit-subtitle">The run timer is stopped. Puzzle controls are locked until you resume.</p>
+                    <div class="exit-actions">
+                        <button type="button" id="resume-game">Resume ▶</button>
+                    </div>
+                </div>
             </div>
         </section>
 

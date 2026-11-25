@@ -211,6 +211,7 @@ let runTimerIsRunning = false;
 let runTimerElapsedMs = 0;
 let runTimerSegmentStart = 0;
 let timerHold = false;
+let playerPaused = false;
 
 
 function applyReducedMotion() {
@@ -361,7 +362,7 @@ function pauseRunTimer() {
 }
 
 function resumeRunTimer() {
-    if (!runActive || timerHold || runTimerIsRunning || document.hidden ||
+    if (!runActive || timerHold || playerPaused || runTimerIsRunning || document.hidden ||
       settingsPopUp?.style.display === "block") return;
   runTimerSegmentStart = Date.now();
   runTimerIsRunning = true;
@@ -386,6 +387,7 @@ function stopRunTimer() {
   }
   runActive = false;
   timerHold = false;
+  clearPlayerPaused();
   stopRunTimerTick();
   updateRunTimerDisplay();
   applyTimerVisibility();
@@ -395,12 +397,43 @@ function startRunTimer() {
   stopRunTimerTick();
   runActive = true;
   timerHold = false;
+  clearPlayerPaused();
   runTimerElapsedMs = 0;
   runTimerSegmentStart = Date.now();
   runTimerIsRunning = true;
   applyTimerVisibility();
   if (!runTimerDisplay || !runTimerEl) return;
   startRunTimerTick();
+}
+
+function applyPauseUi() {
+  gameScreen?.classList.toggle("is-paused", playerPaused);
+  const overlay = document.getElementById("game-paused-overlay");
+  if (overlay) overlay.setAttribute("aria-hidden", playerPaused ? "false" : "true");
+  const pauseBtn = document.getElementById("in-game-pause");
+  if (pauseBtn) {
+    pauseBtn.classList.toggle("is-paused", playerPaused);
+    pauseBtn.setAttribute("aria-label", playerPaused ? "Resume" : "Pause");
+    pauseBtn.setAttribute("title", playerPaused ? "Resume" : "Pause");
+    pauseBtn.setAttribute("aria-pressed", playerPaused ? "true" : "false");
+  }
+}
+
+function clearPlayerPaused() {
+  playerPaused = false;
+  applyPauseUi();
+}
+
+function setPlayerPaused(paused) {
+  playerPaused = Boolean(paused) && runActive && gameScreen?.style.display === "block";
+  applyPauseUi();
+  if (playerPaused) pauseRunTimer();
+  else resumeRunTimer();
+}
+
+function togglePlayerPaused() {
+  if (!runActive || gameScreen?.style.display !== "block") return;
+  setPlayerPaused(!playerPaused);
 }
 
 function hideWinScreen() {
@@ -479,6 +512,8 @@ if (settingsButton && settingsPopUp && closeSettingsButton) {
   document.getElementById("in-game-settings")?.addEventListener("click", () => {
     openSettings({ liveSafe: true });
   });
+  document.getElementById("in-game-pause")?.addEventListener("click", togglePlayerPaused);
+  document.getElementById("resume-game")?.addEventListener("click", () => setPlayerPaused(false));
   if (resetSettingsButton) {
     resetSettingsButton.addEventListener("click", openResetSettingsConfirm);
   }
@@ -795,6 +830,7 @@ window.holdRunTimer = holdRunTimer;
 window.releaseRunTimerHold = releaseRunTimerHold;
 window.isRunTimerRunning = () => runTimerIsRunning;
 window.getRunTimerMs = getRunTimerMs;
+window.isGamePaused = () => playerPaused;
 
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
