@@ -417,13 +417,30 @@ function wireActions(layoutEl, gridEl, level, templateLevel, state, tracker) {
 	});
 
 	shuffleBtn?.addEventListener("click", () => {
-    	for (let r = 0; r < level.rows; r++) {
-        	for (let c = 0; c < level.cols; c++) {
-            	const cell = level.cells[r][c];
-            	if (cell.kind === "empty" || cell.kind === "source" || cell.kind === "goal") continue;
-            	cell.rotation = Math.floor(Math.random() * 4);
-        	}
-    	}
+    	let attempts = 0;
+
+		do {
+			for (let r = 0; r < level.rows; r++) {
+				for (let c = 0; c < level.cols; c++) {
+					const cell = level.cells[r][c];
+
+					if (cell.kind === "empty" ||
+						cell.kind === "source" ||
+						cell.kind === "goal") continue;
+
+					cell.rotation = Math.floor(Math.random() * 4);
+				}
+			}
+
+			attempts++;
+		} while (isSourceConnectedToGoal(level) && attempts < 100);
+
+		// Fall back to the original layout if shuffling fails.
+		if (isSourceConnectedToGoal(level)) {
+			level.cells = templateLevel.cells.map(
+				(row) => row.map((cell) => ({ ...cell }))
+			);
+		}
     	state.won = false;
     	setGridSolved(gridEl, false);
     	redrawGridFromLevel(gridEl, level, layoutEl);
