@@ -2,6 +2,7 @@
 import { solvePuzzle } from "../gameController.js";
 import { buildPuzzle, checkSwap , shufflePieces, swapTiles, getEmptyTile} from "./slidingPuzzleModel.js";
 import { isSlidingPuzzleSolved } from "./winConditions.js";
+import { playTone } from "../uiSounds.js";
 
 // Track the current keyboard listener to prevent duplicates.
 let activeKeyHandler = null;
@@ -61,7 +62,11 @@ function setupHelpButton() {
 
 
 
-
+function playPuzzleWin() {
+    playTone({ freq: 523, duration: 0.1, peak: 0.12, type: "sine" });
+    playTone({ freq: 659, duration: 0.11, peak: 0.12, type: "sine", delay: 0.09 });
+    playTone({ freq: 784, duration: 0.16, peak: 0.13, type: "sine", delay: 0.18 });
+}
 
 function checkWin(state) {
     return isSlidingPuzzleSolved(state);
@@ -85,6 +90,7 @@ function moveTile(index, state, container, gridSize) {
         renderSlidingPuzzle(container, state, gridSize);
 
         if (checkWin(state)) {
+            playPuzzleWin();
             solvePuzzle();
         }
     } else {
