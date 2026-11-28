@@ -1147,7 +1147,7 @@ body {
 
 .settings-volume {
     display: grid;
-    grid-template-columns: 1fr minmax(90px, 1fr) 32px;
+    grid-template-columns: 1fr minmax(0, 1fr) 2.5rem;
     align-items: center;
     gap: 8px;
     margin: 0 0 12px;
@@ -1157,8 +1157,22 @@ body {
 
 .settings-volume input[type="range"] {
     width: 100%;
+    min-width: 0;
+    height: 32px;
+    margin: 0;
     accent-color: #f9a000;
     cursor: pointer;
+    touch-action: pan-y;
+}
+
+@media (max-width: 600px) {
+    .settings-volume {
+        grid-template-columns: minmax(0, 1fr) 2.5rem;
+    }
+
+    .settings-volume > span:first-child {
+        grid-column: 1 / -1;
+    }
 }
 
 .settings-difficulty {
