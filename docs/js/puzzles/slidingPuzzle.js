@@ -171,6 +171,12 @@ function setupKeys(state, container, gridSize) {
         if (popupOpen) {
             return;
         }
+		// Prevent keyboard movement while viewing the solved puzzle image.
+		const solvedOverlay = document.getElementById("solved-overlay");
+
+		if (solvedOverlay && getComputedStyle(solvedOverlay).display !== "none") {
+			return;
+		}
         // Allow normal typing and editing in form fields.
         const target = event.target;
         if (target instanceof Element &&
