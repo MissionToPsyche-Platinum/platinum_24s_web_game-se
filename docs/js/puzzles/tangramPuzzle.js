@@ -311,8 +311,6 @@ function enableDragAndDrop(svg, pieces, solution, difficulty) {
         target.style.cursor = "grabbing";
     });
 
-    //svg.addEventListener("mouse")
-
     svg.addEventListener("mousemove", (e) => {
         if (!selectedPiece) return;
 
@@ -364,5 +362,3 @@ function enableDragAndDrop(svg, pieces, solution, difficulty) {
         });
     }
 }
-
-const puzzleHeader = document.getElementById("puzzle-header");
