@@ -232,6 +232,7 @@ export function startPatternPuzzle({ containerID }) {
    }
 
  function onKeyDown(e) {
+       if (window.isGamePaused?.()) return;
        // Ignore if user is typing in an input somewhere (future-proof).
        const tag = e.target?.tagName;
        if (tag === "INPUT" || tag === "TEXTAREA" || e.target?.isContentEditable) return;

@@ -669,6 +669,7 @@ export function startMazePuzzle({ containerID }) {
     }
 
     function handleKeyDown (event) {
+        if (window.isGamePaused?.()) return;
         switch (event.key) {
             case "ArrowUp":
                 event.preventDefault();
