@@ -3224,6 +3224,7 @@ button.tube-cell::-moz-focus-inner {
     height: auto;
     display: block;
     margin: 0 auto;
+    touch-action: none;
 }
 
 .puzzle-title {
