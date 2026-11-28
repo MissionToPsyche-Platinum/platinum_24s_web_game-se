@@ -293,7 +293,7 @@ function enableDragAndDrop(svg, pieces, solution, difficulty) {
         };
     };
 
-    svg.addEventListener("mousedown", (e) => {
+    svg.addEventListener("pointerdown", (e) => {
         const target = e.target;
         if (target.tagName !== "polygon" || target.id === "outline") {
             return;
@@ -304,6 +304,8 @@ function enableDragAndDrop(svg, pieces, solution, difficulty) {
             return;
         }
 
+        e.preventDefault();
+        svg.setPointerCapture?.(e.pointerId);
         const point = getSvgPoint(e);
         selectedPiece = piece;
         offsetX = point.x - piece.x;
@@ -311,9 +313,7 @@ function enableDragAndDrop(svg, pieces, solution, difficulty) {
         target.style.cursor = "grabbing";
     });
 
-    //svg.addEventListener("mouse")
-
-    svg.addEventListener("mousemove", (e) => {
+    svg.addEventListener("pointermove", (e) => {
         if (!selectedPiece) return;
 
         const point = getSvgPoint(e);
@@ -325,7 +325,7 @@ function enableDragAndDrop(svg, pieces, solution, difficulty) {
         target.setAttribute("transform", `translate(${selectedPiece.x}, ${selectedPiece.y}) rotate(${selectedPiece.rotation}, ${cx}, ${cy})`);
     });
 
-    svg.addEventListener("mouseup", (e) => {
+    svg.addEventListener("pointerup", (e) => {
         if (!selectedPiece) return;
         const target = document.getElementById(selectedPiece.id);
 
@@ -342,6 +342,7 @@ function enableDragAndDrop(svg, pieces, solution, difficulty) {
 		target.style.cursor = inPosition ? "default" : "grab";
 		selectedPiece = null;
     });
+    svg.addEventListener("pointercancel", () => { selectedPiece = null; });
 
 
 

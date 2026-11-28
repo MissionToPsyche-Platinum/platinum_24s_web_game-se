@@ -343,6 +343,9 @@ function wireKeyboardNav(gridEl, rows, cols, tracker) {
     	) {
         	return;
     	}
+    	if (window.isGamePaused?.()) {
+        	return;
+    	}
     	if (
         	["settingsPopUp", "puzzleHelpPopUp", "menuConfirmPopUp", "resetSettingsPopUp"].some((id) => {
             	const el = document.getElementById(id);

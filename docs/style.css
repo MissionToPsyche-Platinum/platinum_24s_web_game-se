@@ -1147,7 +1147,7 @@ body {
 
 .settings-volume {
     display: grid;
-    grid-template-columns: 1fr minmax(90px, 1fr) 32px;
+    grid-template-columns: 1fr minmax(0, 1fr) 2.5rem;
     align-items: center;
     gap: 8px;
     margin: 0 0 12px;
@@ -1157,8 +1157,22 @@ body {
 
 .settings-volume input[type="range"] {
     width: 100%;
+    min-width: 0;
+    height: 32px;
+    margin: 0;
     accent-color: #f9a000;
     cursor: pointer;
+    touch-action: pan-y;
+}
+
+@media (max-width: 600px) {
+    .settings-volume {
+        grid-template-columns: minmax(0, 1fr) 2.5rem;
+    }
+
+    .settings-volume > span:first-child {
+        grid-column: 1 / -1;
+    }
 }
 
 .settings-difficulty {
@@ -1220,6 +1234,7 @@ body {
 
 /* Teammate's puzzle layout + timer box styles */
 #puzzle-screen {
+    position: relative;
     height: 100%;
 
     display: flex;
@@ -1260,6 +1275,7 @@ body {
 
 .game-header {
     position: relative;
+    z-index: 6;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -1373,6 +1389,63 @@ body {
 
 .puzzle-pause-btn:hover .puzzle-pause-icon {
     transform: none;
+}
+
+.puzzle-pause-btn.is-paused .puzzle-pause-icon {
+    width: 0;
+    height: 0;
+    border-left: 12px solid currentColor;
+    border-right: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    filter: drop-shadow(0 0 4px rgba(249, 160, 0, 0.7));
+}
+
+#game-paused-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 5;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(18, 8, 40, 0.72);
+    backdrop-filter: blur(3px);
+}
+
+#puzzle-screen.is-paused #game-paused-overlay {
+    display: flex;
+}
+
+.game-paused-card {
+    width: min(420px, 92vw);
+    padding: 24px 28px;
+    border: 2px solid #f9a000;
+    border-radius: 12px;
+    background: linear-gradient(160deg, #4a3270 0%, #302144 70%);
+    color: #f9a000;
+    text-align: center;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55), 0 0 18px rgba(249, 160, 0, 0.28);
+}
+
+.game-paused-kicker {
+    margin: 0 0 8px;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #ffd56a;
+}
+
+#resume-game {
+    min-width: 130px;
+    padding: 10px 14px;
+    font-weight: bold;
+    border-radius: 6px;
+    font-family: Helvetica, Arial, sans-serif;
+    cursor: pointer;
+    border: 2px solid #f9a000;
+    background-color: #f9a000;
+    color: #302144;
 }
 
 @keyframes puzzle-settings-glow {
@@ -3151,6 +3224,7 @@ button.tube-cell::-moz-focus-inner {
     height: auto;
     display: block;
     margin: 0 auto;
+    touch-action: none;
 }
 
 .puzzle-title {
